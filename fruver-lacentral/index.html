@@ -1,6 +1,134 @@
-const CONFIG = {
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibras Positivas - Fruver La Central</title>
+    <style>
+        :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris-claro: #f4f4f4; }
+        body { font-family: 'Arial', sans-serif; background-color: var(--gris-claro); margin: 0; padding: 15px; }
+        .card { max-width: 500px; margin: auto; background: var(--blanco); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #ddd; }
+        header { background: var(--secundario); color: var(--primario); padding: 20px; text-align: center; border-bottom: 4px solid var(--primario); }
+        .logo-area { font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
+        .content { padding: 20px; }
+        .section-title { font-size: 14px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid var(--primario); display: inline-block; }
+        input, select, textarea { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ccc; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 10px 0; }
+        .btn-gold { background: var(--primario); color: var(--secundario); }
+        .btn-whatsapp { background: #25D366; color: white; font-size: 18px; }
+        .btn-edit { background: #eee; color: #333; font-size: 13px; padding: 8px; }
+        .prod-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; margin-bottom: 5px; }
+        .hidden { display: none; }
+        footer { text-align: center; padding: 20px; font-size: 12px; color: #888; background: #fff; }
+        .vp-brand { color: var(--secundario); font-weight: bold; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <header>
+        <div class="logo-area">FRUVER LA CENTRAL</div>
+        <div style="font-size: 10px; color: white;">PEDIDOS ONLINE</div>
+    </header>
+    <div class="content">
+        <div id="bloque-cliente">
+            <div class="section-title">Datos de Entrega</div>
+            <div id="cliente-info-guardada" class="hidden">
+                <p id="texto-resumen" style="font-size: 14px; color: #333; background: #fff9db; padding: 10px; border-radius: 8px;"></p>
+                <button class="btn-edit" onclick="mostrarEditor()">⚙️ Editar mis datos</button>
+            </div>
+            <div id="cliente-editor">
+                <input type="text" id="c_nombre" placeholder="Tu Nombre">
+                <input type="text" id="c_direccion" placeholder="Dirección Exacta">
+                <input type="tel" id="c_celular" placeholder="Celular">
+                <button class="btn btn-gold" onclick="guardarCliente()">Confirmar Mis Datos</button>
+            </div>
+        </div>
+        <hr style="opacity: 0.2; margin: 20px 0;">
+        <div class="section-title">Tu Pedido</div>
+        <div id="lista-productos">
+            <div class="prod-row">
+                <input type="text" class="p-name" placeholder="Producto" list="sugerencias">
+                <input type="text" class="p-unit" placeholder="Und (lb/kg)">
+                <input type="number" class="p-qty" placeholder="Cant">
+            </div>
+        </div>
+        <datalist id="sugerencias"></datalist>
+        <button onclick="agregarFila()" style="color: #666; background: none; border: none; cursor: pointer; font-size: 13px;">+ Agregar otro producto</button>
+        <textarea id="observaciones" placeholder="Instrucciones especiales..."></textarea>
+        <div class="section-title">Forma de Pago</div>
+        <select id="pago">
+            <option value="Efectivo">Efectivo</option>
+            <option value="Transferencia">Transferencia</option>
+        </select>
+        <button class="btn btn-whatsapp" onclick="enviarPedido()">🚀 ENVIAR POR WHATSAPP</button>
+    </div>
+    <footer>App desarrollada por <br><span class="vp-brand">VIBRAS POSITIVAS</span><br>© 2026</footer>
+</div>
+
+<script>
+    const CONFIG = {
         nombreNegocio: "FRUVER LA CENTRAL",
-        whatsapp: "573148648770", // Pon el WhatsApp del dueño del Fruver
-        idSuscriptor: "VP-CAU-003",    // El tercer código de tu red
+        whatsapp: "573148648770", 
+        idSuscriptor: "VP-CAU-003",
         suscripcionActiva: true
     };
+
+    let numeroPedido = Math.floor(Math.random() * 10000);
+    window.onload = () => { verificarDatosGuardados(); cargarHistorialProductos(); };
+
+    function guardarCliente() {
+        const d = { n: document.getElementById('c_nombre').value, d: document.getElementById('c_direccion').value, c: document.getElementById('c_celular').value };
+        if(d.n && d.d && d.c) { localStorage.setItem('vp_cliente', JSON.stringify(d)); verificarDatosGuardados(); }
+    }
+
+    function verificarDatosGuardados() {
+        const g = JSON.parse(localStorage.getItem('vp_cliente'));
+        if(g) { 
+            document.getElementById('cliente-editor').classList.add('hidden');
+            document.getElementById('cliente-info-guardada').classList.remove('hidden');
+            document.getElementById('texto-resumen').innerText = `Entregar a: ${g.n} \nDir: ${g.d}`;
+        }
+    }
+
+    function mostrarEditor() { 
+        document.getElementById('cliente-editor').classList.remove('hidden');
+        document.getElementById('cliente-info-guardada').classList.add('hidden');
+    }
+
+    function agregarFila() {
+        const div = document.createElement('div'); div.className = 'prod-row';
+        div.innerHTML = `<input type="text" class="p-name" placeholder="Producto" list="sugerencias"><input type="text" class="p-unit" placeholder="Und"><input type="number" class="p-qty" placeholder="Cant">`;
+        document.getElementById('lista-productos').appendChild(div);
+    }
+
+    function cargarHistorialProductos() {
+        const h = JSON.parse(localStorage.getItem('vp_historial')) || [];
+        document.getElementById('sugerencias').innerHTML = h.map(x => `<option value="${x}">`).join('');
+    }
+
+    function enviarPedido() {
+        const c = JSON.parse(localStorage.getItem('vp_cliente'));
+        if(!c) return alert("Guarda tus datos primero.");
+        
+        navigator.geolocation.getCurrentPosition(pos => {
+            const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+            finalizar(c, gps);
+        }, () => finalizar(c, "No compartida"));
+    }
+
+    function finalizar(c, gps) {
+        let msj = `*NUEVO PEDIDO #${numeroPedido}*\n*CLIENTE:* ${c.n}\n*DIR:* ${c.d}\n--------------------------\n*PEDIDO:*\n`;
+        let h = JSON.parse(localStorage.getItem('vp_historial')) || [];
+        document.querySelectorAll('.p-name').forEach((n, i) => {
+            if(n.value) { 
+                msj += `• ${n.value} (${document.querySelectorAll('.p-qty')[i].value} ${document.querySelectorAll('.p-unit')[i].value})\n`;
+                if(!h.includes(n.value)) h.push(n.value);
+            }
+        });
+        localStorage.setItem('vp_historial', JSON.stringify(h));
+        msj += `--------------------------\n*PAGO:* ${document.getElementById('pago').value}\n*UBICACIÓN:* ${gps}\n\n_Vibras Positivas_`;
+        window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msj)}`, '_blank');
+    }
+</script>
+</body>
+</html>
