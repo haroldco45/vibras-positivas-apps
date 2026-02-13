@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda Cielo - Pedidos Oficial</title>
+    <style>
+        :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris-claro: #f4f4f4; }
+        body { font-family: 'Arial', sans-serif; background-color: var(--gris-claro); margin: 0; padding: 15px; }
+        .card { max-width: 500px; margin: auto; background: var(--blanco); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #ddd; }
+        header { background: var(--secundario); color: var(--primario); padding: 25px; text-align: center; border-bottom: 4px solid var(--primario); }
+        .logo-area { font-size: 26px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
+        .content { padding: 20px; }
+        .section-title { font-size: 14px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid var(--primario); display: inline-block; }
+        input, select, textarea { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ccc; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 10px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-gold { background: var(--primario); color: var(--secundario); }
+        .btn-whatsapp { background: #25D366; color: white; }
+        .prod-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; margin-bottom: 5px; }
+        .hidden { display: none; }
+        footer { text-align: center; padding: 20px; font-size: 12px; color: #888; background: #fff; border-top: 1px solid #eee; }
+        .vp-brand { color: var(--secundario); font-weight: bold; text-decoration: none; border-bottom: 1px solid var(--primario); }
+    </style>
+</head>
+<body>
+<div class="card">
+    <header>
+        <div id="display-nombre" class="logo-area">TIENDA CIELO</div>
+        <div style="font-size: 11px; color: white; margin-top: 5px; letter-spacing: 1px;">SISTEMA PROFESIONAL DE PEDIDOS</div>
+    </header>
+    <div class="content">
+        <div id="bloque-cliente">
+            <div class="section-title">Tus Datos de Entrega</div>
+            <div id="cliente-editor">
+                <input type="text" id="c_nombre" placeholder="Tu Nombre">
+                <input type="text" id="c_direccion" placeholder="Dirección en Caucasia">
+                <input type="tel" id="c_celular" placeholder="Número de Celular">
+                <button class="btn btn-gold" onclick="guardarCliente()">CONFIRMAR MIS DATOS</button>
+            </div>
+            <div id="cliente-info-guardada" class="hidden">
+                <p id="texto-resumen" style="font-size: 15px; color: #333; background: #fff9db; padding: 15px; border-radius: 10px; border-left: 5px solid var(--primario);"></p>
+                <button onclick="mostrarEditor()" style="font-size: 12px; background: none; border: none; color: #888; cursor: pointer;">✏️ Editar datos</button>
+            </div>
+        </div>
+        
+        <hr style="opacity: 0.1; margin: 25px 0;">
+        
+        <div class="section-title">Lista de Productos</div>
+        <div id="lista-productos">
+            <div class="prod-row">
+                <input type="text" class="p-name" placeholder="Producto">
+                <input type="text" class="p-unit" placeholder="Und">
+                <input type="number" class="p-qty" placeholder="Cant">
+            </div>
+        </div>
+        <button onclick="agregarFila()" style="background: #eee; border: none; padding: 8px 15px; border-radius: 20px; font-size: 12px; cursor: pointer; margin-bottom: 15px;">+ Agregar otro</button>
+        
+        <textarea id="observaciones" rows="3" placeholder="Instrucciones especiales (Ej: Favor mandar Superarroz, el timbre no sirve...)"></textarea>
+        
+        <button class="btn btn-whatsapp" onclick="enviarPedido()">
+            <span>🚀 ENVIAR PEDIDO POR WHATSAPP</span>
+        </button>
+    </div>
+    <footer>
+        App desarrollada por <br>
+        <a href="#" class="vp-brand">VIBRAS POSITIVAS</a> <br>
+        Todos los derechos reservados © 2026 <br>
+        Caucasia, Antioquia
+    </footer>
+</div>
+
+<script>
+    // --- CONFIGURACIÓN DEL CLIENTE ---
+    const CONFIG = {
+        nombreNegocio: "TIENDA CIELO",
+        whatsapp: "573113235407", // Harold, asegúrate de colocar el número real de la tienda aquí
+        idSuscriptor: "VP-CAU-012"
+    };
+
+    document.getElementById('display-nombre').innerText = CONFIG.nombreNegocio;
+    let nPedido = Math.floor(Math.random() * 90000) + 10000;
+
+    function guardarCliente() {
+        const d = { n: document.getElementById('c_nombre').value, d: document.getElementById('c_direccion').value, c: document.getElementById('c_celular').value };
+        if(d.n && d.d && d.c) { 
+            localStorage.setItem('vp_datos_v2', JSON.stringify(d)); 
+            location.reload(); 
+        } else {
+            alert("Por favor completa tus datos.");
+        }
+    }
+
+    function verificarDatos() {
+        const g = JSON.parse(localStorage.getItem('vp_datos_v2'));
+        if(g) {
+            document.getElementById('cliente-editor').classList.add('hidden');
+            document.getElementById('cliente-info-guardada').classList.remove('hidden');
+            document.getElementById('texto-resumen').innerText = `Entregar a: ${g.n}\nDirección: ${g.d}\nCel: ${g.c}`;
+        }
+    }
+    window.onload = verificarDatos;
+
+    function mostrarEditor() {
+        document.getElementById('cliente-editor').classList.remove('hidden');
+        document.getElementById('cliente-info-guardada').classList.add('hidden');
+    }
+
+    function agregarFila() {
+        const div = document.createElement('div'); div.className = 'prod-row';
+        div.innerHTML = `<input type="text" class="p-name" placeholder="Producto"><input type="text" class="p-unit" placeholder="Und"><input type="number" class="p-qty" placeholder="Cant">`;
+        document.getElementById('lista-productos').appendChild(div);
+    }
+
+    function enviarPedido() {
+        const c = JSON.parse(localStorage.getItem('vp_datos_v2'));
+        if(!c) return alert("Primero confirma tus datos de entrega.");
+        
+        navigator.geolocation.getCurrentPosition(pos => {
+            const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+            armarMensaje(c, gps);
+        }, () => {
+            armarMensaje(c, "No compartida");
+        });
+    }
+
+    function armarMensaje(c, gps) {
+        let msj = `*${CONFIG.nombreNegocio} - PEDIDO #${nPedido}*\n`;
+        msj += `*CLIENTE:* ${c.n}\n*CEL:* ${c.c}\n*DIR:* ${c.d}\n`;
+        msj += `--------------------------\n*PRODUCTOS:*\n`;
+        
+        document.querySelectorAll('.prod-row').forEach(row => {
+            const nom = row.querySelector('.p-name').value;
+            const uni = row.querySelector('.p-unit').value;
+            const can = row.querySelector('.p-qty').value;
+            if(nom) msj += `• ${nom} (${can} ${uni})\n`;
+        });
+
+        const obs = document.getElementById('observaciones').value;
+        if(obs) msj += `--------------------------\n*NOTAS:* ${obs}\n`;
+
+        msj += `--------------------------\n*GPS:* ${gps}\n\n`;
+        msj += `_App desarrollada por Vibras Positivas_`;
+
+        window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msj)}`, '_blank');
+    }
+</script>
+</body>
+</html>
