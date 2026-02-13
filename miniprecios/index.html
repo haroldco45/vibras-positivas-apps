@@ -117,7 +117,10 @@
     }
 
     function finalizar(c, gps) {
-        let msj = `*MINIPRECIOS - NUEVO PEDIDO #${numeroPedido}*\n*CLIENTE:* ${c.n}\n*DIR:* ${c.d}\n--------------------------\n*PEDIDO:*\n`;
+        let msj = `*${CONFIG.nombreNegocio} - NUEVO PEDIDO #${numeroPedido}*\n`;
+        msj += `*CLIENTE:* ${c.n}\n*CEL:* ${c.c}\n*DIR:* ${c.d}\n`;
+        msj += `--------------------------\n*MERCANCÍA:*\n`;
+        
         let h = JSON.parse(localStorage.getItem('vp_historial')) || [];
         document.querySelectorAll('.p-name').forEach((n, i) => {
             if(n.value) { 
@@ -126,7 +129,15 @@
             }
         });
         localStorage.setItem('vp_historial', JSON.stringify(h));
-        msj += `--------------------------\n*PAGO:* ${document.getElementById('pago').value}\n*UBICACIÓN:* ${gps}\n\n_Vibras Positivas_`;
+
+        // --- AQUÍ ESTÁ EL CAMBIO: AGREGAMOS LAS OBSERVACIONES ---
+        const obs = document.getElementById('observaciones').value;
+        if(obs) {
+            msj += `--------------------------\n*NOTAS:* ${obs}\n`;
+        }
+        
+        msj += `--------------------------\n*PAGO:* ${document.getElementById('pago').value}\n*UBICACIÓN:* ${gps}\n\n_Gestionado por Vibras Positivas_`;
+        
         window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msj)}`, '_blank');
     }
 </script>
