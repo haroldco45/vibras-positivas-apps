@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CREADORA DE QR</title>
+    <title>CREADORA DE QR - Universal</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .container { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; width: 350px; }
-        h1 { color: #333; font-size: 1.5rem; }
-        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        .btn-generate { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        .btn-whatsapp { width: 100%; padding: 12px; background-color: #25d366; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; display: none; text-decoration: none; }
-        #qrcode { margin-top: 20px; display: flex; justify-content: center; }
-        .footer { margin-top: 25px; font-size: 0.8rem; color: #777; border-top: 1px solid #eee; pt: 10px; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; width: 100%; max-width: 400px; }
+        h1 { color: #333; font-size: 1.8rem; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 1rem; }
+        .btn-generate { width: 100%; padding: 14px; background-color: #000; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1.1rem; margin-top: 10px; transition: 0.3s; }
+        .btn-generate:hover { background-color: #333; }
+        #qrcode { margin-top: 25px; display: flex; justify-content: center; padding: 15px; border: 1px dashed #ccc; border-radius: 10px; background: #fff; }
+        .nombre-dinamico { margin-top: 15px; font-weight: 900; font-size: 1.5rem; color: #000; text-transform: uppercase; min-height: 30px; }
+        .btn-whatsapp { display: none; width: 100%; padding: 14px; background-color: #25d366; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; text-decoration: none; margin-top: 20px; }
+        .footer { margin-top: 30px; font-size: 0.8rem; color: #666; border-top: 1px solid #eee; padding-top: 15px; }
     </style>
 </head>
 <body>
@@ -21,49 +23,52 @@
 <div class="container">
     <h1>CREADORA DE QR</h1>
     
-    <input type="text" id="url" placeholder="Pega tu URL aquí..." />
+    <input type="text" id="nombreEmpresaInput" placeholder="Nombre de la Empresa (ej: Mi Negocio)" />
     
-    <select id="size">
-        <option value="256">Tamaño Estándar</option>
-        <option value="512">Tamaño Grande</option>
-    </select>
+    <input type="text" id="urlInput" placeholder="URL o enlace (https://...)" />
 
-    <button class="btn-generate" onclick="generarQR()">1. Generar Código</button>
-    
+    <button class="btn-generate" onclick="generarQR()">Generar QR Personalizado</button>
+
     <div id="qrcode"></div>
+    <div id="resultadoNombre" class="nombre-dinamico"></div>
 
-    <a id="waLink" class="btn-whatsapp" target="_blank">2. Enviar a mi WhatsApp</a>
+    <a id="waLink" class="btn-whatsapp" target="_blank">Enviar a WhatsApp</a>
 
     <div class="footer">
         1. CREADORA DE QR<br>
-        Desarrollado por Vibras Positivas © Derechos de Autor
+        Desarrollado por <strong>Vibras Positivas</strong> © Derechos de Autor
     </div>
 </div>
 
 <script>
     function generarQR() {
-        const urlInput = document.getElementById('url').value;
-        const size = document.getElementById('size').value;
+        const nombre = document.getElementById('nombreEmpresaInput').value;
+        const url = document.getElementById('urlInput').value;
         const qrContainer = document.getElementById('qrcode');
+        const displayNombre = document.getElementById('resultadoNombre');
         const waLink = document.getElementById('waLink');
 
-        qrContainer.innerHTML = "";
+        qrContainer.innerHTML = ""; // Limpiar QR previo
 
-        if (urlInput.trim() !== "") {
-            // Generar el QR
+        if (nombre.trim() !== "" && url.trim() !== "") {
+            // Generar QR
             new QRCode(qrContainer, {
-                text: urlInput,
-                width: parseInt(size),
-                height: parseInt(size)
+                text: url,
+                width: 250,
+                height: 250
             });
 
-            // Configurar el enlace de WhatsApp
-            const mensaje = encodeURIComponent("¡Hola! He creado un nuevo código QR para la URL: " + urlInput);
-            const numeroTel = "573117700431"; // Tu número con código de país
-            waLink.href = `https://wa.me/${numeroTel}?text=${mensaje}`;
-            waLink.style.display = "block"; // Mostrar botón de envío
+            // Mostrar el nombre de la empresa ingresado debajo del QR
+            displayNombre.innerText = nombre;
+
+            // Configurar botón de envío a tu WhatsApp
+            const miNumero = "573117700431";
+            const mensaje = encodeURIComponent(`Hola, he generado un QR para la empresa: ${nombre}\nLink: ${url}`);
+            waLink.href = `https://wa.me/${miNumero}?text=${mensaje}`;
+            waLink.style.display = "inline-block";
+            
         } else {
-            alert("Por favor, ingresa una URL.");
+            alert("Por favor completa ambos campos: Nombre de Empresa y URL.");
         }
     }
 </script>
