@@ -13,13 +13,13 @@
         .content { padding: 20px; }
         .section-title { font-size: 14px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid var(--primario); display: inline-block; }
         
-        /* Estructura de pedido por columnas */
         .fila-pedido { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; margin-bottom: 8px; }
         input, textarea { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ccc; border-radius: 10px; font-size: 15px; box-sizing: border-box; }
         .head-tabla { font-size: 11px; color: #999; font-weight: bold; text-align: center; }
         
         .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 10px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-gold { background: var(--primario); color: var(--secundario); }
+        .btn-add { background: #f0f0f0; color: #333; font-size: 14px; padding: 10px; border: 1px dashed #ccc; }
         .btn-whatsapp { background: var(--exito); color: white; }
         .hidden { display: none !important; }
         footer { text-align: center; padding: 20px; font-size: 12px; color: #888; background: #fff; border-top: 1px solid #eee; }
@@ -64,15 +64,9 @@
                 <input type="text" class="p-medida" placeholder="Litro">
                 <input type="number" class="p-cantidad" value="1">
             </div>
-            <div class="fila-pedido">
-                <input type="text" class="p-nombre" placeholder="Ej: Lenteja">
-                <input type="text" class="p-medida" placeholder="Libra">
-                <input type="number" class="p-cantidad" value="1">
-            </div>
-            <div class="fila-pedido"><input type="text" class="p-nombre"><input type="text" class="p-medida"><input type="number" class="p-cantidad"></div>
-            <div class="fila-pedido"><input type="text" class="p-nombre"><input type="text" class="p-medida"><input type="number" class="p-cantidad"></div>
-            <div class="fila-pedido"><input type="text" class="p-nombre"><input type="text" class="p-medida"><input type="number" class="p-cantidad"></div>
         </div>
+
+        <button class="btn btn-add" onclick="agregarFila()">➕ AGREGAR OTRO PRODUCTO</button>
 
         <textarea id="obs" rows="2" placeholder="Notas: (Ej: Tocar fuerte, portón azul)"></textarea>
 
@@ -89,19 +83,30 @@
 </div>
 
 <script>
-    const WHATSAPP_JM = "573238539266"; // Número de Distribuciones JM
+    const WHATSAPP_JM = "573238539266";
 
-    // 1. GESTIÓN DE MEMORIA (LOCALSTORAGE)
+    function agregarFila() {
+        const contenedor = document.getElementById('contenedor-filas');
+        const nuevaFila = document.createElement('div');
+        nuevaFila.className = 'fila-pedido';
+        nuevaFila.innerHTML = `
+            <input type="text" class="p-nombre">
+            <input type="text" class="p-medida">
+            <input type="number" class="p-cantidad" value="1">
+        `;
+        contenedor.appendChild(nuevaFila);
+    }
+
     function guardarInfo() {
         const datos = { n: document.getElementById('nom').value, d: document.getElementById('dir').value, t: document.getElementById('tel').value };
         if(datos.n && datos.d && datos.t) {
-            localStorage.setItem('vp_jm_v4', JSON.stringify(datos));
+            localStorage.setItem('vp_jm_v5', JSON.stringify(datos));
             mostrarInfo();
         } else { alert("Completa tus datos de envío"); }
     }
 
     function mostrarInfo() {
-        const guardado = JSON.parse(localStorage.getItem('vp_jm_v4'));
+        const guardado = JSON.parse(localStorage.getItem('vp_jm_v5'));
         if(guardado) {
             document.getElementById('form-datos').classList.add('hidden');
             document.getElementById('info-guardada').classList.remove('hidden');
@@ -116,9 +121,8 @@
 
     window.onload = mostrarInfo;
 
-    // 2. MOTOR DE GPS
     function capturarUbicacion() {
-        const datos = JSON.parse(localStorage.getItem('vp_jm_v4'));
+        const datos = JSON.parse(localStorage.getItem('vp_jm_v5'));
         if(!datos) return alert("Guarda tus datos de entrega primero");
 
         if (navigator.geolocation) {
@@ -130,7 +134,6 @@
         } else { enviarWhatsApp(datos, "GPS no soportado"); }
     }
 
-    // 3. ENVÍO ESTRUCTURADO
     function enviarWhatsApp(c, gps) {
         let pedidoTexto = "";
         const nombres = document.querySelectorAll('.p-nombre');
@@ -150,13 +153,11 @@
         mensaje += `👤 *CLIENTE:* ${c.n}\n📍 *DIR:* ${c.d}\n📞 *TEL:* ${c.t}\n`;
         mensaje += `--------------------------\n`;
         mensaje += `🛒 *PRODUCTOS:*\n${pedidoTexto}`;
-        
         const obs = document.getElementById('obs').value;
         if(obs) mensaje += `\n📝 *NOTAS:* ${obs}\n`;
-        
         mensaje += `--------------------------\n`;
         mensaje += `📍 *UBICACIÓN:* ${gps}\n\n`;
-        mensaje += `_Enviado desde App Vibras Positivas_`;
+        mensaje += `_App Vibras Positivas_`;
 
         window.open(`https://wa.me/${WHATSAPP_JM}?text=${encodeURIComponent(mensaje)}`, '_blank');
     }
