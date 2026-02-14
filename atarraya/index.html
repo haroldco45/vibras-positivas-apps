@@ -3,31 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artesanías de Pesca - Pedidos</title>
+    <title>Fábrica de Atarrayas - Pedidos</title>
     <style>
         :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris-claro: #f4f4f4; --exito: #25D366; }
         body { font-family: 'Arial', sans-serif; background-color: var(--gris-claro); margin: 0; padding: 15px; }
         .card { max-width: 500px; margin: auto; background: var(--blanco); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #ddd; }
         header { background: var(--secundario); color: var(--primario); padding: 25px; text-align: center; border-bottom: 4px solid var(--primario); }
-        .logo-area { font-size: 22px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        .logo-area { font-size: 20px; font-weight: bold; text-transform: uppercase; }
         .content { padding: 20px; }
         .section-title { font-size: 14px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid var(--primario); display: inline-block; }
-        
-        /* Estructura de pedido con numeración */
         .fila-pedido { display: grid; grid-template-columns: 30px 2fr 1.2fr 1fr; gap: 5px; margin-bottom: 8px; align-items: center; }
         .num-item { font-size: 14px; font-weight: bold; color: var(--secundario); text-align: center; }
-        
         input, select, textarea { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ccc; border-radius: 10px; font-size: 15px; box-sizing: border-box; }
-        .head-tabla { font-size: 10px; color: #999; font-weight: bold; text-align: center; }
-        
         .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 10px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-gold { background: var(--primario); color: var(--secundario); }
-        .btn-add { background: #f9f9f9; color: #333; font-size: 13px; padding: 12px; border: 1px dashed #bbb; margin-top: 5px; }
-        .btn-whatsapp { background: var(--exito); color: white; margin-top: 15px; }
+        .btn-add { background: #f9f9f9; color: #333; font-size: 13px; padding: 12px; border: 1px dashed #bbb; }
+        .btn-whatsapp { background: var(--exito); color: white; }
         .hidden { display: none !important; }
-        
         footer { text-align: center; padding: 25px; font-size: 13px; color: #555; background: #fff; border-top: 1px solid #eee; }
-        .vp-brand { color: var(--secundario); font-weight: bold; text-decoration: none; font-size: 15px; }
+        .vp-brand { color: var(--secundario); font-weight: bold; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -43,26 +37,19 @@
             <div class="section-title">Datos para la Entrega</div>
             <div id="form-datos">
                 <input type="text" id="nom" placeholder="Tu nombre completo">
-                <input type="text" id="dir" placeholder="Dirección o punto de encuentro">
+                <input type="text" id="dir" placeholder="Dirección en Caucasia">
                 <input type="tel" id="tel" placeholder="Tu WhatsApp">
                 <button class="btn btn-gold" onclick="guardarInfo()">GUARDAR MIS DATOS</button>
             </div>
             <div id="info-guardada" class="hidden">
-                <p id="resumen-cliente" style="font-size: 14px; background: #fffdf2; padding: 15px; border-radius: 10px; border-left: 5px solid var(--primario);"></p>
-                <button onclick="editarInfo()" style="font-size: 11px; color: #007bff; border: none; background: none; cursor: pointer;">✏️ Cambiar datos de envío</button>
+                <p id="resumen-cliente" style="font-size: 14px; background: #fffdf2; padding: 15px; border-radius: 10px; border-left: 5px solid var(--primario); white-space: pre-wrap;"></p>
+                <button onclick="editarInfo()" style="font-size: 11px; color: #007bff; border: none; background: none; cursor: pointer; text-decoration: underline;">✏️ Editar mis datos</button>
             </div>
         </div>
 
         <hr style="opacity: 0.1; margin: 25px 0;">
 
         <div class="section-title">Detalle de tu Pedido</div>
-        <div class="fila-pedido head-tabla">
-            <div>#</div>
-            <div>PRODUCTO</div>
-            <div>ESPECIF.</div>
-            <div>CANT.</div>
-        </div>
-
         <div id="contenedor-filas">
             <div class="fila-pedido">
                 <div class="num-item">1.</div>
@@ -73,14 +60,14 @@
                     <option value="Trasmayo">Trasmayo</option>
                     <option value="Chinchorro">Chinchorro</option>
                 </select>
-                <input type="text" class="p-medida" placeholder="Medida/Color">
+                <input type="text" class="p-medida" placeholder="Medida">
                 <input type="number" class="p-cantidad" value="1">
             </div>
         </div>
 
         <button class="btn btn-add" onclick="agregarFila()">➕ AGREGAR OTRO ARTÍCULO</button>
 
-        <textarea id="obs" rows="2" placeholder="Notas: (Ej: Atarraya de ojo pequeño, Hamaca rayada)"></textarea>
+        <textarea id="obs" rows="2" placeholder="Notas adicionales..."></textarea>
 
         <button class="btn btn-whatsapp" onclick="capturarUbicacion()">
             <span>🛰️ ENVIAR PEDIDO CON GPS</span>
@@ -95,19 +82,76 @@
 </div>
 
 <script>
-    const WHATSAPP_CLIENTE = "573104323687"; // Harold, ajusta el número del fabricante
-    let contadorFilas = 1;
+    const WHATSAPP_DESTINO = "573104323687"; 
+    let contador = 1;
 
     function agregarFila() {
-        contadorFilas++;
-        const contenedor = document.getElementById('contenedor-filas');
-        const nuevaFila = document.createElement('div');
-        nuevaFila.className = 'fila-pedido';
-        nuevaFila.innerHTML = `
-            <div class="num-item">${contadorFilas}.</div>
-            <select class="p-nombre">
-                <option value="">Seleccione...</option>
-                <option value="Atarraya">Atarraya</option>
-                <option value="Hamaca">Hamaca</option>
-                <option value="Trasmayo">Trasmayo</option>
-                <option
+        contador++;
+        const div = document.createElement('div');
+        div.className = 'fila-pedido';
+        div.innerHTML = `<div class="num-item">${contador}.</div>
+            <select class="p-nombre"><option value="">Seleccione...</option><option value="Atarraya">Atarraya</option><option value="Hamaca">Hamaca</option><option value="Trasmayo">Trasmayo</option><option value="Chinchorro">Chinchorro</option></select>
+            <input type="text" class="p-medida">
+            <input type="number" class="p-cantidad" value="1">`;
+        document.getElementById('contenedor-filas').appendChild(div);
+    }
+
+    function guardarInfo() {
+        const d = { n: document.getElementById('nom').value, d: document.getElementById('dir').value, t: document.getElementById('tel').value };
+        if(d.n && d.d && d.t) {
+            localStorage.setItem('vp_atarraya_save', JSON.stringify(d));
+            mostrarInfo();
+        } else { alert("Llena todos los campos"); }
+    }
+
+    function mostrarInfo() {
+        const g = JSON.parse(localStorage.getItem('vp_atarraya_save'));
+        if(g) {
+            document.getElementById('form-datos').classList.add('hidden');
+            document.getElementById('info-guardada').classList.remove('hidden');
+            document.getElementById('resumen-cliente').innerText = `Cliente: ${g.n}\nDirección: ${g.d}\nTel: ${g.t}`;
+        }
+    }
+
+    function editarInfo() {
+        document.getElementById('form-datos').classList.remove('hidden');
+        document.getElementById('info-guardada').classList.add('hidden');
+    }
+
+    window.onload = mostrarInfo;
+
+    function capturarUbicacion() {
+        const c = JSON.parse(localStorage.getItem('vp_atarraya_save'));
+        if(!c) return alert("Primero guarda tus datos");
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (p) => enviarWA(c, `http://maps.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`),
+                () => enviarWA(c, "Ubicación no compartida"),
+                { timeout: 7000 }
+            );
+        } else { enviarWA(c, "GPS no soportado"); }
+    }
+
+    function enviarWA(c, gps) {
+        let lista = "";
+        const prods = document.querySelectorAll('.p-nombre');
+        const meds = document.querySelectorAll('.p-medida');
+        const cants = document.querySelectorAll('.p-cantidad');
+
+        prods.forEach((s, i) => {
+            if(s.value) lista += `• ${s.value} [${meds[i].value || 'Estándar'}]: ${cants[i].value}\n`;
+        });
+
+        if(!lista) return alert("Selecciona un producto");
+
+        let msg = `*FÁBRICA DE ATARRAYAS - PEDIDO*\n--------------------------\n👤 *CLIENTE:* ${c.n}\n🏠 *DIR:* ${c.d}\n📞 *TEL:* ${c.t}\n--------------------------\n🛒 *DETALLE:*\n${lista}`;
+        const obs = document.getElementById('obs').value;
+        if(obs) msg += `\n📝 *NOTAS:* ${obs}\n`;
+        msg += `--------------------------\n📍 *MAPA:* ${gps}\n\n_Vibras Positivas_`;
+
+        window.open(`https://wa.me/${WHATSAPP_DESTINO}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+</script>
+</body>
+</html>
