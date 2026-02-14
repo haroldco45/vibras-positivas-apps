@@ -9,22 +9,19 @@
         body { font-family: 'Arial', sans-serif; background-color: var(--gris-claro); margin: 0; padding: 15px; text-align: center; }
         .container { max-width: 500px; margin: auto; background: var(--blanco); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
         header { background: var(--secundario); color: var(--primario); padding: 30px; border-bottom: 5px solid var(--primario); }
-        h1 { margin: 0; font-size: 28px; letter-spacing: 2px; }
-        .subtitle { font-size: 12px; color: white; margin-top: 5px; text-transform: uppercase; }
+        h1 { margin: 0; font-size: 26px; letter-spacing: 2px; text-transform: uppercase; }
+        .subtitle { font-size: 11px; color: white; margin-top: 5px; letter-spacing: 1px; }
         .content { padding: 20px; }
-        .category-title { font-size: 14px; font-weight: bold; color: #888; text-transform: uppercase; margin: 20px 0 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px; text-align: left; }
-        .btn { 
-            display: flex; align-items: center; justify-content: space-between;
-            width: 100%; padding: 18px; margin: 10px 0; 
-            background: var(--blanco); color: var(--secundario); 
-            text-decoration: none; font-weight: bold; border-radius: 12px; 
-            border: 1px solid #eee; transition: 0.3s; box-sizing: border-box;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        .btn-cajon { 
+            display: block; width: 100%; padding: 20px; margin: 12px 0; 
+            background: var(--primario); color: var(--secundario); 
+            text-decoration: none; font-weight: bold; font-size: 16px; 
+            border-radius: 15px; border: 2px solid var(--secundario);
+            transition: 0.3s; box-sizing: border-box; text-transform: uppercase;
         }
-        .btn:hover { background: var(--primario); transform: scale(1.02); }
-        .btn-main { background: var(--primario); border: none; font-size: 18px; }
-        .emoji { font-size: 20px; }
-        footer { padding: 20px; font-size: 12px; color: #aaa; }
+        .btn-cajon:hover { transform: scale(1.03); background: #e6c200; }
+        footer { padding: 20px; font-size: 12px; color: #888; }
+        .vp-brand { color: var(--secundario); font-weight: bold; text-decoration: none; border-bottom: 2px solid var(--primario); }
     </style>
 </head>
 <body>
@@ -32,50 +29,36 @@
 <div class="container">
     <header>
         <h1>VIBRAS POSITIVAS</h1>
-        <div class="subtitle">Ecosistema Digital de Caucasia</div>
+        <div class="subtitle">INFRAESTRUCTURA DIGITAL DE CAUCASIA</div>
     </header>
 
     <div class="content">
-        
-        <div class="category-title">⭐ Nuestra Marca Propia</div>
-        <a href="./distrileco/" class="btn btn-main">
-            <span>🌾 DISTRILECO (Superarroz)</span>
-            <span class="emoji">🚀</span>
-        </a>
+        <a href="./distrileco/" class="btn-cajon">🌾 DISTRILECO (SUPERARROZ)</a>
 
-        <div class="category-title">🛒 Tiendas y Abarrotes</div>
-        <a href="./distribuciones-jm/" class="btn">
-            <span>📦 Distribuciones JM</span>
-            <span class="emoji">🛒</span>
-        </a>
-        <a href="./deleitesaludable.html" class="btn">
-            <span>🥗 Deleite Saludable</span>
-            <span class="emoji">🍎</span>
-        </a>
-        <a href="./mercafacil/" class="btn">
-            <span>🏪 Mercafácil</span>
-            <span class="emoji">🛒</span>
-        </a>
+        <a href="./distribuciones-jm/" class="btn-cajon">🛒 DISTRIBUCIONES JM</a>
+        <a href="./mercafacil/" class="btn-cajon">🏪 MERCAFÁCIL</a>
+        <a href="./deleitesaludable.html" class="btn-cajon">🥗 DELEITE SALUDABLE</a>
+        <a href="./bodega-la-central/" class="btn-cajon">📦 BODEGA LA CENTRAL</a>
+        <a href="./fruver-lacentral/" class="btn-cajon">🍏 FRUVER LA CENTRAL</a>
+        <a href="./miniprecios/" class="btn-cajon">💰 MINIPRECIOS</a>
+        <a href="./tienda-cielo/" class="btn-cajon">🏠 TIENDA CIELO</a>
+        <a href="./tienda-yire/" class="btn-cajon">🛍️ TIENDA YIRE</a>
 
-        <div class="category-title">🚌 Transporte y Servicios</div>
-        <a href="./sotracor-caucasia/" class="btn">
-            <span>🚌 Sotracor Caucasia</span>
-            <span class="emoji">🎫</span>
-        </a>
-        <a href="./labarberia/" class="btn">
-            <span>💈 La Barbería</span>
-            <span class="emoji">✂️</span>
-        </a>
-        <a href="./odontologia-estetica-bocas/" class="btn">
-            <span>🦷 Odontología Estética Bocas</span>
-            <span class="emoji">📅</span>
-        </a>
-
-        </div>
+        <a href="./sotracor-caucasia/" class="btn-cajon">🚌 SOTRACOR CAUCASIA</a>
+        <a href="./labarberia/" class="btn-cajon">💈 LA BARBERÍA</a>
+        <a href="./odontologia-estetica-bocas/" class="btn-cajon">🦷 ODON. ESTÉTICA BOCAS</a>
+        <a href="./celumaster/" class="btn-cajon">📱 CELUMASTER</a>
+        <a href="./edogra-distribuciones/" class="btn-cajon">🚚 EDOGRA DISTRIBUCIONES</a>
+        <a href="./inversiones-charlotte/" class="btn-cajon">📈 INVERSIONES CHARLOTTE</a>
+        <a href="./luzmar/" class="btn-cajon">✨ LUZMAR</a>
+        <a href="./nelson/" class="btn-cajon">👤 NELSON</a>
+        <a href="./santuariolaprimera/" class="btn-cajon">🙏 SANTUARIO LA PRIMERA</a>
+    </div>
 
     <footer>
         Desarrollado por Harold & Marleny <br>
-        <strong>ASETEC HM © 2026</strong>
+        <strong>ASETEC HM © 2026</strong> <br>
+        <span class="vp-brand">VIBRAS POSITIVAS</span>
     </footer>
 </div>
 
