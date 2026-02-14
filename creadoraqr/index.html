@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CREADORA DE QR</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; width: 350px; }
+        h1 { color: #333; font-size: 1.5rem; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .btn-generate { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .btn-whatsapp { width: 100%; padding: 12px; background-color: #25d366; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; display: none; text-decoration: none; }
+        #qrcode { margin-top: 20px; display: flex; justify-content: center; }
+        .footer { margin-top: 25px; font-size: 0.8rem; color: #777; border-top: 1px solid #eee; pt: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>CREADORA DE QR</h1>
+    
+    <input type="text" id="url" placeholder="Pega tu URL aquí..." />
+    
+    <select id="size">
+        <option value="256">Tamaño Estándar</option>
+        <option value="512">Tamaño Grande</option>
+    </select>
+
+    <button class="btn-generate" onclick="generarQR()">1. Generar Código</button>
+    
+    <div id="qrcode"></div>
+
+    <a id="waLink" class="btn-whatsapp" target="_blank">2. Enviar a mi WhatsApp</a>
+
+    <div class="footer">
+        1. CREADORA DE QR<br>
+        Desarrollado por Vibras Positivas © Derechos de Autor
+    </div>
+</div>
+
+<script>
+    function generarQR() {
+        const urlInput = document.getElementById('url').value;
+        const size = document.getElementById('size').value;
+        const qrContainer = document.getElementById('qrcode');
+        const waLink = document.getElementById('waLink');
+
+        qrContainer.innerHTML = "";
+
+        if (urlInput.trim() !== "") {
+            // Generar el QR
+            new QRCode(qrContainer, {
+                text: urlInput,
+                width: parseInt(size),
+                height: parseInt(size)
+            });
+
+            // Configurar el enlace de WhatsApp
+            const mensaje = encodeURIComponent("¡Hola! He creado un nuevo código QR para la URL: " + urlInput);
+            const numeroTel = "573117700431"; // Tu número con código de país
+            waLink.href = `https://wa.me/${numeroTel}?text=${mensaje}`;
+            waLink.style.display = "block"; // Mostrar botón de envío
+        } else {
+            alert("Por favor, ingresa una URL.");
+        }
+    }
+</script>
+
+</body>
+</html>
