@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Barbería - Reserva de Turnos</title>
+    <style>
+        :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris-claro: #f4f4f4; }
+        body { font-family: 'Arial', sans-serif; background-color: var(--gris-claro); margin: 0; padding: 15px; }
+        .card { max-width: 500px; margin: auto; background: var(--blanco); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #ddd; }
+        header { background: var(--secundario); color: var(--primario); padding: 25px; text-align: center; border-bottom: 4px solid var(--primario); }
+        .logo-area { font-size: 26px; font-weight: bold; text-transform: uppercase; letter-spacing: 3px; }
+        .content { padding: 20px; }
+        .section-title { font-size: 14px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid var(--primario); display: inline-block; }
+        input, select, textarea { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ccc; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 10px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-gold { background: var(--primario); color: var(--secundario); }
+        .btn-whatsapp { background: #25D366; color: white; }
+        .hidden { display: none !important; }
+        footer { text-align: center; padding: 20px; font-size: 12px; color: #888; background: #fff; border-top: 1px solid #eee; }
+        .vp-brand { color: var(--secundario); font-weight: bold; text-decoration: none; border-bottom: 1px solid var(--primario); }
+    </style>
+</head>
+<body>
+<div class="card">
+    <header>
+        <div class="logo-area">LA BARBERÍA</div>
+        <div style="font-size: 11px; color: white; margin-top: 5px; letter-spacing: 1px;">RESERVA TU TURNO URBANO</div>
+    </header>
+    <div class="content">
+        <div id="bloque-cliente">
+            <div class="section-title">Tus Datos</div>
+            <div id="cliente-editor">
+                <input type="text" id="c_nombre" placeholder="Tu Nombre">
+                <input type="tel" id="c_celular" placeholder="Tu Número de Celular">
+                <button class="btn btn-gold" onclick="guardarCliente()">GUARDAR MIS DATOS</button>
+            </div>
+            <div id="cliente-info-guardada" class="hidden">
+                <p id="texto-resumen" style="font-size: 15px; color: #333; background: #fff9db; padding: 15px; border-radius: 10px; border-left: 5px solid var(--primario); white-space: pre-wrap;"></p>
+                <button onclick="mostrarEditor()" style="font-size: 12px; background: none; border: none; color: #007bff; cursor: pointer; text-decoration: underline;">✏️ Editar datos</button>
+            </div>
+        </div>
+        
+        <hr style="opacity: 0.1; margin: 25px 0;">
+        
+        <div class="section-title">Elige tu Estilo</div>
+        <select id="tipo_servicio">
+            <option value="">Selecciona un servicio...</option>
+            <option value="Corte de Cabello">Corte de Cabello</option>
+            <option value="Barba Profesional">Barba Profesional</option>
+            <option value="Corte + Barba">Combo: Corte + Barba</option>
+            <option value="Cejas">Perfilado de Cejas</option>
+            <option value="Corte Infantil">Corte Infantil</option>
+        </select>
+        
+        <label style="font-size: 13px; color: #666; margin-left: 5px;">¿Para qué día?</label>
+        <input type="date" id="fecha_cita">
+        
+        <textarea id="notas" rows="2" placeholder="¿Algún barbero en especial o detalle del corte?"></textarea>
+        
+        <button class="btn btn-whatsapp" onclick="enviarTurno()">
+            <span>🔥 AGENDAR TURNO POR WHATSAPP</span>
+        </button>
+    </div>
+    <footer>
+        Estilo y Calidad en Caucasia <br>
+        Desarrollado por <a href="#" class="vp-brand">VIBRAS POSITIVAS</a> <br>
+        © 2026
+    </footer>
+</div>
+
+<script>
+    const CONFIG = {
+        nombreNegocio: "LA BARBERÍA",
+        whatsapp: "573117700431", // Harold, recuerda poner el número del barbero aquí
+        idSuscriptor: "VP-CAU-017"
+    };
+
+    function guardarCliente() {
+        const d = { n: document.getElementById('c_nombre').value, c: document.getElementById('c_celular').value };
+        if(d.n && d.c) { 
+            localStorage.setItem('vp_labarberia_datos', JSON.stringify(d)); 
+            verificarDatos();
+        } else { alert("Por favor completa tu nombre y celular."); }
+    }
+
+    function verificarDatos() {
+        const g = JSON.parse(localStorage.getItem('vp_labarberia_datos'));
+        if(g) {
+            document.getElementById('cliente-editor').classList.add('hidden');
+            document.getElementById('cliente-info-guardada').classList.remove('hidden');
+            document.getElementById('texto-resumen').innerText = `Cliente: ${g.n}\nContacto: ${g.c}`;
+        }
+    }
+    window.onload = verificarDatos;
+
+    function mostrarEditor() {
+        document.getElementById('cliente-editor').classList.remove('hidden');
+        document.getElementById('cliente-info-guardada').classList.add('hidden');
+    }
+
+    function enviarTurno() {
+        const c = JSON.parse(localStorage.getItem('vp_labarberia_datos'));
+        const servicio = document.getElementById('tipo_servicio').value;
+        const fecha = document.getElementById('fecha_cita').value;
+        const notas = document.getElementById('notas').value;
+
+        if(!c) return alert("Primero guarda tus datos personales.");
+        if(!servicio || !fecha) return alert("Por favor elige el servicio y la fecha.");
+
+        let msj = `*${CONFIG.nombreNegocio} - RESERVA DE TURNO*\n`;
+        msj += `*CLIENTE:* ${c.n}\n*CEL:* ${c.c}\n`;
+        msj += `--------------------------\n`;
+        msj += `*SERVICIO:* ${servicio}\n*FECHA:* ${fecha}\n`;
+        if(notas) msj += `*NOTAS:* ${notas}\n`;
+        msj += `--------------------------\n`;
+        msj += `_Solicitado desde App Vibras Positivas_`;
+
+        window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msj)}`, '_blank');
+    }
+</script>
+</body>
+</html>
