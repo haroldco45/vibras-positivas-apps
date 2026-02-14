@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odontología Estética Bocas - Citas</title>
+    <style>
+        :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris-claro: #f4f4f4; }
+        body { font-family: 'Arial', sans-serif; background-color: var(--gris-claro); margin: 0; padding: 15px; }
+        .card { max-width: 500px; margin: auto; background: var(--blanco); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #ddd; }
+        header { background: var(--secundario); color: var(--primario); padding: 25px; text-align: center; border-bottom: 4px solid var(--primario); }
+        .logo-area { font-size: 22px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        .content { padding: 20px; }
+        .section-title { font-size: 14px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid var(--primario); display: inline-block; }
+        input, select, textarea { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ccc; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 10px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-gold { background: var(--primario); color: var(--secundario); }
+        .btn-whatsapp { background: #25D366; color: white; }
+        .hidden { display: none !important; }
+        footer { text-align: center; padding: 20px; font-size: 12px; color: #888; background: #fff; border-top: 1px solid #eee; }
+        .vp-brand { color: var(--secundario); font-weight: bold; text-decoration: none; border-bottom: 1px solid var(--primario); }
+    </style>
+</head>
+<body>
+<div class="card">
+    <header>
+        <div class="logo-area">ODONTOLOGÍA ESTÉTICA BOCAS</div>
+        <div style="font-size: 11px; color: white; margin-top: 5px; letter-spacing: 1px;">AGENDA TU CITA PROFESIONAL</div>
+    </header>
+    <div class="content">
+        <div id="bloque-paciente">
+            <div class="section-title">Datos del Paciente</div>
+            <div id="paciente-editor">
+                <input type="text" id="p_nombre" placeholder="Nombre completo">
+                <input type="tel" id="p_celular" placeholder="Número de contacto">
+                <button class="btn btn-gold" onclick="guardarPaciente()">GUARDAR MIS DATOS</button>
+            </div>
+            <div id="paciente-info-guardada" class="hidden">
+                <p id="texto-resumen" style="font-size: 15px; color: #333; background: #fff9db; padding: 15px; border-radius: 10px; border-left: 5px solid var(--primario); white-space: pre-wrap;"></p>
+                <button onclick="mostrarEditor()" style="font-size: 12px; background: none; border: none; color: #007bff; cursor: pointer;">✏️ Editar datos</button>
+            </div>
+        </div>
+        
+        <hr style="opacity: 0.1; margin: 25px 0;">
+        
+        <div class="section-title">Información de la Cita</div>
+        <select id="tipo_servicio">
+            <option value="">Selecciona un servicio...</option>
+            <option value="Limpieza Profunda">Limpieza Profunda</option>
+            <option value="Blanqueamiento">Blanqueamiento Dental</option>
+            <option value="Diseño de Sonrisa">Diseño de Sonrisa</option>
+            <option value="Urgencia/Dolor">Urgencia (Dolor)</option>
+            <option value="Cita de Control">Cita de Control</option>
+        </select>
+        
+        <label style="font-size: 13px; color: #666; margin-left: 5px;">Fecha preferida:</label>
+        <input type="date" id="fecha_deseada">
+        
+        <textarea id="motivo" rows="2" placeholder="Notas adicionales o motivo de consulta..."></textarea>
+        
+        <button class="btn btn-whatsapp" onclick="enviarCita()">
+            <span>📅 SOLICITAR CITA POR WHATSAPP</span>
+        </button>
+    </div>
+    <footer>
+        Salud y Estética Dental <br>
+        Desarrollado por <a href="#" class="vp-brand">VIBRAS POSITIVAS</a> <br>
+        Caucasia, Antioquia © 2026
+    </footer>
+</div>
+
+<script>
+    const CONFIG = {
+        nombreNegocio: "ODONTOLOGÍA ESTÉTICA BOCAS",
+        whatsapp: "573117700431", // Harold, pon el WhatsApp del consultorio aquí
+        idSuscriptor: "VP-CAU-016"
+    };
+
+    function guardarPaciente() {
+        const d = { n: document.getElementById('p_nombre').value, c: document.getElementById('p_celular').value };
+        if(d.n && d.c) { 
+            localStorage.setItem('vp_bocas_datos', JSON.stringify(d)); 
+            verificarDatos();
+        } else { alert("Por favor completa tu nombre y celular."); }
+    }
+
+    function verificarDatos() {
+        const g = JSON.parse(localStorage.getItem('vp_bocas_datos'));
+        if(g) {
+            document.getElementById('paciente-editor').classList.add('hidden');
+            document.getElementById('paciente-info-guardada').classList.remove('hidden');
+            document.getElementById('texto-resumen').innerText = `Paciente: ${g.n}\nTeléfono: ${g.c}`;
+        }
+    }
+    window.onload = verificarDatos;
+
+    function mostrarEditor() {
+        document.getElementById('paciente-editor').classList.remove('hidden');
+        document.getElementById('paciente-info-guardada').classList.add('hidden');
+    }
+
+    function enviarCita() {
+        const p = JSON.parse(localStorage.getItem('vp_bocas_datos'));
+        const servicio = document.getElementById('tipo_servicio').value;
+        const fecha = document.getElementById('fecha_deseada').value;
+        const motivo = document.getElementById('motivo').value;
+
+        if(!p) return alert("Primero guarda tus datos personales.");
+        if(!servicio || !fecha) return alert("Por favor selecciona el servicio y la fecha.");
+
+        let msj = `*${CONFIG.nombreNegocio} - AGENDAMIENTO*\n`;
+        msj += `*PACIENTE:* ${p.n}\n*TEL:* ${p.c}\n`;
+        msj += `--------------------------\n`;
+        msj += `*SERVICIO:* ${servicio}\n*FECHA:* ${fecha}\n`;
+        if(motivo) msj += `*NOTAS:* ${motivo}\n`;
+        msj += `--------------------------\n`;
+        msj += `_Enviado desde App Vibras Positivas_`;
+
+        window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msj)}`, '_blank');
+    }
+</script>
+</body>
+</html>
