@@ -13,17 +13,22 @@
         .content { padding: 20px; }
         .section-title { font-size: 14px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid var(--primario); display: inline-block; }
         
-        .fila-pedido { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+        /* Ajuste de columnas para incluir numeración */
+        .fila-pedido { display: grid; grid-template-columns: 30px 2fr 1fr 1fr; gap: 5px; margin-bottom: 8px; align-items: center; }
+        .num-item { font-size: 14px; font-weight: bold; color: var(--secundario); text-align: center; }
+        
         input, textarea { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ccc; border-radius: 10px; font-size: 15px; box-sizing: border-box; }
-        .head-tabla { font-size: 11px; color: #999; font-weight: bold; text-align: center; }
+        .head-tabla { font-size: 10px; color: #999; font-weight: bold; text-align: center; }
         
         .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 10px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-gold { background: var(--primario); color: var(--secundario); }
-        .btn-add { background: #f0f0f0; color: #333; font-size: 14px; padding: 10px; border: 1px dashed #ccc; }
-        .btn-whatsapp { background: var(--exito); color: white; }
+        .btn-add { background: #f9f9f9; color: #333; font-size: 14px; padding: 12px; border: 1px dashed #bbb; margin-top: 10px; }
+        .btn-whatsapp { background: var(--exito); color: white; margin-top: 20px; }
         .hidden { display: none !important; }
-        footer { text-align: center; padding: 20px; font-size: 12px; color: #888; background: #fff; border-top: 1px solid #eee; }
-        .vp-brand { color: var(--secundario); font-weight: bold; text-decoration: none; border-bottom: 1px solid var(--primario); }
+        
+        /* Pie de página solicitado */
+        footer { text-align: center; padding: 25px; font-size: 13px; color: #555; background: #fff; border-top: 1px solid #eee; line-height: 1.6; }
+        .vp-brand { color: var(--secundario); font-weight: bold; text-decoration: none; font-size: 15px; }
     </style>
 </head>
 <body>
@@ -31,28 +36,29 @@
 <div class="card">
     <header>
         <div class="logo-area">DISTRIBUCIONES JM</div>
-        <div style="font-size: 11px; color: white; margin-top: 5px;">TU PEDIDO DE ABARROTES</div>
+        <div style="font-size: 11px; color: white; margin-top: 5px;">ABARROTES DE CONFIANZA</div>
     </header>
 
     <div class="content">
         <div id="seccion-cliente">
             <div class="section-title">Datos para Entrega</div>
             <div id="form-datos">
-                <input type="text" id="nom" placeholder="Nombre completo">
+                <input type="text" id="nom" placeholder="Tu nombre">
                 <input type="text" id="dir" placeholder="Dirección en Caucasia">
-                <input type="tel" id="tel" placeholder="Número de celular">
+                <input type="tel" id="tel" placeholder="WhatsApp">
                 <button class="btn btn-gold" onclick="guardarInfo()">GUARDAR MIS DATOS</button>
             </div>
             <div id="info-guardada" class="hidden">
                 <p id="resumen-cliente" style="font-size: 14px; background: #fff9db; padding: 15px; border-radius: 10px; border-left: 5px solid var(--primario);"></p>
-                <button onclick="editarInfo()" style="font-size: 12px; color: #007bff; border: none; background: none; cursor: pointer;">✏️ Editar datos</button>
+                <button onclick="editarInfo()" style="font-size: 12px; color: #007bff; border: none; background: none; cursor: pointer;">✏️ Cambiar información</button>
             </div>
         </div>
 
         <hr style="opacity: 0.1; margin: 25px 0;">
 
-        <div class="section-title">Detalle del Pedido</div>
+        <div class="section-title">Tu Lista de Pedido</div>
         <div class="fila-pedido head-tabla">
+            <div>#</div>
             <div>PRODUCTO</div>
             <div>MEDIDA</div>
             <div>CANT.</div>
@@ -60,36 +66,40 @@
 
         <div id="contenedor-filas">
             <div class="fila-pedido">
-                <input type="text" class="p-nombre" placeholder="Ej: Aceite">
-                <input type="text" class="p-medida" placeholder="Litro">
+                <div class="num-item">1.</div>
+                <input type="text" class="p-nombre" placeholder="¿Qué necesitas?">
+                <input type="text" class="p-medida" placeholder="Unid/Kg">
                 <input type="number" class="p-cantidad" value="1">
             </div>
         </div>
 
         <button class="btn btn-add" onclick="agregarFila()">➕ AGREGAR OTRO PRODUCTO</button>
 
-        <textarea id="obs" rows="2" placeholder="Notas: (Ej: Tocar fuerte, portón azul)"></textarea>
+        <textarea id="obs" rows="2" placeholder="Observaciones adicionales..."></textarea>
 
         <button class="btn btn-whatsapp" onclick="capturarUbicacion()">
-            <span>🛰️ ENVIAR CON MI UBICACIÓN</span>
+            <span>🛰️ ENVIAR PEDIDO CON GPS</span>
         </button>
     </div>
 
     <footer>
-        App Desarrollada por <br>
+        Desarrollado por <br>
         <span class="vp-brand">VIBRAS POSITIVAS</span> <br>
-        Todos los derechos reservados © 2026
+        Derechos de Autor © 2026
     </footer>
 </div>
 
 <script>
     const WHATSAPP_JM = "573238539266";
+    let contadorFilas = 1;
 
     function agregarFila() {
+        contadorFilas++;
         const contenedor = document.getElementById('contenedor-filas');
         const nuevaFila = document.createElement('div');
         nuevaFila.className = 'fila-pedido';
         nuevaFila.innerHTML = `
+            <div class="num-item">${contadorFilas}.</div>
             <input type="text" class="p-nombre">
             <input type="text" class="p-medida">
             <input type="number" class="p-cantidad" value="1">
@@ -100,17 +110,17 @@
     function guardarInfo() {
         const datos = { n: document.getElementById('nom').value, d: document.getElementById('dir').value, t: document.getElementById('tel').value };
         if(datos.n && datos.d && datos.t) {
-            localStorage.setItem('vp_jm_v5', JSON.stringify(datos));
+            localStorage.setItem('vp_jm_final', JSON.stringify(datos));
             mostrarInfo();
-        } else { alert("Completa tus datos de envío"); }
+        } else { alert("Por favor, llena tus datos para el domicilio."); }
     }
 
     function mostrarInfo() {
-        const guardado = JSON.parse(localStorage.getItem('vp_jm_v5'));
+        const guardado = JSON.parse(localStorage.getItem('vp_jm_final'));
         if(guardado) {
             document.getElementById('form-datos').classList.add('hidden');
             document.getElementById('info-guardada').classList.remove('hidden');
-            document.getElementById('resumen-cliente').innerText = `Entregar a: ${guardado.n}\nDirección: ${guardado.d}\nCelular: ${guardado.t}`;
+            document.getElementById('resumen-cliente').innerText = `Entregar a: ${guardado.n}\nUbicación: ${guardado.d}\nWhatsApp: ${guardado.t}`;
         }
     }
 
@@ -122,13 +132,13 @@
     window.onload = mostrarInfo;
 
     function capturarUbicacion() {
-        const datos = JSON.parse(localStorage.getItem('vp_jm_v5'));
-        if(!datos) return alert("Guarda tus datos de entrega primero");
+        const datos = JSON.parse(localStorage.getItem('vp_jm_final'));
+        if(!datos) return alert("Primero guarda tus datos de entrega.");
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (pos) => enviarWhatsApp(datos, `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`),
-                () => enviarWhatsApp(datos, "Ubicación no compartida"),
+                () => enviarWhatsApp(datos, "Ubicación no enviada"),
                 { timeout: 6000 }
             );
         } else { enviarWhatsApp(datos, "GPS no soportado"); }
@@ -140,24 +150,28 @@
         const medidas = document.querySelectorAll('.p-medida');
         const cantidades = document.querySelectorAll('.p-cantidad');
 
+        let iReal = 1;
         nombres.forEach((input, i) => {
             if(input.value.trim() !== "") {
-                pedidoTexto += `• ${input.value} (${medidas[i].value || 'unid'}): ${cantidades[i].value || '1'}\n`;
+                pedidoTexto += `${iReal}. ${input.value} (${medidas[i].value || 'und'}): ${cantidades[i].value}\n`;
+                iReal++;
             }
         });
 
-        if(!pedidoTexto) return alert("Agrega al menos un producto");
+        if(!pedidoTexto) return alert("La lista está vacía.");
 
-        let mensaje = `*DISTRIBUCIONES JM - PEDIDO*\n`;
+        let mensaje = `*DISTRIBUCIONES JM - NUEVO PEDIDO*\n`;
         mensaje += `--------------------------\n`;
         mensaje += `👤 *CLIENTE:* ${c.n}\n📍 *DIR:* ${c.d}\n📞 *TEL:* ${c.t}\n`;
         mensaje += `--------------------------\n`;
-        mensaje += `🛒 *PRODUCTOS:*\n${pedidoTexto}`;
+        mensaje += `🛒 *LISTA DE PRODUCTOS:*\n${pedidoTexto}`;
+        
         const obs = document.getElementById('obs').value;
         if(obs) mensaje += `\n📝 *NOTAS:* ${obs}\n`;
+        
         mensaje += `--------------------------\n`;
-        mensaje += `📍 *UBICACIÓN:* ${gps}\n\n`;
-        mensaje += `_App Vibras Positivas_`;
+        mensaje += `📍 *MAPA DE ENTREGA:* \n${gps}\n\n`;
+        mensaje += `_App Desarrollada por Vibras Positivas_`;
 
         window.open(`https://wa.me/${WHATSAPP_JM}?text=${encodeURIComponent(mensaje)}`, '_blank');
     }
