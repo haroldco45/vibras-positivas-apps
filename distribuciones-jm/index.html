@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distribuciones JM - Pedidos</title>
+    <style>
+        :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris-claro: #f4f4f4; --exito: #25D366; }
+        body { font-family: 'Arial', sans-serif; background-color: var(--gris-claro); margin: 0; padding: 15px; }
+        .card { max-width: 500px; margin: auto; background: var(--blanco); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #ddd; }
+        header { background: var(--secundario); color: var(--primario); padding: 25px; text-align: center; border-bottom: 4px solid var(--primario); }
+        .logo-area { font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
+        .content { padding: 20px; }
+        .section-title { font-size: 14px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid var(--primario); display: inline-block; }
+        input, select, textarea { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ccc; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 10px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-gold { background: var(--primario); color: var(--secundario); }
+        .btn-whatsapp { background: var(--exito); color: white; }
+        .hidden { display: none !important; }
+        footer { text-align: center; padding: 20px; font-size: 12px; color: #888; background: #fff; border-top: 1px solid #eee; }
+        .vp-brand { color: var(--secundario); font-weight: bold; text-decoration: none; border-bottom: 1px solid var(--primario); }
+    </style>
+</head>
+<body>
+<div class="card">
+    <header>
+        <div class="logo-area">DISTRIBUCIONES JM</div>
+        <div style="font-size: 11px; color: white; margin-top: 5px;">ABARROTES Y CONSUMO MASIVO</div>
+    </header>
+    <div class="content">
+        <div id="bloque-cliente">
+            <div class="section-title">Datos de Entrega</div>
+            <div id="cliente-editor">
+                <input type="text" id="c_nombre" placeholder="Nombre del cliente">
+                <input type="text" id="c_direccion" placeholder="Dirección en Caucasia">
+                <input type="tel" id="c_celular" placeholder="Número de celular">
+                <button class="btn btn-gold" onclick="guardarCliente()">CONFIRMAR MIS DATOS</button>
+            </div>
+            <div id="cliente-info-guardada" class="hidden">
+                <p id="texto-resumen" style="font-size: 14px; color: #333; background: #fffdf2; padding: 15px; border-radius: 10px; border-left: 5px solid var(--primario); white-space: pre-wrap;"></p>
+                <button onclick="mostrarEditor()" style="font-size: 11px; background: none; border: none; color: #007bff; cursor: pointer;">✏️ Editar datos</button>
+            </div>
+        </div>
+
+        <hr style="opacity: 0.1; margin: 25px 0;">
+
+        <div class="section-title">Lista de Pedido</div>
+        <textarea id="lista_pedido" rows="6" placeholder="Escribe aquí los productos que necesitas (Arroz, aceite, azúcar, granos...)"></textarea>
+        
+        <textarea id="observaciones" rows="2" placeholder="Notas adicionales para el despacho..."></textarea>
+
+        <button class="btn btn-whatsapp" onclick="activarGPS()">
+            <span>🚀 ENVIAR PEDIDO CON MAPA</span>
+        </button>
+    </div>
+    <footer>
+        Infraestructura Digital <br>
+        <a href="#" class="vp-brand">VIBRAS POSITIVAS</a> <br>
+        Caucasia, Antioquia © 2026
+    </footer>
+</div>
+
+<script>
+    const CONFIG = {
+        nombreNegocio: "DISTRIBUCIONES JM",
+        whatsapp: "573238539266", // Harold, ajusta este número al de JM
+        idSuscriptor: "VP-CAU-018"
+    };
+
+    function guardarCliente() {
+        const d = { n: document.getElementById('c_nombre').value, d: document.getElementById('c_direccion').value, c: document.getElementById('c_celular').value };
+        if(d.n && d.d && d.c) { 
+            localStorage.setItem('vp_djm_datos', JSON.stringify(d)); 
+            verificarDatos();
+        } else { alert("Por favor completa los datos de envío."); }
+    }
+
+    function verificarDatos() {
+        const g = JSON.parse(localStorage.getItem('vp_djm_datos'));
+        if(g) {
+            document.getElementById('cliente-editor').classList.add('hidden');
+            document.getElementById('cliente-info-guardada').classList.remove('hidden');
+            document.getElementById('texto-resumen').innerText = `Cliente: ${g.n}\nDirección: ${g.d}\nTeléfono: ${g.c}`;
+        }
+    }
+    window.onload = verificarDatos;
+
+    function mostrarEditor() {
+        document.getElementById('cliente-editor').classList.remove('hidden');
+        document.getElementById('cliente-info-guardada').classList.add('hidden');
+    }
+
+    function activarGPS() {
+        const c = JSON.parse(localStorage.getItem('vp_djm_datos'));
+        if(!c) return alert("Confirma tus datos antes de enviar.");
+
+        const lista = document.getElementById('lista_pedido').value;
+        if(!lista) return alert("Tu lista de pedido está vacía.");
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const linkMapa = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                    enviarPedido(c, lista, linkMapa);
+                },
+                () => {
+                    alert("GPS no detectado. Se enviará solo con la dirección escrita.");
+                    enviarPedido(c, lista, "Ubicación no compartida");
+                },
+                { timeout: 7000 }
+            );
+        } else { enviarPedido(c, lista, "GPS no soportado"); }
+    }
+
+    function enviarPedido(c, lista, mapa) {
+        let msj = `*${CONFIG.nombreNegocio} - NUEVO PEDIDO*\n`;
+        msj += `👤 *CLIENTE:* ${c.n}\n🏠 *DIR:* ${c.d}\n📞 *TEL:* ${c.c}\n`;
+        msj += `--------------------------\n`;
+        msj += `🛒 *LISTA:* \n${lista}\n`;
+        
+        const obs = document.getElementById('observaciones').value;
+        if(obs) msj += `\n⚠️ *NOTAS:* ${obs}\n`;
+
+        msj += `--------------------------\n`;
+        msj += `📍 *MAPA:* ${mapa}\n\n`;
+        msj += `_App de Vibras Positivas_`;
+        window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msj)}`, '_blank');
+    }
+</script>
+</body>
+</html>
