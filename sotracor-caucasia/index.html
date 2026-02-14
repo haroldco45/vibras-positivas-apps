@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sotracor Caucasia - Servicios</title>
+    <style>
+        :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris-claro: #f4f4f4; }
+        body { font-family: 'Arial', sans-serif; background-color: var(--gris-claro); margin: 0; padding: 15px; }
+        .card { max-width: 500px; margin: auto; background: var(--blanco); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #ddd; }
+        header { background: var(--secundario); color: var(--primario); padding: 25px; text-align: center; border-bottom: 4px solid var(--primario); }
+        .logo-area { font-size: 26px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
+        .content { padding: 20px; }
+        .section-title { font-size: 14px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid var(--primario); display: inline-block; }
+        input, select, textarea { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ccc; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 10px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-gold { background: var(--primario); color: var(--secundario); }
+        .btn-whatsapp { background: #25D366; color: white; }
+        .hidden { display: none !important; }
+        footer { text-align: center; padding: 20px; font-size: 12px; color: #888; background: #fff; border-top: 1px solid #eee; }
+        .vp-brand { color: var(--secundario); font-weight: bold; text-decoration: none; border-bottom: 1px solid var(--primario); }
+    </style>
+</head>
+<body>
+<div class="card">
+    <header>
+        <div id="display-nombre" class="logo-area">SOTRACOR CAUCASIA</div>
+        <div style="font-size: 11px; color: white; margin-top: 5px; letter-spacing: 1px;">SOLICITUD DE SERVICIOS</div>
+    </header>
+    <div class="content">
+        <div id="bloque-cliente">
+            <div class="section-title">Datos del Solicitante</div>
+            <div id="cliente-editor">
+                <input type="text" id="c_nombre" placeholder="Nombre completo">
+                <input type="text" id="c_direccion" placeholder="Dirección de recogida">
+                <input type="tel" id="c_celular" placeholder="Número de contacto">
+                <button class="btn btn-gold" onclick="guardarCliente()">CONFIRMAR MIS DATOS</button>
+            </div>
+            <div id="cliente-info-guardada" class="hidden">
+                <p id="texto-resumen" style="font-size: 15px; color: #333; background: #fff9db; padding: 15px; border-radius: 10px; border-left: 5px solid var(--primario); white-space: pre-wrap;"></p>
+                <button onclick="mostrarEditor()" style="font-size: 12px; background: none; border: none; color: #007bff; cursor: pointer; text-decoration: underline;">✏️ Editar mis datos</button>
+            </div>
+        </div>
+        
+        <hr style="opacity: 0.1; margin: 25px 0;">
+        
+        <div class="section-title">Detalles del Servicio</div>
+        <textarea id="detalles_servicio" rows="3" placeholder="Ej: Envío de sobre a Montería, Reserva de pasaje para mañana..."></textarea>
+        
+        <textarea id="observaciones" rows="2" placeholder="Notas adicionales (Ej: El timbre no sirve)"></textarea>
+        
+        <button class="btn btn-whatsapp" onclick="enviarConGPS()">
+            <span>🚀 ENVIAR SOLICITUD POR WHATSAPP</span>
+        </button>
+    </div>
+    <footer>
+        Infraestructura Digital <br>
+        <a href="#" class="vp-brand">VIBRAS POSITIVAS</a> <br>
+        Caucasia, Antioquia © 2026
+    </footer>
+</div>
+
+<script>
+    const CONFIG = {
+        nombreNegocio: "SOTRACOR CAUCASIA",
+        whatsapp: "573117700431", // Harold, ajusta al número real de Sotracor
+        idSuscriptor: "VP-CAU-015"
+    };
+
+    let nPedido = Math.floor(Math.random() * 90000) + 10000;
+
+    function guardarCliente() {
+        const d = { n: document.getElementById('c_nombre').value, d: document.getElementById('c_direccion').value, c: document.getElementById('c_celular').value };
+        if(d.n && d.d && d.c) { 
+            localStorage.setItem('vp_sotracor_v2', JSON.stringify(d)); 
+            verificarDatos();
+        } else { alert("Por favor completa tus datos."); }
+    }
+
+    function verificarDatos() {
+        const g = JSON.parse(localStorage.getItem('vp_sotracor_v2'));
+        if(g) {
+            document.getElementById('cliente-editor').classList.add('hidden');
+            document.getElementById('cliente-info-guardada').classList.remove('hidden');
+            document.getElementById('texto-resumen').innerText = `Usuario: ${g.n}\nUbicación: ${g.d}\nTel: ${g.c}`;
+        }
+    }
+    window.onload = verificarDatos;
+
+    function mostrarEditor() {
+        document.getElementById('cliente-editor').classList.remove('hidden');
+        document.getElementById('cliente-info-guardada').classList.add('hidden');
+    }
+
+    function enviarConGPS() {
+        const c = JSON.parse(localStorage.getItem('vp_sotracor_v2'));
+        if(!c) return alert("Primero confirma tus datos arriba.");
+
+        const servicio = document.getElementById('detalles_servicio').value;
+        if(!servicio) return alert("Por favor describe el servicio que necesitas.");
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                    armarYEnviar(c, gps, servicio);
+                },
+                () => armarYEnviar(c, "No compartida", servicio),
+                { timeout: 5000 }
+            );
+        } else { armarYEnviar(c, "No soportado", servicio); }
+    }
+
+    function armarYEnviar(c, gps, servicio) {
+        let msj = `*${CONFIG.nombreNegocio} - TICKET #${nPedido}*\n`;
+        msj += `*USUARIO:* ${c.n}\n*TEL:* ${c.c}\n*DIR:* ${c.d}\n`;
+        msj += `--------------------------\n*SERVICIO:* ${servicio}\n`;
+
+        const obs = document.getElementById('observaciones').value;
+        if(obs) msj += `--------------------------\n*NOTAS:* ${obs}\n`;
+
+        msj += `--------------------------\n📍 *UBICACIÓN:* ${gps}\n\n`;
+        msj += `_App desarrollada por Vibras Positivas_`;
+
+        window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msj)}`, '_blank');
+    }
+</script>
+</body>
+</html>
