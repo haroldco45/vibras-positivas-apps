@@ -3,155 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fábrica de Atarrayas - Pedidos</title>
+    <title>Atarrayas y Hamacas - Pedidos</title>
     <style>
-        :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris-claro: #f4f4f4; --exito: #25D366; }
-        body { font-family: 'Arial', sans-serif; background-color: var(--gris-claro); margin: 0; padding: 15px; }
-        .card { max-width: 500px; margin: auto; background: var(--blanco); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #ddd; }
-        header { background: var(--secundario); color: var(--primario); padding: 25px; text-align: center; border-bottom: 4px solid var(--primario); }
-        .logo-area { font-size: 20px; font-weight: bold; text-transform: uppercase; }
+        :root { --oro: #FFD700; --negro: #000000; --blanco: #ffffff; }
+        body { font-family: sans-serif; background-color: #f4f4f4; padding: 15px; margin: 0; }
+        .card { max-width: 450px; margin: auto; background: var(--blanco); border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); overflow: hidden; }
+        header { background: var(--negro); color: var(--oro); padding: 20px; text-align: center; border-bottom: 4px solid var(--oro); }
         .content { padding: 20px; }
-        .section-title { font-size: 14px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid var(--primario); display: inline-block; }
-        .fila-pedido { display: grid; grid-template-columns: 30px 2fr 1.2fr 1fr; gap: 5px; margin-bottom: 8px; align-items: center; }
-        .num-item { font-size: 14px; font-weight: bold; color: var(--secundario); text-align: center; }
-        input, select, textarea { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ccc; border-radius: 10px; font-size: 15px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 10px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .btn-gold { background: var(--primario); color: var(--secundario); }
-        .btn-add { background: #f9f9f9; color: #333; font-size: 13px; padding: 12px; border: 1px dashed #bbb; }
-        .btn-whatsapp { background: var(--exito); color: white; }
-        .hidden { display: none !important; }
-        footer { text-align: center; padding: 25px; font-size: 13px; color: #555; background: #fff; border-top: 1px solid #eee; }
-        .vp-brand { color: var(--secundario); font-weight: bold; text-decoration: none; }
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        .btn-amarillo { background: var(--oro); color: var(--negro); }
+        .btn-verde { background: #25D366; color: white; }
+        .num-fila { font-weight: bold; margin-top: 10px; display: block; color: #666; }
+        .hidden { display: none; }
+        footer { text-align: center; padding: 20px; font-size: 12px; color: #777; border-top: 1px solid #eee; }
     </style>
 </head>
 <body>
 
 <div class="card">
     <header>
-        <div class="logo-area">🎣 FÁBRICA DE ATARRAYAS</div>
-        <div style="font-size: 11px; color: white; margin-top: 5px;">HAMACAS, CHINCHORROS Y MÁS</div>
+        <h2 style="margin:0">FÁBRICA DE ATARRAYAS</h2>
+        <small>Caucasia - Calidad Garantizada</small>
     </header>
 
     <div class="content">
-        <div id="seccion-cliente">
-            <div class="section-title">Datos para la Entrega</div>
-            <div id="form-datos">
-                <input type="text" id="nom" placeholder="Tu nombre completo">
-                <input type="text" id="dir" placeholder="Dirección en Caucasia">
-                <input type="tel" id="tel" placeholder="Tu WhatsApp">
-                <button class="btn btn-gold" onclick="guardarInfo()">GUARDAR MIS DATOS</button>
-            </div>
-            <div id="info-guardada" class="hidden">
-                <p id="resumen-cliente" style="font-size: 14px; background: #fffdf2; padding: 15px; border-radius: 10px; border-left: 5px solid var(--primario); white-space: pre-wrap;"></p>
-                <button onclick="editarInfo()" style="font-size: 11px; color: #007bff; border: none; background: none; cursor: pointer; text-decoration: underline;">✏️ Editar mis datos</button>
+        <div id="seccion_registro">
+            <b style="color:#444">Datos de Entrega:</b>
+            <input type="text" id="nombre_usuario" placeholder="Tu Nombre">
+            <input type="text" id="direccion_usuario" placeholder="Dirección o Barrio">
+            <button class="btn btn-amarillo" onclick="guardarDatos()">GUARDAR MIS DATOS</button>
+        </div>
+
+        <div id="seccion_guardada" class="hidden">
+            <div style="background:#fff9c4; padding:10px; border-radius:8px; border-left:4px solid #fbc02d">
+                <span id="txt_saludo"></span>
+                <br><small onclick="borrarDatos()" style="color:blue; cursor:pointer">Cambiar datos</small>
             </div>
         </div>
 
-        <hr style="opacity: 0.1; margin: 25px 0;">
+        <hr style="margin:20px 0; opacity:0.2">
 
-        <div class="section-title">Detalle de tu Pedido</div>
-        <div id="contenedor-filas">
-            <div class="fila-pedido">
-                <div class="num-item">1.</div>
-                <select class="p-nombre">
+        <b style="color:#444">Detalle del Pedido:</b>
+        <div id="lista_productos">
+            <div class="item-pedido">
+                <span class="num-fila">Producto #1:</span>
+                <select class="prod_nombre">
+                    <option value="">Seleccione un artículo...</option>
+                    <option value="Atarraya">Atarraya</option>
+                    <option value="Hamaca">Hamaca</option>
+                    <option value="Trasmayo">Trasmayo</option>
+                    <option value="Chinchorro">Chinchorro</option>
+                </select>
+                <input type="text" class="prod_medida" placeholder="Medida o Especificación">
+                <input type="number" class="prod_cant" value="1">
+            </div>
+        </div>
+
+        <button onclick="nuevaFila()" style="background:none; border:1px dashed #999; width:100%; padding:10px; margin-top:10px; border-radius:8px; cursor:pointer">+ Agregar otro producto</button>
+        
+        <textarea id="observaciones" placeholder="Notas adicionales..." style="margin-top:15px"></textarea>
+
+        <button class="btn btn-verde" onclick="enviarWhatsApp()">🚀 ENVIAR PEDIDO POR WHATSAPP</button>
+    </div>
+
+    <footer>
+        Desarrollado por <br>
+        <b>VIBRAS POSITIVAS</b> <br>
+        Derechos de Autor © 2026
+    </footer>
+</div>
+
+<script>
+    // Configuración
+    const TELEFONO_DESTINO = "573104323687"; 
+    let contador = 1;
+
+    // 1. Manejo de Datos
+    function guardarDatos() {
+        const nom = document.getElementById('nombre_usuario').value;
+        const dir = document.getElementById('direccion_usuario').value;
+        if(nom && dir) {
+            localStorage.setItem('vp_atarraya_user', nom);
+            localStorage.setItem('vp_atarraya_dir', dir);
+            mostrarCache();
+        } else {
+            alert("Por favor escribe tu nombre y dirección");
+        }
+    }
+
+    function mostrarCache() {
+        const nom = localStorage.getItem('vp_atarraya_user');
+        if(nom) {
+            document.getElementById('seccion_registro').className = 'hidden';
+            document.getElementById('seccion_guardada').className = '';
+            document.getElementById('txt_saludo').innerText = "Enviando como: " + nom;
+        }
+    }
+
+    function borrarDatos() {
+        localStorage.clear();
+        location.reload();
+    }
+
+    // 2. Dinamismo
+    function nuevaFila() {
+        contador++;
+        const contenedor = document.getElementById('lista_productos');
+        const html = `
+            <div class="item-pedido">
+                <span class="num-fila">Producto #${contador}:</span>
+                <select class="prod_nombre">
                     <option value="">Seleccione...</option>
                     <option value="Atarraya">Atarraya</option>
                     <option value="Hamaca">Hamaca</option>
                     <option value="Trasmayo">Trasmayo</option>
                     <option value="Chinchorro">Chinchorro</option>
                 </select>
-                <input type="text" class="p-medida" placeholder="Medida">
-                <input type="number" class="p-cantidad" value="1">
-            </div>
-        </div>
-
-        <button class="btn btn-add" onclick="agregarFila()">➕ AGREGAR OTRO ARTÍCULO</button>
-
-        <textarea id="obs" rows="2" placeholder="Notas adicionales..."></textarea>
-
-        <button class="btn btn-whatsapp" onclick="capturarUbicacion()">
-            <span>🛰️ ENVIAR PEDIDO CON GPS</span>
-        </button>
-    </div>
-
-    <footer>
-        Desarrollado por <br>
-        <span class="vp-brand">VIBRAS POSITIVAS</span> <br>
-        Derechos de Autor © 2026
-    </footer>
-</div>
-
-<script>
-    const WHATSAPP_DESTINO = "573104323687"; 
-    let contador = 1;
-
-    function agregarFila() {
-        contador++;
-        const div = document.createElement('div');
-        div.className = 'fila-pedido';
-        div.innerHTML = `<div class="num-item">${contador}.</div>
-            <select class="p-nombre"><option value="">Seleccione...</option><option value="Atarraya">Atarraya</option><option value="Hamaca">Hamaca</option><option value="Trasmayo">Trasmayo</option><option value="Chinchorro">Chinchorro</option></select>
-            <input type="text" class="p-medida">
-            <input type="number" class="p-cantidad" value="1">`;
-        document.getElementById('contenedor-filas').appendChild(div);
+                <input type="text" class="prod_medida" placeholder="Medida">
+                <input type="number" class="prod_cant" value="1">
+            </div>`;
+        contenedor.insertAdjacentHTML('beforeend', html);
     }
 
-    function guardarInfo() {
-        const d = { n: document.getElementById('nom').value, d: document.getElementById('dir').value, t: document.getElementById('tel').value };
-        if(d.n && d.d && d.t) {
-            localStorage.setItem('vp_atarraya_save', JSON.stringify(d));
-            mostrarInfo();
-        } else { alert("Llena todos los campos"); }
-    }
+    // 3. WhatsApp
+    function enviarWhatsApp() {
+        const nom = localStorage.getItem('vp_atarraya_user');
+        const dir = localStorage.getItem('vp_atarraya_dir');
+        
+        if(!nom) { alert("Primero guarda tu nombre arriba"); return; }
 
-    function mostrarInfo() {
-        const g = JSON.parse(localStorage.getItem('vp_atarraya_save'));
-        if(g) {
-            document.getElementById('form-datos').classList.add('hidden');
-            document.getElementById('info-guardada').classList.remove('hidden');
-            document.getElementById('resumen-cliente').innerText = `Cliente: ${g.n}\nDirección: ${g.d}\nTel: ${g.t}`;
+        let texto_pedido = "";
+        const nombres = document.getElementsByClassName('prod_nombre');
+        const medidas = document.getElementsByClassName('prod_medida');
+        const cants = document.getElementsByClassName('prod_cant');
+
+        for(let i=0; i < nombres.length; i++) {
+            if(nombres[i].value != "") {
+                texto_pedido += (i+1) + ". " + nombres[i].value + " (" + medidas[i].value + ") x" + cants[i].value + "%0A";
+            }
         }
+
+        if(texto_pedido == "") { alert("Selecciona al menos un producto"); return; }
+
+        let mensaje = "🔔 *NUEVO PEDIDO - ATARRAYAS* %0A";
+        mensaje += "----------------------------%0A";
+        mensaje += "👤 *Cliente:* " + nom + "%0A";
+        mensaje += "🏠 *Dirección:* " + dir + "%0A";
+        mensaje += "----------------------------%0A";
+        mensaje += "🛒 *Pedido:* %0A" + texto_pedido;
+        
+        const obs = document.getElementById('observaciones').value;
+        if(obs) mensaje += "%0A📝 *Notas:* " + obs;
+        
+        mensaje += "%0A----------------------------%0A";
+        mensaje += "_App por Vibras Positivas_";
+
+        window.open("https://wa.me/" + TELEFONO_DESTINO + "?text=" + mensaje, "_blank");
     }
 
-    function editarInfo() {
-        document.getElementById('form-datos').classList.remove('hidden');
-        document.getElementById('info-guardada').classList.add('hidden');
-    }
-
-    window.onload = mostrarInfo;
-
-    function capturarUbicacion() {
-        const c = JSON.parse(localStorage.getItem('vp_atarraya_save'));
-        if(!c) return alert("Primero guarda tus datos");
-
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (p) => enviarWA(c, `http://maps.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`),
-                () => enviarWA(c, "Ubicación no compartida"),
-                { timeout: 7000 }
-            );
-        } else { enviarWA(c, "GPS no soportado"); }
-    }
-
-    function enviarWA(c, gps) {
-        let lista = "";
-        const prods = document.querySelectorAll('.p-nombre');
-        const meds = document.querySelectorAll('.p-medida');
-        const cants = document.querySelectorAll('.p-cantidad');
-
-        prods.forEach((s, i) => {
-            if(s.value) lista += `• ${s.value} [${meds[i].value || 'Estándar'}]: ${cants[i].value}\n`;
-        });
-
-        if(!lista) return alert("Selecciona un producto");
-
-        let msg = `*FÁBRICA DE ATARRAYAS - PEDIDO*\n--------------------------\n👤 *CLIENTE:* ${c.n}\n🏠 *DIR:* ${c.d}\n📞 *TEL:* ${c.t}\n--------------------------\n🛒 *DETALLE:*\n${lista}`;
-        const obs = document.getElementById('obs').value;
-        if(obs) msg += `\n📝 *NOTAS:* ${obs}\n`;
-        msg += `--------------------------\n📍 *MAPA:* ${gps}\n\n_Vibras Positivas_`;
-
-        window.open(`https://wa.me/${WHATSAPP_DESTINO}?text=${encodeURIComponent(msg)}`, '_blank');
-    }
+    // Ejecutar al cargar
+    window.onload = mostrarCache;
 </script>
+
 </body>
 </html>
