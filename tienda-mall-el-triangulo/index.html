@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda Mall El Triángulo - Pedidos</title>
+    <style>
+        :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris-claro: #f4f4f4; --exito: #25D366; --tienda: #e74c3c; }
+        body { font-family: 'Arial', sans-serif; background-color: var(--gris-claro); margin: 0; padding: 15px; }
+        .card { max-width: 500px; margin: auto; background: var(--blanco); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #ddd; }
+        header { background: var(--secundario); color: var(--primario); padding: 25px; text-align: center; border-bottom: 4px solid var(--tienda); }
+        .logo-area { font-size: 22px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        .content { padding: 20px; }
+        .section-title { font-size: 14px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid var(--tienda); display: inline-block; }
+        
+        .fila-pedido { display: grid; grid-template-columns: 30px 2fr 1fr 1fr; gap: 5px; margin-bottom: 8px; align-items: center; }
+        .num-item { font-size: 14px; font-weight: bold; color: var(--secundario); text-align: center; }
+        
+        input, textarea { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ccc; border-radius: 10px; font-size: 15px; box-sizing: border-box; }
+        .head-tabla { font-size: 10px; color: #999; font-weight: bold; text-align: center; }
+        
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 10px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-gold { background: var(--primario); color: var(--secundario); }
+        .btn-add { background: #f9f9f9; color: #333; font-size: 14px; padding: 12px; border: 1px dashed #bbb; margin-top: 10px; }
+        .btn-whatsapp { background: var(--exito); color: white; margin-top: 20px; }
+        .hidden { display: none !important; }
+        
+        footer { text-align: center; padding: 25px; font-size: 13px; color: #555; background: #fff; border-top: 1px solid #eee; }
+        .vp-brand { color: var(--secundario); font-weight: bold; text-decoration: none; font-size: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <header>
+        <div class="logo-area">🏪 TIENDA MALL EL TRIÁNGULO</div>
+        <div style="font-size: 11px; color: white; margin-top: 5px;">SURTIDO COMPLETO Y DOMICILIOS</div>
+    </header>
+
+    <div class="content">
+        <div id="seccion-cliente">
+            <div class="section-title">Datos para la Entrega</div>
+            <div id="form-datos">
+                <input type="text" id="nom" placeholder="¿Cuál es tu nombre?">
+                <input type="text" id="dir" placeholder="Dirección en Caucasia">
+                <input type="tel" id="tel" placeholder="WhatsApp de contacto">
+                <button class="btn btn-gold" onclick="guardarInfo()">GUARDAR MIS DATOS</button>
+            </div>
+            <div id="info-guardada" class="hidden">
+                <p id="resumen-cliente" style="font-size: 14px; background: #fff5f5; padding: 15px; border-radius: 10px; border-left: 5px solid var(--tienda); white-space: pre-wrap;"></p>
+                <button onclick="editarInfo()" style="font-size: 11px; color: #007bff; border: none; background: none; cursor: pointer; text-decoration: underline;">✏️ Modificar mis datos</button>
+            </div>
+        </div>
+
+        <hr style="opacity: 0.1; margin: 25px 0;">
+
+        <div class="section-title">Tu Pedido</div>
+        <div class="fila-pedido head-tabla">
+            <div>#</div>
+            <div>PRODUCTO</div>
+            <div>MEDIDA</div>
+            <div>CANT.</div>
+        </div>
+
+        <div id="contenedor-filas">
+            <div class="fila-pedido">
+                <div class="num-item">1.</div>
+                <input type="text" class="p-nombre" placeholder="Ej: Arroz Superarroz">
+                <input type="text" class="p-medida" placeholder="Lb/Kg/Und">
+                <input type="number" class="p-cantidad" value="1">
+            </div>
+        </div>
+
+        <button class="btn btn-add" onclick="agregarFila()">➕ AGREGAR OTRO ARTÍCULO</button>
+
+        <textarea id="obs" rows="2" placeholder="Notas: (Ej: Que el aguacate esté maduro, traer vueltas de $50 mil)"></textarea>
+
+        <button class="btn btn-whatsapp" onclick="capturarUbicacion()">
+            <span>🛰️ ENVIAR PEDIDO CON GPS</span>
+        </button>
+    </div>
+
+    <footer>
+        Desarrollado por <br>
+        <span class="vp-brand">VIBRAS POSITIVAS</span> <br>
+        Caucasia, Antioquia © 2026
+    </footer>
+</div>
+
+<script>
+    const WHATSAPP_TIENDA = "573217344647"; // Número solicitado
+    let contadorFilas = 1;
+
+    // --- CONTROL DE SEGURIDAD CENTRALIZADO ---
+    async function verificarSuscripcion() {
+        try {
+            const respuesta = await fetch('https://haroldco45.github.io/vibras-positivas-apps/control-vibras.js');
+            const texto = await respuesta.text();
+            if (texto.includes('"tienda-mall-el-triangulo": "suspendido"')) {
+                document.body.innerHTML = `
+                <div style="text-align:center; padding:50px; font-family:sans-serif; background:#000; color:#fff; height:100vh;">
+                    <h1 style="color:#FFD700;">VIBRAS POSITIVAS</h1>
+                    <div style="font-size:50px;">🔒</div>
+                    <h2>SERVICIO SUSPENDIDO</h2>
+                    <p>Estimado cliente, su suscripción ha vencido.</p>
+                    <a href="https://wa.me/573117700431" style="color:#FFD700; font-weight:bold; text-decoration:none;">📱 CONTACTAR A SOPORTE</a>
+                </div>`;
+            }
+        } catch (e) { console.log("Security skip"); }
+    }
+    verificarSuscripcion();
+
+    function agregarFila() {
+        contadorFilas++;
+        const contenedor = document.getElementById('contenedor-filas');
+        const nuevaFila = document.createElement('div');
+        nuevaFila.className = 'fila-pedido';
+        nuevaFila.innerHTML = `
+            <div class="num-item">${contadorFilas}.</div>
+            <input type="text" class="p-nombre">
+            <input type="text" class="p-medida">
+            <input type="number" class="p-cantidad" value="1">
+        `;
+        contenedor.appendChild(nuevaFila);
+    }
+
+    function guardarInfo() {
+        const d = { n: document.getElementById('nom').value, d: document.getElementById('dir').value, t: document.getElementById('tel').value };
+        if(d.n && d.d && d.t) {
+            localStorage.setItem('vp_tienda_mall_data', JSON.stringify(d));
+            mostrarInfo();
+        } else { alert("Por favor completa los datos de entrega."); }
+    }
+
+    function mostrarInfo() {
+        const g = JSON.parse(localStorage.getItem('vp_tienda_mall_data'));
+        if(g) {
+            document.getElementById('form-datos').classList.add('hidden');
+            document.getElementById('info-guardada').classList.remove('hidden');
+            document.getElementById('resumen-cliente').innerText = `Cliente: ${g.n}\nDirección: ${g.d}\nWhatsApp: ${g.t}`;
+        }
+    }
+
+    function editarInfo() {
+        document.getElementById('form-datos').classList.remove('hidden');
+        document.getElementById('info-guardada').classList.add('hidden');
+    }
+
+    window.onload = mostrarInfo;
+
+    function capturarUbicacion() {
+        const d = JSON.parse(localStorage.getItem('vp_tienda_mall_data'));
+        if(!d) return alert("Primero guarda tus datos arriba.");
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => enviarWhatsApp(d, `http://maps.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`),
+                () => enviarWhatsApp(d, "Ubicación no compartida"),
+                { timeout: 7000 }
+            );
+        } else { enviarWhatsApp(d, "GPS no soportado"); }
+    }
+
+    function enviarWhatsApp(c, gps) {
+        let pedidoTexto = "";
+        const nombres = document.querySelectorAll('.p-nombre');
+        const medidas = document.querySelectorAll('.p-medida');
+        const cantidades = document.querySelectorAll('.p-cantidad');
+
+        let iReal = 1;
+        nombres.forEach((input, i) => {
+            if(input.value.trim() !== "") {
+                pedidoTexto += `${iReal}. ${input.value} [${medidas[i].value || 'und'}]: ${cantidades[i].value}\n`;
+                iReal++;
+            }
+        });
+
+        if(!pedidoTexto) return alert("Escribe qué productos deseas pedir.");
+
+        let msj = `*🏪 TIENDA MALL EL TRIÁNGULO - PEDIDO*%0A`;
+        msj += `--------------------------%0A`;
+        msj += `👤 *CLIENTE:* ${c.n}%0A📍 *DIR:* ${c.d}%0A📞 *TEL:* ${c.t}%0A`;
+        msj += `--------------------------%0A`;
+        msj += `🛒 *LISTA:*%0A${encodeURIComponent(pedidoTexto)}`;
+        
+        const obs = document.getElementById('obs').value;
+        if(obs) msj += `%0A📝 *NOTAS:* ${encodeURIComponent(obs)}%0A`;
+        
+        msj += `--------------------------%0A`;
+        msj += `📍 *UBICACIÓN GPS:*%0A${encodeURIComponent(gps)}%0A%0A`;
+        msj += `_App por Vibras Positivas_`;
+
+        window.open(`https://wa.me/${WHATSAPP_TIENDA}?text=${msj}`, '_blank');
+    }
+</script>
+</body>
+</html>
