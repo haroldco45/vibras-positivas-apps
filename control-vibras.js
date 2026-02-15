@@ -23,6 +23,7 @@ const ESTADO_CLIENTES = {
     "santuariolaprimera": "activo",
     "drogueria-inglesa": "activo",
     "estos-burgers": "activo",
-    "paula-areiza": "activo"
-    "ferreteria-la-hacienda": "activo"
+    "paula-areiza": "activo",
+    "ferreteria-la-hacienda": "activo",
+    "alejo-mecanicomoto-movil": "activo"
 };
