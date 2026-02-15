@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESTOS BURGERS - Pedidos Online</title>
+    <style>
+        :root { --primario: #e63946; --secundario: #1d3557; --oro: #FFD700; --blanco: #ffffff; --gris: #f8f9fa; }
+        body { font-family: 'Arial', sans-serif; background-color: var(--gris); margin: 0; padding: 10px; color: #333; }
+        .card { max-width: 550px; margin: auto; background: var(--blanco); border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); overflow: hidden; }
+        
+        header { background: var(--secundario); color: var(--oro); padding: 30px; text-align: center; border-bottom: 5px solid var(--primario); }
+        .logo-area { font-size: 28px; font-weight: bold; letter-spacing: 2px; }
+        
+        .content { padding: 20px; }
+        .section-title { font-size: 16px; font-weight: bold; color: var(--primario); text-transform: uppercase; margin: 20px 0 10px; border-left: 4px solid var(--primario); padding-left: 10px; }
+        
+        /* Estilo de la Carta */
+        .item-menu { background: #fff; border: 1px solid #eee; padding: 12px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
+        .item-info { flex: 1; padding-right: 10px; }
+        .item-name { font-weight: bold; font-size: 15px; display: block; }
+        .item-price { color: #2a9d8f; font-weight: bold; font-size: 14px; }
+        .item-desc { font-size: 11px; color: #777; line-height: 1.2; display: block; margin-top: 3px; }
+        
+        .qty-control { display: flex; align-items: center; gap: 8px; }
+        .btn-qty { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #ddd; background: white; cursor: pointer; font-weight: bold; }
+        .qty-val { font-weight: bold; min-width: 20px; text-align: center; }
+
+        /* Datos Cliente */
+        input, textarea { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ccc; border-radius: 10px; box-sizing: border-box; }
+        .btn-main { width: 100%; padding: 18px; border: none; border-radius: 15px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-gold { background: var(--oro); color: #000; }
+        .btn-whatsapp { background: #25D366; color: white; }
+        .hidden { display: none !important; }
+
+        .resumen-datos { background: #fffde7; padding: 15px; border-radius: 15px; border-left: 5px solid var(--oro); margin-bottom: 15px; }
+        
+        footer { text-align: center; padding: 30px; font-size: 13px; color: #888; border-top: 1px solid #eee; }
+        .vp-brand { color: #000; font-weight: bold; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <header>
+        <div class="logo-area">ESTOS BURGERS</div>
+        <div style="font-size: 12px; color: white; margin-top: 5px;">🔥 SABORES QUE CONQUISTAN 🔥</div>
+    </header>
+
+    <div class="content">
+        <div id="seccion-datos">
+            <div class="section-title">¿A dónde enviamos?</div>
+            <div id="form-registro">
+                <input type="text" id="c_nom" placeholder="Tu nombre">
+                <input type="text" id="c_dir" placeholder="Dirección exacta en Caucasia">
+                <input type="tel" id="c_tel" placeholder="WhatsApp">
+                <button class="btn-main btn-gold" onclick="guardarCliente()">CONFIRMAR MIS DATOS</button>
+            </div>
+            <div id="info-lista" class="hidden">
+                <div class="resumen-datos">
+                    <div id="datos-texto"></div>
+                    <small onclick="editarCliente()" style="color: blue; cursor: pointer; text-decoration: underline;">✏️ Cambiar dirección</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">🍔 Nuestras Hamburguesas</div>
+        <div id="lista-burgers"></div>
+
+        <div class="section-title">🥤 Milk Shakes & Bebidas</div>
+        <div id="lista-bebidas"></div>
+
+        <div class="section-title">➕ Adiciones</div>
+        <div id="lista-adiciones"></div>
+
+        <textarea id="obs" rows="2" placeholder="Notas: (Ej: Sin cebolla, carne bien cocida)"></textarea>
+
+        <button class="btn-main btn-whatsapp" onclick="prepararEnvio()">
+            <span>🛒 ENVIAR PEDIDO POR WHATSAPP</span>
+        </button>
+    </div>
+
+    <footer>
+        App Desarrollada por <br>
+        <span class="vp-brand">VIBRAS POSITIVAS</span> <br>
+        Derechos de Autor © 2026
+    </footer>
+</div>
+
+<script>
+    const MENU = {
+        burgers: [
+            {n: "Burger Gaucha", p: 31990, d: "Chorizo premium, chimichurri, queso asado maple"},
+            {n: "Septiembre Burger", p: 24990, d: "Carne 125gr, meloso de pera, queso costeño"},
+            {n: "1/4 Libra Bacon", p: 24600, d: "Bacon, chutney casero, mozzarella"},
+            {n: "1/2 Libra Bacon", p: 31990, d: "Doble carne 250gr, bacon, mozzarella"},
+            {n: "Burger Peruana", p: 24000, d: "Cebollas en pluma, maíz tostado, queso fundido"},
+            {n: "Burger Doble Carne", p: 26000, d: "250g de carne, mozzarella, chutney"},
+            {n: "La Básica de Estos", p: 21990, d: "Carne 125g, mozzarella, chutney morrón"},
+            {n: "Combo Burger 1", p: 39900, d: "1/2 Libra Bacon + Milk Shake"},
+            {n: "Combo Burger 2", p: 33900, d: "1/4 Libra Bacon + Milk Shake"}
+        ],
+        bebidas: [
+            {n: "Milk Shake (Cualquier sabor)", p: 12000, d: "Zapote, Maracuyá, Milo, Frutos Rojos"},
+            {n: "Cerveza Corona", p: 9000, d: "330ml"},
+            {n: "Coca Cola / Kola Roman 1.5L", p: 10000, d: "Tamaño Familiar"},
+            {n: "Gaseosa 400ml / Agua", p: 5000, d: "Coca Cola, Sprite, Quatro, Agua"}
+        ],
+        adiciones: [
+            {n: "Papa Maxi", p: 7000, d: "Porción grande"},
+            {n: "Papa JR", p: 4000, d: "Porción pequeña"},
+            {n: "Carne Desmechada", p: 11000, d: "Adición premium"},
+            {n: "Carne Burger Extra", p: 8000, d: "125g adicionales"}
+        ]
+    };
+
+    function renderMenu(items, idContenedor) {
+        const contenedor = document.getElementById(idContenedor);
+        items.forEach((prod, index) => {
+            const div = document.createElement('div');
+            div.className = 'item-menu';
+            div.innerHTML = `
+                <div class="item-info">
+                    <span class="item-name">${prod.n}</span>
+                    <span class="item-price">$ ${prod.p.toLocaleString()}</span>
+                    <span class="item-desc">${prod.d}</span>
+                </div>
+                <div class="qty-control">
+                    <button class="btn-qty" onclick="cambiarCant('${idContenedor}', ${index}, -1)">-</button>
+                    <span class="qty-val" id="q-${idContenedor}-${index}">0</span>
+                    <button class="btn-qty" onclick="cambiarCant('${idContenedor}', ${index}, 1)">+</button>
+                </div>
+            `;
+            contenedor.appendChild(div);
+            prod.cant = 0;
+        });
+    }
+
+    function cambiarCant(cat, idx, delta) {
+        let lista = cat === 'lista-burgers' ? MENU.burgers : cat === 'lista-bebidas' ? MENU.bebidas : MENU.adiciones;
+        lista[idx].cant = Math.max(0, lista[idx].cant + delta);
+        document.getElementById(`q-${cat}-${idx}`).innerText = lista[idx].cant;
+    }
+
+    function guardarCliente() {
+        const d = { n: document.getElementById('c_nom').value, d: document.getElementById('c_dir').value, t: document.getElementById('c_tel').value };
+        if(d.n && d.d && d.t) {
+            localStorage.setItem('vp_burgers_user', JSON.stringify(d));
+            mostrarCliente();
+        } else { alert("Llena tus datos para el domicilio"); }
+    }
+
+    function mostrarCliente() {
+        const g = JSON.parse(localStorage.getItem('vp_burgers_user'));
+        if(g) {
+            document.getElementById('form-registro').classList.add('hidden');
+            document.getElementById('info-lista').classList.remove('hidden');
+            document.getElementById('datos-texto').innerHTML = `<b>Para:</b> ${g.n}<br><b>En:</b> ${g.d}`;
+        }
+    }
+
+    function editarCliente() {
+        document.getElementById('form-registro').classList.remove('hidden');
+        document.getElementById('info-lista').classList.add('hidden');
+    }
+
+    function prepararEnvio() {
+        const c = JSON.parse(localStorage.getItem('vp_burgers_user'));
+        if(!c) return alert("Primero confirma tus datos de envío.");
+
+        let pedido = "";
+        let total = 0;
+        [...MENU.burgers, ...MENU.bebidas, ...MENU.adiciones].forEach(p => {
+            if(p.cant > 0) {
+                pedido += `• ${p.cant}x ${p.n} ($${(p.p * p.cant).toLocaleString()})\n`;
+                total += p.p * p.cant;
+            }
+        });
+
+        if(!pedido) return alert("¡Tu carrito está vacío! Selecciona algo rico.");
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => enviarWA(c, pedido, total, `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`),
+                () => enviarWA(c, pedido, total, "No compartida")
+            );
+        } else { enviarWA(c, pedido, total, "No soportado"); }
+    }
+
+    function enviarWA(c, ped, tot, gps) {
+        let msj = `*ESTOS BURGERS - NUEVO PEDIDO*\n`;
+        msj += `--------------------------\n`;
+        msj += `👤 *CLIENTE:* ${c.n}\n📍 *DIR:* ${c.d}\n📞 *TEL:* ${c.t}\n`;
+        msj += `--------------------------\n`;
+        msj += `🛒 *PEDIDO:*\n${ped}`;
+        msj += `💰 *TOTAL A PAGAR: $${tot.toLocaleString()}*\n`;
+        const obs = document.getElementById('obs').value;
+        if(obs) msj += `📝 *NOTAS:* ${obs}\n`;
+        msj += `--------------------------\n`;
+        msj += `📍 *UBICACIÓN:* ${gps}\n\n`;
+        msj += `_App por Vibras Positivas_`;
+
+        window.open(`https://wa.me/573117700431?text=${encodeURIComponent(msj)}`, '_blank');
+    }
+
+    window.onload = () => {
+        mostrarCliente();
+        renderMenu(MENU.burgers, 'lista-burgers');
+        renderMenu(MENU.bebidas, 'lista-bebidas');
+        renderMenu(MENU.adiciones, 'lista-adiciones');
+    };
+</script>
+</body>
+</html>
