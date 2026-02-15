@@ -31,7 +31,7 @@ const controlVibras = {
     // BIENESTAR Y SALUD
     "yeraldin-belleza": "activo",
     "drogueria-inglesa": "activo",
-    "odontologia-estetica-bocas": "activo",
+    "odontologia--estetica-bocas": "activo",
     "luzmar": "activo",
 
     // SERVICIOS
@@ -45,7 +45,7 @@ const controlVibras = {
     // TRANSPORTE E INVERSIONES
     "sotracor-caucasia": "activo",
     "inversiones-charlotte": "activo",
-    "santuario-la-primera": "activo"
+    "santuariolaprimera": "activo"
 };
 
 // Función para verificar estado (Harold, no tocar esta parte)
