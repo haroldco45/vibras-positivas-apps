@@ -24,4 +24,5 @@ const ESTADO_CLIENTES = {
     "drogueria-inglesa": "activo",
     "estos-burgers": "activo",
     "paula-areiza": "activo"
+    "ferreteria-la-hacienda": "activo"
 };
