@@ -3,211 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pollo Harana - Pedidos Inteligentes</title>
+    <title>Vibras Positivas - Vitrina Digital</title>
     <style>
-        :root { --rojo: #e63946; --amarillo: #ffb703; --oscuro: #1d3557; --claro: #f1faee; --exito: #25D366; }
-        body { font-family: 'Arial', sans-serif; background-color: #f8f9fa; margin: 0; padding: 10px; color: var(--oscuro); padding-bottom: 140px; }
+        :root { --oro: #FFD700; --negro: #1a1a1a; --gris: #f4f4f4; --blanco: #ffffff; --exito: #25D366; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--gris); margin: 0; padding: 0; color: var(--negro); }
         
-        header { background: var(--rojo); color: white; padding: 25px; text-align: center; border-radius: 0 0 30px 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin: -10px -10px 15px -10px; }
-        
-        /* Buscador (La Lupa) */
-        .search-container { position: sticky; top: 10px; z-index: 1000; margin-bottom: 15px; }
-        .search-input { width: 100%; padding: 15px 20px; border-radius: 50px; border: 2px solid var(--amarillo); box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-size: 16px; outline: none; }
+        header { background: var(--negro); color: var(--oro); padding: 45px 20px; text-align: center; border-bottom: 5px solid var(--oro); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .logo-vp { font-size: 32px; font-weight: bold; letter-spacing: 4px; text-transform: uppercase; }
+        .sub { color: var(--blanco); font-size: 11px; margin-top: 10px; opacity: 0.8; letter-spacing: 2px; }
 
-        .section-title { font-size: 13px; font-weight: bold; color: var(--rojo); text-transform: uppercase; margin: 25px 0 10px; border-left: 5px solid var(--amarillo); padding: 8px 12px; background: #fff; border-radius: 0 15px 15px 0; box-shadow: 2px 2px 5px rgba(0,0,0,0.05); }
+        .container { max-width: 900px; margin: auto; padding: 20px; }
 
-        .card-datos { background: white; padding: 15px; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #eee; }
-        input[type="text"], input[type="tel"] { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 15px; }
-        
-        .menu-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
-        .card-prod { background: white; padding: 12px; border-radius: 18px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-right: 6px solid var(--amarillo); transition: 0.3s; }
-        .info-prod h3 { margin: 0; font-size: 15px; color: var(--oscuro); }
-        .info-prod p { margin: 3px 0 0; font-size: 10px; color: #777; line-height: 1.2; }
-        .precio { color: #2a9d8f; font-weight: bold; font-size: 15px; margin-top: 5px; display: block; }
-        
-        .controles { display: flex; align-items: center; gap: 10px; }
-        .btn-c { background: var(--oscuro); color: white; border: none; width: 35px; height: 35px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 20px; }
-        .cant { font-weight: bold; min-width: 20px; text-align: center; font-size: 18px; color: var(--rojo); }
+        /* Lupa Extractora */
+        .search-box { position: sticky; top: 15px; z-index: 1000; margin-bottom: 30px; }
+        .search-input { width: 100%; padding: 18px 25px; border-radius: 50px; border: 3px solid var(--oro); background: white; font-size: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); outline: none; box-sizing: border-box; }
 
-        .footer-pedido { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 25px rgba(0,0,0,0.15); display: flex; flex-direction: column; gap: 10px; z-index: 1100; border-radius: 25px 25px 0 0; }
-        .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 18px; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .section-title { font-size: 12px; font-weight: bold; color: #555; text-transform: uppercase; margin: 35px 0 15px; border-left: 5px solid var(--oro); padding-left: 15px; letter-spacing: 1.5px; }
+
+        .grid-apps { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
         
-        footer { text-align: center; padding: 30px 10px; font-size: 12px; color: #888; background: #fff; margin-top: 20px; border-top: 1px solid #eee; }
-        .vp-brand { color: #000; font-weight: bold; font-size: 14px; }
+        .app-card { background: var(--blanco); text-decoration: none; color: var(--negro); padding: 15px; border-radius: 20px; display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); transition: 0.3s; border: 1px solid #ddd; position: relative; }
+        .app-card:hover { transform: translateY(-5px); border-color: var(--oro); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
+        
+        .icon { font-size: 30px; background: #fdfdfd; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 18px; border: 1px solid #eee; flex-shrink: 0; }
+        
+        .info h3 { margin: 0; font-size: 15px; font-weight: bold; }
+        .info p { margin: 3px 0 0; font-size: 11px; color: #777; line-height: 1.3; }
+        
+        .status-dot { position: absolute; top: 12px; right: 12px; width: 8px; height: 8px; background: var(--exito); border-radius: 50%; box-shadow: 0 0 5px var(--exito); }
+
+        .admin-float { position: fixed; bottom: 25px; right: 25px; background: var(--negro); color: var(--oro); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 8px 25px rgba(0,0,0,0.3); font-size: 24px; z-index: 2000; border: 2px solid var(--oro); }
+
+        footer { text-align: center; padding: 60px 20px; color: #888; font-size: 12px; }
+        .vp-footer { color: var(--negro); font-weight: bold; font-size: 14px; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>🍗 POLLO HARANA</h1>
-    <small>Sistema de Pedidos en Línea</small>
+    <div class="logo-vp">VIBRAS POSITIVAS</div>
+    <div class="sub">INFRAESTRUCTURA DIGITAL • CAUCASIA</div>
 </header>
 
 <div class="container">
-    <div class="search-container">
-        <input type="text" id="lupa" class="search-input" placeholder="🔍 Buscar plato (ej: churrasco, pollo...)" onkeyup="buscarPlato()">
-    </div>
-
-    <div class="card-datos">
-        <div class="section-title">Datos de Entrega</div>
-        <input type="text" id="nom" placeholder="¿Tu nombre?">
-        <input type="text" id="dir" placeholder="Dirección en Caucasia">
-        <input type="tel" id="tel" placeholder="WhatsApp">
-    </div>
-
-    <div id="menu-completo">
-        </div>
-</div>
-
-<div class="footer-pedido">
-    <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 18px; padding: 0 10px;">
-        <span>VALOR TOTAL:</span>
-        <span id="total-vista" style="color: #2a9d8f;">$ 0</span>
-    </div>
-    <button class="btn-enviar" onclick="enviarPedido()">
-        <span>🚀 ENVIAR PEDIDO A WHATSAPP</span>
-    </button>
-</div>
-
-<footer>
-    <span class="vp-brand">VIBRAS POSITIVAS © 2026</span> <br>
-    Desarrollo de Infraestructura Digital <br>
-    Caucasia, Antioquia - Todos los derechos reservados
-</footer>
-
-<script>
-    const WA_HARANA = "573117700431"; // CAMBIA AL NÚMERO REAL
-    
-    const menu = [
-        { cat: '🍳 DESAYUNOS (Incluyen café o chocolate)', prods: [
-            { id: 1, n: "Desayuno Sencillo", p: 10000 },
-            { id: 2, n: "Desayuno Inglés", p: 12000 },
-            { id: 3, n: "Patacones con Queso", p: 11000 },
-            { id: 4, n: "Patacones con Desmechada", p: 15000 },
-            { id: 5, n: "Calentado", p: 15000 },
-            { id: 6, n: "Cabeza de Gato", p: 15000 }
-        ]},
-        { cat: '🍱 EJECUTIVOS (Sopa y Jugo del día)', prods: [
-            { id: 7, n: "Carne Molida", p: 18900 }, { id: 8, n: "Res", p: 19900 },
-            { id: 9, n: "Cerdo", p: 19900 }, { id: 10, n: "Chicharrón", p: 21900 },
-            { id: 11, n: "Posta", p: 21900 }, { id: 12, n: "Sobrebarriga", p: 21900 },
-            { id: 13, n: "Lengua", p: 21900 }, { id: 14, n: "Desmechada", p: 21900 },
-            { id: 15, n: "Hígado", p: 21900 }, { id: 16, n: "Pechuga", p: 21900 },
-            { id: 17, n: "Pollo Frito", p: 21900 }, { id: 18, n: "Pollo Sudado", p: 21900 }
-        ]},
-        { cat: '🔥 ASADOS (Papa francesa y Ensalada Tropical)', prods: [
-            { id: 19, n: "Cañón de Cerdo", p: 34000 },
-            { id: 20, n: "Churrasco", p: 34000 },
-            { id: 21, n: "Costillas BBQ", p: 34000 },
-            { id: 22, n: "Pechuga a la Plancha", p: 34000 }
-        ]},
-        { cat: '🍗 POLLO ASADO (Con Salsa, Bollo, Papa y Ensalada)', prods: [
-            { id: 23, n: "1 Pollo Completo", p: 57000 },
-            { id: 24, n: "1 Pollo Pernil", p: 53000 },
-            { id: 25, n: "1 Pollo Pechuga", p: 58000 },
-            { id: 26, n: "½ Pollo", p: 31000 },
-            { id: 27, n: "½ Pollo Pechuga", p: 35000 },
-            { id: 28, n: "½ Pollo Pernil", p: 27000 },
-            { id: 29, n: "¼ Pechuga", p: 21000 },
-            { id: 30, n: "¼ Pernil", p: 19000 }
-        ]}
-    ];
-
-    let carrito = {};
-
-    function cargarMenu() {
-        const cont = document.getElementById('menu-completo');
-        menu.forEach(sec => {
-            const t = document.createElement('div');
-            t.className = 'section-title'; t.innerText = sec.cat;
-            cont.appendChild(t);
-            const grid = document.createElement('div');
-            grid.className = 'menu-grid';
-            sec.prods.forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'card-prod';
-                card.innerHTML = `<div class="info-prod"><h3>${p.n}</h3><span class="precio">$ ${p.p.toLocaleString()}</span></div>
-                <div class="controles">
-                    <button class="btn-c" onclick="cambiarCant(${p.id}, -1)">-</button>
-                    <span id="cant-${p.id}" class="cant">0</span>
-                    <button class="btn-c" onclick="cambiarCant(${p.id}, 1)">+</button>
-                </div>`;
-                grid.appendChild(card);
-            });
-            cont.appendChild(grid);
-        });
-    }
-
-    function buscarPlato() {
-        const query = document.getElementById('lupa').value.toLowerCase();
-        const cards = document.getElementsByClassName('card-prod');
-        for (let card of cards) {
-            card.style.display = card.innerText.toLowerCase().includes(query) ? "flex" : "none";
-        }
-    }
-
-    // SEGURIDAD CENTRALIZADA
-    async function checkSecurity() {
-        try {
-            const res = await fetch('https://haroldco45.github.io/vibras-positivas-apps/control-vibras.js');
-            const data = await res.text();
-            if (data.includes('"pollo-harana": "suspendido"')) {
-                document.body.innerHTML = `<div style="text-align:center; padding:100px 20px; background:#000; color:#fff; height:100vh;"><h1>🔒 SUSPENDIDO</h1><p>Contacte a Soporte Vibras Positivas</p></div>`;
-            }
-        } catch(e) {}
-    }
-    checkSecurity();
-
-    function cambiarCant(id, val) {
-        carrito[id] = Math.max(0, (carrito[id] || 0) + val);
-        document.getElementById(`cant-${id}`).innerText = carrito[id];
-        actualizarTotal();
-    }
-
-    function actualizarTotal() {
-        let total = 0;
-        menu.forEach(s => s.prods.forEach(p => { if(carrito[p.id]) total += (p.p * carrito[p.id]); }));
-        document.getElementById('total-vista').innerText = `$ ${total.toLocaleString()}`;
-    }
-
-    function enviarPedido() {
-        const n = document.getElementById('nom').value;
-        const d = document.getElementById('dir').value;
-        const t = document.getElementById('tel').value;
-        if(!n || !d || !t) return alert("Por favor completa tus datos.");
-
-        let r = ""; let tf = 0;
-        menu.forEach(s => s.prods.forEach(p => {
-            if(carrito[p.id] > 0) { r += `• ${carrito[p.id]}x ${p.n}\n`; tf += (p.p * carrito[p.id]); }
-        }));
-        if(!r) return alert("Selecciona tus platos favoritos.");
-
-        const ahora = new Date().toLocaleString("es-CO", { timeZone: "America/Bogota" });
-
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (pos) => abrirWA(n, d, t, r, tf, ahora, `http://googleusercontent.com/maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`),
-                () => abrirWA(n, d, t, r, tf, ahora, "No enviada"),
-                { timeout: 7000 }
-            );
-        } else { abrirWA(n, d, t, r, tf, ahora, "GPS no soportado"); }
-    }
-
-    function abrirWA(n, d, t, r, total, fecha, gps) {
-        let msg = `*🍗 POLLO HARANA - PEDIDO*\n`;
-        msg += `--------------------------\n`;
-        msg += `👤 *CLIENTE:* ${n}\n📍 *DIR:* ${d}\n📞 *TEL:* ${t}\n`;
-        msg += `--------------------------\n`;
-        msg += `🛒 *PRODUCTOS:*\n${r}`;
-        msg += `💰 *TOTAL: $ ${total.toLocaleString()}*\n`;
-        msg += `--------------------------\n`;
-        msg += `📅 *FECHA:* ${fecha}\n`;
-        msg += `📍 *GPS:* ${gps}\n\n`;
-        msg += `_VIBRAS POSITIVAS © 2026_`;
-        window.open(`https://wa.me/${WA_HARANA}?text=${encodeURIComponent(msg)}`, '_blank');
-    }
-    
-    window.onload = cargarMenu;
-</script>
-</body>
-</html>
