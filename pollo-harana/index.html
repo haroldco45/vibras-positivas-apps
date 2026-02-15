@@ -3,149 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pollo Harana - Menú</title>
+    <title>Pollo Harana - Pedidos</title>
     <style>
-        :root {
-            --rojo-principal: #e63946;
-            --amarillo-suave: #fffdf2;
-            --gris-oscuro: #2b2d42;
-            --dorado: #d4a373;
-        }
+        :root { --rojo: #e63946; --amarillo: #ffb703; --oscuro: #1d3557; --claro: #f1faee; --exito: #25D366; }
+        body { font-family: 'Arial', sans-serif; background-color: #f8f9fa; margin: 0; padding: 10px; color: var(--oscuro); padding-bottom: 100px; }
+        
+        /* Header Profesional */
+        header { background: var(--rojo); color: white; padding: 25px; text-align: center; border-radius: 0 0 30px 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin: -10px -10px 20px -10px; }
+        header h1 { margin: 0; font-size: 24px; letter-spacing: 1px; }
+        
+        .section-title { font-size: 14px; font-weight: bold; color: var(--rojo); text-transform: uppercase; margin: 20px 0 10px; border-left: 4px solid var(--amarillo); padding-left: 10px; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--amarillo-suave);
-            color: var(--gris-oscuro);
-            margin: 0;
-            padding: 20px;
-        }
+        /* Datos Cliente */
+        .card-datos { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
+        
+        /* Menú */
+        .menu-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        .card-prod { background: white; padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-right: 4px solid var(--amarillo); }
+        .info-prod h3 { margin: 0; font-size: 16px; color: var(--oscuro); }
+        .info-prod p { margin: 5px 0 0; font-size: 12px; color: #666; }
+        .precio { color: #2a9d8f; font-weight: bold; display: block; margin-top: 5px; }
+        
+        /* Controles Cantidad */
+        .controles { display: flex; align-items: center; gap: 10px; }
+        .btn-c { background: var(--oscuro); color: white; border: none; width: 30px; height: 30px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .cant { font-weight: bold; min-width: 20px; text-align: center; }
 
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        header {
-            text-align: center;
-            border-bottom: 3px solid var(--rojo-principal);
-            margin-bottom: 30px;
-            padding-bottom: 10px;
-        }
-
-        h1 { color: var(--rojo-principal); margin: 0; text-transform: uppercase; }
-        h2 { 
-            background: var(--rojo-principal); 
-            color: white; 
-            padding: 10px; 
-            border-radius: 5px; 
-            font-size: 1.4rem;
-            margin-top: 40px;
-        }
-
-        .menu-section { margin-bottom: 30px; }
-
-        .item {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 10px;
-            border-bottom: 1px dotted #ccc;
-            padding-bottom: 5px;
-        }
-
-        .item-nombre { font-weight: bold; flex: 1; }
-        .item-precio { font-weight: bold; color: #2a9d8f; margin-left: 10px; }
-
-        .nota {
-            font-style: italic;
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 5px;
-            display: block;
-        }
-
-        .pollo-extras {
-            background: #f8f9fa;
-            padding: 15px;
-            border-left: 5px solid var(--dorado);
-            margin-top: 15px;
-        }
-
-        ul { padding-left: 20px; }
-        li { margin-bottom: 5px; }
-
-        @media (max-width: 480px) {
-            .container { padding: 15px; }
-            h2 { font-size: 1.2rem; }
-        }
+        /* Footer Flotante de Pedido */
+        .footer-pedido { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 10px; z-index: 100; border-radius: 20px 20px 0 0; }
+        .btn-enviar { background: var(--exito); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        
+        .hidden { display: none !important; }
+        footer { text-align: center; font-size: 12px; margin-top: 30px; color: #888; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>POLLO HARANA</h1>
-        <p>Sabor que encanta</p>
-    </header>
+<header>
+    <h1>🍗 POLLO HARANA</h1>
+    <small>Tradición en sabor - Caucasia</small>
+</header>
 
-    <section class="menu-section">
-        <h2>🍳 Desayunos</h2>
-        <div class="item"><span class="item-nombre">Desayuno sencillo</span><span class="item-precio">$10.000</span></div>
-        <div class="item"><span class="item-nombre">Desayuno ingles</span><span class="item-precio">$12.000</span></div>
-        <div class="item"><span class="item-nombre">Patacones con queso</span><span class="item-precio">$11.000</span></div>
-        <div class="item"><span class="item-nombre">Patacones con desmechada</span><span class="item-precio">$15.000</span></div>
-        <div class="item"><span class="item-nombre">Calentado</span><span class="item-precio">$15.000</span></div>
-        <div class="item"><span class="item-nombre">Cabeza de gato</span><span class="item-precio">$15.000</span></div>
-        <span class="nota">* Incluyen café de leche o chocolate</span>
-    </section>
-
-    <section class="menu-section">
-        <h2>🍲 Ejecutivos</h2>
-        <div class="item"><span class="item-nombre">Carne molida</span><span class="item-precio">$18.900</span></div>
-        <div class="item"><span class="item-nombre">Res</span><span class="item-precio">$19.900</span></div>
-        <div class="item"><span class="item-nombre">Cerdo</span><span class="item-precio">$19.900</span></div>
-        <div class="item"><span class="item-nombre">Chicharrón</span><span class="item-precio">$21.900</span></div>
-        <div class="item"><span class="item-nombre">Posta / Sobrebarriga / Lengua</span><span class="item-precio">$21.900</span></div>
-        <div class="item"><span class="item-nombre">Desmechada / Hígado</span><span class="item-precio">$21.900</span></div>
-        <div class="item"><span class="item-nombre">Pechuga / Pollo frito / Pollo sudado</span><span class="item-precio">$21.900</span></div>
-        <span class="nota">* El almuerzo incluye sopa del día y jugo</span>
-    </section>
-
-    <section class="menu-section">
-        <h2>🔥 Asados</h2>
-        <div class="item"><span class="item-nombre">Cañón de cerdo</span><span class="item-precio">$34.000</span></div>
-        <div class="item"><span class="item-nombre">Churrasco</span><span class="item-precio">$34.000</span></div>
-        <div class="item"><span class="item-nombre">Costillas BBQ</span><span class="item-precio">$34.000</span></div>
-        <div class="item"><span class="item-nombre">Pechuga a la plancha</span><span class="item-precio">$34.000</span></div>
-        <span class="nota">* Acompañado de papa francesa y ensalada tropical</span>
-    </section>
-
-    <section class="menu-section">
-        <h2>🍗 Pollo Asado</h2>
-        <div class="item"><span class="item-nombre">1 Pollo</span><span class="item-precio">$57.000</span></div>
-        <div class="item"><span class="item-nombre">1 Pollo pernil</span><span class="item-precio">$53.000</span></div>
-        <div class="item"><span class="item-nombre">1 Pollo pechuga</span><span class="item-precio">$58.000</span></div>
-        <div class="item"><span class="item-nombre">½ Pollo</span><span class="item-precio">$31.000</span></div>
-        <div class="item"><span class="item-nombre">½ Pollo pechuga</span><span class="item-precio">$35.000</span></div>
-        <div class="item"><span class="item-nombre">½ Pollo pernil</span><span class="item-precio">$27.000</span></div>
-        <div class="item"><span class="item-nombre">¼ Pechuga</span><span class="item-precio">$21.000</span></div>
-        <div class="item"><span class="item-nombre">¼ Pernil</span><span class="item-precio">$19.000</span></div>
-        
-        <div class="pollo-extras">
-            <strong>El pollo va acompañado de:</strong>
-            <ul>
-                <li>Salsa de ajo</li>
-                <li>Bollo blanco</li>
-                <li>Ensalada verde con vinagreta</li>
-                <li>Papa cocida</li>
-            </ul>
-        </div>
-    </section>
+<div class="card-datos">
+    <div class="section-title">Datos de Entrega</div>
+    <div id="form-datos">
+        <input type="text" id="nom" placeholder="Tu nombre">
+        <input type="text" id="dir" placeholder="Dirección de domicilio">
+        <input type="tel" id="tel" placeholder="Tu WhatsApp">
+    </div>
 </div>
 
+<div class="section-title">Nuestro Menú</div>
+<div class="menu-grid" id="contenedor-menu">
+    </div>
+
+<div class="footer-pedido">
+    <div style="display: flex; justify-content: space-between; font-weight: bold; padding: 0 5px;">
+        <span>Total Pedido:</span>
+        <span id="total-vista">$ 0</span>
+    </div>
+    <button class="btn-enviar" onclick="enviarPedido()">
+        <span>🚀 ENVIAR POR WHATSAPP</span>
+    </button>
+</div>
+
+<footer>
+    Infraestructura Digital por <br>
+    <b>VIBRAS POSITIVAS © 2026</b>
+</footer>
+
+<script>
+    const WA_HARANA = "573117700431"; // Harold, coloca el número de Pollo Harana
+    
+    // Lista de productos
+    const productos = [
+        { id: 1, cat: 'desayuno', n: "Desayuno Sencillo", p: 10000, d: "Café/Chocolate incluido" },
+        { id: 2, cat: 'desayuno', n: "Calentado", p: 15000, d: "Tradición paisa" },
+        { id: 3, cat: 'ejecutivo', n: "Ejecutivo Res/Cerdo", p: 19900, d: "Sopa y jugo incluido" },
+        { id: 4, cat: 'ejecutivo', n: "Pechuga / Pollo Frito", p: 21900, d: "Sopa y jugo incluido" },
+        { id: 5, cat: 'asado', n: "Churrasco", p: 34000, d: "Papa francesa y ensalada" },
+        { id: 6, cat: 'pollo', n: "Pollo Completo", p: 57000, d: "Salsa ajo, bollo, papa, ensalada" },
+        { id: 7, cat: 'pollo', n: "1/2 Pollo Asado", p: 30000, d: "Con acompañamientos" }
+    ];
+
+    let carrito = {};
+
+    // 1. CONTROL DE SEGURIDAD VIBRAS POSITIVAS
+    async function verificarSuscripcion() {
+        try {
+            const res = await fetch('https://haroldco45.github.io/vibras-positivas-apps/control-vibras.js');
+            const texto = await res.text();
+            if (texto.includes('"pollo-harana": "suspendido"')) {
+                document.body.innerHTML = `<div style="text-align:center; padding:50px; background:#000; color:#fff; height:100vh;"><h1>🔒 SERVICIO SUSPENDIDO</h1><p>Contacte a Harold de Vibras Positivas</p></div>`;
+            }
+        } catch(e) {}
+    }
+    verificarSuscripcion();
+
+    // Cargar Menú
+    function cargarMenu() {
+        const contenedor = document.getElementById('contenedor-menu');
+        productos.forEach(prod => {
+            const card = document.createElement('div');
+            card.className = 'card-prod';
+            card.innerHTML = `
+                <div class="info-prod">
+                    <h3>${prod.n}</h3>
+                    <p>${prod.d}</p>
+                    <span class="precio">$ ${prod.p.toLocaleString()}</span>
+                </div>
+                <div class="controles">
+                    <button class="btn-c" onclick="cambiarCant(${prod.id}, -1)">-</button>
+                    <span id="cant-${prod.id}" class="cant">0</span>
+                    <button class="btn-c" onclick="cambiarCant(${prod.id}, 1)">+</button>
+                </div>
+            `;
+            contenedor.appendChild(card);
+        });
+    }
+
+    function cambiarCant(id, val) {
+        if(!carrito[id]) carrito[id] = 0;
+        carrito[id] = Math.max(0, carrito[id] + val);
+        document.getElementById(`cant-${id}`).innerText = carrito[id];
+        actualizarTotal();
+    }
+
+    function actualizarTotal() {
+        let total = 0;
+        productos.forEach(p => {
+            if(carrito[p.id]) total += (p.p * carrito[p.id]);
+        });
+        document.getElementById('total-vista').innerText = `$ ${total.toLocaleString()}`;
+    }
+
+    window.onload = cargarMenu;
+
+    function enviarPedido() {
+        const nom = document.getElementById('nom').value;
+        const dir = document.getElementById('dir').value;
+        const tel = document.getElementById('tel').value;
+
+        if(!nom || !dir || !tel) return alert("Por favor completa tus datos de entrega.");
+
+        let resumen = "";
+        let totalFinal = 0;
+        productos.forEach(p => {
+            if(carrito[p.id] > 0) {
+                resumen += `• ${carrito[p.id]}x ${p.n}\n`;
+                totalFinal += (p.p * carrito[p.id]);
+            }
+        });
+
+        if(!resumen) return alert("Selecciona algo rico del menú.");
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => abrirWA(nom, dir, tel, resumen, totalFinal, `http://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`),
+                () => abrirWA(nom, dir, tel, resumen, totalFinal, "No compartida"),
+                { timeout: 7000 }
+            );
+        } else { abrirWA(nom, dir, tel, resumen, totalFinal, "GPS no soportado"); }
+    }
+
+    function abrirWA(n, d, t, r, total, gps) {
+        let msg = `*🍗 POLLO HARANA - NUEVO PEDIDO*\n`;
+        msg += `--------------------------\n`;
+        msg += `👤 *CLIENTE:* ${n}\n📍 *DIR:* ${d}\n📞 *TEL:* ${t}\n`;
+        msg += `--------------------------\n`;
+        msg += `🛒 *DETALLE:*\n${r}`;
+        msg += `💰 *TOTAL A PAGAR: $ ${total.toLocaleString()}*\n`;
+        msg += `--------------------------\n`;
+        msg += `📍 *UBICACIÓN GPS:* ${gps}\n\n`;
+        msg += `_App por Vibras Positivas_`;
+        
+        window.open(`https://wa.me/${WA_HARANA}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+</script>
 </body>
 </html>
