@@ -73,7 +73,7 @@
 
         <button class="btn btn-add" onclick="agregarFila()">➕ AGREGAR OTRO ARTÍCULO</button>
 
-        <textarea id="obs" rows="2" placeholder="Notas: (Ej: Que el aguacate esté maduro, traer vueltas de $50 mil)"></textarea>
+        <textarea id="obs" rows="2" placeholder="Notas: (Ej: Traer vueltas de $50 mil)"></textarea>
 
         <button class="btn btn-whatsapp" onclick="capturarUbicacion()">
             <span>🛰️ ENVIAR PEDIDO CON GPS</span>
@@ -154,7 +154,7 @@
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                (pos) => enviarWhatsApp(d, `http://maps.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`),
+                (pos) => enviarWhatsApp(d, `http://googleusercontent.com/maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`),
                 () => enviarWhatsApp(d, "Ubicación no compartida"),
                 { timeout: 7000 }
             );
