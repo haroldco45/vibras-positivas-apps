@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paula Areiza - Catálogo de Ventas</title>
+    <style>
+        :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris-claro: #f4f4f4; --exito: #25D366; }
+        body { font-family: 'Arial', sans-serif; background-color: var(--gris-claro); margin: 0; padding: 15px; }
+        .card { max-width: 500px; margin: auto; background: var(--blanco); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #ddd; }
+        header { background: var(--secundario); color: var(--primario); padding: 25px; text-align: center; border-bottom: 4px solid var(--primario); }
+        .logo-area { font-size: 22px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        .content { padding: 20px; }
+        .section-title { font-size: 14px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid var(--primario); display: inline-block; }
+        
+        /* Estructura de pedido dinámico */
+        .fila-pedido { display: grid; grid-template-columns: 30px 2fr 1fr 1fr; gap: 5px; margin-bottom: 8px; align-items: center; }
+        .num-item { font-size: 14px; font-weight: bold; color: var(--secundario); text-align: center; }
+        
+        input, select, textarea { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ccc; border-radius: 10px; font-size: 15px; box-sizing: border-box; }
+        .head-tabla { font-size: 10px; color: #999; font-weight: bold; text-align: center; }
+        
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 10px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-gold { background: var(--primario); color: var(--secundario); }
+        .btn-add { background: #f9f9f9; color: #333; font-size: 13px; padding: 12px; border: 1px dashed #bbb; margin-top: 5px; }
+        .btn-whatsapp { background: var(--exito); color: white; margin-top: 15px; }
+        .hidden { display: none !important; }
+        
+        footer { text-align: center; padding: 25px; font-size: 13px; color: #555; background: #fff; border-top: 1px solid #eee; }
+        .vp-brand { color: var(--secundario); font-weight: bold; text-decoration: none; font-size: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <header>
+        <div class="logo-area">PAULA AREIZA</div>
+        <div style="font-size: 11px; color: white; margin-top: 5px;">ZAPATOS • ROPA • VEHÍCULOS</div>
+    </header>
+
+    <div class="content">
+        <div id="seccion-cliente">
+            <div class="section-title">Datos del Comprador</div>
+            <div id="form-datos">
+                <input type="text" id="nom" placeholder="¿Cuál es tu nombre?">
+                <input type="text" id="dir" placeholder="Dirección de entrega">
+                <input type="tel" id="tel" placeholder="WhatsApp de contacto">
+                <button class="btn btn-gold" onclick="guardarInfo()">GUARDAR MIS DATOS</button>
+            </div>
+            <div id="info-guardada" class="hidden">
+                <p id="resumen-cliente" style="font-size: 14px; background: #fffdf2; padding: 15px; border-radius: 10px; border-left: 5px solid var(--primario); white-space: pre-wrap;"></p>
+                <button onclick="editarInfo()" style="font-size: 11px; color: #007bff; border: none; background: none; cursor: pointer; text-decoration: underline;">✏️ Modificar mis datos</button>
+            </div>
+        </div>
+
+        <hr style="opacity: 0.1; margin: 25px 0;">
+
+        <div class="section-title">Artículos de Interés</div>
+        <div class="fila-pedido head-tabla">
+            <div>#</div>
+            <div>PRODUCTO</div>
+            <div>TALLA/REF</div>
+            <div>CANT.</div>
+        </div>
+
+        <div id="contenedor-filas">
+            <div class="fila-pedido">
+                <div class="num-item">1.</div>
+                <input type="text" class="p-nombre" placeholder="¿Qué viste en el catálogo?">
+                <input type="text" class="p-medida" placeholder="Talla o Modelo">
+                <input type="number" class="p-cantidad" value="1">
+            </div>
+        </div>
+
+        <button class="btn btn-add" onclick="agregarFila()">➕ AGREGAR OTRO ARTÍCULO</button>
+
+        <textarea id="obs" rows="2" placeholder="Notas: (Ej: Zapatos color blanco, Moto para ver mañana)"></textarea>
+
+        <button class="btn btn-whatsapp" onclick="capturarUbicacion()">
+            <span>🛰️ ENVIAR CONSULTA POR WHATSAPP</span>
+        </button>
+    </div>
+
+    <footer>
+        Desarrollado por <br>
+        <span class="vp-brand">VIBRAS POSITIVAS</span> <br>
+        Derechos de Autor © 2026
+    </footer>
+</div>
+
+<script>
+    const WHATSAPP_PAULA = "573117700431"; // Harold, coloca el número de Paula aquí
+    let contadorFilas = 1;
+
+    function agregarFila() {
+        contadorFilas++;
+        const contenedor = document.getElementById('contenedor-filas');
+        const nuevaFila = document.createElement('div');
+        nuevaFila.className = 'fila-pedido';
+        nuevaFila.innerHTML = `
+            <div class="num-item">${contadorFilas}.</div>
+            <input type="text" class="p-nombre">
+            <input type="text" class="p-medida">
+            <input type="number" class="p-cantidad" value="1">
+        `;
+        contenedor.appendChild(nuevaFila);
+    }
+
+    function guardarInfo() {
+        const datos = { n: document.getElementById('nom').value, d: document.getElementById('dir').value, t: document.getElementById('tel').value };
+        if(datos.n && datos.d && datos.t) {
+            localStorage.setItem('vp_paula_data', JSON.stringify(datos));
+            mostrarInfo();
+        } else { alert("Por favor completa los datos de contacto."); }
+    }
+
+    function mostrarInfo() {
+        const guardado = JSON.parse(localStorage.getItem('vp_paula_data'));
+        if(guardado) {
+            document.getElementById('form-datos').classList.add('hidden');
+            document.getElementById('info-guardada').classList.remove('hidden');
+            document.getElementById('resumen-cliente').innerText = `Comprador: ${guardado.n}\nUbicación: ${guardado.d}\nTel: ${guardado.t}`;
+        }
+    }
+
+    function editarInfo() {
+        document.getElementById('form-datos').classList.remove('hidden');
+        document.getElementById('info-guardada').classList.add('hidden');
+    }
+
+    window.onload = mostrarInfo;
+
+    function capturarUbicacion() {
+        const datos = JSON.parse(localStorage.getItem('vp_paula_data'));
+        if(!datos) return alert("Primero guarda tus datos arriba.");
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => enviarWhatsApp(datos, `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`),
+                () => enviarWhatsApp(datos, "No compartida"),
+                { timeout: 7000 }
+            );
+        } else { enviarWhatsApp(datos, "No soportado"); }
+    }
+
+    function enviarWhatsApp(c, gps) {
+        let pedidoTexto = "";
+        const nombres = document.querySelectorAll('.p-nombre');
+        const medidas = document.querySelectorAll('.p-medida');
+        const cantidades = document.querySelectorAll('.p-cantidad');
+
+        let iReal = 1;
+        nombres.forEach((input, i) => {
+            if(input.value.trim() !== "") {
+                pedidoTexto += `${iReal}. ${input.value} [Ref: ${medidas[i].value || 'Ver foto'}]: ${cantidades[i].value}\n`;
+                iReal++;
+            }
+        });
+
+        if(!pedidoTexto) return alert("Escribe qué producto te interesa.");
+
+        let mensaje = `*PAULA AREIZA - NUEVA CONSULTA*\n`;
+        mensaje += `--------------------------\n`;
+        mensaje += `👤 *COMPRADOR:* ${c.n}\n📍 *DIR:* ${c.d}\n📞 *TEL:* ${c.t}\n`;
+        mensaje += `--------------------------\n`;
+        mensaje += `🛒 *INTERESADO EN:*\n${pedidoTexto}`;
+        
+        const obs = document.getElementById('obs').value;
+        if(obs) mensaje += `\n📝 *NOTAS:* ${obs}\n`;
+        
+        mensaje += `--------------------------\n`;
+        mensaje += `📍 *UBICACIÓN:* \n${gps}\n\n`;
+        mensaje += `_App Desarrollada por Vibras Positivas_`;
+
+        window.open(`https://wa.me/${WHATSAPP_PAULA}?text=${encodeURIComponent(mensaje)}`, '_blank');
+    }
+</script>
+</body>
+</html>
