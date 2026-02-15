@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vibras Positivas - Apps Caucasia</title>
     <style>
-        :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris-claro: #f4f4f4; }
+        :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris: #f4f4f4; }
         body { font-family: 'Arial', sans-serif; background-color: var(--blanco); margin: 0; padding: 0; text-align: center; }
         
         /* Header Negro y Oro */
-        header { background: var(--secundario); color: var(--primario); padding: 40px 20px; border-bottom: 5px solid var(--primario); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        h1 { margin: 0; font-size: 32px; letter-spacing: 2px; text-transform: uppercase; }
+        header { background: var(--secundario); color: var(--primario); padding: 35px 20px; border-bottom: 5px solid var(--primario); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        h1 { margin: 0; font-size: 28px; letter-spacing: 2px; text-transform: uppercase; }
         .subtitle { font-size: 11px; color: white; margin-top: 5px; letter-spacing: 1px; }
 
-        .container { max-width: 500px; margin: auto; padding: 20px; }
+        .container { max-width: 500px; margin: auto; padding: 15px; }
 
         /* Lupa de Búsqueda */
-        .search-box { width: 100%; padding: 15px; margin-bottom: 25px; border: 2px solid var(--primario); border-radius: 50px; font-size: 16px; outline: none; box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .search-box { width: 100%; padding: 15px; margin: 20px 0; border: 2px solid var(--primario); border-radius: 50px; font-size: 16px; outline: none; box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
         /* Estilo de los Botones (Cajones Amarillos) */
         .btn-cajon { 
@@ -28,18 +28,19 @@
             color: var(--secundario); 
             text-decoration: none; 
             font-weight: bold; 
-            font-size: 16px; 
+            font-size: 15px; 
             border-radius: 15px; 
             border: 2px solid var(--secundario); 
             box-shadow: 0 4px 0px var(--secundario);
             transition: 0.2s;
             box-sizing: border-box;
+            text-transform: uppercase;
         }
         .btn-cajon:active { transform: translateY(4px); box-shadow: none; }
 
-        .categoria { font-size: 14px; font-weight: bold; color: #888; text-transform: uppercase; margin: 25px 0 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+        .categoria { font-size: 13px; font-weight: bold; color: #555; text-transform: uppercase; margin: 30px 0 10px; border-left: 5px solid var(--primario); padding-left: 10px; text-align: left; }
 
-        footer { text-align: center; padding: 40px 20px; font-size: 12px; color: #888; line-height: 1.6; }
+        footer { text-align: center; padding: 40px 20px; font-size: 12px; color: #888; border-top: 1px solid #eee; margin-top: 20px; }
         .vp-brand { color: var(--secundario); font-weight: bold; font-size: 14px; }
     </style>
 </head>
@@ -51,50 +52,51 @@
 </header>
 
 <div class="container">
-    <input type="text" id="lupa" class="search-box" placeholder="🔍 Buscar negocio..." onkeyup="filtrarApps()">
+    <input type="text" id="lupa" class="search-box" placeholder="🔍 Buscar cliente o categoría..." onkeyup="filtrarApps()">
 
     <div id="lista-apps">
         <div class="categoria">Restaurantes</div>
-        <a href="./pollo-harana/index.html" class="btn-cajon">🍗 POLLO HARANA</a>
-        <a href="./estos-burgers/index.html" class="btn-cajon">🍔 ESTOS BURGERS</a>
-        <a href="./deleite-saludable/index.html" class="btn-cajon">🥗 DELEITE SALUDABLE</a>
+        <a href="./pollo-harana/index.html" class="btn-cajon">🍗 Pollo Harana</a>
+        <a href="./estos-burgers/index.html" class="btn-cajon">🍔 Estos Burgers</a>
+        <a href="./deleite-saludable/index.html" class="btn-cajon">🥗 Deleite Saludable</a>
 
         <div class="categoria">Tiendas y Mercados</div>
-        <a href="./tienda-azul.html" class="btn-cajon">🔵 TIENDA AZUL</a>
-        <a href="./tienda-mall-el-triangulo/index.html" class="btn-cajon">🏪 TIENDA MALL EL TRIÁNGULO</a>
-        <a href="./mercafacil/index.html" class="btn-cajon">🛒 MERCAFÁCIL</a>
-        <a href="./fruver-lacentral/index.html" class="btn-cajon">🍏 FRUVER LA CENTRAL</a>
+        <a href="./tienda-azul.html" class="btn-cajon">🔵 Tienda Azul</a>
+        <a href="./tienda-mall-el-triangulo/index.html" class="btn-cajon">🏪 Mall El Triángulo</a>
+        <a href="./mercafacil/index.html" class="btn-cajon">🛒 Mercafácil</a>
+        <a href="./fruver-lacentral/index.html" class="btn-cajon">🍏 Fruver La Central</a>
 
         <div class="categoria">Bienestar y Belleza</div>
-        <a href="./bienestar-y-belleza-Yeraldin.html" class="btn-cajon">✨ YERALDIN BIENESTAR</a>
+        <a href="./bienestar-y-belleza-Yeraldin.html" class="btn-cajon">✨ Yeraldin Bienestar</a>
 
         <div class="categoria">Servicios</div>
-        <a href="./alejo-mecanicomoto-movil.html" class="btn-cajon">🛠️ ALEJO MECÁNICO MOTO-MÓVIL</a>
-        <a href="./ferreteria-la-hacienda/index.html" class="btn-cajon">🔨 FERRETERÍA LA HACIENDA</a>
-        <a href="./ventas-paula-areiza.html" class="btn-cajon">👠 VENTAS PAULA AREIZA</a>
+        <a href="./alejo-mecanicomoto-movil.html" class="btn-cajon">🛠️ Alejo Mecánico</a>
+        <a href="./ferreteria-la-hacienda/index.html" class="btn-cajon">🔨 Ferretería Hacienda</a>
+        <a href="./atarraya.html" class="btn-cajon">🎣 Atarrayas & Hamacas</a>
     </div>
 </div>
 
 <footer>
-    Desarrollado por <br>
+    Desarrollado y Administrado por <br>
     <b>ASETEC HM © 2026</b> <br>
-    <span class="vp-brand">VIBRAS POSITIVAS</span>
+    <span class="vp-brand">VIBRAS POSITIVAS</span> <br>
+    Caucasia, Antioquia
 </footer>
 
 <script>
-    // Función de la Lupa Extractora
     function filtrarApps() {
         const query = document.getElementById('lupa').value.toLowerCase();
         const botones = document.getElementsByClassName('btn-cajon');
         const categorias = document.getElementsByClassName('categoria');
         
+        // Filtrar botones
         for (let btn of botones) {
             btn.style.display = btn.innerText.toLowerCase().includes(query) ? "block" : "none";
         }
         
-        // Ocultar categorías si no hay búsqueda
+        // Ocultar títulos de categorías si hay búsqueda activa para no estorbar
         for (let cat of categorias) {
-            cat.style.display = query === "" ? "block" : "none";
+            cat.style.display = (query === "") ? "block" : "none";
         }
     }
 </script>
