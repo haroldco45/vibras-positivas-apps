@@ -3,88 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibras Positivas - Apps Caucasia</title>
+    <title>Pollo Harana - Pedidos</title>
     <style>
-        :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris-claro: #f4f4f4; }
-        body { font-family: 'Arial', sans-serif; background-color: var(--gris-claro); margin: 0; padding: 15px; text-align: center; }
-        .container { max-width: 500px; margin: auto; background: var(--blanco); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
-        header { background: var(--secundario); color: var(--primario); padding: 30px; border-bottom: 5px solid var(--primario); }
-        h1 { margin: 0; font-size: 26px; letter-spacing: 2px; text-transform: uppercase; }
-        .subtitle { font-size: 11px; color: white; margin-top: 5px; letter-spacing: 1px; }
-        .content { padding: 20px; }
+        :root { --rojo: #e63946; --amarillo: #ffb703; --oscuro: #1d3557; --claro: #f1faee; --exito: #25D366; }
+        body { font-family: 'Arial', sans-serif; background-color: #f8f9fa; margin: 0; padding: 10px; color: var(--oscuro); padding-bottom: 130px; }
         
-        .categoria { font-size: 14px; font-weight: bold; color: #888; text-transform: uppercase; margin: 20px 0 10px; border-bottom: 1px solid #ddd; padding-bottom: 5px; text-align: left; }
+        header { background: var(--rojo); color: white; padding: 25px; text-align: center; border-radius: 0 0 30px 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin: -10px -10px 20px -10px; }
         
-        .btn-cajon { 
-            display: block; width: 100%; padding: 18px; margin: 12px 0; 
-            background: var(--primario); color: var(--secundario); 
-            text-decoration: none; font-weight: bold; font-size: 16px; 
-            border-radius: 15px; border: 2px solid var(--secundario);
-            transition: 0.3s; box-sizing: border-box; text-transform: uppercase;
-        }
-        .btn-cajon:hover { transform: scale(1.03); background: #e6c200; }
-        
-        /* Estilo especial para tus herramientas de administrador */
-        .btn-admin { background: #000; color: #FFD700; border: 2px solid #FFD700; }
+        .section-title { font-size: 14px; font-weight: bold; color: var(--rojo); text-transform: uppercase; margin: 25px 0 10px; border-left: 4px solid var(--amarillo); padding-left: 10px; background: #fff; padding: 8px 10px; border-radius: 0 10px 10px 0; box-shadow: 2px 2px 5px rgba(0,0,0,0.05); }
 
-        footer { padding: 25px; font-size: 12px; color: #888; line-height: 1.6; }
-        .vp-brand { color: var(--secundario); font-weight: bold; text-decoration: none; font-size: 15px; }
+        .card-datos { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #eee; }
+        input { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 15px; }
+        
+        .menu-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .card-prod { background: white; padding: 12px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-right: 5px solid var(--amarillo); }
+        .info-prod h3 { margin: 0; font-size: 15px; color: var(--oscuro); }
+        .info-prod p { margin: 3px 0 0; font-size: 11px; color: #777; line-height: 1.2; }
+        .precio { color: #2a9d8f; font-weight: bold; font-size: 14px; margin-top: 4px; display: block; }
+        
+        .controles { display: flex; align-items: center; gap: 8px; }
+        .btn-c { background: var(--oscuro); color: white; border: none; width: 34px; height: 34px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 18px; }
+        .cant { font-weight: bold; min-width: 20px; text-align: center; font-size: 17px; color: var(--rojo); }
+
+        .footer-pedido { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 25px rgba(0,0,0,0.15); display: flex; flex-direction: column; gap: 10px; z-index: 100; border-radius: 25px 25px 0 0; }
+        .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 15px; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        
+        footer { text-align: center; padding: 30px 10px; font-size: 12px; color: #888; border-top: 1px solid #eee; background: #fff; margin: 20px -10px -10px -10px; }
+        .vp-brand { color: #000; font-weight: bold; font-size: 14px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>VIBRAS POSITIVAS</h1>
-        <div class="subtitle">INFRAESTRUCTURA DIGITAL DE CAUCASIA</div>
-    </header>
+<header>
+    <h1>🍗 POLLO HARANA</h1>
+    <small>Sabor Tradicional en Caucasia</small>
+</header>
 
-    <div class="content">
-        <div class="categoria">⭐ Mi Empresa y Herramientas</div>
-        <a href="./distrileco/" class="btn-cajon">🌾 DISTRILECO (SUPERARROZ)</a>
-        <a href="./creadoraqr/" class="btn-cajon btn-admin">🖼️ CREADOR DE QR</a>
-
-        <div class="categoria">🛒 Tiendas y Comercio</div>
-        <a href="./distribuciones-jm/" class="btn-cajon">📦 DISTRIBUCIONES JM</a>
-        <a href="./mercafacil/" class="btn-cajon">🏪 MERCAFÁCIL</a>
-        <a href="./deleitesaludable" class="btn-cajon">🥗 DELEITE SALUDABLE</a>
-        <a href="./drogueria-inglesa" class="btn-cajon">➕ DROGUERÍA INGLESA</a>
-        <a href="./bodega-la-central/" class="btn-cajon">🏬 BODEGA LA CENTRAL</a>
-        <a href="./fruver-lacentral/" class="btn-cajon">🍏 FRUVER LA CENTRAL</a>
-        <a href="./tienda-cielo/" class="btn-cajon">🏠 TIENDA CIELO</a>
-        <a href="./tienda-yire/" class="btn-cajon">🛍️ TIENDA YIRE</a>
-        <a href="./miniprecios/" class="btn-cajon">💰 MINIPRECIOS</a>
-
-        <div class="categoria">🛠️ Servicios y Productos</div>
-        <a href="./atarraya" class="btn-cajon">🎣 ATARRAYAS Y HAMACAS</a>
-        <a href="./sotracor-caucasia/" class="btn-cajon">🚌 SOTRACOR CAUCASIA</a>
-        <a href="./labarberia/" class="btn-cajon">💈 LA BARBERÍA</a>
-        <a href="./odontologia--estetica-bocas/" class="btn-cajon">🦷 ODON. ESTÉTICA BOCAS</a>
-        <a href="./celumaster/" class="btn-cajon">📱 CELUMASTER</a>
-        <a href="./edogra-distribuciones/" class="btn-cajon">🚚 EDOGRA DISTRIBUCIONES</a>
-        <a href="./inversiones-charlotte/" class="btn-cajon">📈 INVERSIONES CHARLOTTE</a>
-        <a href="./luzmar/" class="btn-cajon">✨ LUZMAR</a>
-        <a href="./nelson/" class="btn-cajon">👤 NELSON</a>
-        <a href="./santuariolaprimera/" class="btn-cajon">🙏 SANTUARIO LA PRIMERA</a>
-        <a href="./estos-burgers" class="btn-cajon">🍔 ESTOS BURGERS</a>
-        <a href="./paula-areiza" class="btn-cajon">👠 VENTAS PAULA AREIZA</a>
-        <a href="./ferreteria-la-hacienda/" class="btn-cajon">🔨 FERRETERÍA LA HACIENDA</a>
-        <a href="./alejo-mecanicomoto-movil" class="btn-cajon">🛠️ ALEJO MECÁNICO MOTO-MÓVIL</a>
-        <a href="./tienda-mall-el-triangulo/" class="btn-cajon">🏪 TIENDA MALL EL TRIÁNGULO</a>
-        <a href="./tienda-azul" class="btn-cajon">🔵 TIENDA AZUL</a>
-        <a href="./bienestar-y-belleza-Yeraldin" class="btn-cajon">🔵 BIENESTAR Y BELLEZA YERALDIN</a>
-        <a href="./pollo-harana/index" class="btn-cajon">🍗 POLLO HARANA</a>
-
-    
-
-    </div>
-
-    <footer>
-        Desarrollado por <br>
-        <strong>ASETEC HM © 2026</strong> <br>
-        <span class="vp-brand">VIBRAS POSITIVAS</span>
-    </footer>
+<div class="card-datos">
+    <div class="section-title">Datos para tu Pedido</div>
+    <input type="text" id="nom" placeholder="¿Cómo es tu nombre?">
+    <input type="text" id="dir" placeholder="Dirección del domicilio">
+    <input type="tel" id="tel" placeholder="Número de WhatsApp">
 </div>
 
+<div id="menu-completo">
+    </div>
+
+<div class="footer-pedido">
+    <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 18px;">
+        <span>TOTAL:</span>
+        <span id="total-vista" style="color: #2a9d8f;">$ 0</span>
+    </div>
+    <button class="btn-enviar" onclick="enviarPedido()">
+        <span>🚀 ENVIAR PEDIDO POR WHATSAPP</span>
+    </button>
+</div>
+
+<footer>
+    Desarrollado y Administrado por <br>
+    <span class="vp-brand">VIBRAS POSITIVAS © 2026</span> <br>
+    Todos los derechos reservados <br>
+    Infraestructura Digital - Caucasia, Antioquia
+</footer>
+
+<script>
+    const WA_HARANA = "573117700431"; // Harold, coloca el número real aquí
+    
+    const menu = [
+        { cat: '☕ DESAYUNOS (Café o Chocolate)', prods: [
+            { id: 1, n: "Desayuno Sencillo", p: 10000 },
+            { id: 2, n: "Desayuno Inglés", p: 12000 },
+            { id: 3, n: "Patacones con Queso", p: 11000 },
+            { id: 4, n: "Patacones con Desmechada", p: 15000 },
+            { id: 5, n: "Calentado", p: 15000 },
+            { id: 6, n: "Cabeza de Gato", p: 15000 }
+        ]},
+        { cat: '🍱 EJECUTIVOS (Sopa y Jugo)', prods: [
+            { id: 7, n: "Carne Molida", p: 18900 },
+            { id: 8, n: "Res / Cerdo", p: 19900 },
+            { id: 9, n: "Chicharrón / Posta / Sobrebarriga", p: 21900 },
+            { id: 10, n: "Lengua / Desmechada / Hígado", p: 21900 },
+            { id: 11, n: "Pechuga / Pollo Frito o Sudado", p: 21900 }
+        ]},
+        { cat: '🔥 ASADOS A LA PARRILLA', prods: [
+            { id: 12, n: "Cañón de Cerdo / Churrasco", p: 34000, d: "Papa francesa y ensalada" },
+            { id: 13, n: "Costillas BBQ / Pechuga Plancha", p: 34000, d: "Papa francesa y ensalada" }
+        ]},
+        { cat: '🍗 ESPECIALIDAD POLLO ASADO', prods: [
+            { id: 14, n: "1 Pollo Completo", p: 57000, d: "Incluye todos los acompañamientos" },
+            { id: 15, n: "1 Pollo Pernil / Pechuga", p: 55000 },
+            { id: 16, n: "½ Pollo (Pernil/Pechuga)", p: 31000 },
+            { id: 17, n: "¼ Pollo (Pernil/Pechuga)", p: 20000 }
+        ]}
+    ];
+
+    let carrito = {};
+
+    function cargarMenu() {
+        const cont = document.getElementById('menu-completo');
+        menu.forEach(sec => {
+            const t = document.createElement('div');
+            t.className = 'section-title'; t.innerText = sec.cat;
+            cont.appendChild(t);
+            const grid = document.createElement('div');
+            grid.className = 'menu-grid';
+            sec.prods.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'card-prod';
+                card.innerHTML = `<div class="info-prod"><h3>${p.n}</h3>${p.d?`<p>${p.d}</p>`:''}<span class="precio">$ ${p.p.toLocaleString()}</span></div>
+                <div class="controles">
+                    <button class="btn-c" onclick="cambiarCant(${p.id}, -1)">-</button>
+                    <span id="cant-${p.id}" class="cant">0</span>
+                    <button class="btn-c" onclick="cambiarCant(${p.id}, 1)">+</button>
+                </div>`;
+                grid.appendChild(card);
+            });
+            cont.appendChild(grid);
+        });
+    }
+
+    // SEGURIDAD VIBRAS POSITIVAS
+    async function checkLock() {
+        try {
+            const res = await fetch('https://haroldco45.github.io/vibras-positivas-apps/control-vibras.js');
+            const txt = await res.text();
+            if (txt.includes('"pollo-harana": "suspendido"')) {
+                document.body.innerHTML = `<div style="text-align:center; padding:50px; background:#000; color:#fff; height:100vh;"><h1>🔒 SUSPENDIDO</h1><p>Contacte a Soporte Vibras Positivas</p></div>`;
+            }
+        } catch(e) {}
+    }
+    checkLock();
+
+    function cambiarCant(id, val) {
+        carrito[id] = Math.max(0, (carrito[id] || 0) + val);
+        document.getElementById(`cant-${id}`).innerText = carrito[id];
+        actualizarTotal();
+    }
+
+    function actualizarTotal() {
+        let total = 0;
+        menu.forEach(s => s.prods.forEach(p => { if(carrito[p.id]) total += (p.p * carrito[p.id]); }));
+        document.getElementById('total-vista').innerText = `$ ${total.toLocaleString()}`;
+    }
+
+    function enviarPedido() {
+        const n = document.getElementById('nom').value;
+        const d = document.getElementById('dir').value;
+        const t = document.getElementById('tel').value;
+        if(!n || !d || !t) return alert("Completa tus datos.");
+
+        let r = ""; let tf = 0;
+        menu.forEach(s => s.prods.forEach(p => {
+            if(carrito[p.id] > 0) { r += `• ${carrito[p.id]}x ${p.n}\n`; tf += (p.p * carrito[p.id]); }
+        }));
+        if(!r) return alert("Selecciona productos.");
+
+        // CAPTURA DE FECHA Y HORA COLOMBIA
+        const ahora = new Date().toLocaleString("es-CO", { timeZone: "America/Bogota" });
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => abrirWA(n, d, t, r, tf, ahora, `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`),
+                () => abrirWA(n, d, t, r, tf, ahora, "Ubicación no enviada"),
+                { timeout: 7000 }
+            );
+        } else { abrirWA(n, d, t, r, tf, ahora, "GPS no soportado"); }
+    }
+
+    function abrirWA(n, d, t, r, total, fecha, gps) {
+        let msg = `*🍗 POLLO HARANA - PEDIDO OFICIAL*\n`;
+        msg += `--------------------------\n`;
+        msg += `👤 *CLIENTE:* ${n}\n📍 *DIR:* ${d}\n📞 *TEL:* ${t}\n`;
+        msg += `--------------------------\n`;
+        msg += `🛒 *PRODUCTOS:*\n${r}`;
+        msg += `💰 *TOTAL: $ ${total.toLocaleString()}*\n`;
+        msg += `--------------------------\n`;
+        msg += `📅 *FECHA:* ${fecha}\n`;
+        msg += `📍 *GPS:* ${gps}\n\n`;
+        msg += `_Desarrollado por Vibras Positivas © 2026_`;
+        window.open(`https://wa.me/${WA_HARANA}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+    
+    window.onload = cargarMenu;
+</script>
 </body>
 </html>
