@@ -11,7 +11,7 @@
         h1 { margin: 0; font-size: 28px; letter-spacing: 2px; text-transform: uppercase; }
         .subtitle { font-size: 11px; color: white; margin-top: 5px; letter-spacing: 1px; }
         .container { max-width: 500px; margin: auto; padding: 15px; }
-        .search-box { width: 100%; padding: 15px; margin: 20px 0; border: 2px solid var(--primario); border-radius: 50px; font-size: 16px; outline: none; box-sizing: border-box; }
+        .search-box { width: 100%; padding: 15px; margin: 20px 0; border: 2px solid var(--primario); border-radius: 50px; font-size: 16px; outline: none; box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .btn-cajon { display: block; width: 100%; padding: 18px; margin: 12px 0; background: var(--primario); color: var(--secundario); text-decoration: none; font-weight: bold; font-size: 15px; border-radius: 15px; border: 2px solid var(--secundario); box-shadow: 0 4px 0px var(--secundario); transition: 0.2s; box-sizing: border-box; text-transform: uppercase; }
         .btn-cajon:active { transform: translateY(4px); box-shadow: none; }
         .categoria { font-size: 13px; font-weight: bold; color: #555; text-transform: uppercase; margin: 30px 0 10px; border-left: 5px solid var(--primario); padding-left: 10px; text-align: left; }
@@ -27,47 +27,59 @@
 </header>
 
 <div class="container">
-    <input type="text" id="lupa" class="search-box" placeholder="🔍 Buscar cliente o categoría..." onkeyup="filtrarApps()">
+    <input type="text" id="lupa" class="search-box" placeholder="🔍 Buscar empresa (ej: Harana, Luzmar...)" onkeyup="filtrarApps()">
 
     <div id="lista-apps">
         <div class="categoria">Distribución y Logística</div>
-        <a href="./distrileco/index.html" class="btn-cajon">🚛 DISTRILECO (Superarroz)</a>
-        <a href="./bodega-la-central/index.html" class="btn-cajon">📦 BODEGA LA CENTRAL</a>
-        <a href="./distribuciones-jm/index.html" class="btn-cajon">🚚 DISTRIBUCIONES JM</a>
-        <a href="./edogra-distribuciones/index.html" class="btn-cajon">📦 EDOGRA DISTRIBUCIONES</a>
+        <a href="./distrileco/index.html" class="btn-cajon">🚛 Distrileco (Superarroz)</a>
+        <a href="./bodega-la-central/index.html" class="btn-cajon">📦 Bodega La Central</a>
+        <a href="./distribuciones-jm/index.html" class="btn-cajon">🚚 Distribuciones JM</a>
+        <a href="./edogra-distribuciones/index.html" class="btn-cajon">📦 Edogra Distribuciones</a>
 
-        <div class="categoria">Restaurantes</div>
-        <a href="./pollo-harana/index.html" class="btn-cajon">🍗 POLLO HARANA</a>
-        <a href="./estos-burgers/index.html" class="btn-cajon">🍔 ESTOS BURGERS</a>
-        <a href="./deleitesaludable/index.html" class="btn-cajon">🥗 DELEITE SALUDABLE</a>
+        <div class="categoria">Gastronomía</div>
+        <a href="./pollo-harana/index.html" class="btn-cajon">🍗 Pollo Harana</a>
+        <a href="./estos-burgers/index.html" class="btn-cajon">🍔 Estos Burgers</a>
+        <a href="./deleitesaludable/index.html" class="btn-cajon">🥗 Deleite Saludable</a>
 
         <div class="categoria">Tiendas y Mercados</div>
-        <a href="./tienda-azul/index.html" class="btn-cajon">🔵 TIENDA AZUL</a>
-        <a href="./tienda-mall-el-triangulo/index.html" class="btn-cajon">🏪 MALL EL TRIÁNGULO</a>
-        <a href="./mercafacil/index.html" class="btn-cajon">🛒 MERCAFÁCIL</a>
-        <a href="./fruver-lacentral/index.html" class="btn-cajon">🍏 FRUVER LA CENTRAL</a>
-        <a href="./tienda-cielo/index.html" class="btn-cajon">🌤️ TIENDA CIELO</a>
+        <a href="./tienda-azul/index.html" class="btn-cajon">🔵 Tienda Azul</a>
+        <a href="./tienda-mall-el-triangulo/index.html" class="btn-cajon">🏪 Mall El Triángulo</a>
+        <a href="./mercafacil/index.html" class="btn-cajon">🛒 Mercafácil</a>
+        <a href="./fruver-lacentral/index.html" class="btn-cajon">🍏 Fruver La Central</a>
+        <a href="./tienda-cielo/index.html" class="btn-cajon">🌤️ Tienda Cielo</a>
+        <a href="./tienda-yire/index.html" class="btn-cajon">🙏 Tienda Yire</a>
+        <a href="./miniprecios/index.html" class="btn-cajon">💰 Miniprecios</a>
 
-        <div class="categoria">Tecnología y Marketing</div>
-        <a href="./creadoraqr/index.html" class="btn-cajon">📱 CREADORA QR</a>
-        <a href="./celumaster/index.html" class="btn-cajon">📲 CELUMASTER</a>
+        <div class="categoria">Tecnología y Branding</div>
+        <a href="./creadoraqr/index.html" class="btn-cajon">📱 Creadora QR</a>
+        <a href="./celumaster/index.html" class="btn-cajon">📲 Celumaster</a>
 
-        <div class="categoria">Bienestar y Belleza</div>
-        <a href="./bienestar-y-belleza-Yeraldin/index.html" class="btn-cajon">✨ YERALDIN BIENESTAR</a>
-        <a href="./drogueria-inglesa/index.html" class="btn-cajon">💊 DROGUERÍA INGLESA</a>
+        <div class="categoria">Bienestar y Salud</div>
+        <a href="./bienestar-y-belleza-Yeraldin/index.html" class="btn-cajon">✨ Yeraldin Bienestar</a>
+        <a href="./drogueria-inglesa/index.html" class="btn-cajon">💊 Droguería Inglesa</a>
+        <a href="./odontologia-estetica-bocas/index.html" class="btn-cajon">🦷 Odonto Estética Bocas</a>
+        <a href="./luzmar/index.html" class="btn-cajon">💡 Luzmar Bienestar</a>
 
-        <div class="categoria">Servicios Especializados</div>
-        <a href="./alejo-mecanicomoto-movil/index.html" class="btn-cajon">🛠️ ALEJO MECÁNICO</a>
-        <a href="./ferreteria-la-hacienda/index.html" class="btn-cajon">🔨 FERRETERÍA HACIENDA</a>
-        <a href="./atarraya.html" class="btn-cajon">🎣 ATARRAYAS & HAMACAS</a>
-        <a href="./paula-areiza/index.html" class="btn-cajon">👠 VENTAS PAULA AREIZA</a>
+        <div class="categoria">Servicios y Oficios</div>
+        <a href="./alejo-mecanicomoto-movil/index.html" class="btn-cajon">🛠️ Alejo Mecánico</a>
+        <a href="./ferreteria-la-hacienda/index.html" class="btn-cajon">🔨 Ferretería Hacienda</a>
+        <a href="./labarberia/index.html" class="btn-cajon">💈 LaBarbería</a>
+        <a href="./atarraya.html" class="btn-cajon">🎣 Atarrayas & Hamacas</a>
+        <a href="./paula-areiza/index.html" class="btn-cajon">👠 Ventas Paula Areiza</a>
+        <a href="./nelson/index.html" class="btn-cajon">👤 Nelson Servicios</a>
+
+        <div class="categoria">Transporte e Inversiones</div>
+        <a href="./sotracor-caucasia/index.html" class="btn-cajon">🚌 Sotracor Caucasia</a>
+        <a href="./inversiones-charlotte/index.html" class="btn-cajon">💰 Inversiones Charlotte</a>
+        <a href="./santuario-la-primera/index.html" class="btn-cajon">⛩️ Santuario La Primera</a>
     </div>
 </div>
 
 <footer>
     Desarrollado y Administrado por <br>
     <b>ASETEC HM © 2026</b> <br>
-    <span class="vp-brand">VIBRAS POSITIVAS</span>
+    <span class="vp-brand">VIBRAS POSITIVAS</span> <br>
+    Caucasia, Antioquia
 </footer>
 
 <script>
