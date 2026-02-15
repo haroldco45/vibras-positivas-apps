@@ -5,38 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vibras Positivas - Apps Caucasia</title>
     <style>
-        :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris: #f4f4f4; }
+        :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; }
         body { font-family: 'Arial', sans-serif; background-color: var(--blanco); margin: 0; padding: 0; text-align: center; }
-        
         header { background: var(--secundario); color: var(--primario); padding: 35px 20px; border-bottom: 5px solid var(--primario); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         h1 { margin: 0; font-size: 28px; letter-spacing: 2px; text-transform: uppercase; }
         .subtitle { font-size: 11px; color: white; margin-top: 5px; letter-spacing: 1px; }
-
         .container { max-width: 500px; margin: auto; padding: 15px; }
-
-        .search-box { width: 100%; padding: 15px; margin: 20px 0; border: 2px solid var(--primario); border-radius: 50px; font-size: 16px; outline: none; box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-
-        .btn-cajon { 
-            display: block; 
-            width: 100%; 
-            padding: 18px; 
-            margin: 12px 0; 
-            background: var(--primario); 
-            color: var(--secundario); 
-            text-decoration: none; 
-            font-weight: bold; 
-            font-size: 15px; 
-            border-radius: 15px; 
-            border: 2px solid var(--secundario); 
-            box-shadow: 0 4px 0px var(--secundario);
-            transition: 0.2s;
-            box-sizing: border-box;
-            text-transform: uppercase;
-        }
+        .search-box { width: 100%; padding: 15px; margin: 20px 0; border: 2px solid var(--primario); border-radius: 50px; font-size: 16px; outline: none; box-sizing: border-box; }
+        .btn-cajon { display: block; width: 100%; padding: 18px; margin: 12px 0; background: var(--primario); color: var(--secundario); text-decoration: none; font-weight: bold; font-size: 15px; border-radius: 15px; border: 2px solid var(--secundario); box-shadow: 0 4px 0px var(--secundario); transition: 0.2s; box-sizing: border-box; text-transform: uppercase; }
         .btn-cajon:active { transform: translateY(4px); box-shadow: none; }
-
         .categoria { font-size: 13px; font-weight: bold; color: #555; text-transform: uppercase; margin: 30px 0 10px; border-left: 5px solid var(--primario); padding-left: 10px; text-align: left; }
-
         footer { text-align: center; padding: 40px 20px; font-size: 12px; color: #888; border-top: 1px solid #eee; margin-top: 20px; }
         .vp-brand { color: var(--secundario); font-weight: bold; font-size: 14px; }
     </style>
@@ -55,17 +33,20 @@
         <div class="categoria">Distribución y Logística</div>
         <a href="./distrileco/index.html" class="btn-cajon">🚛 DISTRILECO (Superarroz)</a>
         <a href="./bodega-la-central/index.html" class="btn-cajon">📦 BODEGA LA CENTRAL</a>
+        <a href="./distribuciones-jm/index.html" class="btn-cajon">🚚 DISTRIBUCIONES JM</a>
+        <a href="./edogra-distribuciones/index.html" class="btn-cajon">📦 EDOGRA DISTRIBUCIONES</a>
 
         <div class="categoria">Restaurantes</div>
         <a href="./pollo-harana/index.html" class="btn-cajon">🍗 POLLO HARANA</a>
         <a href="./estos-burgers/index.html" class="btn-cajon">🍔 ESTOS BURGERS</a>
-        <a href="./deleite-saludable/index.html" class="btn-cajon">🥗 DELEITE SALUDABLE</a>
+        <a href="./deleitesaludable/index.html" class="btn-cajon">🥗 DELEITE SALUDABLE</a>
 
         <div class="categoria">Tiendas y Mercados</div>
         <a href="./tienda-azul/index.html" class="btn-cajon">🔵 TIENDA AZUL</a>
         <a href="./tienda-mall-el-triangulo/index.html" class="btn-cajon">🏪 MALL EL TRIÁNGULO</a>
         <a href="./mercafacil/index.html" class="btn-cajon">🛒 MERCAFÁCIL</a>
         <a href="./fruver-lacentral/index.html" class="btn-cajon">🍏 FRUVER LA CENTRAL</a>
+        <a href="./tienda-cielo/index.html" class="btn-cajon">🌤️ TIENDA CIELO</a>
 
         <div class="categoria">Tecnología y Marketing</div>
         <a href="./creadoraqr/index.html" class="btn-cajon">📱 CREADORA QR</a>
@@ -79,15 +60,14 @@
         <a href="./alejo-mecanicomoto-movil/index.html" class="btn-cajon">🛠️ ALEJO MECÁNICO</a>
         <a href="./ferreteria-la-hacienda/index.html" class="btn-cajon">🔨 FERRETERÍA HACIENDA</a>
         <a href="./atarraya.html" class="btn-cajon">🎣 ATARRAYAS & HAMACAS</a>
-        <a href="./ventas-paula-areiza/index.html" class="btn-cajon">👠 VENTAS PAULA AREIZA</a>
+        <a href="./paula-areiza/index.html" class="btn-cajon">👠 VENTAS PAULA AREIZA</a>
     </div>
 </div>
 
 <footer>
     Desarrollado y Administrado por <br>
     <b>ASETEC HM © 2026</b> <br>
-    <span class="vp-brand">VIBRAS POSITIVAS</span> <br>
-    Caucasia, Antioquia
+    <span class="vp-brand">VIBRAS POSITIVAS</span>
 </footer>
 
 <script>
@@ -95,16 +75,13 @@
         const query = document.getElementById('lupa').value.toLowerCase();
         const botones = document.getElementsByClassName('btn-cajon');
         const categorias = document.getElementsByClassName('categoria');
-        
         for (let btn of botones) {
             btn.style.display = btn.innerText.toLowerCase().includes(query) ? "block" : "none";
         }
-        
         for (let cat of categorias) {
             cat.style.display = (query === "") ? "block" : "none";
         }
     }
 </script>
-
 </body>
 </html>
