@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Droguería Inglesa - Pedidos Online</title>
+    <style>
+        :root { --primario: #0056b3; --secundario: #f8f9fa; --acento: #e63946; --texto: #333; --exito: #25D366; --oro: #FFD700; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #e9ecef; margin: 0; padding: 15px; color: var(--texto); }
+        .card { max-width: 500px; margin: auto; background: white; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #dee2e6; }
+        header { background: var(--primario); color: white; padding: 25px; text-align: center; border-bottom: 5px solid var(--oro); }
+        .logo-area { font-size: 24px; font-weight: bold; letter-spacing: 1px; }
+        .content { padding: 20px; }
+        .section-title { font-size: 13px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 12px; border-bottom: 2px solid var(--oro); display: inline-block; }
+        
+        /* Formulario de Pedido */
+        .fila-pedido { display: grid; grid-template-columns: 30px 2fr 1fr; gap: 8px; margin-bottom: 10px; align-items: center; }
+        .num-item { font-weight: bold; color: var(--primario); text-align: center; }
+        
+        input, textarea, select { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ced4da; border-radius: 10px; font-size: 15px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-size: 17px; font-weight: bold; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; margin: 10px 0; }
+        .btn-gold { background: var(--oro); color: #000; }
+        .btn-add { background: #f1f3f5; color: #495057; font-size: 14px; border: 1px dashed #adb5bd; }
+        .btn-whatsapp { background: var(--exito); color: white; margin-top: 20px; }
+        .hidden { display: none !important; }
+
+        .info-box { background: #fff9db; padding: 15px; border-radius: 10px; border-left: 5px solid var(--oro); font-size: 14px; margin-bottom: 10px; }
+        
+        footer { text-align: center; padding: 25px; font-size: 13px; color: #6c757d; background: #fff; border-top: 1px solid #eee; }
+        .vp-brand { color: #000; font-weight: bold; text-decoration: none; font-size: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <header>
+        <div class="logo-area">➕ DROGUERÍA INGLESA</div>
+        <div style="font-size: 11px; opacity: 0.9; margin-top: 5px;">TU SALUD ES NUESTRA PRIORIDAD</div>
+    </header>
+
+    <div class="content">
+        <div id="seccion-cliente">
+            <div class="section-title">Información de Envío</div>
+            <div id="form-datos">
+                <input type="text" id="nom" placeholder="Nombre completo">
+                <input type="text" id="dir" placeholder="Dirección exacta (Barrio/Calle)">
+                <input type="tel" id="tel" placeholder="Número de contacto">
+                <button class="btn btn-gold" onclick="guardarDatos()">REGISTRAR MIS DATOS</button>
+            </div>
+            <div id="info-guardada" class="hidden">
+                <div class="info-box">
+                    <div id="resumen-cliente"></div>
+                    <small onclick="editarDatos()" style="color: #0056b3; cursor: pointer; text-decoration: underline; margin-top: 5px; display: block;">Modificar datos</small>
+                </div>
+            </div>
+        </div>
+
+        <hr style="opacity: 0.1; margin: 25px 0;">
+
+        <div class="section-title">Medicamentos o Productos</div>
+        <div id="contenedor-filas">
+            <div class="fila-pedido">
+                <div class="num-item">1.</div>
+                <input type="text" class="p-nombre" placeholder="Nombre del medicamento">
+                <input type="text" class="p-cant" placeholder="Cant.">
+            </div>
+        </div>
+
+        <button class="btn btn-add" onclick="agregarFila()">➕ AGREGAR OTRO PRODUCTO</button>
+
+        <textarea id="obs" rows="3" placeholder="Descripción de síntomas o indicaciones adicionales (Ej: Genérico o de marca)..."></textarea>
+
+        <button class="btn btn-whatsapp" onclick="procesarEnvio()">
+            <span>🚀 ENVIAR PEDIDO POR WHATSAPP</span>
+        </button>
+    </div>
+
+    <footer>
+        Desarrollado por <br>
+        <span class="vp-brand">VIBRAS POSITIVAS</span> <br>
+        Derechos de Autor © 2026
+    </footer>
+</div>
+
+<script>
+    const WHATSAPP_DROGUERIA = "573167198600"; // Harold, coloca aquí el número de la Droguería Inglesa
+    let contador = 1;
+
+    function agregarFila() {
+        contador++;
+        const item = document.createElement('div');
+        item.className = 'fila-pedido';
+        item.innerHTML = `
+            <div class="num-item">${contador}.</div>
+            <input type="text" class="p-nombre">
+            <input type="text" class="p-cant" placeholder="Cant.">
+        `;
+        document.getElementById('contenedor-filas').appendChild(item);
+    }
+
+    function guardarDatos() {
+        const d = { n: document.getElementById('nom').value, d: document.getElementById('dir').value, t: document.getElementById('tel').value };
+        if(d.n && d.d && d.t) {
+            localStorage.setItem('vp_drogueria_data', JSON.stringify(d));
+            mostrarDatos();
+        } else { alert("Por favor, completa tus datos para el domicilio."); }
+    }
+
+    function mostrarDatos() {
+        const g = JSON.parse(localStorage.getItem('vp_drogueria_data'));
+        if(g) {
+            document.getElementById('form-datos').classList.add('hidden');
+            document.getElementById('info-guardada').classList.remove('hidden');
+            document.getElementById('resumen-cliente').innerHTML = `<b>Paciente:</b> ${g.n}<br><b>Dirección:</b> ${g.d}<br><b>WhatsApp:</b> ${g.t}`;
+        }
+    }
+
+    function editarDatos() {
+        document.getElementById('form-datos').classList.remove('hidden');
+        document.getElementById('info-guardada').classList.add('hidden');
+    }
+
+    window.onload = mostrarDatos;
+
+    function procesarEnvio() {
+        const datos = JSON.parse(localStorage.getItem('vp_drogueria_data'));
+        if(!datos) return alert("Primero registra tus datos de envío.");
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => enviarWhatsApp(datos, `http://maps.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`),
+                () => enviarWhatsApp(datos, "No compartida"),
+                { timeout: 7000 }
+            );
+        } else { enviarWhatsApp(datos, "No soportado"); }
+    }
+
+    function enviarWhatsApp(c, gps) {
+        let lista = "";
+        const nombres = document.querySelectorAll('.p-nombre');
+        const cants = document.querySelectorAll('.p-cant');
+
+        let iReal = 1;
+        nombres.forEach((input, i) => {
+            if(input.value.trim() !== "") {
+                lista += `${iReal}. ${input.value} (Cant: ${cants[i].value || '1'})\n`;
+                iReal++;
+            }
+        });
+
+        if(!lista) return alert("Escribe al menos un medicamento.");
+
+        let msj = `*➕ DROGUERÍA INGLESA - PEDIDO*%0A`;
+        msj += `--------------------------%0A`;
+        msj += `👤 *PACIENTE:* ${c.n}%0A📍 *DIR:* ${c.d}%0A📞 *TEL:* ${c.t}%0A`;
+        msj += `--------------------------%0A`;
+        msj += `💊 *PEDIDO:*%0A${encodeURIComponent(lista)}`;
+        
+        const obs = document.getElementById('obs').value;
+        if(obs) msj += `%0A📝 *OBS:* ${encodeURIComponent(obs)}%0A`;
+        
+        msj += `--------------------------%0A`;
+        msj += `📍 *UBICACIÓN GPS:*%0A${encodeURIComponent(gps)}%0A%0A`;
+        msj += `_App por Vibras Positivas_`;
+
+        window.open(`https://wa.me/${WHATSAPP_DROGUERIA}?text=${msj}`, '_blank');
+    }
+</script>
+</body>
+</html>
