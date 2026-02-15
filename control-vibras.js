@@ -1,34 +1,55 @@
-// TABLERO DE CONTROL - VIBRAS POSITIVAS
-// Estado: "activo" permite el uso / "suspendido" bloquea la App
+// ==========================================
+// VIBRAS POSITIVAS - SISTEMA DE CONTROL CENTRAL
+// Infraestructura Digital © 2026
+// ==========================================
 
-const ESTADO_CLIENTES = {
+const controlVibras = {
+    // DISTRIBUCIÓN Y LOGÍSTICA
     "distrileco": "activo",
-    "distribuciones-jm": "activo",
-    "mercafacil": "activo",
-    "deleitesaludable": "activo",
     "bodega-la-central": "activo",
+    "distribuciones-jm": "activo",
+    "edogra-distribuciones": "activo",
+
+    // GASTRONOMÍA
+    "pollo-harana": "activo",
+    "estos-burgers": "activo",
+    "deleitesaludable": "activo",
+
+    // TIENDAS Y MERCADOS
+    "tienda-azul": "activo",
+    "tienda-mall-el-triangulo": "activo",
+    "mercafacil": "activo",
     "fruver-lacentral": "activo",
-    "miniprecios": "activo",
     "tienda-cielo": "activo",
     "tienda-yire": "activo",
-    "atarraya": "activo",
-    "sotracor-caucasia": "activo",
-    "labarberia": "activo",
-    "odontologia--estetica-bocas": "activo",
+    "miniprecios": "activo",
+
+    // TECNOLOGÍA
+    "creadoraqr": "activo",
     "celumaster": "activo",
-    "edogra-distribuciones": "activo",
-    "inversiones-charlotte": "activo",
-    "luzmar": "activo",
-    "nelson": "activo",
-    "santuariolaprimera": "activo",
+
+    // BIENESTAR Y SALUD
+    "yeraldin-belleza": "activo",
     "drogueria-inglesa": "activo",
-    "estos-burgers": "activo",
-    "paula-areiza": "activo",
+    "odontologia-estetica-bocas": "activo",
+    "luzmar": "activo",
+
+    // SERVICIOS
+    "alejo-mecanico": "activo",
     "ferreteria-la-hacienda": "activo",
-    "alejo-mecanicomoto-movil": "activo",
-    "tienda-mall-el-triangulo": "activo",
-    "tienda-azul": "activo",
-    "bienestar-y-belleza-Yeraldin": "activo"
-    "pollo-harana": "activo"
-    
+    "labarberia": "activo",
+    "atarrayas": "activo",
+    "paula-areiza": "activo",
+    "nelson-servicios": "activo",
+
+    // TRANSPORTE E INVERSIONES
+    "sotracor-caucasia": "activo",
+    "inversiones-charlotte": "activo",
+    "santuario-la-primera": "activo"
 };
+
+// Función para verificar estado (Harold, no tocar esta parte)
+function getEstadoApp(nombreApp) {
+    return controlVibras[nombreApp] || "activo";
+}
+  
