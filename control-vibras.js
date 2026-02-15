@@ -25,5 +25,6 @@ const ESTADO_CLIENTES = {
     "estos-burgers": "activo",
     "paula-areiza": "activo",
     "ferreteria-la-hacienda": "activo",
-    "alejo-mecanicomoto-movil": "activo"
+    "alejo-mecanicomoto-movil": "activo",
+    "tienda-mall-el-triangulo": "activo"
 };
