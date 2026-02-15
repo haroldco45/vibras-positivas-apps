@@ -46,8 +46,8 @@
         <div class="grid-productos">
             <div class="producto">
                 <img src="./toallas-nocturnas.jpeg" alt="Noche">
-                <span class="p-titulo">Toalla Noche</span>
-                <p class="p-desc">Alta absorción, reduce cólicos y equilibra el pH.</p>
+                <span class="p-titulo">Toalla Turmalina Noche</span>
+                <p class="p-desc">Alta absorción. Reduce olores, cólicos y equilibra el pH.</p>
                 <div class="controles">
                     <button class="btn-cant" onclick="cambiarCant('p1', -1)">-</button>
                     <span id="p1" class="cant-val">0</span>
@@ -56,7 +56,7 @@
             </div>
             <div class="producto">
                 <img src="./toallas-dia.jpeg" alt="Día">
-                <span class="p-titulo">Toalla Día</span>
+                <span class="p-titulo">Toalla Turmalina Día</span>
                 <p class="p-desc">Protección y frescura con tecnología de turmalina.</p>
                 <div class="controles">
                     <button class="btn-cant" onclick="cambiarCant('p2', -1)">-</button>
@@ -66,8 +66,8 @@
             </div>
             <div class="producto">
                 <img src="./protectores.jpeg" alt="Protectores">
-                <span class="p-titulo">Protectores</span>
-                <p class="p-desc">Diseño suave sin químicos, ideal para uso diario.</p>
+                <span class="p-titulo">Protectores Diarios</span>
+                <p class="p-desc">Diseño suave sin químicos. Previene irritaciones.</p>
                 <div class="controles">
                     <button class="btn-cant" onclick="cambiarCant('p3', -1)">-</button>
                     <span id="p3" class="cant-val">0</span>
@@ -77,7 +77,7 @@
             <div class="producto">
                 <img src="./crema-dental.jpeg" alt="Crema Dental">
                 <span class="p-titulo">Crema Herbs</span>
-                <p class="p-desc">Limpieza profunda natural, combate mal aliento.</p>
+                <p class="p-desc">Limpieza profunda natural. Combate mal aliento.</p>
                 <div class="controles">
                     <button class="btn-cant" onclick="cambiarCant('p4', -1)">-</button>
                     <span id="p4" class="cant-val">0</span>
@@ -111,12 +111,11 @@
         const dir = document.getElementById('dir').value;
         const tel = document.getElementById('tel').value;
         const obs = document.getElementById('notas').value;
-        
-        if(!nom || !dir || !tel) return alert("Completa tus datos.");
+        if(!nom || !dir || !tel) return alert("Por favor completa tus datos.");
 
         let r = "";
         for(let key in pedido) if(pedido[key] > 0) r += `• ${nombresProd[key]}: ${pedido[key]}\n`;
-        
+
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (pos) => abrirWA(nom, dir, tel, r, obs, `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`),
@@ -127,6 +126,7 @@
     }
 
     function abrirWA(n, d, t, r, o, gps) {
+        // Armamos el mensaje completo con todos los datos
         let msg = `*✨ YERALDIN BIENESTAR & BELLEZA*\n`;
         msg += `--------------------------\n`;
         msg += `👤 *CLIENTE:* ${n}\n📍 *DIR:* ${d}\n📞 *TEL:* ${t}\n`;
@@ -134,9 +134,10 @@
         msg += `🛒 *PEDIDO:*\n${r}`;
         if(o) msg += `\n📝 *NOTAS:* ${o}\n`;
         msg += `--------------------------\n`;
-        msg += `📍 *GPS:* ${gps}\n\n`;
+        msg += `📍 *UBICACIÓN GPS:* ${gps}\n\n`;
         msg += `_Desarrollado por Vibras Positivas_`;
         
+        // El secreto es encodeURIComponent para que envíe TODO el texto
         window.open(`https://wa.me/${WA_YERALDIN}?text=${encodeURIComponent(msg)}`, '_blank');
     }
 </script>
