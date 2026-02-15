@@ -26,5 +26,6 @@ const ESTADO_CLIENTES = {
     "paula-areiza": "activo",
     "ferreteria-la-hacienda": "activo",
     "alejo-mecanicomoto-movil": "activo",
-    "tienda-mall-el-triangulo": "activo"
+    "tienda-mall-el-triangulo": "activo",
+    "tienda-azul": "activo"
 };
