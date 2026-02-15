@@ -27,5 +27,6 @@ const ESTADO_CLIENTES = {
     "ferreteria-la-hacienda": "activo",
     "alejo-mecanicomoto-movil": "activo",
     "tienda-mall-el-triangulo": "activo",
-    "tienda-azul": "activo"
+    "tienda-azul": "activo",
+    "bienestar-y-belleza-Yeraldin": "activo"
 };
