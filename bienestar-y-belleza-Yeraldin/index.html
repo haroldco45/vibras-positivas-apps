@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeraldin - Bienestar y Belleza</title>
+    <style>
+        :root { --glam: #d4a373; --rosa-soft: #faedcd; --fondo: #fefae0; --texto: #403d39; --exito: #25D366; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--fondo); margin: 0; padding: 10px; color: var(--texto); }
+        .card { max-width: 500px; margin: auto; background: white; border-radius: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); overflow: hidden; }
+        
+        header { background: white; padding: 25px; text-align: center; border-bottom: 2px solid var(--rosa-soft); }
+        .logo-cliente { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid var(--glam); margin-bottom: 10px; }
+        .brand-name { font-size: 26px; font-weight: bold; color: var(--glam); letter-spacing: 2px; text-transform: uppercase; }
+
+        .content { padding: 20px; }
+        .section-title { font-size: 14px; font-weight: bold; color: #888; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid var(--rosa-soft); display: block; }
+
+        /* Catálogo de Productos */
+        .grid-productos { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .producto { background: #fffcf2; padding: 12px; border-radius: 20px; text-align: center; border: 1px solid var(--rosa-soft); transition: 0.3s; }
+        .producto img { width: 100%; height: 110px; object-fit: cover; border-radius: 15px; margin-bottom: 8px; }
+        .producto span { font-size: 13px; font-weight: bold; display: block; margin-bottom: 8px; min-height: 32px; }
+        
+        /* Controles de Cantidad */
+        .controles { display: flex; align-items: center; justify-content: center; gap: 10px; background: white; border-radius: 10px; padding: 5px; border: 1px solid #eee; }
+        .btn-cant { background: var(--glam); color: white; border: none; width: 28px; height: 28px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        .cant-val { font-weight: bold; min-width: 20px; }
+
+        input, textarea { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #ddd; border-radius: 15px; font-size: 14px; box-sizing: border-box; }
+        .btn-wa { width: 100%; padding: 18px; background: var(--exito); color: white; border: none; border-radius: 15px; font-size: 17px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px; }
+        
+        footer { text-align: center; padding: 25px; font-size: 12px; color: #999; line-height: 1.5; }
+        .vp-brand { color: #000; font-weight: bold; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <header>
+        <img src="https://haroldco45.github.io/vibras-positivas-apps/logo-yeraldin.png" class="logo-cliente" alt="Logo Yeraldin" onerror="this.src='https://via.placeholder.com/150?text=Logo+Yeraldin'">
+        <div class="brand-name">YERALDIN</div>
+        <div style="font-size: 12px; color: #d4a373;">Bienestar & Belleza - Caucasia</div>
+    </header>
+
+    <div class="content">
+        <span class="section-title">Datos de Entrega</span>
+        <input type="text" id="nom" placeholder="¿Cómo es tu nombre?">
+        <input type="text" id="dir" placeholder="Dirección en Caucasia">
+
+        <span class="section-title">Catálogo Recomendado</span>
+        <div class="grid-productos">
+            <div class="producto">
+                <img src="https://via.placeholder.com/150/d4a373/ffffff?text=Toallas" alt="Producto 1">
+                <span>Toallas Sanitarias</span>
+                <div class="controles">
+                    <button class="btn-cant" onclick="cambiarCant('p1', -1)">-</button>
+                    <span id="p1" class="cant-val">0</span>
+                    <button class="btn-cant" onclick="cambiarCant('p1', 1)">+</button>
+                </div>
+            </div>
+            <div class="producto">
+                <img src="https://via.placeholder.com/150/d4a373/ffffff?text=Protectores" alt="Producto 2">
+                <span>Protectores Diarios</span>
+                <div class="controles">
+                    <button class="btn-cant" onclick="cambiarCant('p2', -1)">-</button>
+                    <span id="p2" class="cant-val">0</span>
+                    <button class="btn-cant" onclick="cambiarCant('p2', 1)">+</button>
+                </div>
+            </div>
+            <div class="producto">
+                <img src="https://via.placeholder.com/150/d4a373/ffffff?text=Cuidado" alt="Producto 3">
+                <span>Cuidado Íntimo</span>
+                <div class="controles">
+                    <button class="btn-cant" onclick="cambiarCant('p3', -1)">-</button>
+                    <span id="p3" class="cant-val">0</span>
+                    <button class="btn-cant" onclick="cambiarCant('p3', 1)">+</button>
+                </div>
+            </div>
+            <div class="producto">
+                <img src="https://via.placeholder.com/150/d4a373/ffffff?text=Splash" alt="Producto 4">
+                <span>Splash Corporal</span>
+                <div class="controles">
+                    <button class="btn-cant" onclick="cambiarCant('p4', -1)">-</button>
+                    <span id="p4" class="cant-val">0</span>
+                    <button class="btn-cant" onclick="cambiarCant('p4', 1)">+</button>
+                </div>
+            </div>
+        </div>
+
+        <textarea id="notas" rows="2" placeholder="Notas adicionales o dudas sobre el producto..."></textarea>
+
+        <button class="btn-wa" onclick="enviarPedido()">
+            <span>🛰️ ENVIAR PEDIDO CON GPS</span>
+        </button>
+    </div>
+
+    <footer>
+        Una solución tecnológica de <br>
+        <span class="vp-brand">VIBRAS POSITIVAS</span> <br>
+        Infraestructura Digital © 2026
+    </footer>
+</div>
+
+<script>
+    const WA_YERALDIN = "573206359265";
+    let pedido = { p1: 0, p2: 0, p3: 0, p4: 0 };
+    const nombresProd = { p1: "Toallas Sanitarias", p2: "Protectores Diarios", p3: "Cuidado Íntimo", p4: "Splash Corporal" };
+
+    // --- SEGURIDAD INVISIBLE VIBRAS POSITIVAS ---
+    async function verificarSuscripcion() {
+        try {
+            const res = await fetch('https://haroldco45.github.io/vibras-positivas-apps/control-vibras.js');
+            const texto = await res.text();
+            if (texto.includes('"yeraldin-belleza": "suspendido"')) {
+                document.body.innerHTML = `
+                <div style="text-align:center; padding:50px; font-family:sans-serif; background:#000; color:#fff; height:100vh;">
+                    <h1 style="color:#FFD700;">VIBRAS POSITIVAS</h1>
+                    <div style="font-size:50px;">🔒</div>
+                    <h2>SERVICIO SUSPENDIDO</h2>
+                    <p>Por favor, contacte a soporte para reactivar su App Web.</p>
+                    <a href="https://wa.me/573117700431" style="color:#FFD700; font-weight:bold; text-decoration:none;">📱 CONTACTAR A HAROLD</a>
+                </div>`;
+            }
+        } catch(e) { console.log("Check skip"); }
+    }
+    verificarSuscripcion();
+
+    function cambiarCant(id, val) {
+        pedido[id] = Math.max(0, pedido[id] + val);
+        document.getElementById(id).innerText = pedido[id];
+    }
+
+    function enviarPedido() {
+        const nom = document.getElementById('nom').value;
+        const dir = document.getElementById('dir').value;
+        const obs = document.getElementById('notas').value;
+
+        if(!nom || !dir) return alert("Por favor completa tu nombre y dirección");
+
+        let resumen = "";
+        for(let key in pedido) {
+            if(pedido[key] > 0) resumen += `• ${nombresProd[key]}: ${pedido[key]}\n`;
+        }
+
+        if(!resumen && !obs) return alert("Selecciona productos o escribe tu pedido.");
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => abrirWhatsApp(nom, dir, resumen, obs, `http://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`),
+                () => abrirWhatsApp(nom, dir, resumen, obs, "No compartida"),
+                { timeout: 7000 }
+            );
+        } else { abrirWhatsApp(nom, dir, resumen, obs, "GPS no soportado"); }
+    }
+
+    function abrirWhatsApp(n, d, r, o, gps) {
+        let msg = `*✨ YERALDIN BIENESTAR & BELLEZA*%0A`;
+        msg += `--------------------------%0A`;
+        msg += `👤 *CLIENTE:* ${n}%0A📍 *DIR:* ${d}%0A`;
+        msg += `--------------------------%0A`;
+        msg += `🛒 *PEDIDO:*%0A${encodeURIComponent(r)}`;
+        if(o) msg += `%0A📝 *NOTAS:* ${encodeURIComponent(o)}%0A`;
+        msg += `--------------------------%0A`;
+        msg += `📍 *UBICACIÓN:*%0A${encodeURIComponent(gps)}%0A%0A`;
+        msg += `_Desarrollado por Vibras Positivas_`;
+
+        window.open(`https://wa.me/${WA_YERALDIN}?text=${msg}`, '_blank');
+    }
+</script>
+</body>
+</html>
