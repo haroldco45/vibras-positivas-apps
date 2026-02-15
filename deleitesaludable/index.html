@@ -192,6 +192,32 @@
 </div>
 
 <script>
+    // VERIFICACIÓN DE SEGURIDAD - VIBRAS POSITIVAS
+async function verificarSuscripcion() {
+    try {
+        // Consultamos tu tablero de control en GitHub
+        const respuesta = await fetch('https://haroldco45.github.io/vibras-positivas-apps/control-vibras.js');
+        const texto = await respuesta.text();
+        
+        // Extraemos el nombre de esta carpeta/archivo para buscarlo en el tablero
+        const clienteActual = window.location.pathname.split('/').pop().replace('.html', '');
+        
+        if (texto.includes(`"${clienteActual}": "suspendido"`)) {
+            document.body.innerHTML = `
+                <div style="text-align:center; padding:50px; font-family:sans-serif; background:#000; color:#fff; height:100vh;">
+                    <h1 style="color:#FFD700;">VIBRAS POSITIVAS</h1>
+                    <div style="font-size:50px;">🔒</div>
+                    <h2>SERVICIO SUSPENDIDO</h2>
+                    <p>Estimado cliente, su suscripción ha vencido.</p>
+                    <p>Para reactivar su App Web, contacte a soporte:</p>
+                    <a href="https://wa.me/573117700431" style="color:#FFD700; font-weight:bold; text-decoration:none;">📱 CONTACTAR A HAROLD</a>
+                    <br><br><small>Infraestructura Digital de Caucasia</small>
+                </div>`;
+        }
+    } catch (e) { console.log("Error de verificación"); }
+}
+verificarSuscripcion();
+
     let ubicacionGPS = "";
 
     const menu = {
