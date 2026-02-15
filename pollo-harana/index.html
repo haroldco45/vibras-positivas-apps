@@ -6,120 +6,119 @@
     <title>Pollo Harana - Pedidos</title>
     <style>
         :root { --rojo: #e63946; --amarillo: #ffb703; --oscuro: #1d3557; --claro: #f1faee; --exito: #25D366; }
-        body { font-family: 'Arial', sans-serif; background-color: #f8f9fa; margin: 0; padding: 10px; color: var(--oscuro); padding-bottom: 100px; }
+        body { font-family: 'Arial', sans-serif; background-color: #f8f9fa; margin: 0; padding: 10px; color: var(--oscuro); padding-bottom: 120px; }
         
-        /* Header Profesional */
         header { background: var(--rojo); color: white; padding: 25px; text-align: center; border-radius: 0 0 30px 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin: -10px -10px 20px -10px; }
-        header h1 { margin: 0; font-size: 24px; letter-spacing: 1px; }
         
-        .section-title { font-size: 14px; font-weight: bold; color: var(--rojo); text-transform: uppercase; margin: 20px 0 10px; border-left: 4px solid var(--amarillo); padding-left: 10px; }
+        .section-title { font-size: 14px; font-weight: bold; color: var(--rojo); text-transform: uppercase; margin: 25px 0 10px; border-left: 4px solid var(--amarillo); padding-left: 10px; background: #fff; padding: 5px 10px; border-radius: 0 10px 10px 0; }
 
-        /* Datos Cliente */
         .card-datos { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; }
         input { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
         
-        /* Menú */
-        .menu-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-        .card-prod { background: white; padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-right: 4px solid var(--amarillo); }
-        .info-prod h3 { margin: 0; font-size: 16px; color: var(--oscuro); }
-        .info-prod p { margin: 5px 0 0; font-size: 12px; color: #666; }
-        .precio { color: #2a9d8f; font-weight: bold; display: block; margin-top: 5px; }
+        .menu-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .card-prod { background: white; padding: 12px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-right: 4px solid var(--amarillo); }
+        .info-prod h3 { margin: 0; font-size: 15px; color: var(--oscuro); }
+        .info-prod p { margin: 3px 0 0; font-size: 11px; color: #777; line-height: 1.2; }
+        .precio { color: #2a9d8f; font-weight: bold; font-size: 14px; margin-top: 4px; display: block; }
         
-        /* Controles Cantidad */
-        .controles { display: flex; align-items: center; gap: 10px; }
-        .btn-c { background: var(--oscuro); color: white; border: none; width: 30px; height: 30px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .cant { font-weight: bold; min-width: 20px; text-align: center; }
+        .controles { display: flex; align-items: center; gap: 8px; }
+        .btn-c { background: var(--oscuro); color: white; border: none; width: 32px; height: 32px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .cant { font-weight: bold; min-width: 20px; text-align: center; font-size: 16px; }
 
-        /* Footer Flotante de Pedido */
-        .footer-pedido { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 10px; z-index: 100; border-radius: 20px 20px 0 0; }
-        .btn-enviar { background: var(--exito); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .footer-pedido { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 10px; z-index: 100; border-radius: 25px 25px 0 0; }
+        .btn-enviar { background: var(--exito); color: white; border: none; padding: 16px; border-radius: 15px; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; }
         
-        .hidden { display: none !important; }
-        footer { text-align: center; font-size: 12px; margin-top: 30px; color: #888; }
+        .info-box { background: #fff3cd; color: #856404; padding: 10px; border-radius: 10px; font-size: 11px; margin: 10px 0; border: 1px solid #ffeeba; }
     </style>
 </head>
 <body>
 
 <header>
     <h1>🍗 POLLO HARANA</h1>
-    <small>Tradición en sabor - Caucasia</small>
+    <small>Menú Interactivo de Pedidos</small>
 </header>
 
 <div class="card-datos">
     <div class="section-title">Datos de Entrega</div>
-    <div id="form-datos">
-        <input type="text" id="nom" placeholder="Tu nombre">
-        <input type="text" id="dir" placeholder="Dirección de domicilio">
-        <input type="tel" id="tel" placeholder="Tu WhatsApp">
-    </div>
+    <input type="text" id="nom" placeholder="Tu nombre">
+    <input type="text" id="dir" placeholder="Dirección de domicilio">
+    <input type="tel" id="tel" placeholder="Tu WhatsApp">
 </div>
 
-<div class="section-title">Nuestro Menú</div>
-<div class="menu-grid" id="contenedor-menu">
+<div id="menu-completo">
     </div>
 
 <div class="footer-pedido">
-    <div style="display: flex; justify-content: space-between; font-weight: bold; padding: 0 5px;">
-        <span>Total Pedido:</span>
+    <div style="display: flex; justify-content: space-between; font-weight: bold; color: var(--oscuro);">
+        <span>Total de tu Pedido:</span>
         <span id="total-vista">$ 0</span>
     </div>
     <button class="btn-enviar" onclick="enviarPedido()">
-        <span>🚀 ENVIAR POR WHATSAPP</span>
+        <span>🚀 ENVIAR PEDIDO A WHATSAPP</span>
     </button>
 </div>
-
-<footer>
-    Infraestructura Digital por <br>
-    <b>VIBRAS POSITIVAS © 2026</b>
-</footer>
 
 <script>
     const WA_HARANA = "573117700431"; // Harold, coloca el número de Pollo Harana
     
-    // Lista de productos
-    const productos = [
-        { id: 1, cat: 'desayuno', n: "Desayuno Sencillo", p: 10000, d: "Café/Chocolate incluido" },
-        { id: 2, cat: 'desayuno', n: "Calentado", p: 15000, d: "Tradición paisa" },
-        { id: 3, cat: 'ejecutivo', n: "Ejecutivo Res/Cerdo", p: 19900, d: "Sopa y jugo incluido" },
-        { id: 4, cat: 'ejecutivo', n: "Pechuga / Pollo Frito", p: 21900, d: "Sopa y jugo incluido" },
-        { id: 5, cat: 'asado', n: "Churrasco", p: 34000, d: "Papa francesa y ensalada" },
-        { id: 6, cat: 'pollo', n: "Pollo Completo", p: 57000, d: "Salsa ajo, bollo, papa, ensalada" },
-        { id: 7, cat: 'pollo', n: "1/2 Pollo Asado", p: 30000, d: "Con acompañamientos" }
+    const menu = [
+        { cat: 'DESAYUNOS (Incluyen café o chocolate)', prods: [
+            { id: 1, n: "Desayuno Sencillo", p: 10000 },
+            { id: 2, n: "Desayuno Inglés", p: 12000 },
+            { id: 3, n: "Patacones con Queso", p: 11000 },
+            { id: 4, n: "Patacones con Desmechada", p: 15000 },
+            { id: 5, n: "Calentado", p: 15000 },
+            { id: 6, n: "Cabeza de Gato", p: 15000 }
+        ]},
+        { cat: 'ALMUERZOS EJECUTIVOS (Sopa y jugo incluido)', prods: [
+            { id: 7, n: "Carne Molida", p: 18900 },
+            { id: 8, n: "Res / Cerdo", p: 19900 },
+            { id: 9, n: "Chicharrón / Posta / Sobrebarriga", p: 21900 },
+            { id: 10, n: "Lengua / Desmechada / Hígado", p: 21900 },
+            { id: 11, n: "Pechuga / Pollo Frito o Sudado", p: 21900 }
+        ]},
+        { cat: 'ASADOS (Papa francesa y ensalada tropical)', prods: [
+            { id: 12, n: "Cañón de Cerdo / Churrasco", p: 34000 },
+            { id: 13, n: "Costillas BBQ / Pechuga Plancha", p: 34000 }
+        ]},
+        { cat: 'POLLO ASADO (Acompañamientos incluidos)', prods: [
+            { id: 14, n: "1 Pollo Completo", p: 57000, d: "Salsa ajo, bollo, ensalada, papa" },
+            { id: 15, n: "1 Pollo Pernil / Pechuga", p: 55000 },
+            { id: 16, n: "½ Pollo (Pernil/Pechuga)", p: 31000 },
+            { id: 17, n: "¼ Pollo (Pernil/Pechuga)", p: 20000 }
+        ]}
     ];
 
     let carrito = {};
 
-    // 1. CONTROL DE SEGURIDAD VIBRAS POSITIVAS
-    async function verificarSuscripcion() {
-        try {
-            const res = await fetch('https://haroldco45.github.io/vibras-positivas-apps/control-vibras.js');
-            const texto = await res.text();
-            if (texto.includes('"pollo-harana": "suspendido"')) {
-                document.body.innerHTML = `<div style="text-align:center; padding:50px; background:#000; color:#fff; height:100vh;"><h1>🔒 SERVICIO SUSPENDIDO</h1><p>Contacte a Harold de Vibras Positivas</p></div>`;
-            }
-        } catch(e) {}
-    }
-    verificarSuscripcion();
+    function cargarTodoElMenu() {
+        const contenedor = document.getElementById('menu-completo');
+        menu.forEach(seccion => {
+            const titulo = document.createElement('div');
+            titulo.className = 'section-title';
+            titulo.innerText = seccion.cat;
+            contenedor.appendChild(titulo);
 
-    // Cargar Menú
-    function cargarMenu() {
-        const contenedor = document.getElementById('contenedor-menu');
-        productos.forEach(prod => {
-            const card = document.createElement('div');
-            card.className = 'card-prod';
-            card.innerHTML = `
-                <div class="info-prod">
-                    <h3>${prod.n}</h3>
-                    <p>${prod.d}</p>
-                    <span class="precio">$ ${prod.p.toLocaleString()}</span>
-                </div>
-                <div class="controles">
-                    <button class="btn-c" onclick="cambiarCant(${prod.id}, -1)">-</button>
-                    <span id="cant-${prod.id}" class="cant">0</span>
-                    <button class="btn-c" onclick="cambiarCant(${prod.id}, 1)">+</button>
-                </div>
-            `;
-            contenedor.appendChild(card);
+            const grid = document.createElement('div');
+            grid.className = 'menu-grid';
+            
+            seccion.prods.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'card-prod';
+                card.innerHTML = `
+                    <div class="info-prod">
+                        <h3>${p.n}</h3>
+                        ${p.d ? `<p>${p.d}</p>` : ''}
+                        <span class="precio">$ ${p.p.toLocaleString()}</span>
+                    </div>
+                    <div class="controles">
+                        <button class="btn-c" onclick="cambiarCant(${p.id}, -1)">-</button>
+                        <span id="cant-${p.id}" class="cant">0</span>
+                        <button class="btn-c" onclick="cambiarCant(${p.id}, 1)">+</button>
+                    </div>`;
+                grid.appendChild(card);
+            });
+            contenedor.appendChild(grid);
         });
     }
 
@@ -132,52 +131,41 @@
 
     function actualizarTotal() {
         let total = 0;
-        productos.forEach(p => {
+        menu.forEach(sec => sec.prods.forEach(p => {
             if(carrito[p.id]) total += (p.p * carrito[p.id]);
-        });
+        }));
         document.getElementById('total-vista').innerText = `$ ${total.toLocaleString()}`;
     }
 
-    window.onload = cargarMenu;
+    window.onload = cargarTodoElMenu;
 
     function enviarPedido() {
         const nom = document.getElementById('nom').value;
         const dir = document.getElementById('dir').value;
         const tel = document.getElementById('tel').value;
+        if(!nom || !dir || !tel) return alert("Completa tus datos de entrega.");
 
-        if(!nom || !dir || !tel) return alert("Por favor completa tus datos de entrega.");
-
-        let resumen = "";
-        let totalFinal = 0;
-        productos.forEach(p => {
+        let r = ""; let tF = 0;
+        menu.forEach(sec => sec.prods.forEach(p => {
             if(carrito[p.id] > 0) {
-                resumen += `• ${carrito[p.id]}x ${p.n}\n`;
-                totalFinal += (p.p * carrito[p.id]);
+                r += `• ${carrito[p.id]}x ${p.n}\n`;
+                tF += (p.p * carrito[p.id]);
             }
-        });
+        }));
 
-        if(!resumen) return alert("Selecciona algo rico del menú.");
+        if(!r) return alert("Selecciona productos.");
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                (pos) => abrirWA(nom, dir, tel, resumen, totalFinal, `http://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`),
-                () => abrirWA(nom, dir, tel, resumen, totalFinal, "No compartida"),
+                (pos) => abrirWA(nom, dir, tel, r, tF, `http://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`),
+                () => abrirWA(nom, dir, tel, r, tF, "No compartida"),
                 { timeout: 7000 }
             );
-        } else { abrirWA(nom, dir, tel, resumen, totalFinal, "GPS no soportado"); }
+        } else { abrirWA(nom, dir, tel, r, tF, "No soportado"); }
     }
 
     function abrirWA(n, d, t, r, total, gps) {
-        let msg = `*🍗 POLLO HARANA - NUEVO PEDIDO*\n`;
-        msg += `--------------------------\n`;
-        msg += `👤 *CLIENTE:* ${n}\n📍 *DIR:* ${d}\n📞 *TEL:* ${t}\n`;
-        msg += `--------------------------\n`;
-        msg += `🛒 *DETALLE:*\n${r}`;
-        msg += `💰 *TOTAL A PAGAR: $ ${total.toLocaleString()}*\n`;
-        msg += `--------------------------\n`;
-        msg += `📍 *UBICACIÓN GPS:* ${gps}\n\n`;
-        msg += `_App por Vibras Positivas_`;
-        
+        let msg = `*🍗 POLLO HARANA - PEDIDO*\n--------------------------\n👤 *CLIENTE:* ${n}\n📍 *DIR:* ${d}\n📞 *TEL:* ${t}\n--------------------------\n🛒 *PRODUCTOS:*\n${r}💰 *TOTAL: $ ${total.toLocaleString()}*\n--------------------------\n📍 *GPS:* ${gps}\n\n_App por Vibras Positivas_`;
         window.open(`https://wa.me/${WA_HARANA}?text=${encodeURIComponent(msg)}`, '_blank');
     }
 </script>
