@@ -39,6 +39,7 @@
         <span class="section-title">Datos de Entrega</span>
         <input type="text" id="nom" placeholder="¿Cómo es tu nombre?">
         <input type="text" id="dir" placeholder="Dirección en Caucasia">
+        <input type="tel" id="tel" placeholder="Tu número de Celular / WhatsApp">
 
         <span class="section-title">Catálogo de Salud</span>
         <div class="grid-productos">
@@ -80,7 +81,7 @@
             </div>
         </div>
 
-        <textarea id="notas" rows="2" placeholder="Otras necesidades o dudas..."></textarea>
+        <textarea id="notas" rows="2" placeholder="Notas adicionales o dudas..."></textarea>
 
         <button class="btn-wa" onclick="enviarPedido()">
             <span>🛰️ ENVIAR PEDIDO CON GPS</span>
@@ -99,13 +100,12 @@
     let pedido = { p1: 0, p2: 0, p3: 0, p4: 0 };
     const nombresProd = { p1: "Toallas Nocturnas", p2: "Toallas Día", p3: "Protectores", p4: "Crema Dental Herbs" };
 
-    // CONTROL DE SEGURIDAD
     async function verificarSuscripcion() {
         try {
             const res = await fetch('https://haroldco45.github.io/vibras-positivas-apps/control-vibras.js');
             const texto = await res.text();
             if (texto.includes('"yeraldin-belleza": "suspendido"')) {
-                document.body.innerHTML = `<div style="text-align:center; padding:50px; background:#000; color:#fff; height:100vh;"><h1>🔒 SUSPENDIDO</h1><p>Contacte a Harold</p></div>`;
+                document.body.innerHTML = `<div style="text-align:center; padding:50px; background:#000; color:#fff; height:100vh;"><h1>🔒 SUSPENDIDO</h1><p>Contacte a Harold de Vibras Positivas</p></div>`;
             }
         } catch(e) {}
     }
@@ -119,24 +119,34 @@
     function enviarPedido() {
         const nom = document.getElementById('nom').value;
         const dir = document.getElementById('dir').value;
+        const tel = document.getElementById('tel').value;
         const obs = document.getElementById('notas').value;
-        if(!nom || !dir) return alert("Completa tus datos");
+        
+        if(!nom || !dir || !tel) return alert("Por favor completa todos los datos de entrega.");
 
         let r = "";
         for(let key in pedido) if(pedido[key] > 0) r += `• ${nombresProd[key]}: ${pedido[key]}\n`;
-        if(!r && !obs) return alert("Selecciona productos");
+        if(!r && !obs) return alert("Selecciona productos para tu pedido.");
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                (pos) => abrirWA(nom, dir, r, obs, `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`),
-                () => abrirWA(nom, dir, r, obs, "No enviada"),
+                (pos) => abrirWA(nom, dir, tel, r, obs, `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`),
+                () => abrirWA(nom, dir, tel, r, obs, "No compartida"),
                 { timeout: 7000 }
             );
-        } else { abrirWA(nom, dir, r, obs, "No soportado"); }
+        } else { abrirWA(nom, dir, tel, r, obs, "No soportado"); }
     }
 
-    function abrirWA(n, d, r, o, gps) {
-        let msg = `*✨ YERALDIN BIENESTAR & BELLEZA*%0A👤 *CLIENTE:* ${n}%0A📍 *DIR:* ${d}%0A🛒 *PEDIDO:*%0A${encodeURIComponent(r)}%0A📝 *NOTAS:* ${encodeURIComponent(o)}%0A📍 *GPS:* ${encodeURIComponent(gps)}`;
+    function abrirWA(n, d, t, r, o, gps) {
+        let msg = `*✨ YERALDIN BIENESTAR & BELLEZA*%0A`;
+        msg += `--------------------------%0A`;
+        msg += `👤 *CLIENTE:* ${n}%0A📍 *DIR:* ${d}%0A📞 *TEL:* ${t}%0A`;
+        msg += `--------------------------%0A`;
+        msg += `🛒 *PEDIDO:*%0A${encodeURIComponent(r)}`;
+        if(o) msg += `%0A📝 *NOTAS:* ${encodeURIComponent(o)}%0A`;
+        msg += `--------------------------%0A`;
+        msg += `📍 *GPS:* ${encodeURIComponent(gps)}%0A%0A`;
+        msg += `_Desarrollado por Vibras Positivas_`;
         window.open(`https://wa.me/${WA_YERALDIN}?text=${msg}`, '_blank');
     }
 </script>
