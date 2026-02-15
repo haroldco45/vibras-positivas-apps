@@ -13,21 +13,18 @@
         .brand-name { font-size: 26px; font-weight: bold; color: var(--glam); letter-spacing: 1px; text-transform: uppercase; }
         .content { padding: 20px; }
         .section-title { font-size: 14px; font-weight: bold; color: #888; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid var(--rosa-soft); display: block; }
-        
         .grid-productos { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         .producto { background: #fffcf2; padding: 12px; border-radius: 20px; text-align: center; border: 1px solid var(--rosa-soft); display: flex; flex-direction: column; justify-content: space-between; }
-        .producto img { width: 100%; height: 120px; object-fit: contain; border-radius: 15px; margin-bottom: 8px; background: white; }
-        .producto .p-titulo { font-size: 13px; font-weight: bold; display: block; color: var(--glam); }
-        .producto .p-desc { font-size: 10px; color: #666; margin: 5px 0; line-height: 1.2; min-height: 40px; }
-        
+        .producto img { width: 100%; height: 130px; object-fit: contain; border-radius: 15px; margin-bottom: 8px; background: white; }
+        .p-titulo { font-size: 13px; font-weight: bold; display: block; color: var(--glam); margin-bottom: 4px; }
+        .p-desc { font-size: 10px; color: #666; line-height: 1.2; margin-bottom: 10px; min-height: 40px; }
         .controles { display: flex; align-items: center; justify-content: center; gap: 10px; background: white; border-radius: 10px; padding: 5px; border: 1px solid #eee; margin-top: auto; }
         .btn-cant { background: var(--glam); color: white; border: none; width: 28px; height: 28px; border-radius: 5px; font-weight: bold; cursor: pointer; }
-        .cant-val { font-weight: bold; min-width: 20px; font-size: 14px; }
-        
+        .cant-val { font-weight: bold; min-width: 20px; }
         input, textarea { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #ddd; border-radius: 15px; font-size: 14px; box-sizing: border-box; }
         .btn-wa { width: 100%; padding: 18px; background: var(--exito); color: white; border: none; border-radius: 15px; font-size: 17px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px; }
         footer { text-align: center; padding: 25px; font-size: 12px; color: #999; }
-        .vp-brand { color: #000; font-weight: bold; text-decoration: none; }
+        .vp-brand { color: #000; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -40,17 +37,17 @@
     </header>
 
     <div class="content">
-        <span class="section-title">Tus Datos</span>
-        <input type="text" id="nom" placeholder="¿Cómo es tu nombre?">
-        <input type="text" id="dir" placeholder="Dirección de entrega">
+        <span class="section-title">Datos de Entrega</span>
+        <input type="text" id="nom" placeholder="¿Tu nombre?">
+        <input type="text" id="dir" placeholder="Dirección en Caucasia">
         <input type="tel" id="tel" placeholder="Tu WhatsApp">
 
-        <span class="section-title">Portafolio de Bienestar</span>
+        <span class="section-title">Portafolio de Salud</span>
         <div class="grid-productos">
             <div class="producto">
-                <img src="./toallas-nocturnas.jpeg" alt="Toallas Nocturnas">
-                <span class="p-titulo">Toalla Turmalina (Noche)</span>
-                <p class="p-desc">Alta absorción. Reduce olores y cólicos. Equilibra el pH.</p>
+                <img src="./toallas-nocturnas.jpeg" alt="Noche">
+                <span class="p-titulo">Toalla Noche</span>
+                <p class="p-desc">Alta absorción, reduce cólicos y equilibra el pH.</p>
                 <div class="controles">
                     <button class="btn-cant" onclick="cambiarCant('p1', -1)">-</button>
                     <span id="p1" class="cant-val">0</span>
@@ -58,9 +55,9 @@
                 </div>
             </div>
             <div class="producto">
-                <img src="./toallas-dia.jpeg" alt="Toallas Día">
-                <span class="p-titulo">Toalla Turmalina (Día)</span>
-                <p class="p-desc">Frescura y protección con tecnología de turmalina.</p>
+                <img src="./toallas-dia.jpeg" alt="Día">
+                <span class="p-titulo">Toalla Día</span>
+                <p class="p-desc">Protección y frescura con tecnología de turmalina.</p>
                 <div class="controles">
                     <button class="btn-cant" onclick="cambiarCant('p2', -1)">-</button>
                     <span id="p2" class="cant-val">0</span>
@@ -69,8 +66,8 @@
             </div>
             <div class="producto">
                 <img src="./protectores.jpeg" alt="Protectores">
-                <span class="p-titulo">Protectores Diarios</span>
-                <p class="p-desc">Uso diario sin químicos. Previene irritaciones y da frescura.</p>
+                <span class="p-titulo">Protectores</span>
+                <p class="p-desc">Diseño suave sin químicos, ideal para uso diario.</p>
                 <div class="controles">
                     <button class="btn-cant" onclick="cambiarCant('p3', -1)">-</button>
                     <span id="p3" class="cant-val">0</span>
@@ -79,8 +76,8 @@
             </div>
             <div class="producto">
                 <img src="./crema-dental.jpeg" alt="Crema Dental">
-                <span class="p-titulo">Crema Dental Herbs</span>
-                <p class="p-desc">Limpieza profunda natural. Cuida encías y combate mal aliento.</p>
+                <span class="p-titulo">Crema Herbs</span>
+                <p class="p-desc">Limpieza profunda natural, combate mal aliento.</p>
                 <div class="controles">
                     <button class="btn-cant" onclick="cambiarCant('p4', -1)">-</button>
                     <span id="p4" class="cant-val">0</span>
@@ -89,36 +86,20 @@
             </div>
         </div>
 
-        <textarea id="notas" rows="2" placeholder="Notas adicionales (Ej: Favor traer cambio de 50)"></textarea>
-
-        <button class="btn-wa" onclick="enviarPedido()">
-            <span>🛰️ ENVIAR PEDIDO CON GPS</span>
-        </button>
+        <textarea id="notas" rows="2" placeholder="Notas adicionales..."></textarea>
+        <button class="btn-wa" onclick="enviarPedido()"><span>🛰️ ENVIAR PEDIDO COMPLETO</span></button>
     </div>
 
     <footer>
-        Tecnología al servicio de tu bienestar <br>
-        <span class="vp-brand">VIBRAS POSITIVAS</span> <br>
-        Caucasia © 2026
+        Infraestructura Digital por <br>
+        <span class="vp-brand">VIBRAS POSITIVAS</span>
     </footer>
 </div>
 
 <script>
     const WA_YERALDIN = "573206359265";
     let pedido = { p1: 0, p2: 0, p3: 0, p4: 0 };
-    const nombresProd = { p1: "Toalla Turmalina Noche", p2: "Toalla Turmalina Día", p3: "Protectores Diarios", p4: "Crema Dental Herbs" };
-
-    // --- SEGURIDAD VIBRAS POSITIVAS ---
-    async function verificarSuscripcion() {
-        try {
-            const res = await fetch('https://haroldco45.github.io/vibras-positivas-apps/control-vibras.js');
-            const texto = await res.text();
-            if (texto.includes('"yeraldin-belleza": "suspendido"')) {
-                document.body.innerHTML = `<div style="text-align:center; padding:50px; background:#000; color:#fff; height:100vh;"><h1>🔒 SUSPENDIDO</h1><p>Contacte a Harold de Vibras Positivas</p></div>`;
-            }
-        } catch(e) {}
-    }
-    verificarSuscripcion();
+    const nombresProd = { p1: "Toalla Noche", p2: "Toalla Día", p3: "Protectores", p4: "Crema Dental Herbs" };
 
     function cambiarCant(id, val) {
         pedido[id] = Math.max(0, pedido[id] + val);
@@ -131,12 +112,11 @@
         const tel = document.getElementById('tel').value;
         const obs = document.getElementById('notas').value;
         
-        if(!nom || !dir || !tel) return alert("Por favor completa tus datos.");
+        if(!nom || !dir || !tel) return alert("Completa tus datos.");
 
         let r = "";
         for(let key in pedido) if(pedido[key] > 0) r += `• ${nombresProd[key]}: ${pedido[key]}\n`;
-        if(!r && !obs) return alert("Selecciona productos para tu pedido.");
-
+        
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (pos) => abrirWA(nom, dir, tel, r, obs, `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`),
@@ -147,16 +127,17 @@
     }
 
     function abrirWA(n, d, t, r, o, gps) {
-        let msg = `*✨ YERALDIN BIENESTAR & BELLEZA*%0A`;
-        msg += `--------------------------%0A`;
-        msg += `👤 *CLIENTE:* ${n}%0A📍 *DIR:* ${d}%0A📞 *TEL:* ${t}%0A`;
-        msg += `--------------------------%0A`;
-        msg += `🛒 *PEDIDO:*%0A${encodeURIComponent(r)}`;
-        if(o) msg += `%0A📝 *NOTAS:* ${encodeURIComponent(o)}%0A`;
-        msg += `--------------------------%0A`;
-        msg += `📍 *UBICACIÓN:*%0A${encodeURIComponent(gps)}%0A%0A`;
+        let msg = `*✨ YERALDIN BIENESTAR & BELLEZA*\n`;
+        msg += `--------------------------\n`;
+        msg += `👤 *CLIENTE:* ${n}\n📍 *DIR:* ${d}\n📞 *TEL:* ${t}\n`;
+        msg += `--------------------------\n`;
+        msg += `🛒 *PEDIDO:*\n${r}`;
+        if(o) msg += `\n📝 *NOTAS:* ${o}\n`;
+        msg += `--------------------------\n`;
+        msg += `📍 *GPS:* ${gps}\n\n`;
         msg += `_Desarrollado por Vibras Positivas_`;
-        window.open(`https://wa.me/${WA_YERALDIN}?text=${msg}`, '_blank');
+        
+        window.open(`https://wa.me/${WA_YERALDIN}?text=${encodeURIComponent(msg)}`, '_blank');
     }
 </script>
 </body>
