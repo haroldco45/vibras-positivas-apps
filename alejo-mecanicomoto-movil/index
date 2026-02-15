@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alejo Mecánico Moto-Móvil - Citas</title>
+    <style>
+        :root { --oro: #FFD700; --negro: #1a1a1a; --blanco: #ffffff; --gris: #333; --exito: #25D366; }
+        body { font-family: 'Arial', sans-serif; background-color: #f0f0f0; margin: 0; padding: 15px; }
+        .card { max-width: 480px; margin: auto; background: var(--blanco); border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); overflow: hidden; border: 1px solid #ccc; }
+        header { background: var(--negro); color: var(--oro); padding: 25px; text-align: center; border-bottom: 5px solid var(--oro); }
+        .logo { font-size: 22px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        .content { padding: 20px; }
+        .section-title { font-size: 13px; font-weight: bold; color: #555; text-transform: uppercase; margin-bottom: 10px; border-bottom: 2px solid var(--oro); display: inline-block; }
+        
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #bbb; border-radius: 10px; font-size: 15px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-size: 17px; font-weight: bold; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-oro { background: var(--oro); color: var(--negro); margin-bottom: 10px; }
+        .btn-whatsapp { background: var(--exito); color: white; margin-top: 15px; }
+        .hidden { display: none !important; }
+        
+        .box-info { background: #fff9c4; padding: 15px; border-radius: 10px; border-left: 5px solid var(--oro); font-size: 14px; margin-bottom: 15px; }
+        footer { text-align: center; padding: 25px; font-size: 12px; color: #777; background: #fff; }
+        .vp-brand { color: #000; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <header>
+        <div class="logo">🛠️ ALEJO MOTO-MÓVIL</div>
+        <div style="font-size: 11px; color: #aaa; margin-top: 5px;">MECÁNICA A DOMICILIO EN CAUCASIA</div>
+    </header>
+
+    <div class="content">
+        <div id="seccion-cliente">
+            <div class="section-title">Tus Datos de Ubicación</div>
+            <div id="form-datos">
+                <input type="text" id="nom" placeholder="Tu nombre">
+                <input type="text" id="dir" placeholder="Dirección o referencia del lugar">
+                <input type="tel" id="tel" placeholder="Tu número de celular">
+                <button class="btn btn-oro" onclick="guardarInfo()">GUARDAR MIS DATOS</button>
+            </div>
+            <div id="info-guardada" class="hidden">
+                <div class="box-info">
+                    <div id="resumen-cliente"></div>
+                    <small onclick="editarInfo()" style="color: blue; cursor: pointer; text-decoration: underline;">✏️ Cambiar información</small>
+                </div>
+            </div>
+        </div>
+
+        <hr style="opacity: 0.2; margin: 20px 0;">
+
+        <div class="section-title">¿Qué servicio necesitas?</div>
+        
+        <select id="servicio-moto">
+            <option value="">-- Selecciona un servicio --</option>
+            <option value="Cambio de Aceite">Cambio de Aceite</option>
+            <option value="Engrasada General">Engrasada General</option>
+            <option value="Tensionada de Cadena">Tensionada de Cadena</option>
+            <option value="Mantenimiento Sencillo">Mantenimiento Sencillo</option>
+            <option value="Mantenimiento General">Mantenimiento General</option>
+            <option value="Ajustes Provisionales">Ajustes Provisionales</option>
+            <option value="Varada / Emergencia">🚨 Varada / Emergencia</option>
+            <option value="Otro">Otro (Especificar en notas)</option>
+        </select>
+
+        <input type="text" id="modelo-moto" placeholder="Modelo de tu moto (Ej: Pulsar 200)">
+        
+        <textarea id="obs" rows="2" placeholder="Notas adicionales: (Ej: No prende, suena la cadena, traer aceite 10W40)"></textarea>
+
+        <button class="btn btn-whatsapp" onclick="verificarYEnviar()">
+            <span>🛰️ LLAMAR MECÁNICO CON GPS</span>
+        </button>
+    </div>
+
+    <footer>
+        Desarrollado por <br>
+        <span class="vp-brand">VIBRAS POSITIVAS</span> <br>
+        Derechos de Autor © 2026
+    </footer>
+</div>
+
+<script>
+    const WHATSAPP_ALEJO = "573136002941"; // Harold, coloca el número de Alejo
+
+    // --- CONTROL DE SEGURIDAD CENTRALIZADO ---
+    async function verificarSuscripcion() {
+        try {
+            const respuesta = await fetch('https://haroldco45.github.io/vibras-positivas-apps/control-vibras.js');
+            const texto = await respuesta.text();
+            if (texto.includes('"alejo-mecanicomoto-movil": "suspendido"')) {
+                document.body.innerHTML = `
+                <div style="text-align:center; padding:50px; font-family:sans-serif; background:#000; color:#fff; height:100vh;">
+                    <h1 style="color:#FFD700;">VIBRAS POSITIVAS</h1>
+                    <div style="font-size:50px;">🔒</div>
+                    <h2>SERVICIO SUSPENDIDO</h2>
+                    <p>Suscripción vencida. Contacte a soporte para reactivar:</p>
+                    <a href="https://wa.me/573117700431" style="color:#FFD700; font-weight:bold; text-decoration:none;">📱 CONTACTAR A HAROLD</a>
+                </div>`;
+            }
+        } catch (e) { console.log("Security skip"); }
+    }
+    verificarSuscripcion();
+
+    function guardarInfo() {
+        const d = { n: document.getElementById('nom').value, d: document.getElementById('dir').value, t: document.getElementById('tel').value };
+        if(d.n && d.d && d.t) {
+            localStorage.setItem('vp_mecanico_data', JSON.stringify(d));
+            mostrarInfo();
+        } else { alert("Por favor llena tus datos de contacto."); }
+    }
+
+    function mostrarInfo() {
+        const g = JSON.parse(localStorage.getItem('vp_mecanico_data'));
+        if(g) {
+            document.getElementById('form-datos').classList.add('hidden');
+            document.getElementById('info-guardada').classList.remove('hidden');
+            document.getElementById('resumen-cliente').innerHTML = `<b>Cliente:</b> ${g.n}<br><b>Dirección:</b> ${g.d}`;
+        }
+    }
+
+    function editarInfo() {
+        document.getElementById('form-datos').classList.remove('hidden');
+        document.getElementById('info-guardada').classList.add('hidden');
+    }
+
+    window.onload = mostrarInfo;
+
+    function verificarYEnviar() {
+        const datos = JSON.parse(localStorage.getItem('vp_mecanico_data'));
+        if(!datos) return alert("Primero guarda tus datos para que Alejo sepa a dónde ir.");
+        
+        const serv = document.getElementById('servicio-moto').value;
+        if(!serv) return alert("Selecciona qué servicio necesitas.");
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => enviarWhatsApp(datos, `http://maps.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`),
+                () => enviarWhatsApp(datos, "Ubicación no compartida por el usuario"),
+                { timeout: 7000 }
+            );
+        } else { enviarWhatsApp(datos, "GPS no soportado en este móvil"); }
+    }
+
+    function enviarWhatsApp(c, gps) {
+        const serv = document.getElementById('servicio-moto').value;
+        const moto = document.getElementById('modelo-moto').value;
+        const obs = document.getElementById('obs').value;
+
+        let msj = `*🛠️ ALEJO MOTO-MÓVIL - SOLICITUD*%0A`;
+        msj += `--------------------------%0A`;
+        msj += `👤 *CLIENTE:* ${c.n}%0A📍 *DIR:* ${c.d}%0A📞 *TEL:* ${c.t}%0A`;
+        msj += `--------------------------%0A`;
+        msj += `⚙️ *SERVICIO:* ${serv}%0A🏍️ *MOTO:* ${moto || 'No especificada'}%0A`;
+        if(obs) msj += `📝 *NOTAS:* ${obs}%0A`;
+        msj += `--------------------------%0A`;
+        msj += `📍 *UBICACIÓN GPS:*%0A${gps}%0A%0A`;
+        msj += `_App por Vibras Positivas_`;
+
+        window.open(`https://wa.me/${WHATSAPP_ALEJO}?text=${msj}`, '_blank');
+    }
+</script>
+</body>
+</html>
