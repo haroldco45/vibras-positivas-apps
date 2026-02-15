@@ -8,17 +8,14 @@
         :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris: #f4f4f4; }
         body { font-family: 'Arial', sans-serif; background-color: var(--blanco); margin: 0; padding: 0; text-align: center; }
         
-        /* Header Negro y Oro */
         header { background: var(--secundario); color: var(--primario); padding: 35px 20px; border-bottom: 5px solid var(--primario); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         h1 { margin: 0; font-size: 28px; letter-spacing: 2px; text-transform: uppercase; }
         .subtitle { font-size: 11px; color: white; margin-top: 5px; letter-spacing: 1px; }
 
         .container { max-width: 500px; margin: auto; padding: 15px; }
 
-        /* Lupa de Búsqueda */
         .search-box { width: 100%; padding: 15px; margin: 20px 0; border: 2px solid var(--primario); border-radius: 50px; font-size: 16px; outline: none; box-sizing: border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
-        /* Estilo de los Botones (Cajones Amarillos) */
         .btn-cajon { 
             display: block; 
             width: 100%; 
@@ -55,27 +52,37 @@
     <input type="text" id="lupa" class="search-box" placeholder="🔍 Buscar cliente o categoría..." onkeyup="filtrarApps()">
 
     <div id="lista-apps">
+        <div class="categoria">Distribución y Logística</div>
+        <a href="./distrileco/index.html" class="btn-cajon">🚛 DISTRILECO (Superarroz)</a>
+        <a href="./bodega-la-central/index.html" class="btn-cajon">📦 BODEGA LA CENTRAL</a>
+
         <div class="categoria">Restaurantes</div>
-        <a href="./pollo-harana/index.html" class="btn-cajon">🍗 Pollo Harana</a>
-        <a href="./estos-burgers/index.html" class="btn-cajon">🍔 Estos Burgers</a>
-        <a href="./deleite-saludable/index.html" class="btn-cajon">🥗 Deleite Saludable</a>
+        <a href="./pollo-harana/index.html" class="btn-cajon">🍗 POLLO HARANA</a>
+        <a href="./estos-burgers/index.html" class="btn-cajon">🍔 ESTOS BURGERS</a>
+        <a href="./deleite-saludable/index.html" class="btn-cajon">🥗 DELEITE SALUDABLE</a>
 
         <div class="categoria">Tiendas y Mercados</div>
-        <a href="./tienda-azul.html" class="btn-cajon">🔵 Tienda Azul</a>
-        <a href="./tienda-mall-el-triangulo/index.html" class="btn-cajon">🏪 Mall El Triángulo</a>
-        <a href="./mercafacil/index.html" class="btn-cajon">🛒 Mercafácil</a>
-        <a href="./fruver-lacentral/index.html" class="btn-cajon">🍏 Fruver La Central</a>
+        <a href="./tienda-azul.html" class="btn-cajon">🔵 TIENDA AZUL</a>
+        <a href="./tienda-mall-el-triangulo/index.html" class="btn-cajon">🏪 MALL EL TRIÁNGULO</a>
+        <a href="./mercafacil/index.html" class="btn-cajon">🛒 MERCAFÁCIL</a>
+        <a href="./fruver-lacentral/index.html" class="btn-cajon">🍏 FRUVER LA CENTRAL</a>
+
+        <div class="categoria">Tecnología y Marketing</div>
+        <a href="./creadoraqr/index.html" class="btn-cajon">📱 CREADORA QR</a>
+        <a href="./celumaster/index.html" class="btn-cajon">📲 CELUMASTER</a>
 
         <div class="categoria">Bienestar y Belleza</div>
-        <a href="./bienestar-y-belleza-Yeraldin.html" class="btn-cajon">✨ Yeraldin Bienestar</a>
+        <a href="./bienestar-y-belleza-Yeraldin/index.html" class="btn-cajon">✨ YERALDIN BIENESTAR</a>
+        <a href="./drogueria-inglesa/index.html" class="btn-cajon">💊 DROGUERÍA INGLESA</a>
 
-        <div class="categoria">Servicios</div>
-        <a href="./alejo-mecanicomoto-movil.html" class="btn-cajon">🛠️ Alejo Mecánico</a>
-        <a href="./ferreteria-la-hacienda/index.html" class="btn-cajon">🔨 Ferretería Hacienda</a>
-        <a href="./atarraya.html" class="btn-cajon">🎣 Atarrayas & Hamacas</a>
+        <div class="categoria">Servicios Especializados</div>
+        <a href="./alejo-mecanicomoto-movil/index.html" class="btn-cajon">🛠️ ALEJO MECÁNICO</a>
+        <a href="./ferreteria-la-hacienda/index.html" class="btn-cajon">🔨 FERRETERÍA HACIENDA</a>
+        <a href="./atarraya/index.html" class="btn-cajon">🎣 ATARRAYAS & HAMACAS</a>
+        <a href="./ventas-paula-areiza/index.html" class="btn-cajon">👠 VENTAS PAULA AREIZA</a>
     </div>
 </div>
-
+    
 <footer>
     Desarrollado y Administrado por <br>
     <b>ASETEC HM © 2026</b> <br>
@@ -89,12 +96,10 @@
         const botones = document.getElementsByClassName('btn-cajon');
         const categorias = document.getElementsByClassName('categoria');
         
-        // Filtrar botones
         for (let btn of botones) {
             btn.style.display = btn.innerText.toLowerCase().includes(query) ? "block" : "none";
         }
         
-        // Ocultar títulos de categorías si hay búsqueda activa para no estorbar
         for (let cat of categorias) {
             cat.style.display = (query === "") ? "block" : "none";
         }
