@@ -29,4 +29,6 @@ const ESTADO_CLIENTES = {
     "tienda-mall-el-triangulo": "activo",
     "tienda-azul": "activo",
     "bienestar-y-belleza-Yeraldin": "activo"
+    "pollo-harana": "activo"
+    
 };
