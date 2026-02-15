@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pollo Harana - Menú</title>
+    <style>
+        :root {
+            --rojo-principal: #e63946;
+            --amarillo-suave: #fffdf2;
+            --gris-oscuro: #2b2d42;
+            --dorado: #d4a373;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--amarillo-suave);
+            color: var(--gris-oscuro);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 3px solid var(--rojo-principal);
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+        }
+
+        h1 { color: var(--rojo-principal); margin: 0; text-transform: uppercase; }
+        h2 { 
+            background: var(--rojo-principal); 
+            color: white; 
+            padding: 10px; 
+            border-radius: 5px; 
+            font-size: 1.4rem;
+            margin-top: 40px;
+        }
+
+        .menu-section { margin-bottom: 30px; }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 10px;
+            border-bottom: 1px dotted #ccc;
+            padding-bottom: 5px;
+        }
+
+        .item-nombre { font-weight: bold; flex: 1; }
+        .item-precio { font-weight: bold; color: #2a9d8f; margin-left: 10px; }
+
+        .nota {
+            font-style: italic;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .pollo-extras {
+            background: #f8f9fa;
+            padding: 15px;
+            border-left: 5px solid var(--dorado);
+            margin-top: 15px;
+        }
+
+        ul { padding-left: 20px; }
+        li { margin-bottom: 5px; }
+
+        @media (max-width: 480px) {
+            .container { padding: 15px; }
+            h2 { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>POLLO HARANA</h1>
+        <p>Sabor que encanta</p>
+    </header>
+
+    <section class="menu-section">
+        <h2>🍳 Desayunos</h2>
+        <div class="item"><span class="item-nombre">Desayuno sencillo</span><span class="item-precio">$10.000</span></div>
+        <div class="item"><span class="item-nombre">Desayuno ingles</span><span class="item-precio">$12.000</span></div>
+        <div class="item"><span class="item-nombre">Patacones con queso</span><span class="item-precio">$11.000</span></div>
+        <div class="item"><span class="item-nombre">Patacones con desmechada</span><span class="item-precio">$15.000</span></div>
+        <div class="item"><span class="item-nombre">Calentado</span><span class="item-precio">$15.000</span></div>
+        <div class="item"><span class="item-nombre">Cabeza de gato</span><span class="item-precio">$15.000</span></div>
+        <span class="nota">* Incluyen café de leche o chocolate</span>
+    </section>
+
+    <section class="menu-section">
+        <h2>🍲 Ejecutivos</h2>
+        <div class="item"><span class="item-nombre">Carne molida</span><span class="item-precio">$18.900</span></div>
+        <div class="item"><span class="item-nombre">Res</span><span class="item-precio">$19.900</span></div>
+        <div class="item"><span class="item-nombre">Cerdo</span><span class="item-precio">$19.900</span></div>
+        <div class="item"><span class="item-nombre">Chicharrón</span><span class="item-precio">$21.900</span></div>
+        <div class="item"><span class="item-nombre">Posta / Sobrebarriga / Lengua</span><span class="item-precio">$21.900</span></div>
+        <div class="item"><span class="item-nombre">Desmechada / Hígado</span><span class="item-precio">$21.900</span></div>
+        <div class="item"><span class="item-nombre">Pechuga / Pollo frito / Pollo sudado</span><span class="item-precio">$21.900</span></div>
+        <span class="nota">* El almuerzo incluye sopa del día y jugo</span>
+    </section>
+
+    <section class="menu-section">
+        <h2>🔥 Asados</h2>
+        <div class="item"><span class="item-nombre">Cañón de cerdo</span><span class="item-precio">$34.000</span></div>
+        <div class="item"><span class="item-nombre">Churrasco</span><span class="item-precio">$34.000</span></div>
+        <div class="item"><span class="item-nombre">Costillas BBQ</span><span class="item-precio">$34.000</span></div>
+        <div class="item"><span class="item-nombre">Pechuga a la plancha</span><span class="item-precio">$34.000</span></div>
+        <span class="nota">* Acompañado de papa francesa y ensalada tropical</span>
+    </section>
+
+    <section class="menu-section">
+        <h2>🍗 Pollo Asado</h2>
+        <div class="item"><span class="item-nombre">1 Pollo</span><span class="item-precio">$57.000</span></div>
+        <div class="item"><span class="item-nombre">1 Pollo pernil</span><span class="item-precio">$53.000</span></div>
+        <div class="item"><span class="item-nombre">1 Pollo pechuga</span><span class="item-precio">$58.000</span></div>
+        <div class="item"><span class="item-nombre">½ Pollo</span><span class="item-precio">$31.000</span></div>
+        <div class="item"><span class="item-nombre">½ Pollo pechuga</span><span class="item-precio">$35.000</span></div>
+        <div class="item"><span class="item-nombre">½ Pollo pernil</span><span class="item-precio">$27.000</span></div>
+        <div class="item"><span class="item-nombre">¼ Pechuga</span><span class="item-precio">$21.000</span></div>
+        <div class="item"><span class="item-nombre">¼ Pernil</span><span class="item-precio">$19.000</span></div>
+        
+        <div class="pollo-extras">
+            <strong>El pollo va acompañado de:</strong>
+            <ul>
+                <li>Salsa de ajo</li>
+                <li>Bollo blanco</li>
+                <li>Ensalada verde con vinagreta</li>
+                <li>Papa cocida</li>
+            </ul>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>
