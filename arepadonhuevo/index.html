@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arepa Don Huevo - Pedidos Online</title>
+    <title>Arepa Don Huevo - Pedidos</title>
     <style>
         :root { --naranja: #e67e22; --amarillo: #f1c40f; --cafe: #5d4037; --blanco: #ffffff; --fondo: #fef9e7; --exito: #25D366; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--fondo); margin: 0; padding: 10px; padding-bottom: 180px; color: var(--cafe); }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--fondo); margin: 0; padding: 10px; padding-bottom: 200px; color: var(--cafe); }
         
         #bloqueo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; text-align: center; padding-top: 100px; }
 
@@ -16,21 +16,22 @@
         .card-datos { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid var(--naranja); }
         .input-cajon { width: 100%; padding: 12px; margin: 6px 0; border: 1px solid #ddd; border-radius: 12px; font-size: 15px; box-sizing: border-box; outline: none; }
         
-        .section-title { font-size: 13px; font-weight: bold; color: var(--naranja); text-transform: uppercase; margin: 20px 0 10px; border-left: 5px solid var(--cafe); padding-left: 10px; }
+        .section-title { font-size: 13px; font-weight: bold; color: var(--naranja); text-transform: uppercase; margin: 25px 0 10px; border-left: 5px solid var(--cafe); padding-left: 10px; }
 
-        .card-prod { background: white; border-radius: 20px; display: flex; align-items: center; padding: 10px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #f9ebea; }
-        .img-prod { width: 85px; height: 85px; border-radius: 15px; object-fit: cover; margin-right: 12px; background: #eee; }
+        /* Tarjetas de Producto con Fotos Reales */
+        .card-prod { background: white; border-radius: 20px; display: flex; align-items: center; padding: 12px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #f9ebea; }
+        .img-prod { width: 90px; height: 90px; border-radius: 15px; object-fit: cover; margin-right: 15px; background: #eee; border: 1px solid #ddd; }
         .info-prod { flex-grow: 1; }
-        .info-prod h3 { margin: 0; font-size: 15px; color: var(--cafe); }
-        .info-prod b { color: var(--naranja); font-size: 14px; }
+        .info-prod h3 { margin: 0; font-size: 15px; color: var(--cafe); text-transform: uppercase; }
+        .info-prod b { color: var(--naranja); font-size: 16px; display: block; margin: 4px 0; }
 
-        .controles { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
-        .btn-c { background: var(--amarillo); color: var(--cafe); border: none; width: 32px; height: 32px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 18px; }
-        .cant-n { font-weight: bold; color: var(--cafe); font-size: 18px; min-width: 25px; text-align: center; }
+        .controles { display: flex; align-items: center; gap: 12px; margin-top: 5px; }
+        .btn-c { background: var(--amarillo); color: var(--cafe); border: none; width: 35px; height: 35px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .cant-n { font-weight: bold; color: var(--cafe); font-size: 20px; min-width: 25px; text-align: center; }
 
-        .footer-total { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); border-radius: 25px 25px 0 0; z-index: 1000; }
-        .cajon-cuenta { background: var(--cafe); color: var(--amarillo); padding: 12px; border-radius: 15px; text-align: center; margin-bottom: 10px; }
-        .cajon-cuenta span { font-size: 24px; font-weight: bold; }
+        .footer-total { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); border-radius: 30px 30px 0 0; z-index: 1000; }
+        .cajon-cuenta { background: var(--cafe); color: var(--amarillo); padding: 12px; border-radius: 15px; text-align: center; margin-bottom: 10px; border: 1px solid var(--naranja); }
+        .cajon-cuenta span { font-size: 26px; font-weight: bold; }
         .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; }
 
         .hidden { display: none !important; }
@@ -44,7 +45,7 @@
 <div id="app-content">
     <header>
         <img src="arepadonhuevo.png" alt="Logo" class="logo-img">
-        <h1 style="margin:0; font-size: 20px;">AREPA DON HUEVO</h1>
+        <h1 style="margin:0; font-size: 22px;">AREPA DON HUEVO</h1>
         <small>📍 Calle 27, Caucasia Antioquia</small>
     </header>
 
@@ -54,18 +55,18 @@
             <input type="text" id="nom" class="input-cajon" placeholder="👤 Tu Nombre">
             <input type="text" id="dir" class="input-cajon" placeholder="🏠 Dirección Exacta">
             <input type="tel" id="tel" class="input-cajon" placeholder="📞 WhatsApp">
-            <button class="btn-enviar" style="background: var(--naranja); margin-top: 10px;" onclick="guardarDatos()">GUARDAR MIS DATOS</button>
+            <button class="btn-enviar" style="background: var(--naranja); margin-top: 10px;" onclick="guardarDatos()">💾 GUARDAR MIS DATOS</button>
         </div>
         <div id="datos-listos" class="hidden">
-            <p id="resumen-datos" style="margin:0; font-size: 14px; color: #555; white-space: pre-line;"></p>
-            <button onclick="editarDatos()" style="background: none; border: none; color: var(--naranja); cursor: pointer; padding: 5px 0; font-size: 12px;">✏️ Cambiar información</button>
+            <p id="resumen-datos" style="margin:0; font-size: 14px; color: #555; white-space: pre-line; font-weight: bold;"></p>
+            <button onclick="editarDatos()" style="background: none; border: none; color: var(--naranja); cursor: pointer; padding: 5px 0; font-size: 12px; text-decoration: underline;">✏️ Cambiar información</button>
         </div>
     </div>
 
-    <div class="section-title">Arepas Calienticas</div>
+    <div class="section-title">Arepas de la Casa</div>
     <div id="menu-arepas"></div>
 
-    <div class="section-title">Bebidas Frías</div>
+    <div class="section-title">Bebidas y Acompañantes</div>
     <div id="menu-bebidas"></div>
 
     <div class="card-datos" style="margin-top:20px;">
@@ -75,15 +76,15 @@
             <option value="Nequi">Nequi</option>
             <option value="Bancolombia">Bancolombia</option>
         </select>
-        <textarea id="obs" class="input-cajon" placeholder="📝 ¿Alguna observación?..." rows="2"></textarea>
+        <textarea id="obs" class="input-cajon" placeholder="📝 ¿Alguna nota para el pedido?" rows="2"></textarea>
     </div>
 
     <div class="footer-total">
         <div class="cajon-cuenta">
-            <small>VALOR DE LA CUENTA</small><br>
+            <small>VALOR TOTAL DE TU CUENTA</small><br>
             <span id="total-vista">$ 0</span>
         </div>
-        <button class="btn-enviar" onclick="enviarPedido()">🚀 ENVIAR PEDIDO POR WHATSAPP</button>
+        <button class="btn-enviar" onclick="enviarPedido()">🚀 ENVIAR PEDIDO A WHATSAPP</button>
     </div>
 
     <footer>
@@ -96,17 +97,17 @@
 <script>
     const WA_DONHUEVO = "573001638585";
     
-    // LISTA CORREGIDA CON EXTENSIONES SEGÚN TU REPOSITORIO
+    // PRODUCTOS VINCULADOS CON NOMBRES EXACTOS DE GITHUB
     const productos = [
-        { id: 1, n: "Arepa de Huevo", p: 4500, f: "arepahuevo.jpg", cat: "arepa" },
-        { id: 2, n: "Arepa Trifásica", p: 9000, f: "trifasica.jpg", cat: "arepa" },
-        { id: 3, n: "Arepa de Choclo", p: 10000, f: "arepadechoclo.jpeg", cat: "arepa" }, // CORREGIDO A JPEG
-        { id: 4, n: "Arepa de Queso", p: 7000, f: "arepaqueso.jpg", cat: "arepa" },
-        { id: 5, n: "Avena", p: 5000, f: "avena.jpg", cat: "bebida" },
-        { id: 6, n: "Guarapo", p: 5000, f: "guarapo.jpg", cat: "bebida" },
-        { id: 7, n: "Tamarindo", p: 5000, f: "tamarindo.jpg", cat: "bebida" },
-        { id: 8, n: "Coca Cola Mediana", p: 3000, f: "coca300.jpg", cat: "bebida" },
-        { id: 9, n: "Coca Cola Personal", p: 4500, f: "cocapersonal.jpg", cat: "bebida" }
+        { id: 1, n: "Arepa de Huevo", p: 4500, f: "arepadehuevo.JPG", cat: "arepa" },
+        { id: 2, n: "Arepa Trifásica", p: 9000, f: "arepatrifasica.JPG", cat: "arepa" },
+        { id: 3, n: "Arepa de Choclo", p: 10000, f: "arepadechoclo.jpeg", cat: "arepa" },
+        { id: 4, n: "Arepa de Queso", p: 7000, f: "arepadequeso.JPG", cat: "arepa" },
+        { id: 5, n: "Avena Caliente", p: 5000, f: "avena.jpg", cat: "bebida" },
+        { id: 6, n: "Guarapo Frío", p: 5000, f: "guarapo.jpg", cat: "bebida" },
+        { id: 7, n: "Jugo de Tamarindo", p: 5000, f: "tamarindo.jpg", cat: "bebida" },
+        { id: 8, n: "Coca Cola Mediana", p: 3000, f: "cocacolamediana.JPG", cat: "bebida" },
+        { id: 9, n: "Coca Cola Personal", p: 4500, f: "cocacolapersonal.JPG", cat: "bebida" }
     ];
 
     let ped = {};
@@ -116,7 +117,7 @@
             const div = document.createElement('div');
             div.className = 'card-prod';
             div.innerHTML = `
-                <img src="${p.f}" class="img-prod" onerror="this.src='https://via.placeholder.com/85?text=Arepa'">
+                <img src="${p.f}" class="img-prod" alt="${p.n}" onerror="this.src='https://via.placeholder.com/90?text=Don+Huevo'">
                 <div class="info-prod">
                     <h3>${p.n}</h3>
                     <b>$${p.p.toLocaleString()}</b>
@@ -142,7 +143,7 @@
     function guardarDatos() {
         const d = { n: document.getElementById('nom').value, d: document.getElementById('dir').value, t: document.getElementById('tel').value };
         if(d.n && d.d && d.t) { localStorage.setItem('vp_donhuevo_datos', JSON.stringify(d)); mostrarDatos(); }
-        else { alert("Socio, falta información."); }
+        else { alert("Socio, por favor completa tus datos."); }
     }
 
     function mostrarDatos() {
@@ -170,24 +171,24 @@
 
     function enviarPedido() {
         const c = JSON.parse(localStorage.getItem('vp_donhuevo_datos'));
-        if(!c) return alert("Guarda tus datos primero.");
-        let cuerpo = ""; let total = 0;
+        if(!c) return alert("Socio, guarda tus datos primero.");
+        let factura = ""; let total = 0;
         for(let id in ped) if(ped[id]) {
             const p = productos.find(x => x.id == id);
             const sub = ped[id] * p.p;
             total += sub;
-            cuerpo += `${ped[id]}x ${p.n} ($${p.p}) = *$${sub.toLocaleString()}*\n`;
+            factura += `${ped[id]}x ${p.n} ($${p.p.toLocaleString()}) = *$${sub.toLocaleString()}*\n`;
         }
-        if(!cuerpo) return alert("¡Elige algo rico!");
+        if(!factura) return alert("¡Agrega al menos una arepa!");
 
         navigator.geolocation.getCurrentPosition(pos => {
             const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-            lanzar(c, cuerpo, total, gps);
-        }, () => lanzar(c, cuerpo, total, "No enviada"), { timeout: 4000 });
+            lanzar(c, factura, total, gps);
+        }, () => lanzar(c, factura, total, "No enviada"), { timeout: 4000 });
     }
 
-    function lanzar(c, cuerpo, total, gps) {
-        let msg = `*🍳 AREPA DON HUEVO - PEDIDO*\n--------------------------\n👤 *CLIENTE:* ${c.n}\n🏠 *DIR:* ${c.d}\n📞 *CEL:* ${c.t}\n💳 *PAGO:* ${document.getElementById('pago').value}\n--------------------------\n🛒 *FACTURA DE PEDIDO:*\n${cuerpo}--------------------------\n💰 *TOTAL: $${total.toLocaleString()}*\n📝 *OBS:* ${document.getElementById('obs').value || "N/A"}\n📍 *MAPS:* ${gps}\n\n_App desarrollada por Vibras Positivas_`;
+    function lanzar(c, factura, total, gps) {
+        let msg = `*🍳 AREPA DON HUEVO - PEDIDO*\n--------------------------\n👤 *CLIENTE:* ${c.n}\n🏠 *DIR:* ${c.d}\n📞 *CEL:* ${c.t}\n💳 *PAGO:* ${document.getElementById('pago').value}\n--------------------------\n🛒 *FACTURA DE PEDIDO:*\n${factura}--------------------------\n💰 *TOTAL A PAGAR: $${total.toLocaleString()}*\n📝 *OBS:* ${document.getElementById('obs').value || "N/A"}\n📍 *MAPS:* ${gps}\n\n_App desarrollada por Vibras Positivas_`;
         window.location.href = `https://wa.me/${WA_DONHUEVO}?text=${encodeURIComponent(msg)}`;
     }
 </script>
