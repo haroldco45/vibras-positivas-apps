@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DISTRILECO - Pedidos Online</title>
+    <title>DISTRILECO - Toma de Pedidos</title>
     <style>
         :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris-claro: #f4f4f4; --exito: #25D366; }
         body { font-family: 'Arial', sans-serif; background-color: var(--gris-claro); margin: 0; padding: 15px; padding-bottom: 180px; }
         
-        /* Control Invisible */
         #bloqueo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; text-align: center; padding-top: 100px; }
 
         .card { max-width: 500px; margin: auto; background: var(--blanco); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; border: 2px solid var(--primario); }
@@ -19,14 +18,9 @@
         
         input, select, textarea { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ccc; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
         
-        /* Tabla de Productos con Valor */
-        .prod-row { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 5px; margin-bottom: 8px; }
-        .prod-row input { padding: 10px; font-size: 14px; margin: 0; }
-
-        /* CAJÓN DEL TOTAL */
-        .cajon-total { background: var(--secundario); color: var(--primario); padding: 15px; border-radius: 15px; margin: 15px 0; text-align: center; border: 2px solid var(--primario); }
-        .cajon-total small { font-size: 11px; text-transform: uppercase; }
-        .cajon-total b { font-size: 26px; display: block; margin-top: 5px; }
+        /* Fila de Productos simplificada para Listas */
+        .prod-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+        .prod-row input { padding: 12px; font-size: 15px; margin: 0; }
 
         .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 10px 0; display: flex; align-items: center; justify-content: center; }
         .btn-gold { background: var(--primario); color: var(--secundario); }
@@ -69,9 +63,8 @@
         <div id="lista-productos">
             <div class="prod-row">
                 <input type="text" class="p-name" placeholder="Producto" list="sugerencias">
-                <input type="text" class="p-unit" placeholder="Und">
-                <input type="number" class="p-qty" placeholder="Cant" oninput="sumarTotal()">
-                <input type="number" class="p-val" placeholder="$ Val" oninput="sumarTotal()">
+                <input type="text" class="p-unit" placeholder="Und/Paca">
+                <input type="number" class="p-qty" placeholder="Cant">
             </div>
         </div>
 
@@ -79,16 +72,12 @@
             <option value="Superarroz Blanco">
             <option value="Superarroz Integral">
             <option value="Vistahermosa Parbolizado">
+            <option value="Superarroz Paca x 25">
         </datalist>
 
         <button onclick="agregarFila()" style="color: #007bff; background: none; border: none; cursor: pointer; font-size: 14px; margin-top: 10px; font-weight: bold;">+ AGREGAR OTRO PRODUCTO</button>
 
-        <div class="cajon-total">
-            <small>VALOR TOTAL ESTIMADO</small>
-            <b id="total-vista">$ 0</b>
-        </div>
-
-        <textarea id="observaciones" placeholder="Ej: Favor entregar antes de las 10:00 AM" rows="2"></textarea>
+        <textarea id="observaciones" placeholder="📝 Notas adicionales para el despacho..." rows="2" style="margin-top: 20px;"></textarea>
 
         <div class="section-title">Método de Pago</div>
         <select id="pago">
@@ -159,22 +148,8 @@
         div.innerHTML = `
             <input type="text" class="p-name" placeholder="Producto" list="sugerencias">
             <input type="text" class="p-unit" placeholder="Und">
-            <input type="number" class="p-qty" placeholder="Cant" oninput="sumarTotal()">
-            <input type="number" class="p-val" placeholder="$ Val" oninput="sumarTotal()">`;
+            <input type="number" class="p-qty" placeholder="Cant">`;
         document.getElementById('lista-productos').appendChild(div);
-    }
-
-    function sumarTotal() {
-        let total = 0;
-        const cants = document.querySelectorAll('.p-qty');
-        const vals = document.querySelectorAll('.p-val');
-        cants.forEach((c, i) => {
-            const q = parseFloat(c.value) || 0;
-            const v = parseFloat(vals[i].value) || 0;
-            total += (q * v);
-        });
-        document.getElementById('total-vista').innerText = `$ ${total.toLocaleString()}`;
-        return total;
     }
 
     function enviarPedido() {
@@ -199,26 +174,22 @@
     }
 
     function finalizar(c, gps) {
-        let msj = `*📦 DISTRILECO - PEDIDO #${numeroPedido}*\n`;
+        let msj = `*📦 DISTRILECO - NUEVO PEDIDO #${numeroPedido}*\n`;
         msj += `--------------------------\n`;
         msj += `👤 *CLIENTE:* ${c.n}\n📞 *CEL:* ${c.c}\n🏠 *DIR:* ${c.d}\n`;
         msj += `--------------------------\n`;
-        msj += `🛒 *MERCANCÍA:*\n`;
+        msj += `🛒 *MERCANCÍA (Lista):*\n`;
         
-        let sumaPedido = 0;
         const nombres = document.querySelectorAll('.p-name');
         const cantidades = document.querySelectorAll('.p-qty');
         const unidades = document.querySelectorAll('.p-unit');
-        const valores = document.querySelectorAll('.p-val');
 
         let hayProductos = false;
         nombres.forEach((n, i) => {
             if(n.value.trim() !== "") { 
-                const q = parseFloat(cantidades[i].value) || 0;
-                const v = parseFloat(valores[i].value) || 0;
-                const sub = q * v;
-                sumaPedido += sub;
-                msj += `• ${n.value} (${q} ${unidades[i].value || 'und'}) = *$${sub.toLocaleString()}*\n`;
+                const q = cantidades[i].value || '0';
+                const u = unidades[i].value || 'und';
+                msj += `• ${n.value}: *${q} ${u}*\n`;
                 hayProductos = true;
             }
         });
@@ -231,7 +202,6 @@
         }
 
         msj += `--------------------------\n`;
-        msj += `💰 *TOTAL PEDIDO: $${sumaPedido.toLocaleString()}*\n`;
         msj += `💳 *PAGO:* ${document.getElementById('pago').value}\n`;
         
         const obs = document.getElementById('observaciones').value;
@@ -245,7 +215,7 @@
         btn.innerHTML = "🚀 ENVIAR PEDIDO A DISTRILECO";
         btn.style.opacity = "1";
 
-        // LANZAMIENTO DIRECTO PARA EVITAR BLOQUEO DE POP-UP
+        // LANZAMIENTO DIRECTO (Blindado contra bloqueos)
         window.location.href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msj)}`;
     }
 </script>
