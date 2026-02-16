@@ -3,22 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pollo Harana - Pedidos</title>
+    <title>Pollo Harana - Pedidos Inteligentes</title>
     <style>
         :root { --rojo: #e63946; --amarillo: #ffb703; --oscuro: #1d3557; --exito: #25D366; }
-        body { font-family: 'Arial', sans-serif; background-color: #f8f9fa; margin: 0; padding: 10px; padding-bottom: 140px; }
+        body { font-family: 'Arial', sans-serif; background-color: #f8f9fa; margin: 0; padding: 10px; padding-bottom: 150px; }
+        
+        /* Control Invisible */
         #bloqueo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; text-align: center; padding-top: 100px; }
+
         header { background: var(--rojo); color: white; padding: 25px; text-align: center; border-radius: 0 0 30px 30px; margin: -10px -10px 15px -10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        
+        /* Lupa Extractora */
         .search-input { width: 100%; padding: 15px; border-radius: 50px; border: 2px solid var(--amarillo); box-shadow: 0 4px 10px rgba(0,0,0,0.1); outline: none; margin-bottom: 15px; box-sizing: border-box; }
+
+        /* Cajones de Datos Personales */
+        .card-datos { background: white; padding: 20px; border-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: 2px solid var(--amarillo); }
+        .input-cajon { width: 100%; padding: 15px; margin: 8px 0; border: 1px solid #ddd; border-radius: 15px; font-size: 16px; box-sizing: border-box; background: #fff; outline: none; }
+        .input-cajon:focus { border-color: var(--rojo); }
+
         .section-title { font-size: 13px; font-weight: bold; color: var(--rojo); text-transform: uppercase; margin: 20px 0 10px; border-left: 5px solid var(--amarillo); padding: 8px; background: white; border-radius: 0 10px 10px 0; }
+        
         .card-prod { background: white; padding: 12px; border-radius: 18px; display: flex; justify-content: space-between; align-items: center; border-right: 5px solid var(--amarillo); box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 8px; }
         .info-prod h3 { margin: 0; font-size: 14px; text-transform: capitalize; }
         .precio { color: #2a9d8f; font-weight: bold; font-size: 14px; display: block; margin-top: 3px; }
+        
         .controles { display: flex; align-items: center; gap: 10px; }
-        .btn-c { background: var(--oscuro); color: white; border: none; width: 32px; height: 32px; border-radius: 8px; font-weight: bold; font-size: 18px; }
-        .cant-n { font-weight: bold; min-width: 20px; text-align: center; color: var(--rojo); }
+        .btn-c { background: var(--oscuro); color: white; border: none; width: 35px; height: 35px; border-radius: 10px; font-weight: bold; font-size: 18px; }
+        .cant-n { font-weight: bold; min-width: 20px; text-align: center; color: var(--rojo); font-size: 18px; }
+        
         .footer-pedido { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); border-radius: 25px 25px 0 0; z-index: 1000; }
-        .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
+        .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; }
+        
         footer { text-align: center; padding: 20px; font-size: 11px; color: #999; }
     </style>
 </head>
@@ -27,13 +42,15 @@
 <div id="bloqueo"><h1>🔒</h1><h2>SERVICIO SUSPENDIDO</h2><p>Contacte a VIBRAS POSITIVAS</p></div>
 
 <div id="app-content">
-    <header><h1>🍗 POLLO HARANA</h1><small>Menu Digital Interactivo</small></header>
+    <header><h1>🍗 POLLO HARANA</h1><small>Pedidos Online Caucasia</small></header>
     
-    <input type="text" id="lupa" class="search-input" placeholder="🔍 Buscar plato (ej: chicharrón)..." onkeyup="buscar()">
+    <input type="text" id="lupa" class="search-input" placeholder="🔍 Buscar plato o bebida..." onkeyup="buscar()">
     
-    <div style="background: white; padding: 15px; border-radius: 20px; margin-bottom: 15px; border: 1px solid #eee;">
-        <input type="text" id="nom" placeholder="¿A nombre de quién?">
-        <input type="text" id="dir" placeholder="Dirección de entrega">
+    <div class="card-datos">
+        <div class="section-title">📍 Datos para el Domicilio</div>
+        <input type="text" id="nom" class="input-cajon" placeholder="👤 Nombre Completo">
+        <input type="text" id="dir" class="input-cajon" placeholder="🏠 Dirección Exacta">
+        <input type="tel" id="tel_cli" class="input-cajon" placeholder="📞 Celular de contacto">
     </div>
 
     <div id="menu"></div>
@@ -42,56 +59,17 @@
         <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-weight:bold; font-size: 18px;">
             <span>TOTAL:</span><span id="total-vista" style="color: #2a9d8f;">$ 0</span>
         </div>
-        <button class="btn-enviar" onclick="enviar()">🚀 ENVIAR PEDIDO</button>
+        <button class="btn-enviar" onclick="enviar()">🚀 ENVIAR PEDIDO A WHATSAPP</button>
     </div>
 
-    <footer><b>ASETEC HM © 2026</b><br>Desarrollado por VIBRAS POSITIVAS</footer>
+    <footer><b>ASETEC HM © 2026</b><br>Infraestructura Digital VIBRAS POSITIVAS</footer>
 </div>
 
 <script>
-    const WA_NUM = "573103540921";
+    const WA_HARANA = "573103540921";
     
-    // EXTRACCIÓN DETALLADA E INDEPENDIENTE
-    const carta = [
-        { cat: "🍳 DESAYUNOS (Incluyen café o chocolate)", prods: [
-            { id: 1, n: "Desayuno Sencillo", p: 10000 }, { id: 2, n: "Desayuno Inglés", p: 12000 },
-            { id: 3, n: "Patacones con Queso", p: 11000 }, { id: 4, n: "Patacones con Desmechada", p: 15000 },
-            { id: 5, n: "Calentado", p: 15000 }, { id: 6, n: "Cabeza de Gato", p: 15000 }
-        ]},
-        { cat: "🍱 ALMUERZOS EJECUTIVOS (Sopa y Jugo)", prods: [
-            { id: 7, n: "Almuerzo Carne Molida", p: 18900 }, { id: 8, n: "Almuerzo Res", p: 19900 },
-            { id: 9, n: "Almuerzo Cerdo", p: 19900 }, { id: 10, n: "Almuerzo Chicharrón", p: 21900 },
-            { id: 11, n: "Almuerzo Posta", p: 21900 }, { id: 12, n: "Almuerzo Sobrebarriga", p: 21900 },
-            { id: 13, n: "Almuerzo Lengua", p: 21900 }, { id: 14, n: "Almuerzo Desmechada", p: 21900 },
-            { id: 15, n: "Almuerzo Hígado", p: 21900 }, { id: 16, n: "Almuerzo Pechuga", p: 21900 },
-            { id: 17, n: "Almuerzo Pollo Frito", p: 21900 }, { id: 18, n: "Almuerzo Pollo Sudado", p: 21900 }
-        ]},
-        { cat: "🔥 ASADOS (Papa francesa y ensalada)", prods: [
-            { id: 19, n: "Cañón de Cerdo", p: 34000 }, { id: 20, n: "Churrasco", p: 34000 },
-            { id: 21, n: "Costillas BBQ", p: 34000 }, { id: 22, n: "Pechuga a la Plancha", p: 34000 }
-        ]},
-        { cat: "🍗 POLLO ASADO (Salsa, bollo, ensalada, papa)", prods: [
-            { id: 23, n: "1 Pollo Completo", p: 57000 }, { id: 24, n: "1 Pollo Pernil", p: 53000 },
-            { id: 25, n: "1 Pollo Pechuga", p: 58000 }, { id: 26, n: "½ Pollo", p: 31000 },
-            { id: 27, n: "½ Pollo Pechuga", p: 35000 }, { id: 28, n: "½ Pollo Pernil", p: 27000 },
-            { id: 29, n: "¼ Pechuga", p: 21000 }, { id: 30, n: "¼ Pernil", p: 19000 }
-        ]},
-        { cat: "🥤 BEBIDAS Y JUGOS", prods: [
-            { id: 31, n: "Jugos en Agua", p: 10000 }, { id: 32, n: "Jugos en Leche", p: 12000 },
-            { id: 33, n: "Mandarina Natural", p: 12000 }, { id: 34, n: "Naranja Natural", p: 10000 },
-            { id: 35, n: "Limonada Natural", p: 10000 }, { id: 36, n: "Limonada Cerezada", p: 12000 },
-            { id: 37, n: "Limonada de Coco", p: 12000 }, { id: 38, n: "Gaseosa 1.5L (Mesa)", p: 10500 },
-            { id: 39, n: "Gaseosa 3L (Mesa)", p: 14500 }, { id: 40, n: "Gaseosa 1.5L (Llevar)", p: 7000 },
-            { id: 41, n: "Gaseosa 3L (Llevar)", p: 11000 }, { id: 42, n: "Cerveza Lata", p: 5000 },
-            { id: 43, n: "Michelada Soda", p: 8000 }, { id: 44, n: "Michelada Cerveza", p: 9000 },
-            { id: 45, n: "Agua / Soda / H2O", p: 3500 }, { id: 46, n: "Tinto / Aromática", p: 2000 }
-        ]}
-    ];
-
-    let ped = {};
-    
-    // CONTROL INVISIBLE DE MAYORDOMÍA
-    async function checkLock() {
+    // Verificación de Pago (Control Invisible)
+    async function checkSecurity() {
         try {
             const res = await fetch('https://haroldco45.github.io/control-vibras.js');
             const d = await res.text();
@@ -101,8 +79,45 @@
             }
         } catch(e){}
     }
-    checkLock();
+    checkSecurity();
 
+    const carta = [
+        { cat: "🍳 DESAYUNOS (Café o Chocolate)", prods: [
+            { id: 1, n: "Desayuno Sencillo", p: 10000 }, { id: 2, n: "Desayuno Inglés", p: 12000 },
+            { id: 3, n: "Patacones con Queso", p: 11000 }, { id: 4, n: "Patacones con Desmechada", p: 15000 },
+            { id: 5, n: "Calentado", p: 15000 }, { id: 6, n: "Cabeza de Gato", p: 15000 }
+        ]},
+        { cat: "🍱 ALMUERZOS (Sopa y Jugo)", prods: [
+            { id: 7, n: "Almuerzo Carne Molida", p: 18900 }, { id: 8, n: "Almuerzo Res", p: 19900 },
+            { id: 9, n: "Almuerzo Cerdo", p: 19900 }, { id: 10, n: "Almuerzo Chicharrón", p: 21900 },
+            { id: 11, n: "Almuerzo Posta", p: 21900 }, { id: 12, n: "Almuerzo Sobrebarriga", p: 21900 },
+            { id: 13, n: "Almuerzo Lengua", p: 21900 }, { id: 14, n: "Almuerzo Desmechada", p: 21900 },
+            { id: 15, n: "Almuerzo Hígado", p: 21900 }, { id: 16, n: "Almuerzo Pechuga", p: 21900 },
+            { id: 17, n: "Almuerzo Pollo Frito", p: 21900 }, { id: 18, n: "Almuerzo Pollo Sudado", p: 21900 }
+        ]},
+        { cat: "🔥 ASADOS (Papa y Ensalada)", prods: [
+            { id: 19, n: "Cañón de Cerdo", p: 34000 }, { id: 20, n: "Churrasco", p: 34000 },
+            { id: 21, n: "Costillas BBQ", p: 34000 }, { id: 22, n: "Pechuga a la Plancha", p: 34000 }
+        ]},
+        { cat: "🍗 POLLO ASADO (Salsa, Bollo, Papa, Ensalada)", prods: [
+            { id: 23, n: "1 Pollo Completo", p: 57000 }, { id: 24, n: "1 Pollo Pernil", p: 53000 },
+            { id: 25, n: "1 Pollo Pechuga", p: 58000 }, { id: 26, n: "½ Pollo", p: 31000 },
+            { id: 27, n: "½ Pollo Pechuga", p: 35000 }, { id: 28, n: "½ Pollo Pernil", p: 27000 },
+            { id: 29, n: "¼ Pechuga", p: 21000 }, { id: 30, n: "¼ Pernil", p: 19000 }
+        ]},
+        { cat: "🥤 BEBIDAS Y JUGOS", prods: [
+            { id: 31, n: "Jugos Agua", p: 10000 }, { id: 32, n: "Jugos Leche", p: 12000 },
+            { id: 33, n: "Mandarina Natural", p: 12000 }, { id: 34, n: "Naranja Natural", p: 10000 },
+            { id: 35, n: "Limonada Natural", p: 10000 }, { id: 36, n: "Limonada Cerezada", p: 12000 },
+            { id: 37, n: "Limonada Coco", p: 12000 }, { id: 38, n: "Gaseosa 1.5L (Mesa)", p: 10500 },
+            { id: 39, n: "Gaseosa 3L (Mesa)", p: 14500 }, { id: 40, n: "Gaseosa 1.5L (Llevar)", p: 7000 },
+            { id: 41, n: "Gaseosa 3L (Llevar)", p: 11000 }, { id: 42, n: "Cerveza Lata", p: 5000 },
+            { id: 43, n: "Michelada Soda", p: 8000 }, { id: 44, n: "Michelada Cerveza", p: 9000 },
+            { id: 45, n: "Agua/Soda", p: 3500 }, { id: 46, n: "Tinto/Aromática", p: 2000 }
+        ]}
+    ];
+
+    let ped = {};
     function render() {
         const m = document.getElementById('menu');
         carta.forEach(s => {
@@ -110,11 +125,7 @@
             s.prods.forEach(p => {
                 const c = document.createElement('div'); c.className='card-prod';
                 c.innerHTML = `<div><h3>${p.n}</h3><span class="precio">$ ${p.p.toLocaleString()}</span></div>
-                <div class="controles">
-                    <button class="btn-c" onclick="cant(${p.id},-1)">-</button>
-                    <span id="q-${p.id}" class="cant-n">0</span>
-                    <button class="btn-c" onclick="cant(${p.id},1)">+</button>
-                </div>`;
+                <div class="controles"><button class="btn-c" onclick="cant(${p.id},-1)">-</button><span id="q-${p.id}" class="cant-n">0</span><button class="btn-c" onclick="cant(${p.id},1)">+</button></div>`;
                 m.appendChild(c);
             });
         });
@@ -131,26 +142,22 @@
 
     function buscar() {
         const q = document.getElementById('lupa').value.toLowerCase();
-        document.querySelectorAll('.card-prod').forEach(c => {
-            c.style.display = c.innerText.toLowerCase().includes(q) ? "flex" : "none";
-        });
+        document.querySelectorAll('.card-prod').forEach(c => c.style.display = c.innerText.toLowerCase().includes(q) ? "flex" : "none");
     }
 
     function enviar() {
-        const n = document.getElementById('nom').value, d = document.getElementById('dir').value;
-        if(!n || !d) return alert("Por favor ingresa nombre y dirección.");
+        const n = document.getElementById('nom').value, d = document.getElementById('dir').value, c = document.getElementById('tel_cli').value;
+        if(!n || !d || !c) return alert("Faltan datos de domicilio o celular.");
         let r = ""; let total = 0;
-        carta.forEach(s => s.prods.forEach(p => { 
-            if(ped[p.id]) { r += `• ${ped[p.id]}x ${p.n}\n`; total += p.p * ped[p.id]; } 
-        }));
-        if(!r) return alert("Selecciona al menos un producto.");
+        carta.forEach(s => s.prods.forEach(p => { if(ped[p.id]) { r += `• ${ped[p.id]}x ${p.n}\n`; total += p.p * ped[p.id]; } }));
+        if(!r) return alert("Selecciona algún plato.");
         
         const fecha = new Date().toLocaleString("es-CO", { timeZone: "America/Bogota" });
         navigator.geolocation.getCurrentPosition(pos => {
             const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-            const msg = `*🍗 POLLO HARANA - PEDIDO*\n👤 *CLIENTE:* ${n}\n📍 *DIR:* ${d}\n------------------\n🛒 *PEDIDO:*\n${r}------------------\n💰 *TOTAL: $ ${total.toLocaleString()}*\n📅 *FECHA:* ${fecha}\n📍 *GPS:* ${gps}\n\n_Suministrado por Vibras Positivas_`;
-            window.open(`https://wa.me/${WA_NUM}?text=${encodeURIComponent(msg)}`);
-        }, () => alert("Activa el GPS para enviar el pedido."));
+            const msg = `*🍗 POLLO HARANA - PEDIDO*\n------------------\n👤 *CLIENTE:* ${n}\n📍 *DIR:* ${d}\n📞 *CEL:* ${c}\n------------------\n🛒 *PEDIDO:*\n${r}------------------\n💰 *TOTAL: $ ${total.toLocaleString()}*\n📅 *HORA:* ${fecha}\n📍 *UBICACIÓN:* ${gps}\n\n_VIBRAS POSITIVAS © 2026_`;
+            window.open(`https://wa.me/${WA_HARANA}?text=${encodeURIComponent(msg)}`);
+        }, () => alert("Activa el GPS para enviar el domicilio."));
     }
 </script>
 </body>
