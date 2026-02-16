@@ -5,85 +5,139 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DISTRILECO - Pedidos Online</title>
     <style>
-        :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris-claro: #f4f4f4; }
-        body { font-family: 'Arial', sans-serif; background-color: var(--gris-claro); margin: 0; padding: 15px; }
+        :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris-claro: #f4f4f4; --exito: #25D366; }
+        body { font-family: 'Arial', sans-serif; background-color: var(--gris-claro); margin: 0; padding: 15px; padding-bottom: 180px; }
+        
+        /* Control Invisible */
+        #bloqueo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; text-align: center; padding-top: 100px; }
+
         .card { max-width: 500px; margin: auto; background: var(--blanco); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; border: 2px solid var(--primario); }
         header { background: var(--secundario); color: var(--primario); padding: 25px; text-align: center; border-bottom: 5px solid var(--primario); }
         .logo-area { font-size: 26px; font-weight: bold; text-transform: uppercase; letter-spacing: 3px; }
         .content { padding: 20px; }
         .section-title { font-size: 14px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid var(--primario); display: inline-block; }
+        
         input, select, textarea { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ccc; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
-        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 10px 0; }
+        
+        /* Tabla de Productos con Valor */
+        .prod-row { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 5px; margin-bottom: 8px; }
+        .prod-row input { padding: 10px; font-size: 14px; margin: 0; }
+
+        /* CAJÓN DEL TOTAL */
+        .cajon-total { background: var(--secundario); color: var(--primario); padding: 15px; border-radius: 15px; margin: 15px 0; text-align: center; border: 2px solid var(--primario); }
+        .cajon-total small { font-size: 11px; text-transform: uppercase; }
+        .cajon-total b { font-size: 26px; display: block; margin-top: 5px; }
+
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 10px 0; display: flex; align-items: center; justify-content: center; }
         .btn-gold { background: var(--primario); color: var(--secundario); }
-        .btn-whatsapp { background: #25D366; color: white; font-size: 18px; }
-        .btn-edit { background: #eee; color: #333; font-size: 13px; padding: 8px; }
-        .prod-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; margin-bottom: 5px; }
-        .hidden { display: none; }
-        footer { text-align: center; padding: 20px; font-size: 12px; color: #888; background: #fff; border-top: 1px solid #eee; }
-        .vp-brand { color: var(--secundario); font-weight: bold; }
+        .btn-whatsapp { background: var(--exito); color: white; font-size: 18px; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
+        .btn-edit { background: #eee; color: #333; font-size: 12px; padding: 8px; border: none; border-radius: 5px; cursor: pointer; }
+        
+        .hidden { display: none !important; }
+        footer { text-align: center; padding: 25px; font-size: 12px; color: #444; background: #fff; border-top: 1px solid #eee; margin-top: 20px; }
+        .vp-brand { color: var(--secundario); font-weight: bold; font-size: 14px; }
     </style>
 </head>
 <body>
-<div class="card">
+
+<div id="bloqueo"><h1>🔒</h1><h2>SERVICIO SUSPENDIDO</h2><p>Contacte a VIBRAS POSITIVAS</p></div>
+
+<div class="card" id="app-content">
     <header>
         <div class="logo-area">DISTRILECO</div>
         <div style="font-size: 11px; color: white; margin-top: 5px;">SUPERARROZ • VISTAHERMOSA</div>
     </header>
+
     <div class="content">
         <div id="bloque-cliente">
             <div class="section-title">Tus Datos de Cliente</div>
             <div id="cliente-info-guardada" class="hidden">
-                <p id="texto-resumen" style="font-size: 14px; color: #333; background: #fff9db; padding: 12px; border-radius: 8px;"></p>
+                <p id="texto-resumen" style="font-size: 14px; color: #333; background: #fff9db; padding: 12px; border-radius: 8px; white-space: pre-line;"></p>
                 <button class="btn-edit" onclick="mostrarEditor()">⚙️ Cambiar mis datos</button>
             </div>
             <div id="cliente-editor">
                 <input type="text" id="c_nombre" placeholder="Nombre o Razón Social">
                 <input type="text" id="c_direccion" placeholder="Dirección de Despacho">
                 <input type="tel" id="c_celular" placeholder="Celular de Contacto">
-                <button class="btn btn-gold" onclick="guardarCliente()">Guardar Mis Datos</button>
+                <button class="btn btn-gold" onclick="guardarCliente()">GUARDAR MIS DATOS</button>
             </div>
         </div>
-        <hr style="opacity: 0.2; margin: 20px 0;">
+
+        <hr style="opacity: 0.2; margin: 25px 0;">
+
         <div class="section-title">Pedido de Mercancía</div>
         <div id="lista-productos">
             <div class="prod-row">
-                <input type="text" class="p-name" placeholder="Ej: Superarroz Paca" list="sugerencias">
-                <input type="text" class="p-unit" placeholder="Paca/Bulto">
-                <input type="number" class="p-qty" placeholder="Cant">
+                <input type="text" class="p-name" placeholder="Producto" list="sugerencias">
+                <input type="text" class="p-unit" placeholder="Und">
+                <input type="number" class="p-qty" placeholder="Cant" oninput="sumarTotal()">
+                <input type="number" class="p-val" placeholder="$ Val" oninput="sumarTotal()">
             </div>
         </div>
+
         <datalist id="sugerencias">
             <option value="Superarroz Blanco">
             <option value="Superarroz Integral">
             <option value="Vistahermosa Parbolizado">
         </datalist>
-        <button onclick="agregarFila()" style="color: #666; background: none; border: none; cursor: pointer; font-size: 13px;">+ Agregar otro producto</button>
-        <textarea id="observaciones" placeholder="Ej: Favor entregar antes de las 10:00 AM"></textarea>
+
+        <button onclick="agregarFila()" style="color: #007bff; background: none; border: none; cursor: pointer; font-size: 14px; margin-top: 10px; font-weight: bold;">+ AGREGAR OTRO PRODUCTO</button>
+
+        <div class="cajon-total">
+            <small>VALOR TOTAL ESTIMADO</small>
+            <b id="total-vista">$ 0</b>
+        </div>
+
+        <textarea id="observaciones" placeholder="Ej: Favor entregar antes de las 10:00 AM" rows="2"></textarea>
+
         <div class="section-title">Método de Pago</div>
         <select id="pago">
             <option value="Contado / Efectivo">Contado / Efectivo</option>
             <option value="Transferencia Bancaria">Transferencia Bancaria</option>
             <option value="Crédito Autorizado">Crédito Autorizado</option>
         </select>
-        <button class="btn btn-whatsapp" onclick="enviarPedido()">🚀 ENVIAR PEDIDO A DISTRILECO</button>
+
+        <button class="btn btn-whatsapp" onclick="enviarPedido()">
+            <span>🚀 ENVIAR PEDIDO A DISTRILECO</span>
+        </button>
     </div>
-    <footer>App oficial de Distrileco <br>Desarrollada por <span class="vp-brand">VIBRAS POSITIVAS</span><br>© 2026</footer>
+
+    <footer>
+        App oficial de Distrileco <br>
+        Desarrollada por <span class="vp-brand">VIBRAS POSITIVAS</span><br>
+        Derechos de Autor © 2026
+    </footer>
 </div>
 
 <script>
     const CONFIG = {
-        nombreNegocio: "DISTRILECO CAUCASIA",
-        whatsapp: "573117700431", // Tu número comercial
-        idSuscriptor: "VP-CAU-004",
-        suscripcionActiva: true
+        whatsapp: "573117700431"
     };
 
     let numeroPedido = Math.floor(Math.random() * 90000) + 10000;
-    window.onload = () => { verificarDatosGuardados(); cargarHistorialProductos(); };
+
+    window.onload = () => { 
+        verificarDatosGuardados(); 
+        checkLock();
+    };
+
+    async function checkLock() {
+        try {
+            const res = await fetch('https://haroldco45.github.io/control-vibras.js');
+            const t = await res.text();
+            if(t.includes('"distrileco": "suspendido"')) {
+                document.getElementById('bloqueo').style.display = 'block';
+                document.getElementById('app-content').style.display = 'none';
+            }
+        } catch(e){}
+    }
 
     function guardarCliente() {
         const d = { n: document.getElementById('c_nombre').value, d: document.getElementById('c_direccion').value, c: document.getElementById('c_celular').value };
-        if(d.n && d.d && d.c) { localStorage.setItem('vp_cliente_distrileco', JSON.stringify(d)); verificarDatosGuardados(); }
+        if(d.n && d.d && d.c) { 
+            localStorage.setItem('vp_cliente_distrileco', JSON.stringify(d)); 
+            verificarDatosGuardados(); 
+        } else { alert("Socio, llena tus datos para el despacho."); }
     }
 
     function verificarDatosGuardados() {
@@ -91,7 +145,7 @@
         if(g) { 
             document.getElementById('cliente-editor').classList.add('hidden');
             document.getElementById('cliente-info-guardada').classList.remove('hidden');
-            document.getElementById('texto-resumen').innerText = `Pedido para: ${g.n}\nDir: ${g.d}`;
+            document.getElementById('texto-resumen').innerText = `👤 Cliente: ${g.n}\n🏠 Dir: ${g.d}\n📞 Cel: ${g.c}`;
         }
     }
 
@@ -102,37 +156,97 @@
 
     function agregarFila() {
         const div = document.createElement('div'); div.className = 'prod-row';
-        div.innerHTML = `<input type="text" class="p-name" placeholder="Producto" list="sugerencias"><input type="text" class="p-unit" placeholder="Unidad"><input type="number" class="p-qty" placeholder="Cant">`;
+        div.innerHTML = `
+            <input type="text" class="p-name" placeholder="Producto" list="sugerencias">
+            <input type="text" class="p-unit" placeholder="Und">
+            <input type="number" class="p-qty" placeholder="Cant" oninput="sumarTotal()">
+            <input type="number" class="p-val" placeholder="$ Val" oninput="sumarTotal()">`;
         document.getElementById('lista-productos').appendChild(div);
     }
 
-    function cargarHistorialProductos() {
-        const h = JSON.parse(localStorage.getItem('vp_historial_distrileco')) || [];
-        document.getElementById('sugerencias').innerHTML += h.map(x => `<option value="${x}">`).join('');
+    function sumarTotal() {
+        let total = 0;
+        const cants = document.querySelectorAll('.p-qty');
+        const vals = document.querySelectorAll('.p-val');
+        cants.forEach((c, i) => {
+            const q = parseFloat(c.value) || 0;
+            const v = parseFloat(vals[i].value) || 0;
+            total += (q * v);
+        });
+        document.getElementById('total-vista').innerText = `$ ${total.toLocaleString()}`;
+        return total;
     }
 
     function enviarPedido() {
         const c = JSON.parse(localStorage.getItem('vp_cliente_distrileco'));
-        if(!c) return alert("Por favor, guarda tus datos primero.");
+        const btn = document.querySelector('.btn-whatsapp');
         
-        navigator.geolocation.getCurrentPosition(pos => {
-            const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-            finalizar(c, gps);
-        }, () => finalizar(c, "No proporcionada"));
+        if(!c) return alert("Socio, primero guarda tus datos de cliente.");
+
+        btn.innerHTML = "⌛ PROCESANDO...";
+        btn.style.opacity = "0.7";
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                pos => {
+                    const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                    finalizar(c, gps);
+                }, 
+                () => finalizar(c, "No proporcionada"),
+                { timeout: 4000 }
+            );
+        } else { finalizar(c, "No soportado"); }
     }
 
     function finalizar(c, gps) {
-        let msj = `*DISTRILECO - NUEVO PEDIDO #${numeroPedido}*\n*CLIENTE:* ${c.n}\n*CEL:* ${c.c}\n*DIR:* ${c.d}\n--------------------------\n*MERCANCÍA:*\n`;
-        let h = JSON.parse(localStorage.getItem('vp_historial_distrileco')) || [];
-        document.querySelectorAll('.p-name').forEach((n, i) => {
-            if(n.value) { 
-                msj += `• ${n.value} (${document.querySelectorAll('.p-qty')[i].value} ${document.querySelectorAll('.p-unit')[i].value})\n`;
-                if(!h.includes(n.value)) h.push(n.value);
+        let msj = `*📦 DISTRILECO - PEDIDO #${numeroPedido}*\n`;
+        msj += `--------------------------\n`;
+        msj += `👤 *CLIENTE:* ${c.n}\n📞 *CEL:* ${c.c}\n🏠 *DIR:* ${c.d}\n`;
+        msj += `--------------------------\n`;
+        msj += `🛒 *MERCANCÍA:*\n`;
+        
+        let sumaPedido = 0;
+        const nombres = document.querySelectorAll('.p-name');
+        const cantidades = document.querySelectorAll('.p-qty');
+        const unidades = document.querySelectorAll('.p-unit');
+        const valores = document.querySelectorAll('.p-val');
+
+        let hayProductos = false;
+        nombres.forEach((n, i) => {
+            if(n.value.trim() !== "") { 
+                const q = parseFloat(cantidades[i].value) || 0;
+                const v = parseFloat(valores[i].value) || 0;
+                const sub = q * v;
+                sumaPedido += sub;
+                msj += `• ${n.value} (${q} ${unidades[i].value || 'und'}) = *$${sub.toLocaleString()}*\n`;
+                hayProductos = true;
             }
         });
-        localStorage.setItem('vp_historial_distrileco', JSON.stringify(h));
-        msj += `--------------------------\n*PAGO:* ${document.getElementById('pago').value}\n*UBICACIÓN:* ${gps}\n\n_Gestionado por Vibras Positivas_`;
-        window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msj)}`, '_blank');
+
+        if(!hayProductos) {
+            const btn = document.querySelector('.btn-whatsapp');
+            btn.innerHTML = "🚀 ENVIAR PEDIDO A DISTRILECO";
+            btn.style.opacity = "1";
+            return alert("La lista de productos está vacía.");
+        }
+
+        msj += `--------------------------\n`;
+        msj += `💰 *TOTAL PEDIDO: $${sumaPedido.toLocaleString()}*\n`;
+        msj += `💳 *PAGO:* ${document.getElementById('pago').value}\n`;
+        
+        const obs = document.getElementById('observaciones').value;
+        if(obs) msj += `📝 *OBS:* ${obs}\n`;
+        
+        msj += `--------------------------\n`;
+        msj += `📍 *UBICACIÓN:* ${gps}\n\n`;
+        msj += `_App hecha por VIBRAS POSITIVAS_`;
+
+        const btn = document.querySelector('.btn-whatsapp');
+        btn.innerHTML = "🚀 ENVIAR PEDIDO A DISTRILECO";
+        btn.style.opacity = "1";
+
+        // LANZAMIENTO DIRECTO PARA EVITAR BLOQUEO DE POP-UP
+        window.location.href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msj)}`;
     }
 </script>
 </body>
