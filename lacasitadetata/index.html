@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Casita de Tata - Pedidos y Clases</title>
+    <title>La Casita de Tata - Insumos y Clases</title>
     <style>
         :root { --primario: #f9dcc4; --secundario: #f08080; --texto: #5d5d5d; --blanco: #ffffff; --exito: #25D366; }
         body { font-family: 'Segoe UI', sans-serif; background-color: #fffaf0; margin: 0; padding: 10px; padding-bottom: 180px; color: var(--texto); }
@@ -16,15 +16,14 @@
         .card-datos { background: white; padding: 20px; border-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin-bottom: 20px; border: 1px solid var(--primario); }
         .input-cajon { width: 100%; padding: 12px; margin: 6px 0; border: 1px solid #eee; border-radius: 15px; font-size: 15px; box-sizing: border-box; outline: none; background: #fffcf9; }
 
-        .section-title { font-size: 13px; font-weight: bold; color: var(--secundario); text-transform: uppercase; margin: 25px 0 10px; border-left: 5px solid var(--primario); padding: 8px; background: white; border-radius: 0 10px 10px 0; }
+        .section-title { font-size: 12px; font-weight: bold; color: var(--secundario); text-transform: uppercase; margin: 25px 0 10px; border-left: 5px solid var(--primario); padding: 8px; background: white; border-radius: 0 10px 10px 0; }
         
         .card-prod { background: white; padding: 15px; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); margin-bottom: 12px; border-right: 5px solid var(--primario); }
-        .info-prod h3 { margin: 0; font-size: 15px; color: #444; }
+        .info-prod h3 { margin: 0; font-size: 14px; color: #444; }
         
         .opciones-area { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 8px; margin-top: 10px; align-items: center; }
-        .sel-opt { width: 100%; padding: 8px; border-radius: 10px; border: 1px solid var(--primario); font-size: 12px; background: #fff; outline: none; }
-
-        .precio-u { width: 100%; padding: 8px; border: 1px solid #eee; border-radius: 10px; text-align: center; font-size: 13px; }
+        .sel-opt { width: 100%; padding: 8px; border-radius: 10px; border: 1px solid var(--primario); font-size: 11px; background: #fff; outline: none; }
+        .precio-u { width: 100%; padding: 8px; border: 1px solid #eee; border-radius: 10px; text-align: center; font-size: 12px; }
 
         .controles { display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-c { background: var(--primario); color: var(--texto); border: none; width: 30px; height: 30px; border-radius: 8px; font-weight: bold; }
@@ -47,20 +46,20 @@
     <header>
         <img src="logo_tata.png" class="logo-tata">
         <h1 style="margin:0; font-size: 20px;">LA CASITA DE TATA</h1>
-        <small>🧶 Tejiendo procesos creativos en Caucasia</small>
+        <small>💛 El lugar para tejer con calma en Caucasia</small>
     </header>
 
     <div class="card-datos">
-        <input type="text" id="nom" class="input-cajon" placeholder="👤 Nombre o Negocio">
-        <input type="text" id="dir" class="input-cajon" placeholder="🏠 Dirección de Entrega / Clase">
+        <input type="text" id="nom" class="input-cajon" placeholder="👤 Nombre de quien pide">
+        <input type="text" id="dir" class="input-cajon" placeholder="🏠 Dirección: TV 18A N DG 12-43...">
         <input type="tel" id="tel_cli" class="input-cajon" placeholder="📞 Celular">
-        <textarea id="obs" class="input-cajon" placeholder="📝 Notas especiales..."></textarea>
+        <textarea id="obs" class="input-cajon" placeholder="📝 Notas especiales (colores, tamaños, etc.)"></textarea>
     </div>
 
     <div id="menu"></div>
 
     <div class="cajon-total">
-        <small>TOTAL ESTIMADO DEL PEDIDO</small>
+        <small>TOTAL DE TU COMPRA</small>
         <b id="total-vista">$ 0</b>
     </div>
 
@@ -74,22 +73,50 @@
 <script>
     const WA_TATA = "573127508669";
     
+    // EXTRACCIÓN TOTAL DE PRODUCTOS
     const carta = [
-        { cat: "🧶 Hilos y Lanas", prods: [
-            { id: 1, n: "Hilo Algodón", t: "col" },
-            { id: 2, n: "Lana Acrílica", t: "col" },
-            { id: 3, n: "Trapillo Premium", t: "col" }
+        { cat: "🧶 Hilos y Cordones", prods: [
+            { id: 1, n: "Hilo Algodón (Amigurumi)", t: "col" },
+            { id: 2, n: "Hilo Macramé", t: "col" },
+            { id: 3, n: "Trapillo Premium", t: "col" },
+            { id: 4, n: "Cordón de Algodón", t: "col" },
+            { id: 5, n: "Hilo Crochet Fino", t: "col" }
         ]},
-        { cat: "✨ Clases Personalizadas", prods: [
-            { id: 4, n: "Clase para Niños", t: "cur" },
-            { id: 5, n: "Taller Jóvenes/Adultos", t: "cur" },
-            { id: 6, n: "Curso Intensivo", t: "cur" }
+        { cat: "🐑 Lanas Especiales", prods: [
+            { id: 6, n: "Lana Acrílica Suave", t: "col" },
+            { id: 7, n: "Lana Bebé Antialérgica", t: "col" },
+            { id: 8, n: "Lana Gruesa (Chunky)", t: "col" },
+            { id: 9, n: "Lana Matizada", t: "col" }
+        ]},
+        { cat: "🥢 Agujas y Ganchillos", prods: [
+            { id: 10, n: "Aguja Ergonómica (Mango)", t: "tam" },
+            { id: 11, n: "Aguja de Aluminio", t: "tam" },
+            { id: 12, n: "Aguja de Bambú", t: "tam" },
+            { id: 13, n: "Aguja Lanera (Metal/Plástico)", t: "tam" }
+        ]},
+        { cat: "🎀 Accesorios y Detalles", prods: [
+            { id: 14, n: "Ojitos de Seguridad", t: "tam" },
+            { id: 15, n: "Relleno Siliconado (Nube)", t: "tam" },
+            { id: 16, n: "Marcadores de Puntos", t: "tam" },
+            { id: 17, n: "Cinta Métrica / Tijeras", t: "tam" },
+            { id: 18, n: "Botones Decorativos", t: "tam" }
+        ]},
+        { cat: "🎁 Kits y Proyectos", prods: [
+            { id: 19, n: "Kit Amigurumi Básico", t: "tam" },
+            { id: 20, n: "Kit Manta Principiante", t: "tam" },
+            { id: 21, n: "Bolsa de Labores Tata", t: "tam" }
+        ]},
+        { cat: "🎓 Clases de Bienestar", prods: [
+            { id: 22, n: "Clase Niños (Sábados)", t: "cur" },
+            { id: 23, n: "Taller Jóvenes/Adultos", t: "cur" },
+            { id: 24, n: "Asesoría Proyecto Específico", t: "cur" }
         ]}
     ];
 
     let ped = {}; let precios = {}; let detalles = {};
-    const cols = ["Blanco", "Negro", "Crudo", "Rojo", "Azul", "Rosa", "Verde", "Lila", "Menta"];
-    const curs = ["Nivel Básico", "Amigurumi", "Prendas", "Decoración", "Puntos Avanzados"];
+    const cols = ["Blanco", "Negro", "Crudo", "Rojo", "Azul", "Rosa", "Verde", "Lila", "Menta", "Gris", "Café"];
+    const tams = ["Pequeño", "Mediano", "Grande", "2.0mm", "3.0mm", "4.0mm", "5.0mm", "Otro"];
+    const curs = ["Nivel Cero", "Amigurumi", "Ropa", "Hogar", "Técnicas Pro"];
 
     function render() {
         const m = document.getElementById('menu');
@@ -97,8 +124,9 @@
             const t = document.createElement('div'); t.className='section-title'; t.innerText=s.cat; m.appendChild(t);
             s.prods.forEach(p => {
                 const c = document.createElement('div'); c.className='card-prod';
-                let opt = `<select class="sel-opt" onchange="setDet(${p.id}, this.value)"><option value="">${p.t=='col'?'🎨 Color':'🎓 Curso'}</option>`;
-                (p.t=='col' ? cols : curs).forEach(x => opt += `<option value="${x}">${x}</option>`);
+                let opt = `<select class="sel-opt" onchange="setDet(${p.id}, this.value)"><option value="">${p.t=='col'?'🎨 Color':(p.t=='tam'?'📏 Tamaño':'🎓 Curso')}</option>`;
+                let list = p.t=='col' ? cols : (p.t=='tam' ? tams : curs);
+                list.forEach(x => opt += `<option value="${x}">${x}</option>`);
                 opt += `</select>`;
 
                 c.innerHTML = `
@@ -130,7 +158,7 @@
 
     function enviar() {
         const n = document.getElementById('nom').value, d = document.getElementById('dir').value, c = document.getElementById('tel_cli').value;
-        if(!n || !d || !c) return alert("Completa tus datos.");
+        if(!n || !d || !c) return alert("Completa tus datos para el pedido.");
         
         let r = ""; let total = 0;
         for(let id in ped) {
@@ -141,9 +169,9 @@
                 r += `• ${ped[id]}x ${prod.n} (${detalles[id] || 'N/A'}) = *$${sub.toLocaleString()}*\n`;
             }
         }
-        if(!r) return alert("Selecciona un producto o curso.");
+        if(!r) return alert("Tu casita está vacía. ¡Agrega algún producto!");
         
-        let msg = `*🧶 LA CASITA DE TATA - PEDIDO*\n------------------\n👤 *CLIENTE:* ${n}\n🏠 *DIR:* ${d}\n📞 *CEL:* ${c}\n------------------\n🛒 *DETALLE:*\n${r}------------------\n💰 *TOTAL: $${total.toLocaleString()}*\n📝 *OBS:* ${document.getElementById('obs').value || "Sin notas"}\n\n_VIBRAS POSITIVAS © 2026_`;
+        let msg = `*🧶 LA CASITA DE TATA - PEDIDO*\n------------------\n👤 *CLIENTE:* ${n}\n🏠 *DIR:* ${d}\n📞 *CEL:* ${c}\n------------------\n🛒 *DETALLE DEL PEDIDO:*\n${r}------------------\n💰 *TOTAL ESTIMADO: $${total.toLocaleString()}*\n📝 *OBS:* ${document.getElementById('obs').value || "Sin notas"}\n\n_App hecha por VIBRAS POSITIVAS_`;
         window.open(`https://wa.me/${WA_TATA}?text=${encodeURIComponent(msg)}`);
     }
 
