@@ -8,6 +8,7 @@
         :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris-claro: #f4f4f4; --exito: #25D366; }
         body { font-family: 'Arial', sans-serif; background-color: var(--gris-claro); margin: 0; padding: 15px; padding-bottom: 180px; }
         
+        /* Control Invisible */
         #bloqueo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; text-align: center; padding-top: 100px; }
 
         .card { max-width: 500px; margin: auto; background: var(--blanco); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #ddd; }
@@ -17,24 +18,28 @@
         .content { padding: 15px; }
         .section-title { font-size: 13px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid var(--primario); display: inline-block; }
         
-        /* Ajuste de columnas para celular */
+        /* Columnas de la tabla */
         .fila-pedido { display: grid; grid-template-columns: 25px 2fr 1fr 1fr 1.2fr; gap: 5px; margin-bottom: 8px; align-items: center; }
         .num-item { font-size: 13px; font-weight: bold; color: var(--secundario); text-align: center; }
         
-        input, textarea { width: 100%; padding: 10px; margin: 4px 0; border: 1px solid #ccc; border-radius: 10px; font-size: 14px; box-sizing: border-box; }
+        input, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 10px; font-size: 14px; box-sizing: border-box; }
         .head-tabla { font-size: 9px; color: #999; font-weight: bold; text-align: center; }
         
-        /* Cajón de Total Flotante */
+        /* CAJÓN DEL TOTAL RESALTADO */
         .cajon-total { background: var(--secundario); color: var(--primario); padding: 15px; border-radius: 15px; margin: 15px 0; text-align: center; border: 2px solid var(--primario); }
-        .cajon-total span { font-size: 24px; font-weight: bold; }
+        .cajon-total small { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+        .cajon-total b { font-size: 26px; display: block; margin-top: 5px; }
 
         .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-gold { background: var(--primario); color: var(--secundario); }
         .btn-add { background: #f9f9f9; color: #333; font-size: 13px; border: 1px dashed #bbb; margin-top: 10px; }
-        .btn-whatsapp { background: var(--exito); color: white; margin-top: 20px; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
+        .btn-whatsapp { background: var(--exito); color: white; margin-top: 10px; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
         
         .hidden { display: none !important; }
-        footer { text-align: center; padding: 20px; font-size: 12px; color: #666; }
+        
+        /* Pie de página solicitado */
+        footer { text-align: center; padding: 25px; font-size: 12px; color: #444; background: #fff; border-top: 1px solid #eee; margin-top: 20px; }
+        .vp-brand { color: var(--secundario); font-weight: bold; font-size: 14px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -44,20 +49,20 @@
 <div class="card" id="app-content">
     <header>
         <div class="logo-area">DISTRIBUCIONES JM</div>
-        <div style="font-size: 11px; color: white; margin-top: 5px;">ABARROTES Y SUMINISTROS</div>
+        <div style="font-size: 11px; color: white; margin-top: 5px;">DISTRIBUIDORA DE ABARROTES</div>
     </header>
 
     <div class="content">
         <div id="seccion-cliente">
             <div id="form-datos">
                 <input type="text" id="nom" placeholder="👤 Nombre o Negocio">
-                <input type="text" id="dir" placeholder="🏠 Dirección de Entrega">
-                <input type="tel" id="tel" placeholder="📞 WhatsApp de contacto">
+                <input type="text" id="dir" placeholder="🏠 Dirección Exacta">
+                <input type="tel" id="tel" placeholder="📞 WhatsApp">
                 <button class="btn btn-gold" onclick="guardarInfo()">GUARDAR DATOS</button>
             </div>
             <div id="info-guardada" class="hidden">
                 <p id="resumen-cliente" style="font-size: 13px; background: #fff9db; padding: 12px; border-radius: 10px; border-left: 5px solid var(--primario); white-space: pre-line;"></p>
-                <button onclick="editarInfo()" style="font-size: 11px; color: #007bff; border: none; background: none;">✏️ Editar datos</button>
+                <button onclick="editarInfo()" style="font-size: 11px; color: #007bff; border: none; background: none;">✏️ Editar información</button>
             </div>
         </div>
 
@@ -69,34 +74,38 @@
             <div>PRODUCTO</div>
             <div>MED.</div>
             <div>CANT.</div>
-            <div>VALOR U.</div>
+            <div>PRECIO</div>
         </div>
 
         <div id="contenedor-filas">
             <div class="fila-pedido">
                 <div class="num-item">1.</div>
-                <input type="text" class="p-nombre" placeholder="¿Qué llevas?">
-                <input type="text" class="p-medida" placeholder="Kg/Und">
-                <input type="number" class="p-cantidad" value="1" oninput="calcularTotal()">
-                <input type="number" class="p-valor" placeholder="$" oninput="calcularTotal()">
+                <input type="text" class="p-nombre" placeholder="Producto">
+                <input type="text" class="p-medida" placeholder="Kg/Un">
+                <input type="number" class="p-cantidad" value="1" oninput="sumarTotal()">
+                <input type="number" class="p-valor" placeholder="$" oninput="sumarTotal()">
             </div>
         </div>
 
         <button class="btn btn-add" onclick="agregarFila()">➕ AGREGAR OTRO PRODUCTO</button>
 
         <div class="cajon-total">
-            <small>VALOR TOTAL DEL PEDIDO</small><br>
-            <span id="total-pantalla">$ 0</span>
+            <small>Valor Total del Pedido</small>
+            <b id="total-vista">$ 0</b>
         </div>
 
-        <textarea id="obs" rows="2" placeholder="Observaciones adicionales (ej: pagar con billete de 50...)"></textarea>
+        <textarea id="obs" rows="2" placeholder="Observaciones adicionales..."></textarea>
 
         <button class="btn btn-whatsapp" onclick="capturarUbicacion()">
             <span>🚀 ENVIAR PEDIDO (WHATSAPP)</span>
         </button>
     </div>
 
-    <footer>Desarrollado por <b>VIBRAS POSITIVAS</b> © 2026</footer>
+    <footer>
+        App hecha por <br>
+        <span class="vp-brand">VIBRAS POSITIVAS</span> <br>
+        Derecho de Autor © 2026
+    </footer>
 </div>
 
 <script>
@@ -124,22 +133,22 @@
             <div class="num-item">${contadorFilas}.</div>
             <input type="text" class="p-nombre">
             <input type="text" class="p-medida">
-            <input type="number" class="p-cantidad" value="1" oninput="calcularTotal()">
-            <input type="number" class="p-valor" placeholder="$" oninput="calcularTotal()">
+            <input type="number" class="p-cantidad" value="1" oninput="sumarTotal()">
+            <input type="number" class="p-valor" placeholder="$" oninput="sumarTotal()">
         `;
         contenedor.appendChild(nuevaFila);
     }
 
-    function calcularTotal() {
+    function sumarTotal() {
         let total = 0;
         const cants = document.querySelectorAll('.p-cantidad');
         const vals = document.querySelectorAll('.p-valor');
         cants.forEach((c, i) => {
-            const v = parseFloat(vals[i].value) || 0;
             const q = parseFloat(c.value) || 0;
-            total += (v * q);
+            const v = parseFloat(vals[i].value) || 0;
+            total += (q * v);
         });
-        document.getElementById('total-pantalla').innerText = `$ ${total.toLocaleString()}`;
+        document.getElementById('total-vista').innerText = `$ ${total.toLocaleString()}`;
         return total;
     }
 
@@ -148,7 +157,7 @@
         if(datos.n && datos.d && datos.t) {
             localStorage.setItem('vp_jm_final', JSON.stringify(datos));
             mostrarInfo();
-        } else { alert("Llena tus datos de entrega."); }
+        } else { alert("Completa tus datos de entrega."); }
     }
 
     function mostrarInfo() {
@@ -156,7 +165,7 @@
         if(guardado) {
             document.getElementById('form-datos').classList.add('hidden');
             document.getElementById('info-guardada').classList.remove('hidden');
-            document.getElementById('resumen-cliente').innerText = `👤 Cliente: ${guardado.n}\n🏠 Dir: ${guardado.d}\n📞 Tel: ${guardado.t}`;
+            document.getElementById('resumen-cliente').innerText = `👤 Negocio: ${guardado.n}\n🏠 Dirección: ${guardado.d}\n📞 WhatsApp: ${guardado.t}`;
         }
     }
 
@@ -169,7 +178,7 @@
 
     function capturarUbicacion() {
         const datos = JSON.parse(localStorage.getItem('vp_jm_final'));
-        if(!datos) return alert("Guarda tus datos de entrega.");
+        if(!datos) return alert("Primero guarda tus datos.");
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (pos) => enviarWhatsApp(datos, `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`),
@@ -180,8 +189,8 @@
     }
 
     function enviarWhatsApp(c, gps) {
-        let cuerpoPedido = "";
-        let totalFinal = 0;
+        let pedidoCuerpo = "";
+        let sumaFinal = 0;
         const nombres = document.querySelectorAll('.p-nombre');
         const medidas = document.querySelectorAll('.p-medida');
         const cantidades = document.querySelectorAll('.p-cantidad');
@@ -193,28 +202,28 @@
                 const q = parseFloat(cantidades[i].value) || 0;
                 const v = parseFloat(valores[i].value) || 0;
                 const sub = q * v;
-                totalFinal += sub;
-                cuerpoPedido += `${iReal}. ${input.value} (${medidas[i].value || 'und'})\n   ${q} x $${v.toLocaleString()} = *$${sub.toLocaleString()}*\n`;
+                sumaFinal += sub;
+                pedidoCuerpo += `${iReal}. ${input.value} (${medidas[i].value || 'und'})\n   ${q} x $${v.toLocaleString()} = *$${sub.toLocaleString()}*\n`;
                 iReal++;
             }
         });
 
-        if(!cuerpoPedido) return alert("El pedido está vacío.");
+        if(!pedidoCuerpo) return alert("Agrega al menos un producto.");
 
         let msg = `*📦 DISTRIBUCIONES JM - PEDIDO*\n`;
         msg += `--------------------------\n`;
         msg += `👤 *CLIENTE:* ${c.n}\n🏠 *DIR:* ${c.d}\n📞 *TEL:* ${c.t}\n`;
         msg += `--------------------------\n`;
-        msg += `🛒 *DETALLE DEL PEDIDO:*\n${cuerpoPedido}`;
+        msg += `🛒 *DETALLE DEL PEDIDO:*\n${pedidoCuerpo}`;
         msg += `--------------------------\n`;
-        msg += `💰 *TOTAL A PAGAR: $${totalFinal.toLocaleString()}*\n`;
+        msg += `💰 *TOTAL A PAGAR: $${sumaFinal.toLocaleString()}*\n`;
         
         const obs = document.getElementById('obs').value;
-        if(obs) msg += `📝 *OBS:* ${obs}\n`;
+        if(obs) msg += `📝 *NOTA:* ${obs}\n`;
         
         msg += `--------------------------\n`;
-        msg += `📍 *UBICACIÓN:* ${gps}\n\n`;
-        msg += `_VIBRAS POSITIVAS_`;
+        msg += `📍 *GPS:* ${gps}\n\n`;
+        msg += `_App hecha por VIBRAS POSITIVAS_`;
 
         window.open(`https://wa.me/${WHATSAPP_JM}?text=${encodeURIComponent(msg)}`);
     }
