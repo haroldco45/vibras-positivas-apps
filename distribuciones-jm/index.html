@@ -7,18 +7,22 @@
     <style>
         :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris-claro: #f4f4f4; --exito: #25D366; }
         body { font-family: 'Arial', sans-serif; background-color: var(--gris-claro); margin: 0; padding: 15px; }
+        
+        /* Bloqueo Invisible */
+        #bloqueo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; text-align: center; padding-top: 100px; }
+
         .card { max-width: 500px; margin: auto; background: var(--blanco); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #ddd; }
         header { background: var(--secundario); color: var(--primario); padding: 25px; text-align: center; border-bottom: 4px solid var(--primario); }
         .logo-area { font-size: 24px; font-weight: bold; text-transform: uppercase; }
         .content { padding: 20px; }
         .section-title { font-size: 14px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid var(--primario); display: inline-block; }
         
-        /* Ajuste de columnas para incluir numeración */
-        .fila-pedido { display: grid; grid-template-columns: 30px 2fr 1fr 1fr; gap: 5px; margin-bottom: 8px; align-items: center; }
-        .num-item { font-size: 14px; font-weight: bold; color: var(--secundario); text-align: center; }
+        /* Ajuste de 5 columnas: #, Producto, Medida, Cant, Valor */
+        .fila-pedido { display: grid; grid-template-columns: 25px 2fr 1fr 1fr 1.2fr; gap: 5px; margin-bottom: 8px; align-items: center; }
+        .num-item { font-size: 13px; font-weight: bold; color: var(--secundario); text-align: center; }
         
-        input, textarea { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ccc; border-radius: 10px; font-size: 15px; box-sizing: border-box; }
-        .head-tabla { font-size: 10px; color: #999; font-weight: bold; text-align: center; }
+        input, textarea { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ccc; border-radius: 10px; font-size: 14px; box-sizing: border-box; }
+        .head-tabla { font-size: 9px; color: #999; font-weight: bold; text-align: center; }
         
         .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 10px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-gold { background: var(--primario); color: var(--secundario); }
@@ -26,14 +30,15 @@
         .btn-whatsapp { background: var(--exito); color: white; margin-top: 20px; }
         .hidden { display: none !important; }
         
-        /* Pie de página solicitado */
-        footer { text-align: center; padding: 25px; font-size: 13px; color: #555; background: #fff; border-top: 1px solid #eee; line-height: 1.6; }
-        .vp-brand { color: var(--secundario); font-weight: bold; text-decoration: none; font-size: 15px; }
+        footer { text-align: center; padding: 25px; font-size: 13px; color: #555; background: #fff; border-top: 1px solid #eee; }
+        .vp-brand { color: var(--secundario); font-weight: bold; font-size: 15px; }
     </style>
 </head>
 <body>
 
-<div class="card">
+<div id="bloqueo"><h1>🔒</h1><h2>SERVICIO SUSPENDIDO</h2><p>Contacte a VIBRAS POSITIVAS</p></div>
+
+<div class="card" id="app-content">
     <header>
         <div class="logo-area">DISTRIBUCIONES JM</div>
         <div style="font-size: 11px; color: white; margin-top: 5px;">ABARROTES DE CONFIANZA</div>
@@ -49,7 +54,7 @@
                 <button class="btn btn-gold" onclick="guardarInfo()">GUARDAR MIS DATOS</button>
             </div>
             <div id="info-guardada" class="hidden">
-                <p id="resumen-cliente" style="font-size: 14px; background: #fff9db; padding: 15px; border-radius: 10px; border-left: 5px solid var(--primario);"></p>
+                <p id="resumen-cliente" style="font-size: 14px; background: #fff9db; padding: 15px; border-radius: 10px; border-left: 5px solid var(--primario); white-space: pre-line;"></p>
                 <button onclick="editarInfo()" style="font-size: 12px; color: #007bff; border: none; background: none; cursor: pointer;">✏️ Cambiar información</button>
             </div>
         </div>
@@ -62,14 +67,16 @@
             <div>PRODUCTO</div>
             <div>MEDIDA</div>
             <div>CANT.</div>
+            <div>VALOR U.</div>
         </div>
 
         <div id="contenedor-filas">
             <div class="fila-pedido">
                 <div class="num-item">1.</div>
-                <input type="text" class="p-nombre" placeholder="¿Qué necesitas?">
-                <input type="text" class="p-medida" placeholder="Unid/Kg">
+                <input type="text" class="p-nombre" placeholder="Producto">
+                <input type="text" class="p-medida" placeholder="Und/Kg">
                 <input type="number" class="p-cantidad" value="1">
+                <input type="number" class="p-valor" placeholder="$">
             </div>
         </div>
 
@@ -78,20 +85,33 @@
         <textarea id="obs" rows="2" placeholder="Observaciones adicionales..."></textarea>
 
         <button class="btn btn-whatsapp" onclick="capturarUbicacion()">
-            <span>🛰️ ENVIAR PEDIDO CON GPS</span>
+            <span>🛰️ ENVIAR PEDIDO A WHATSAPP</span>
         </button>
     </div>
 
     <footer>
         Desarrollado por <br>
         <span class="vp-brand">VIBRAS POSITIVAS</span> <br>
-        Derechos de Autor © 2026
+        Caucasia - © 2026
     </footer>
 </div>
 
 <script>
     const WHATSAPP_JM = "573238539266";
     let contadorFilas = 1;
+
+    // CONTROL INVISIBLE
+    async function checkLock() {
+        try {
+            const res = await fetch('https://haroldco45.github.io/control-vibras.js');
+            const d = await res.text();
+            if(d.includes('"distribuciones-jm": "suspendido"')) {
+                document.getElementById('bloqueo').style.display = 'block';
+                document.getElementById('app-content').style.display = 'none';
+            }
+        } catch(e){}
+    }
+    checkLock();
 
     function agregarFila() {
         contadorFilas++;
@@ -103,6 +123,7 @@
             <input type="text" class="p-nombre">
             <input type="text" class="p-medida">
             <input type="number" class="p-cantidad" value="1">
+            <input type="number" class="p-valor">
         `;
         contenedor.appendChild(nuevaFila);
     }
@@ -112,7 +133,7 @@
         if(datos.n && datos.d && datos.t) {
             localStorage.setItem('vp_jm_final', JSON.stringify(datos));
             mostrarInfo();
-        } else { alert("Por favor, llena tus datos para el domicilio."); }
+        } else { alert("Llena tus datos de entrega."); }
     }
 
     function mostrarInfo() {
@@ -120,7 +141,7 @@
         if(guardado) {
             document.getElementById('form-datos').classList.add('hidden');
             document.getElementById('info-guardada').classList.remove('hidden');
-            document.getElementById('resumen-cliente').innerText = `Entregar a: ${guardado.n}\nUbicación: ${guardado.d}\nWhatsApp: ${guardado.t}`;
+            document.getElementById('resumen-cliente').innerText = `👤 Cliente: ${guardado.n}\n📍 Ubicación: ${guardado.d}\n📞 WhatsApp: ${guardado.t}`;
         }
     }
 
@@ -133,12 +154,11 @@
 
     function capturarUbicacion() {
         const datos = JSON.parse(localStorage.getItem('vp_jm_final'));
-        if(!datos) return alert("Primero guarda tus datos de entrega.");
-
+        if(!datos) return alert("Guarda tus datos de entrega.");
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (pos) => enviarWhatsApp(datos, `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`),
-                () => enviarWhatsApp(datos, "Ubicación no enviada"),
+                () => enviarWhatsApp(datos, "Ubicación no disponible"),
                 { timeout: 6000 }
             );
         } else { enviarWhatsApp(datos, "GPS no soportado"); }
@@ -146,14 +166,22 @@
 
     function enviarWhatsApp(c, gps) {
         let pedidoTexto = "";
+        let granTotal = 0;
         const nombres = document.querySelectorAll('.p-nombre');
         const medidas = document.querySelectorAll('.p-medida');
         const cantidades = document.querySelectorAll('.p-cantidad');
+        const valores = document.querySelectorAll('.p-valor');
 
         let iReal = 1;
         nombres.forEach((input, i) => {
             if(input.value.trim() !== "") {
-                pedidoTexto += `${iReal}. ${input.value} (${medidas[i].value || 'und'}): ${cantidades[i].value}\n`;
+                const cant = parseFloat(cantidades[i].value) || 0;
+                const val = parseFloat(valores[i].value) || 0;
+                const subtotal = cant * val;
+                granTotal += subtotal;
+                
+                pedidoTexto += `${iReal}. ${input.value} (${medidas[i].value || 'und'})\n`;
+                pedidoTexto += `   Cant: ${cant} x $${val.toLocaleString()} = *$${subtotal.toLocaleString()}*\n`;
                 iReal++;
             }
         });
@@ -165,13 +193,15 @@
         mensaje += `👤 *CLIENTE:* ${c.n}\n📍 *DIR:* ${c.d}\n📞 *TEL:* ${c.t}\n`;
         mensaje += `--------------------------\n`;
         mensaje += `🛒 *LISTA DE PRODUCTOS:*\n${pedidoTexto}`;
+        mensaje += `--------------------------\n`;
+        mensaje += `💰 *TOTAL PEDIDO: $${granTotal.toLocaleString()}*\n`;
         
         const obs = document.getElementById('obs').value;
         if(obs) mensaje += `\n📝 *NOTAS:* ${obs}\n`;
         
         mensaje += `--------------------------\n`;
         mensaje += `📍 *MAPA DE ENTREGA:* \n${gps}\n\n`;
-        mensaje += `_App Desarrollada por Vibras Positivas_`;
+        mensaje += `_VIBRAS POSITIVAS_`;
 
         window.open(`https://wa.me/${WHATSAPP_JM}?text=${encodeURIComponent(mensaje)}`, '_blank');
     }
