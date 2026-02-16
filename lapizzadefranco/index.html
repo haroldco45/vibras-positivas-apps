@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Pizza de Franco - Menú Completo</title>
+    <title>La Pizza de Franco - Carta Completa</title>
     <style>
         :root { --rojo: #ce2b37; --verde: #008c45; --blanco: #ffffff; --beige: #fdfaf5; --oscuro: #1a1a1a; --exito: #25D366; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--beige); margin: 0; padding: 10px; padding-bottom: 160px; }
@@ -47,55 +47,58 @@
             <option value="Nequi">Nequi</option>
             <option value="Bancolombia">Bancolombia</option>
         </select>
-        <textarea id="obs" class="input-cajon" placeholder="📝 Notas especiales..."></textarea>
+        <textarea id="obs" class="input-cajon" placeholder="📝 Notas (ej: sin cebolla, vueltas de 50...)"></textarea>
     </div>
     <div id="menu"></div>
     <div class="footer-pedido">
         <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-weight:bold; font-size: 18px;">
             <span>TOTAL:</span><span id="total-vista" style="color: var(--verde);">$ 0</span>
         </div>
-        <button class="btn-enviar" onclick="enviar()">🚀 ENVIAR PEDIDO POR WHATSAPP</button>
+        <button class="btn-enviar" onclick="enviar()">🚀 ENVIAR PEDIDO</button>
     </div>
 </div>
 <script>
     const WA_FRANCO = "573242233812";
     const carta = [
-        { cat: "🍕 Especialidades Premium", prods: [
-            { id: 1, n: "2 Sabores Especial", d: "Serrano, Llanera, Mariscos y más", p: { per: 42000, med: 62000, fam: 132000 } },
-            { id: 2, n: "Especial Casa / Jamón Serrano", d: "Salsa casa, mozzarella, jamón serrano", p: { per: 44000, med: 78000, fam: 152000 } },
-            { id: 3, n: "Especial de la Casa Pro", d: "Tocineta, cherry, burrata, pesto, albahaca", p: { per: 40000, med: 78000, fam: 154000 } },
-            { id: 4, n: "Especial Jamón Serrano Pro", d: "Serrano, cherry, parmesano, burrata", p: { per: 44000, med: 80000, fam: 154000 } },
-            { id: 5, n: "Especial Napolitana Pro", d: "Salsa napolitana, burrata, albahaca", p: { per: 38000, med: 74000, fam: 147000 } },
-            { id: 6, n: "Carbonara de la Casa", d: "Tocineta, frutos secos, miel saborizada", p: { per: 30000, med: 40000, fam: 72000 } }
+        { cat: "🍕 Las Especiales Pro (Con Burrata)", prods: [
+            { id: 1, n: "Especial de la Casa Pro", d: "Tocineta, cherry, pesto, albahaca y burrata", p: { per: 40000, med: 78000, fam: 154000 } },
+            { id: 2, n: "Jamón Serrano Pro", d: "Serrano, cherry, parmesano y burrata", p: { per: 44000, med: 80000, fam: 154000 } },
+            { id: 3, n: "Napolitana Pro", d: "Salsa napolitana, cherry y burrata", p: { per: 38000, med: 74000, fam: 147000 } },
+            { id: 4, n: "Capresa Pro", d: "Tomate chonto, burrata y orégano", p: { per: 38000, med: 74000, fam: 147000 } }
         ]},
-        { cat: "🍕 Sabores Gourmet", prods: [
-            { id: 7, n: "Llanera", d: "Res y cerdo a la llanera, llanero, chimichurri", p: { per: 36000, med: 56000, fam: 84000 } },
-            { id: 8, n: "Paisa", d: "Chicharrón, maduro, molida, chorizo, aguacate", p: { per: 36000, med: 46000, fam: 88000 } },
-            { id: 9, n: "Mar y Tierra", d: "Mariscos y Pollo", p: { per: 34000, med: 54000, fam: 82000 } },
-            { id: 10, n: "Mariscos", d: "Mix de mariscos y pimentón", p: { per: 37000, med: 57000, fam: 98000 } },
-            { id: 11, n: "Capresa", d: "Tomate chonto, queso burrata y orégano", p: { per: 38000, med: 74000, fam: 147000 } },
-            { id: 12, n: "Especial Ranchera", d: "Ranchera, pepperoni, orégano, pimienta", p: { per: 38000, med: 48000, fam: 82000 } },
-            { id: 13, n: "Especial Pepperoni", d: "Pepperoni, champiñones, pimentón, cebolla roja", p: { per: 35000, med: 45000, fam: 82000 } }
+        { cat: "🍕 Gourmet Franco", prods: [
+            { id: 5, n: "Carbonara de la Casa", d: "Tocineta, frutos secos y miel", p: { per: 30000, med: 40000, fam: 72000 } },
+            { id: 6, n: "Llanera", d: "Res y cerdo llanero, chimichurri", p: { per: 36000, med: 56000, fam: 84000 } },
+            { id: 7, n: "Paisa", d: "Chicharrón, maduro, molida, chorizo, aguacate", p: { per: 36000, med: 46000, fam: 88000 } },
+            { id: 8, n: "Mar y Tierra", d: "Mariscos y Pollo", p: { per: 34000, med: 54000, fam: 82000 } },
+            { id: 9, n: "Mariscos Especial", d: "Mix de mariscos y pimentón", p: { per: 37000, med: 57000, fam: 98000 } },
+            { id: 10, n: "Serrano y Champiñón", d: "Jamón serrano, cherry y champiñón", p: { per: 34000, med: 44000, fam: 77000 } },
+            { id: 11, n: "Especial Pepperoni", d: "Pepperoni, champiñón, pimentón, cebolla roja", p: { per: 35000, med: 45000, fam: 82000 } },
+            { id: 12, n: "Ranchera Especial", d: "Ranchera, pepperoni, orégano y pimienta", p: { per: 38000, med: 48000, fam: 82000 } }
         ]},
-        { cat: "🍕 Clásicas Franco", prods: [
-            { id: 14, n: "Jamón y Queso / Hawaiana", d: "Jamón y piña calada", p: { per: 36000, med: 47000, fam: 77000 } },
-            { id: 15, n: "Pepperonni Clásica", d: "Salsa napolitana y pepperoni", p: { per: 34000, med: 46000, fam: 82000 } },
-            { id: 16, n: "La Casa Tradicional", d: "Tocineta, aceitunas negras, maíz, chorizo", p: { per: 34000, med: 44000, fam: 80000 } },
-            { id: 17, n: "Ranchera", d: "Salchicha ranchera, pimentón, cebolla morada", p: { per: 32000, med: 42000, fam: 77000 } },
-            { id: 18, n: "Pollo y Champiñón", d: "Pollo desmechado y champiñones", p: { per: 32000, med: 42000, fam: 77000 } },
-            { id: 19, n: "Bologñesa", d: "Carne en salsa bologñesa y tocineta", p: { per: 32000, med: 42000, fam: 77000 } },
-            { id: 20, n: "Margarita", d: "Tomate cherry, albahaca, aceite oliva", p: { per: 28000, med: 38000, fam: 75000 } },
-            { id: 21, n: "Verduras", d: "Maíz, cherry, pimentón, aceitunas", p: { per: 32000, med: 42000, fam: 77000 } },
-            { id: 22, n: "Piña y Pollo", d: "Pollo, tocineta y piña", p: { per: 35000, med: 45000, fam: 80000 } },
-            { id: 23, n: "Napolitana Clásica", d: "Queso mozzarella y albahaca", p: { per: 22000, med: 32000, fam: 62000 } },
-            { id: 24, n: "Jamón y Queso Económica", d: "Jamón y mozzarella", p: { per: 25000, med: 35000, fam: 68000 } }
+        { cat: "🍕 Clásicas e Italianas", prods: [
+            { id: 13, n: "Hawaiana", d: "Jamón y piña calada", p: { per: 27000, med: 37000, fam: 78000 } },
+            { id: 14, n: "Pepperonni", d: "Salsa napolitana y pepperoni", p: { per: 34000, med: 46000, fam: 82000 } },
+            { id: 15, n: "Mexicana", d: "Carne, maíz, picante y nachos", p: { per: 32000, med: 42000, fam: 77000 } },
+            { id: 16, n: "Pollo y Champiñón", d: "Pollo desmechado y champiñón", p: { per: 32000, med: 42000, fam: 77000 } },
+            { id: 17, n: "Carnes", d: "Res, cerdo, tocineta y jamón", p: { per: 32000, med: 42000, fam: 77000 } },
+            { id: 18, n: "Margarita", d: "Tomate cherry, albahaca y aceite de oliva", p: { per: 28000, med: 38000, fam: 75000 } },
+            { id: 19, n: "Boloñesa", d: "Carne en salsa boloñesa y tocineta", p: { per: 32000, med: 42000, fam: 77000 } },
+            { id: 20, n: "Vegetariana", d: "Maíz, cherry, pimentón y aceitunas", p: { per: 32000, med: 42000, fam: 77000 } },
+            { id: 21, n: "Napolitana Clásica", d: "Queso mozzarella y albahaca", p: { per: 22000, med: 32000, fam: 62000 } },
+            { id: 22, n: "Jamón y Queso", d: "Jamón y mozzarella", p: { per: 25000, med: 35000, fam: 68000 } },
+            { id: 23, n: "Súper Especial", d: "Todo el sabor tradicional", p: { per: 32000, med: 42000, fam: 77000 } }
         ]},
-        { cat: "🥘 Lasagñas Artesanales", prods: [
-            { id: 25, n: "Lasagña Personal Pollo", d: "Pollo, bechamel, napolitana", p: { per: 32000, med: 36000 } },
-            { id: 26, n: "Lasagña Mixta Pollo y Carne", d: "Pollo y Res seleccionada", p: { per: 34000, med: 38000 } },
-            { id: 27, n: "Lasagña Personal Bologñesa", d: "Carne molida especial", p: { per: 32000, med: 36000 } },
-            { id: 28, n: "Especial de Pollo Pro", d: "Pollo, tocineta, frutos secos", p: { per: 32000, med: 42000, fam: 77000 } },
-            { id: 29, n: "Vegetales con Pollo", d: "Berenjenas, pimentón ahumado, maíz", p: { per: 34000, med: 44000, fam: 80000 } }
+        { cat: "🥘 Lasagñas y Más", prods: [
+            { id: 24, n: "Lasagña Pollo Pro", d: "Pollo, tocineta y frutos secos", p: { per: 32000, med: 42000 } },
+            { id: 25, n: "Lasagña Pollo Tradicional", d: "Pollo y bechamel", p: { per: 32000, med: 36000 } },
+            { id: 26, n: "Lasagña Mixta", d: "Pollo y Carne de res", p: { per: 34000, med: 38000 } },
+            { id: 27, n: "Lasagña Boloñesa", d: "Carne molida seleccionada", p: { per: 32000, med: 36000 } },
+            { id: 28, n: "Lasagña Vegetales y Pollo", d: "Berenjena, pimentón y maíz", p: { per: 34000, med: 44000 } },
+            { id: 29, n: "Calzone Especial", d: "Doblado con ingredientes premium", p: { per: 34000 } },
+            { id: 30, n: "Calzone Tradicional", d: "Doblado con jamón y queso", p: { per: 28000 } },
+            { id: 31, n: "Gaseosa 1.5 L", p: { per: 8000 } },
+            { id: 32, n: "Gaseosa Personal", p: { per: 3500 } }
         ]}
     ];
 
@@ -112,7 +115,7 @@
                     if(p.n.includes("Lasagña")) txt = (tam === 'per') ? 'Pequeña' : 'Grande';
                     btns += `<button class="btn-tamano" id="t-${p.id}-${tam}" onclick="setT(${p.id}, '${tam}', ${p.p[tam]})">${txt}<b>$${p.p[tam].toLocaleString()}</b></button>`;
                 }
-                c.innerHTML = `<div class="info-prod"><h3>${p.n}</h3><p>${p.d}</p></div><div class="selector-tamano">${btns}</div><div class="controles"><button class="btn-c" onclick="cant(${p.id},-1)">-</button><span id="q-${p.id}" class="cant-n">0</span><button class="btn-c" onclick="cant(${p.id},1)">+</button></div>`;
+                c.innerHTML = `<div class="info-prod"><h3>${p.n}</h3><p>${p.d || ""}</p></div><div class="selector-tamano">${btns}</div><div class="controles"><button class="btn-c" onclick="cant(${p.id},-1)">-</button><span id="q-${p.id}" class="cant-n">0</span><button class="btn-c" onclick="cant(${p.id},1)">+</button></div>`;
                 m.appendChild(c);
             });
         });
@@ -121,14 +124,12 @@
     function setT(id, t, p) {
         document.querySelectorAll(`[id^="t-${id}-"]`).forEach(b => b.classList.remove('active'));
         document.getElementById(`t-${id}-${t}`).classList.add('active');
-        sel[id] = { t, p };
-        calc();
+        sel[id] = { t, p }; calc();
     }
     function cant(id, v) {
         if(!sel[id]) return alert("Por favor elige el tamaño");
         ped[id] = Math.max(0, (ped[id] || 0) + v);
-        document.getElementById(`q-${id}`).innerText = ped[id];
-        calc();
+        document.getElementById(`q-${id}`).innerText = ped[id]; calc();
     }
     function calc() {
         let total = 0;
@@ -140,7 +141,7 @@
         document.querySelectorAll('.card-prod').forEach(c => c.style.display = c.innerText.toLowerCase().includes(q) ? "block" : "none");
     }
     function enviar() {
-        const n = document.getElementById('nom').value, d = document.getElementById('dir').value, c = document.getElementById('tel_cli').value, p = document.getElementById('pago').value;
+        const n = document.getElementById('nom').value, d = document.getElementById('dir').value, c = document.getElementById('tel_cli').value, p = document.getElementById('pago').value, o = document.getElementById('obs').value;
         if(!n || !d || !c) return alert("Faltan datos de envío");
         let r = ""; let total = 0;
         for(let id in ped) if(ped[id]) {
@@ -149,7 +150,7 @@
             total += sel[id].p * ped[id];
         }
         if(!r) return alert("Selecciona una pizza");
-        window.open(`https://wa.me/${WA_FRANCO}?text=${encodeURIComponent("*🍕 LA PIZZA DE FRANCO*\n👤 " + n + "\n🏠 " + d + "\n📞 " + c + "\n💳 PAGO: " + p + "\n------------------\n" + r + "------------------\n💰 TOTAL: $" + total.toLocaleString())}`);
+        window.open(`https://wa.me/${WA_FRANCO}?text=${encodeURIComponent("*🍕 LA PIZZA DE FRANCO*\n👤 " + n + "\n🏠 " + d + "\n📞 " + c + "\n💳 PAGO: " + p + "\n📝 NOTA: " + o + "\n------------------\n" + r + "------------------\n💰 TOTAL: $" + total.toLocaleString())}`);
     }
     async function check() {
         try {
