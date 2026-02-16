@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Casita de Tata - Pedidos</title>
+    <title>La Casita de Tata - Pedidos y Clases</title>
     <style>
         :root { --primario: #f9dcc4; --secundario: #f08080; --texto: #5d5d5d; --blanco: #ffffff; --exito: #25D366; }
         body { font-family: 'Segoe UI', sans-serif; background-color: #fffaf0; margin: 0; padding: 10px; padding-bottom: 180px; color: var(--texto); }
@@ -18,12 +18,11 @@
 
         .section-title { font-size: 13px; font-weight: bold; color: var(--secundario); text-transform: uppercase; margin: 25px 0 10px; border-left: 5px solid var(--primario); padding: 8px; background: white; border-radius: 0 10px 10px 0; }
         
-        /* Card de Producto con Selector */
         .card-prod { background: white; padding: 15px; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); margin-bottom: 12px; border-right: 5px solid var(--primario); }
-        .info-prod h3 { margin: 0; font-size: 15px; color: #444; text-transform: capitalize; }
+        .info-prod h3 { margin: 0; font-size: 15px; color: #444; }
         
         .opciones-area { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 8px; margin-top: 10px; align-items: center; }
-        .sel-color { width: 100%; padding: 8px; border-radius: 10px; border: 1px solid var(--primario); font-size: 12px; background: #fff; color: var(--texto); outline: none; }
+        .sel-opt { width: 100%; padding: 8px; border-radius: 10px; border: 1px solid var(--primario); font-size: 12px; background: #fff; outline: none; }
 
         .precio-u { width: 100%; padding: 8px; border: 1px solid #eee; border-radius: 10px; text-align: center; font-size: 13px; }
 
@@ -48,20 +47,20 @@
     <header>
         <img src="logo_tata.png" class="logo-tata">
         <h1 style="margin:0; font-size: 20px;">LA CASITA DE TATA</h1>
-        <small>📍 Altos de San Juan - Caucasia</small>
+        <small>🧶 Tejiendo procesos creativos en Caucasia</small>
     </header>
 
     <div class="card-datos">
-        <input type="text" id="nom" class="input-cajon" placeholder="👤 Nombre de la Tejedora">
-        <input type="text" id="dir" class="input-cajon" placeholder="🏠 Dirección de Entrega">
+        <input type="text" id="nom" class="input-cajon" placeholder="👤 Nombre o Negocio">
+        <input type="text" id="dir" class="input-cajon" placeholder="🏠 Dirección de Entrega / Clase">
         <input type="tel" id="tel_cli" class="input-cajon" placeholder="📞 Celular">
-        <textarea id="obs" class="input-cajon" placeholder="📝 Notas especiales (ej: ¿Qué quieres tejer hoy?)"></textarea>
+        <textarea id="obs" class="input-cajon" placeholder="📝 Notas especiales..."></textarea>
     </div>
 
     <div id="menu"></div>
 
     <div class="cajon-total">
-        <small>TOTAL ESTIMADO</small>
+        <small>TOTAL ESTIMADO DEL PEDIDO</small>
         <b id="total-vista">$ 0</b>
     </div>
 
@@ -75,26 +74,22 @@
 <script>
     const WA_TATA = "573127508669";
     
-    // PRODUCTOS SEPARADOS Y CON SELECTOR DE COLOR
     const carta = [
-        { cat: "🧶 Hilos Premium", prods: [
-            { id: 1, n: "Hilo Algodón", d: "Ideal para amigurumis" },
-            { id: 2, n: "Hilo Macramé", d: "Resistente y brillante" },
-            { id: 3, n: "Trapillo", d: "Para cestos y alfombras" }
+        { cat: "🧶 Hilos y Lanas", prods: [
+            { id: 1, n: "Hilo Algodón", t: "col" },
+            { id: 2, n: "Lana Acrílica", t: "col" },
+            { id: 3, n: "Trapillo Premium", t: "col" }
         ]},
-        { cat: "🐑 Lanas Suaves", prods: [
-            { id: 4, n: "Lana Acrílica", d: "Suave para prendas de invierno" },
-            { id: 5, n: "Lana Bebé", d: "Antialérgica y delicada" },
-            { id: 6, n: "Lana Gruesa", d: "Para tejidos rápidos" }
-        ]},
-        { cat: "✨ Agujas y Clases", prods: [
-            { id: 7, n: "Agujas Ergonómicas", d: "Mango suave" },
-            { id: 8, n: "Clases Personalizadas", d: "Niños y adultos" }
+        { cat: "✨ Clases Personalizadas", prods: [
+            { id: 4, n: "Clase para Niños", t: "cur" },
+            { id: 5, n: "Taller Jóvenes/Adultos", t: "cur" },
+            { id: 6, n: "Curso Intensivo", t: "cur" }
         ]}
     ];
 
-    let ped = {}; let precios = {}; let colores = {};
-    const listaColores = ["Blanco", "Negro", "Crudo", "Rojo", "Azul Cielo", "Rosa Pastel", "Verde Menta", "Amarillo", "Lila", "Otro (Ver Notas)"];
+    let ped = {}; let precios = {}; let detalles = {};
+    const cols = ["Blanco", "Negro", "Crudo", "Rojo", "Azul", "Rosa", "Verde", "Lila", "Menta"];
+    const curs = ["Nivel Básico", "Amigurumi", "Prendas", "Decoración", "Puntos Avanzados"];
 
     function render() {
         const m = document.getElementById('menu');
@@ -102,15 +97,15 @@
             const t = document.createElement('div'); t.className='section-title'; t.innerText=s.cat; m.appendChild(t);
             s.prods.forEach(p => {
                 const c = document.createElement('div'); c.className='card-prod';
-                let selector = `<select class="sel-color" onchange="setColor(${p.id}, this.value)"><option value="">🎨 Color</option>`;
-                listaColores.forEach(col => selector += `<option value="${col}">${col}</option>`);
-                selector += `</select>`;
+                let opt = `<select class="sel-opt" onchange="setDet(${p.id}, this.value)"><option value="">${p.t=='col'?'🎨 Color':'🎓 Curso'}</option>`;
+                (p.t=='col' ? cols : curs).forEach(x => opt += `<option value="${x}">${x}</option>`);
+                opt += `</select>`;
 
                 c.innerHTML = `
                 <div class="info-prod"><h3>${p.n}</h3></div>
                 <div class="opciones-area">
-                    ${selector}
-                    <input type="number" class="precio-u" placeholder="$ Val" oninput="setPrecio(${p.id}, this.value)">
+                    ${opt}
+                    <input type="number" class="precio-u" placeholder="$ Val" oninput="setP(${p.id}, this.value)">
                     <div class="controles">
                         <button class="btn-c" onclick="cant(${p.id},-1)">-</button>
                         <span id="q-${p.id}" class="cant-n">0</span>
@@ -123,8 +118,8 @@
     }
     render();
 
-    function setColor(id, v) { colores[id] = v; }
-    function setPrecio(id, v) { precios[id] = parseFloat(v) || 0; calc(); }
+    function setDet(id, v) { detalles[id] = v; }
+    function setP(id, v) { precios[id] = parseFloat(v) || 0; calc(); }
     function cant(id, v) { ped[id] = Math.max(0, (ped[id] || 0) + v); document.getElementById(`q-${id}`).innerText = ped[id]; calc(); }
 
     function calc() {
@@ -143,12 +138,12 @@
                 const prod = carta.flatMap(s => s.prods).find(x => x.id == id);
                 const sub = ped[id] * (precios[id] || 0);
                 total += sub;
-                r += `• ${ped[id]}x ${prod.n} (${colores[id] || 'N/A'}) = *$${sub.toLocaleString()}*\n`;
+                r += `• ${ped[id]}x ${prod.n} (${detalles[id] || 'N/A'}) = *$${sub.toLocaleString()}*\n`;
             }
         }
-        if(!r) return alert("Agrega algo al carrito.");
+        if(!r) return alert("Selecciona un producto o curso.");
         
-        let msg = `*🧶 LA CASITA DE TATA - PEDIDO*\n------------------\n👤 *CLIENTE:* ${n}\n🏠 *DIR:* ${d}\n📞 *TEL:* ${c}\n------------------\n🛒 *DETALLE:*\n${r}------------------\n💰 *TOTAL: $${total.toLocaleString()}*\n📝 *OBS:* ${document.getElementById('obs').value || "Sin notas"}\n\n_VIBRAS POSITIVAS © 2026_`;
+        let msg = `*🧶 LA CASITA DE TATA - PEDIDO*\n------------------\n👤 *CLIENTE:* ${n}\n🏠 *DIR:* ${d}\n📞 *CEL:* ${c}\n------------------\n🛒 *DETALLE:*\n${r}------------------\n💰 *TOTAL: $${total.toLocaleString()}*\n📝 *OBS:* ${document.getElementById('obs').value || "Sin notas"}\n\n_VIBRAS POSITIVAS © 2026_`;
         window.open(`https://wa.me/${WA_TATA}?text=${encodeURIComponent(msg)}`);
     }
 
