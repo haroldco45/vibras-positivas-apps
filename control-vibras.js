@@ -11,7 +11,6 @@ const controlVibras = {
     "edogra-distribuciones": "activo",
 
     // GASTRONOMÍA
-    "pollo-harana": "activo",
     "estos-burgers": "activo",
     "deleitesaludable": "activo",
     "polloharana": "activo",
