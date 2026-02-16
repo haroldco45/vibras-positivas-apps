@@ -14,6 +14,7 @@ const controlVibras = {
     "estos-burgers": "activo",
     "deleitesaludable": "activo",
     "polloharana": "activo",
+    "polloharana": "activo",
         
 
     // TIENDAS Y MERCADOS
