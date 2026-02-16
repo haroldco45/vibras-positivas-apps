@@ -3,48 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Casita de Tata - Tejer con Calma</title>
+    <title>La Casita de Tata - Pedidos</title>
     <style>
         :root { --primario: #f9dcc4; --secundario: #f08080; --texto: #5d5d5d; --blanco: #ffffff; --exito: #25D366; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fffaf0; margin: 0; padding: 10px; padding-bottom: 180px; color: var(--texto); }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #fffaf0; margin: 0; padding: 10px; padding-bottom: 180px; color: var(--texto); }
         
-        /* Control Invisible de Vibras Positivas */
         #bloqueo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; text-align: center; padding-top: 100px; }
 
-        header { background: var(--primario); padding: 25px; text-align: center; border-radius: 0 0 40px 40px; margin: -10px -10px 20px -10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 5px solid var(--secundario); }
-        .logo-tata { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--blanco); background: white; margin-bottom: 10px; }
-        
-        .frase-bienestar { font-style: italic; font-size: 13px; color: var(--secundario); margin-top: 5px; }
+        header { background: var(--primario); padding: 25px; text-align: center; border-radius: 0 0 40px 40px; margin: -10px -10px 20px -10px; border-bottom: 5px solid var(--secundario); }
+        .logo-tata { width: 80px; height: 80px; border-radius: 50%; border: 3px solid white; background: white; margin-bottom: 10px; }
 
-        .search-input { width: 100%; padding: 15px; border-radius: 50px; border: 2px solid var(--primario); outline: none; margin-bottom: 20px; box-sizing: border-box; font-size: 16px; }
-
-        /* Cajones de Datos Personales */
         .card-datos { background: white; padding: 20px; border-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin-bottom: 20px; border: 1px solid var(--primario); }
         .input-cajon { width: 100%; padding: 12px; margin: 6px 0; border: 1px solid #eee; border-radius: 15px; font-size: 15px; box-sizing: border-box; outline: none; background: #fffcf9; }
 
-        .section-title { font-size: 13px; font-weight: bold; color: var(--secundario); text-transform: uppercase; margin: 25px 0 10px; border-left: 5px solid var(--primario); padding: 8px; background: white; border-radius: 0 10px 10px 0; text-align: left; }
+        .section-title { font-size: 13px; font-weight: bold; color: var(--secundario); text-transform: uppercase; margin: 25px 0 10px; border-left: 5px solid var(--primario); padding: 8px; background: white; border-radius: 0 10px 10px 0; }
         
-        /* Estilo de Productos y Servicios */
-        .card-prod { background: white; padding: 15px; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); margin-bottom: 12px; border-right: 5px solid var(--primario); display: flex; justify-content: space-between; align-items: center; }
-        .info-prod h3 { margin: 0; font-size: 15px; color: #444; }
-        .info-prod p { margin: 3px 0; font-size: 11px; color: #999; }
+        /* Card de Producto con Selector */
+        .card-prod { background: white; padding: 15px; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); margin-bottom: 12px; border-right: 5px solid var(--primario); }
+        .info-prod h3 { margin: 0; font-size: 15px; color: #444; text-transform: capitalize; }
         
-        .precio-area { display: flex; flex-direction: column; align-items: flex-end; }
-        .precio-u { color: var(--secundario); font-weight: bold; font-size: 15px; }
-        .input-precio { width: 70px; padding: 5px; border: 1px solid var(--primario); border-radius: 8px; margin-top: 5px; text-align: center; font-size: 13px; }
+        .opciones-area { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 8px; margin-top: 10px; align-items: center; }
+        .sel-color { width: 100%; padding: 8px; border-radius: 10px; border: 1px solid var(--primario); font-size: 12px; background: #fff; color: var(--texto); outline: none; }
 
-        .controles { display: flex; align-items: center; gap: 10px; margin-left: 10px; }
-        .btn-c { background: var(--primario); color: var(--texto); border: none; width: 32px; height: 32px; border-radius: 10px; font-weight: bold; cursor: pointer; }
-        .cant-n { font-weight: bold; color: var(--secundario); min-width: 20px; text-align: center; }
+        .precio-u { width: 100%; padding: 8px; border: 1px solid #eee; border-radius: 10px; text-align: center; font-size: 13px; }
 
-        /* Cajón de Total Facturador */
-        .cajon-total { background: var(--texto); color: var(--primario); padding: 15px; border-radius: 20px; margin: 20px 0; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .cajon-total b { font-size: 24px; display: block; }
+        .controles { display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-c { background: var(--primario); color: var(--texto); border: none; width: 30px; height: 30px; border-radius: 8px; font-weight: bold; }
+        .cant-n { font-weight: bold; color: var(--secundario); min-width: 15px; text-align: center; }
 
-        .footer-pedido { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); border-radius: 30px 30px 0 0; z-index: 1000; text-align: center; }
-        .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 20px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.2); }
+        .cajon-total { background: var(--texto); color: var(--primario); padding: 15px; border-radius: 20px; margin: 20px 0; text-align: center; }
+        .cajon-total b { font-size: 22px; display: block; }
+
+        .footer-pedido { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); border-radius: 30px 30px 0 0; z-index: 1000; }
+        .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 20px; width: 100%; font-size: 18px; font-weight: bold; }
         
-        footer { text-align: center; padding: 25px; font-size: 12px; color: #aaa; background: #fff; margin-top: 20px; border-top: 1px solid #eee; }
+        footer { text-align: center; padding: 20px; font-size: 11px; color: #aaa; border-top: 1px solid #eee; }
     </style>
 </head>
 <body>
@@ -53,30 +46,22 @@
 
 <div id="app-content">
     <header>
-        <img src="logo_tata.png" alt="La Casita de Tata" class="logo-tata">
-        <h1 style="margin:0; font-size: 22px; color: var(--texto);">LA CASITA DE TATA</h1>
-        <div class="frase-bienestar">“Un espacio para tejer con calma”</div>
+        <img src="logo_tata.png" class="logo-tata">
+        <h1 style="margin:0; font-size: 20px;">LA CASITA DE TATA</h1>
+        <small>📍 Altos de San Juan - Caucasia</small>
     </header>
 
-    <input type="text" id="lupa" class="search-input" placeholder="🔍 Buscar hilos, agujas o clases..." onkeyup="buscar()">
-
     <div class="card-datos">
-        <div class="section-title">📍 Datos de Entrega / Alumno</div>
-        <input type="text" id="nom" class="input-cajon" placeholder="👤 Nombre Completo">
-        <input type="text" id="dir" class="input-cajon" placeholder="🏠 Dirección (TV 18A N DG 12-43...)">
-        <input type="tel" id="tel_cli" class="input-cajon" placeholder="📞 Celular WhatsApp">
-        <select id="pago" class="input-cajon">
-            <option value="Efectivo">Efectivo</option>
-            <option value="Nequi">Nequi</option>
-            <option value="Bancolombia">Bancolombia</option>
-        </select>
-        <textarea id="obs" class="input-cajon" placeholder="📝 Notas (ej: Color de hilo, nivel de crochet...)"></textarea>
+        <input type="text" id="nom" class="input-cajon" placeholder="👤 Nombre de la Tejedora">
+        <input type="text" id="dir" class="input-cajon" placeholder="🏠 Dirección de Entrega">
+        <input type="tel" id="tel_cli" class="input-cajon" placeholder="📞 Celular">
+        <textarea id="obs" class="input-cajon" placeholder="📝 Notas especiales (ej: ¿Qué quieres tejer hoy?)"></textarea>
     </div>
 
     <div id="menu"></div>
 
     <div class="cajon-total">
-        <small>VALOR ESTIMADO DEL PEDIDO</small>
+        <small>TOTAL ESTIMADO</small>
         <b id="total-vista">$ 0</b>
     </div>
 
@@ -84,34 +69,32 @@
         <button class="btn-enviar" onclick="enviar()">🚀 ENVIAR PEDIDO A TATA</button>
     </div>
 
-    <footer>
-        App hecha por <br>
-        <b>VIBRAS POSITIVAS</b> <br>
-        Derecho de Autor © 2026
-    </footer>
+    <footer>App hecha por <b>VIBRAS POSITIVAS</b><br>Derecho de Autor © 2026</footer>
 </div>
 
 <script>
     const WA_TATA = "573127508669";
     
-    // Lista de Insumos y Servicios
+    // PRODUCTOS SEPARADOS Y CON SELECTOR DE COLOR
     const carta = [
-        { cat: "🧶 Insumos para Crochet", prods: [
-            { id: 1, n: "Trapillo / Macramé", d: "Variedad de colores y grosores", p: 0 },
-            { id: 2, n: "Lana / Hilos", d: "Algodón, acrílico y mezclas", p: 0 },
-            { id: 3, n: "Agujas Crochet", d: "Ergonómicas y tradicionales", p: 0 },
-            { id: 4, n: "Kits Completos", d: "Material + Aguja + Patrón", p: 0 },
-            { id: 5, n: "Accesorios", d: "Marcadores, tijeras, cintas", p: 0 }
+        { cat: "🧶 Hilos Premium", prods: [
+            { id: 1, n: "Hilo Algodón", d: "Ideal para amigurumis" },
+            { id: 2, n: "Hilo Macramé", d: "Resistente y brillante" },
+            { id: 3, n: "Trapillo", d: "Para cestos y alfombras" }
         ]},
-        { cat: "✨ Clases y Talleres (Bienestar)", prods: [
-            { id: 6, n: "Clase Personalizada Niños", d: "Ambiente cercano y paciente", p: 0 },
-            { id: 7, n: "Taller Jóvenes / Adultos", d: "Espacio de conexión y relax", p: 0 },
-            { id: 8, n: "Curso Nivel Básico", d: "Desde cero hasta tu primera pieza", p: 0 }
+        { cat: "🐑 Lanas Suaves", prods: [
+            { id: 4, n: "Lana Acrílica", d: "Suave para prendas de invierno" },
+            { id: 5, n: "Lana Bebé", d: "Antialérgica y delicada" },
+            { id: 6, n: "Lana Gruesa", d: "Para tejidos rápidos" }
+        ]},
+        { cat: "✨ Agujas y Clases", prods: [
+            { id: 7, n: "Agujas Ergonómicas", d: "Mango suave" },
+            { id: 8, n: "Clases Personalizadas", d: "Niños y adultos" }
         ]}
     ];
 
-    let ped = {};
-    let precios = {};
+    let ped = {}; let precios = {}; let colores = {};
+    const listaColores = ["Blanco", "Negro", "Crudo", "Rojo", "Azul Cielo", "Rosa Pastel", "Verde Menta", "Amarillo", "Lila", "Otro (Ver Notas)"];
 
     function render() {
         const m = document.getElementById('menu');
@@ -119,10 +102,15 @@
             const t = document.createElement('div'); t.className='section-title'; t.innerText=s.cat; m.appendChild(t);
             s.prods.forEach(p => {
                 const c = document.createElement('div'); c.className='card-prod';
+                let selector = `<select class="sel-color" onchange="setColor(${p.id}, this.value)"><option value="">🎨 Color</option>`;
+                listaColores.forEach(col => selector += `<option value="${col}">${col}</option>`);
+                selector += `</select>`;
+
                 c.innerHTML = `
-                <div class="info-prod"><h3>${p.n}</h3><p>${p.d}</p></div>
-                <div class="precio-area">
-                    <input type="number" class="input-precio" id="p-${p.id}" placeholder="$ Valor" oninput="actTotal(${p.id})">
+                <div class="info-prod"><h3>${p.n}</h3></div>
+                <div class="opciones-area">
+                    ${selector}
+                    <input type="number" class="precio-u" placeholder="$ Val" oninput="setPrecio(${p.id}, this.value)">
                     <div class="controles">
                         <button class="btn-c" onclick="cant(${p.id},-1)">-</button>
                         <span id="q-${p.id}" class="cant-n">0</span>
@@ -135,50 +123,32 @@
     }
     render();
 
-    function actTotal(id) {
-        precios[id] = parseFloat(document.getElementById(`p-${id}`).value) || 0;
-        calcTotal();
-    }
+    function setColor(id, v) { colores[id] = v; }
+    function setPrecio(id, v) { precios[id] = parseFloat(v) || 0; calc(); }
+    function cant(id, v) { ped[id] = Math.max(0, (ped[id] || 0) + v); document.getElementById(`q-${id}`).innerText = ped[id]; calc(); }
 
-    function cant(id, v) {
-        ped[id] = Math.max(0, (ped[id] || 0) + v);
-        document.getElementById(`q-${id}`).innerText = ped[id];
-        calcTotal();
-    }
-
-    function calcTotal() {
+    function calc() {
         let total = 0;
-        for(let id in ped) {
-            if(ped[id]) total += (ped[id] * (precios[id] || 0));
-        }
+        for(let id in ped) if(ped[id]) total += (ped[id] * (precios[id] || 0));
         document.getElementById('total-vista').innerText = `$ ${total.toLocaleString()}`;
-        return total;
-    }
-
-    function buscar() {
-        const q = document.getElementById('lupa').value.toLowerCase();
-        document.querySelectorAll('.card-prod').forEach(c => c.style.display = c.innerText.toLowerCase().includes(q) ? "flex" : "none");
     }
 
     function enviar() {
-        const n = document.getElementById('nom').value, d = document.getElementById('dir').value, 
-              c = document.getElementById('tel_cli').value, p = document.getElementById('pago').value, 
-              o = document.getElementById('obs').value;
+        const n = document.getElementById('nom').value, d = document.getElementById('dir').value, c = document.getElementById('tel_cli').value;
+        if(!n || !d || !c) return alert("Completa tus datos.");
         
-        if(!n || !d || !c) return alert("Por favor completa tus datos.");
-        
-        let r = ""; let totalFinal = 0;
+        let r = ""; let total = 0;
         for(let id in ped) {
             if(ped[id]) {
                 const prod = carta.flatMap(s => s.prods).find(x => x.id == id);
                 const sub = ped[id] * (precios[id] || 0);
-                totalFinal += sub;
-                r += `• ${ped[id]}x ${prod.n} ($${(precios[id] || 0).toLocaleString()}) = *$${sub.toLocaleString()}*\n`;
+                total += sub;
+                r += `• ${ped[id]}x ${prod.n} (${colores[id] || 'N/A'}) = *$${sub.toLocaleString()}*\n`;
             }
         }
-        if(!r) return alert("Agrega algo a tu casita.");
-
-        const msg = `*🧶 LA CASITA DE TATA - PEDIDO*\n------------------\n👤 *CLIENTE:* ${n}\n🏠 *DIR:* ${d}\n📞 *CEL:* ${c}\n💳 *PAGO:* ${p}\n------------------\n🛒 *LISTA:*\n${r}------------------\n💰 *TOTAL ESTIMADO: $${totalFinal.toLocaleString()}*\n📝 *OBS:* ${o || "Sin notas"}\n\n_VIBRAS POSITIVAS © 2026_`;
+        if(!r) return alert("Agrega algo al carrito.");
+        
+        let msg = `*🧶 LA CASITA DE TATA - PEDIDO*\n------------------\n👤 *CLIENTE:* ${n}\n🏠 *DIR:* ${d}\n📞 *TEL:* ${c}\n------------------\n🛒 *DETALLE:*\n${r}------------------\n💰 *TOTAL: $${total.toLocaleString()}*\n📝 *OBS:* ${document.getElementById('obs').value || "Sin notas"}\n\n_VIBRAS POSITIVAS © 2026_`;
         window.open(`https://wa.me/${WA_TATA}?text=${encodeURIComponent(msg)}`);
     }
 
