@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Pizza de Franco - Pedidos</title>
+    <style>
+        :root { --rojo: #ce2b37; --verde: #008c45; --blanco: #f4f4f4; --oscuro: #1a1a1a; --oro: #ffb703; }
+        body { font-family: 'Arial', sans-serif; background-color: var(--blanco); margin: 0; padding: 10px; padding-bottom: 160px; }
+        
+        #bloqueo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; text-align: center; padding-top: 100px; }
+
+        header { background: var(--rojo); color: white; padding: 25px; text-align: center; border-radius: 0 0 30px 30px; margin: -10px -10px 15px -10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-bottom: 5px solid var(--verde); }
+        
+        .search-input { width: 100%; padding: 15px; border-radius: 50px; border: 2px solid var(--rojo); box-shadow: 0 4px 10px rgba(0,0,0,0.1); outline: none; margin-bottom: 15px; box-sizing: border-box; }
+
+        .card-datos { background: white; padding: 20px; border-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: 2px solid var(--verde); }
+        .input-cajon { width: 100%; padding: 15px; margin: 8px 0; border: 1px solid #ddd; border-radius: 15px; font-size: 16px; box-sizing: border-box; outline: none; }
+
+        .section-title { font-size: 13px; font-weight: bold; color: var(--rojo); text-transform: uppercase; margin: 20px 0 10px; border-left: 5px solid var(--verde); padding: 8px; background: white; border-radius: 0 10px 10px 0; text-align: left; }
+        
+        .card-prod { background: white; padding: 15px; border-radius: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 12px; border-bottom: 4px solid var(--rojo); }
+        .info-prod h3 { margin: 0; font-size: 16px; color: var(--oscuro); text-transform: uppercase; }
+        .info-prod p { margin: 5px 0; font-size: 11px; color: #666; font-style: italic; }
+        
+        .selector-precio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 10px; }
+        .btn-precio { background: #eee; border: 1px solid #ddd; padding: 8px 2px; border-radius: 10px; font-size: 10px; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
+        .btn-precio.active { background: var(--verde); color: white; border-color: var(--verde); }
+        .btn-precio span { font-weight: bold; font-size: 11px; margin-top: 2px; }
+
+        .controles { display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 10px; border-top: 1px solid #eee; padding-top: 10px; }
+        .btn-c { background: var(--oscuro); color: white; border: none; width: 35px; height: 35px; border-radius: 10px; font-weight: bold; font-size: 18px; }
+        .cant-n { font-weight: bold; min-width: 25px; text-align: center; color: var(--rojo); font-size: 18px; }
+        
+        .footer-pedido { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); border-radius: 25px 25px 0 0; z-index: 1000; }
+        .btn-enviar { background: var(--verde); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; }
+        
+        footer { text-align: center; padding: 20px; font-size: 11px; color: #999; }
+    </style>
+</head>
+<body>
+
+<div id="bloqueo"><h1>🔒</h1><h2>SERVICIO SUSPENDIDO</h2><p>Contacte a VIBRAS POSITIVAS</p></div>
+
+<div id="app-content">
+    <header>
+        <h1 style="margin:0;">LA PIZZA DE FRANCO</h1>
+        <small>Un Rinconcito de Italia en Colombia</small>
+    </header>
+    
+    <input type="text" id="lupa" class="search-input" placeholder="🔍 Buscar sabor (ej: Hawaiana, Carbonara)..." onkeyup="buscar()">
+    
+    <div class="card-datos">
+        <div class="section-title">📍 Datos de Entrega</div>
+        <input type="text" id="nom" class="input-cajon" placeholder="👤 Tu nombre">
+        <input type="text" id="dir" class="input-cajon" placeholder="🏠 Dirección">
+        <input type="tel" id="tel" class="input-cajon" placeholder="📞 Celular">
+        <select id="pago" class="input-cajon">
+            <option value="" disabled selected>💰 Forma de Pago</option>
+            <option value="Efectivo">Efectivo</option>
+            <option value="Nequi">Nequi</option>
+            <option value="Bancolombia">Bancolombia</option>
+        </select>
+    </div>
+
+    <div id="menu"></div>
+
+    <div class="footer-pedido">
+        <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-weight:bold; font-size: 18px;">
+            <span>TOTAL:</span><span id="total-vista" style="color: var(--verde);">$ 0</span>
+        </div>
+        <button class="btn-enviar" onclick="enviar()">🚀 ENVIAR PEDIDO A WHATSAPP</button>
+    </div>
+
+    <footer><b>ASETEC HM © 2026</b><br>VIBRAS POSITIVAS - Infraestructura Digital</footer>
+</div>
+
+<script>
+    const WA_FRANCO = "573242233812"; // Harold, coloca el número de Franco aquí
+    
+    // Extracción detallada de la carta
+    const carta = [
+        { cat: "🍕 Pizzas Especiales", prods: [
+            { id: 1, n: "2 Sabores Especial", d: "Jamón serrano, esp. casa, llanera, mariscos y más", p: { per: 42000, med: 62000, fam: 132000 } },
+            { id: 2, n: "Especial Casa / Especial Jamón Serrano", d: "Base pizza, napolitana, mozzarella y el toque de la casa", p: { per: 44000, med: 78000, fam: 152000 } },
+            { id: 3, n: "Carbonara de la Casa", d: "Base italiana, mozzarella, tocineta, frutos secos y miel", p: { per: 30000, med: 40000, fam: 72000 } },
+            { id: 4, n: "Especial Jamón Serrano y Champiñón", d: "Base pomodoro, mozzarella, champiñón, tomates cherry y orégano", p: { per: 34000, med: 44000, fam: 77000 } }
+        ]},
+        { cat: "🍕 Pizzas Tradicionales", prods: [
+            { id: 5, n: "Jamón y Queso / Hawaiana", d: "Base pizza, napolitana, mozzarella, jamón y piña", p: { per: 36000, med: 47000, fam: 77000 } },
+            { id: 6, n: "Napolitana", d: "Base pizza, napolitana, queso mozzarella, albahaca", p: { per: 22000, med: 32000, fam: 62000 } },
+            { id: 7, n: "Margarita", d: "Tomate cherry, albahaca, orégano, aceite oliva, pimienta", p: { per: 28000, med: 38000, fam: 75000 } },
+            { id: 8, n: "Pepperonni", d: "Base pizza, salsa napolitana, mozzarella, pepperonni", p: { per: 34000, med: 46000, fam: 82000 } }
+        ]},
+        { cat: "🥘 Lasagñas", prods: [
+            { id: 9, n: "Lasagña Personal Pollo", d: "Pasta, pollo, jamón, salsa napolitana, bechamel", p: { per: 32000, med: 36000 } },
+            { id: 10, n: "Lasagña Mixta Pollo y Carne", d: "La combinación perfecta de la casa", p: { per: 34000, med: 38000 } }
+        ]}
+    ];
+
+    let ped = {};
+
+    async function checkSecurity() {
+        try {
+            const res = await fetch('https://haroldco45.github.io/control-vibras.js');
+            const d = await res.text();
+            if(d.includes('"la-pizza-de-franco": "suspendido"')) { 
+                document.getElementById('bloqueo').style.display='block';
+                document.getElementById('app-content').style.display='none';
+            }
+        } catch(e){}
+    }
+    checkSecurity();
+
+    function render() {
+        const m = document.getElementById('menu');
+        carta.forEach(s => {
+            const t = document.createElement('div'); t.className='section-title'; t.innerText=s.cat; m.appendChild(t);
+            s.prods.forEach(p => {
+                const c = document.createElement('div'); c.className='card-prod';
+                let selectores = "";
+                for (let tam in p.p) {
+                    let label = tam === 'per' ? 'Personal' : tam === 'med' ? 'Mediana' : 'Familiar';
+                    if(p.n.includes("Lasagña")) label = tam === 'per' ? 'Pequeña' : 'Grande';
+                    selectores += `<button class="btn-precio" id="btn-${p.id}-${tam}" onclick="seleccionar(${p.id}, '${tam}', ${p.p[tam]})">${label} <span>$${p.p[tam].toLocaleString()}</span></button>`;
+                }
+                c.innerHTML = `<div class="info-prod"><h3>${p.n}</h3><p>${p.d}</p></div>
+                <div class="selector-precio">${selectores}</div>
+                <div class="controles">
+                    <button class="btn-c" onclick="cant(${p.id},-1)">-</button>
+                    <span id="q-${p.id}" class="cant-n">0</span>
+                    <button class="btn-c" onclick="cant(${p.id},1)">+</button>
+                </div>`;
+                m.appendChild(c);
+            });
+        });
+    }
+    render();
+
+    let sel = {};
+    function seleccionar(id, tam, precio) {
+        document.querySelectorAll(`[id^="btn-${id}-"]`).forEach(b => b.classList.remove('active'));
+        document.getElementById(`btn-${id}-${tam}`).classList.add('active');
+        sel[id] = { tam: tam, p: precio };
+        actualizarTotal();
+    }
+
+    function cant(id, v) {
+        if(!sel[id]) return alert("Selecciona primero un tamaño");
+        ped[id] = Math.max(0, (ped[id] || 0) + v);
+        document.getElementById(`q-${id}`).innerText = ped[id];
+        actualizarTotal();
+    }
+
+    function actualizarTotal() {
+        let t = 0;
+        for(let id in ped) { if(ped[id]) t += sel[id].p * ped[id]; }
+        document.getElementById('total-vista').innerText = `$ ${t.toLocaleString()}`;
+    }
+
+    function buscar() {
+        const q = document.getElementById('lupa').value.toLowerCase();
+        document.querySelectorAll('.card-prod').forEach(c => c.style.display = c.innerText.toLowerCase().includes(q) ? "block" : "none");
+    }
+
+    function enviar() {
+        const n = document.getElementById('nom').value, d = document.getElementById('dir').value;
+        if(!n || !d) return alert("Faltan datos");
+        let m = `*🍕 LA PIZZA DE FRANCO - PEDIDO*\n👤 ${n}\n📍 ${d}\n------------------\n`;
+        for(let id in ped) {
+            if(ped[id]) {
+                const p = carta.flatMap(s => s.prods).find(x => x.id == id);
+                m += `• ${ped[id]}x ${p.n} (${sel[id].tam.toUpperCase()})\n`;
+            }
+        }
+        window.open(`https://wa.me/${WA_FRANCO}?text=${encodeURIComponent(m)}`);
+    }
+</script>
+</body>
+</html>
