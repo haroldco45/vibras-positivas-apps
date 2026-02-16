@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arepa Don Huevo - Pedidos</title>
+    <title>Arepa Don Huevo - Menú Digital</title>
     <style>
         :root { --naranja: #e67e22; --amarillo: #f1c40f; --cafe: #5d4037; --blanco: #ffffff; --fondo: #fef9e7; --exito: #25D366; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--fondo); margin: 0; padding: 10px; padding-bottom: 200px; color: var(--cafe); }
@@ -13,20 +13,19 @@
         header { background: var(--cafe); color: var(--amarillo); padding: 20px; text-align: center; border-radius: 0 0 30px 30px; border-bottom: 5px solid var(--naranja); margin: -10px -10px 20px -10px; }
         .logo-img { width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--amarillo); background: white; margin-bottom: 10px; object-fit: contain; }
 
-        .card-datos { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid var(--naranja); }
+        .card-datos { background: white; padding: 15px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid var(--naranja); }
         .input-cajon { width: 100%; padding: 12px; margin: 6px 0; border: 1px solid #ddd; border-radius: 12px; font-size: 15px; box-sizing: border-box; outline: none; }
         
         .section-title { font-size: 13px; font-weight: bold; color: var(--naranja); text-transform: uppercase; margin: 25px 0 10px; border-left: 5px solid var(--cafe); padding-left: 10px; }
 
-        /* Tarjetas de Producto con Fotos Reales */
         .card-prod { background: white; border-radius: 20px; display: flex; align-items: center; padding: 12px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #f9ebea; }
         .img-prod { width: 90px; height: 90px; border-radius: 15px; object-fit: cover; margin-right: 15px; background: #eee; border: 1px solid #ddd; }
         .info-prod { flex-grow: 1; }
         .info-prod h3 { margin: 0; font-size: 15px; color: var(--cafe); text-transform: uppercase; }
         .info-prod b { color: var(--naranja); font-size: 16px; display: block; margin: 4px 0; }
 
-        .controles { display: flex; align-items: center; gap: 12px; margin-top: 5px; }
-        .btn-c { background: var(--amarillo); color: var(--cafe); border: none; width: 35px; height: 35px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .controles { display: flex; align-items: center; gap: 12px; }
+        .btn-c { background: var(--amarillo); color: var(--cafe); border: none; width: 35px; height: 35px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 20px; }
         .cant-n { font-weight: bold; color: var(--cafe); font-size: 20px; min-width: 25px; text-align: center; }
 
         .footer-total { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); border-radius: 30px 30px 0 0; z-index: 1000; }
@@ -35,7 +34,7 @@
         .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; }
 
         .hidden { display: none !important; }
-        footer { text-align: center; padding: 25px; font-size: 12px; color: #888; background: #fff; border-top: 1px solid #eee; margin-top: 20px; line-height: 1.6; }
+        footer { text-align: center; padding: 25px; font-size: 12px; color: #888; background: #fff; border-top: 1px solid #eee; line-height: 1.6; }
     </style>
 </head>
 <body>
@@ -51,9 +50,9 @@
 
     <div class="card-datos">
         <div id="form-datos">
-            <div class="section-title">Datos para Entrega</div>
-            <input type="text" id="nom" class="input-cajon" placeholder="👤 Tu Nombre">
-            <input type="text" id="dir" class="input-cajon" placeholder="🏠 Dirección Exacta">
+            <div class="section-title">Datos del Cliente</div>
+            <input type="text" id="nom" class="input-cajon" placeholder="👤 Nombre Completo">
+            <input type="text" id="dir" class="input-cajon" placeholder="🏠 Dirección: Calle 27 #...">
             <input type="tel" id="tel" class="input-cajon" placeholder="📞 WhatsApp">
             <button class="btn-enviar" style="background: var(--naranja); margin-top: 10px;" onclick="guardarDatos()">💾 GUARDAR MIS DATOS</button>
         </div>
@@ -63,10 +62,10 @@
         </div>
     </div>
 
-    <div class="section-title">Arepas de la Casa</div>
+    <div class="section-title">Arepas Fritas y de Choclo</div>
     <div id="menu-arepas"></div>
 
-    <div class="section-title">Bebidas y Acompañantes</div>
+    <div class="section-title">Bebidas y Fríos</div>
     <div id="menu-bebidas"></div>
 
     <div class="card-datos" style="margin-top:20px;">
@@ -81,10 +80,10 @@
 
     <div class="footer-total">
         <div class="cajon-cuenta">
-            <small>VALOR TOTAL DE TU CUENTA</small><br>
+            <small>VALOR DE TU CUENTA</small><br>
             <span id="total-vista">$ 0</span>
         </div>
-        <button class="btn-enviar" onclick="enviarPedido()">🚀 ENVIAR PEDIDO A WHATSAPP</button>
+        <button class="btn-enviar" onclick="enviarPedido()">🚀 ENVIAR PEDIDO POR WHATSAPP</button>
     </div>
 
     <footer>
@@ -97,17 +96,18 @@
 <script>
     const WA_DONHUEVO = "573001638585";
     
-    // PRODUCTOS VINCULADOS CON NOMBRES EXACTOS DE GITHUB
+    // PRODUCTOS CON NOMBRES EXACTOS DE GITHUB
     const productos = [
         { id: 1, n: "Arepa de Huevo", p: 4500, f: "arepadehuevo.JPG", cat: "arepa" },
         { id: 2, n: "Arepa Trifásica", p: 9000, f: "arepatrifasica.JPG", cat: "arepa" },
         { id: 3, n: "Arepa de Choclo", p: 10000, f: "arepadechoclo.jpeg", cat: "arepa" },
         { id: 4, n: "Arepa de Queso", p: 7000, f: "arepadequeso.JPG", cat: "arepa" },
-        { id: 5, n: "Avena Caliente", p: 5000, f: "avena.jpg", cat: "bebida" },
-        { id: 6, n: "Guarapo Frío", p: 5000, f: "guarapo.jpg", cat: "bebida" },
-        { id: 7, n: "Jugo de Tamarindo", p: 5000, f: "tamarindo.jpg", cat: "bebida" },
+        { id: 5, n: "Avena Fría", p: 5000, f: "avenafria.JPG", cat: "bebida" },
+        { id: 6, n: "Guarapo Frío", p: 5000, f: "guarapo.JPG", cat: "bebida" },
+        { id: 7, n: "Jugo de Tamarindo", p: 5000, f: "jugotamarindo.JPG", cat: "bebida" },
         { id: 8, n: "Coca Cola Mediana", p: 3000, f: "cocacolamediana.JPG", cat: "bebida" },
-        { id: 9, n: "Coca Cola Personal", p: 4500, f: "cocacolapersonal.JPG", cat: "bebida" }
+        { id: 9, n: "Coca Cola Personal", p: 4500, f: "cocacolapersonal.JPG", cat: "bebida" },
+        { id: 10, n: "Coca Cola Litro y Cuarto", p: 6500, f: "cocacolalitroycuarto.JPG", cat: "bebida" }
     ];
 
     let ped = {};
@@ -117,7 +117,7 @@
             const div = document.createElement('div');
             div.className = 'card-prod';
             div.innerHTML = `
-                <img src="${p.f}" class="img-prod" alt="${p.n}" onerror="this.src='https://via.placeholder.com/90?text=Don+Huevo'">
+                <img src="${p.f}" class="img-prod" alt="${p.n}" onerror="this.src='https://via.placeholder.com/90?text=Arepa'">
                 <div class="info-prod">
                     <h3>${p.n}</h3>
                     <b>$${p.p.toLocaleString()}</b>
