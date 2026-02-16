@@ -3,148 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Arepas La Troncal - Pedidos</title>
+    <title>Arepas La Troncal - Pedidos Online</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #ffcc00; --secondary: #e67e22; --dark: #2c3e50; --light: #ecf0f1; --success: #27ae60; }
+        :root { --primary: #ffcc00; --secondary: #e67e22; --dark: #2c3e50; --light: #f8f9fa; --success: #25d366; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
-        body { font-family: 'Poppins', sans-serif; background: var(--light); color: var(--dark); min-height: 100vh; }
+        body { font-family: 'Poppins', sans-serif; background: var(--light); color: var(--dark); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-        header { background: var(--primary); padding: 20px; text-align: center; border-bottom: 5px solid var(--secondary); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        header h1 { font-size: 1.5rem; color: var(--dark); text-transform: uppercase; letter-spacing: 1px; }
+        header { background: var(--primary); padding: 15px; text-align: center; border-bottom: 4px solid var(--secondary); box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 10; }
+        header h1 { font-size: 1.3rem; text-transform: uppercase; }
 
-        .container { padding: 15px; max-width: 500px; margin: 0 auto; padding-bottom: 100px; }
-        
-        /* Estilo de los Productos */
-        .product-card { background: white; border-radius: 20px; padding: 15px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 15px; border-left: 8px solid var(--primary); }
-        .product-info { flex-grow: 1; }
-        .product-info h3 { font-size: 1.1rem; margin-bottom: 5px; }
-        .product-price { color: var(--secondary); font-weight: bold; font-size: 1.2rem; }
-        
-        .quantity-control { display: flex; align-items: center; gap: 10px; background: var(--light); padding: 5px 10px; border-radius: 12px; }
-        .btn-qty { background: white; border: none; width: 30px; height: 30px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .qty-num { font-weight: bold; min-width: 20px; text-align: center; }
+        .content { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 120px; }
+
+        /* Tarjetas de Producto estilo Web App */
+        .product-card { background: white; border-radius: 15px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 5px solid var(--primary); }
+        .product-info h3 { font-size: 1rem; margin-bottom: 2px; }
+        .product-price { color: var(--secondary); font-weight: 600; font-size: 0.9rem; }
+
+        /* Controles de Cantidad */
+        .qty-control { display: flex; align-items: center; gap: 12px; background: #f0f0f0; padding: 5px 10px; border-radius: 10px; }
+        .btn-qty { border: none; background: white; width: 28px; height: 28px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        .qty-num { font-weight: 600; min-width: 15px; text-align: center; }
+
+        /* Sección de Datos del Cliente */
+        .customer-data { background: #fff3cd; padding: 15px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #ffeeba; }
+        .customer-data h2 { font-size: 0.9rem; margin-bottom: 10px; text-align: center; color: #856404; }
+        input { width: 100%; padding: 12px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 10px; font-family: inherit; font-size: 14px; outline: none; }
+        input:focus { border-color: var(--secondary); }
 
         /* Botón de WhatsApp Flotante */
-        .btn-whatsapp { position: fixed; bottom: 20px; left: 20px; right: 20px; background: var(--success); color: white; border: none; padding: 18px; border-radius: 15px; font-size: 1.1rem; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 10px 20px rgba(39, 174, 96, 0.3); cursor: pointer; z-index: 100; }
+        .footer-action { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 15px; border-top: 1px solid #eee; z-index: 100; }
+        .btn-whatsapp { background: var(--success); color: white; border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: bold; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
 
-        /* Panel Admin */
-        .admin-section { margin-top: 30px; padding: 20px; background: #fff; border-radius: 20px; border: 2px dashed #ccc; }
-        .admin-section h2 { font-size: 1rem; margin-bottom: 15px; text-align: center; color: #7f8c8d; }
-        input { width: 100%; padding: 12px; margin-bottom: 10px; border: 2px solid var(--light); border-radius: 10px; outline: none; font-family: inherit; }
-        .btn-add { width: 100%; padding: 12px; background: var(--dark); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
-        
-        .hidden { display: none; }
-        .badge { background: var(--secondary); color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; }
+        .hidden { display: none !important; }
+        .status-msg { text-align: center; padding: 20px; font-size: 0.9rem; color: #666; }
     </style>
 </head>
 <body>
 
     <header>
         <h1>Arepas La Troncal 🌽</h1>
-        <p style="font-size: 0.8rem;">¡Sabor tradicional en tu mesa!</p>
     </header>
 
-    <div class="container">
+    <div class="content">
+        <div id="subscription-status" class="hidden"></div>
+
+        <div class="customer-data">
+            <h2>📍 Información de Entrega</h2>
+            <input type="text" id="c-name" placeholder="Tu Nombre Completo">
+            <input type="text" id="c-address" placeholder="Dirección de Domicilio">
+            <input type="text" id="c-note" placeholder="Nota adicional (Ej: Casa de reja blanca)">
+        </div>
+
         <div id="menu-list">
             </div>
 
-        <button id="toggle-admin" style="background: none; border: none; color: #999; font-size: 0.7rem; width: 100%; margin-top: 20px;">⚙️ GESTIONAR MENÚ</button>
-
-        <div id="admin-panel" class="admin-section hidden">
-            <h2>Agregar Nuevo Producto</h2>
-            <input type="text" id="new-name" placeholder="Nombre (Ej: Arepa de Queso)">
-            <input type="number" id="new-price" placeholder="Precio (Ej: 3000)">
-            <button class="btn-add" onclick="addProduct()">➕ AGREGAR AL MENÚ</button>
+        <button id="btn-admin-access" style="opacity: 0.3; background: none; border: none; width: 100%; margin-top: 20px; font-size: 0.6rem;">⚙️ GESTIÓN</button>
+        
+        <div id="admin-panel" class="hidden" style="margin-top: 20px; padding: 15px; border: 1px dashed #ccc; border-radius: 10px;">
+            <input type="text" id="p-name" placeholder="Nombre del Producto">
+            <input type="number" id="p-price" placeholder="Precio">
+            <button onclick="saveNewProduct()" style="width: 100%; padding: 10px; background: var(--dark); color: white; border-radius: 10px; border: none; font-weight: bold;">GUARDAR PRODUCTO</button>
         </div>
     </div>
 
-    <button class="btn-whatsapp" onclick="sendOrder()">
-        <span>🛒 ENVIAR PEDIDO POR WHATSAPP</span>
-    </button>
+    <div class="footer-action">
+        <button class="btn-whatsapp" onclick="processOrder()">
+            🛒 ENVIAR PEDIDO ($<span id="total-val">0</span>)
+        </button>
+    </div>
 
-    <script>
-        const WS_NUMBER = "573122493344"; // WhatsApp de Arepas La Troncal
-        let menu = JSON.parse(localStorage.getItem('troncal_menu')) || [
+    <script type="module">
+        // Importamos solo lo necesario de Firebase para el control de suscripción
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC6Mcmm-TBrFuTiQ0IjIHq9XD620DNsI",
+            databaseURL: "https://motoapp-e4261-default-rtdb.firebaseio.com",
+            projectId: "motoapp-e4261",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const TRONCAL_ID = "AREPAS_TRONCAL"; // ID para control de suscripción
+        const WS_NUMBER = "573122493344";
+
+        let products = JSON.parse(localStorage.getItem('troncal_prods')) || [
             { id: 1, name: "Arepa de Maíz Blanco", price: 2500, qty: 0 }
         ];
 
-        function renderMenu() {
+        // Verificación de suscripción al iniciar
+        async function checkAppStatus() {
+            try {
+                const snap = await get(ref(db, 'usuarios_moto/' + TRONCAL_ID));
+                if (snap.exists()) {
+                    const vence = new Date(snap.val().vencimiento);
+                    if (new Date() > vence) {
+                        document.body.innerHTML = "<div class='status-msg'>⚠️ El servicio de pedidos está temporalmente suspendido. Contacte al administrador.</div>";
+                    }
+                }
+            } catch (e) { console.log("Offline mode"); }
+        }
+
+        window.renderMenu = () => {
             const list = document.getElementById('menu-list');
             list.innerHTML = "";
-            
-            menu.forEach((item, index) => {
-                const card = document.createElement('div');
-                card.className = "product-card";
-                card.innerHTML = `
-                    <div class="product-info">
-                        <h3>${item.name}</h3>
-                        <div class="product-price">$${item.price.toLocaleString()}</div>
-                    </div>
-                    <div class="quantity-control">
-                        <button class="btn-qty" onclick="updateQty(${index}, -1)">-</button>
-                        <span class="qty-num">${item.qty || 0}</span>
-                        <button class="btn-qty" onclick="updateQty(${index}, 1)">+</button>
-                    </div>
-                `;
-                list.appendChild(card);
-            });
-        }
-
-        function updateQty(index, change) {
-            menu[index].qty = Math.max(0, (menu[index].qty || 0) + change);
-            renderMenu();
-        }
-
-        function addProduct() {
-            const name = document.getElementById('new-name').value;
-            const price = parseInt(document.getElementById('new-price').value);
-
-            if (name && price) {
-                menu.push({ id: Date.now(), name: name, price: price, qty: 0 });
-                localStorage.setItem('troncal_menu', JSON.stringify(menu));
-                renderMenu();
-                document.getElementById('new-name').value = "";
-                document.getElementById('new-price').value = "";
-                alert("✅ Producto agregado con éxito");
-            } else {
-                alert("Por favor completa los datos");
-            }
-        }
-
-        function sendOrder() {
-            const itemsOrdered = menu.filter(item => item.qty > 0);
-            
-            if (itemsOrdered.length === 0) {
-                alert("Selecciona al menos una arepa para tu pedido 😊");
-                return;
-            }
-
-            let message = "¡Hola Arepas La Troncal! 🌽 Quiero hacer un pedido:%0A%0A";
             let total = 0;
 
-            itemsOrdered.forEach(item => {
-                const subtotal = item.qty * item.price;
-                message += `• ${item.qty} x ${item.name} ($${subtotal.toLocaleString()})%0A`;
-                total += subtotal;
+            products.forEach((p, i) => {
+                total += (p.qty || 0) * p.price;
+                const div = document.createElement('div');
+                div.className = "product-card";
+                div.innerHTML = `
+                    <div class="product-info">
+                        <h3>${p.name}</h3>
+                        <div class="product-price">$${p.price.toLocaleString()}</div>
+                    </div>
+                    <div class="qty-control">
+                        <button class="btn-qty" onclick="updateP(${i}, -1)">-</button>
+                        <span class="qty-num">${p.qty || 0}</span>
+                        <button class="btn-qty" onclick="updateP(${i}, 1)">+</button>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+            document.getElementById('total-val').innerText = total.toLocaleString();
+        };
+
+        window.updateP = (i, val) => {
+            products[i].qty = Math.max(0, (products[i].qty || 0) + val);
+            renderMenu();
+        };
+
+        window.processOrder = () => {
+            const name = document.getElementById('c-name').value.trim();
+            const address = document.getElementById('c-address').value.trim();
+            const note = document.getElementById('c-note').value.trim();
+            const ordered = products.filter(p => p.qty > 0);
+
+            if (!name || !address) return alert("Por favor ingresa tu nombre y dirección 📍");
+            if (ordered.length === 0) return alert("Selecciona al menos un producto 🌽");
+
+            // Guardamos datos del cliente para la próxima vez
+            localStorage.setItem('c_name', name);
+            localStorage.setItem('c_address', address);
+
+            let msg = `*AREPAS LA TRONCAL* 🌽%0A%0A`;
+            msg += `*Cliente:* ${name}%0A`;
+            msg += `*Dirección:* ${address}%0A`;
+            if(note) msg += `*Nota:* ${note}%0A`;
+            msg += `--------------------------%0A`;
+
+            let total = 0;
+            ordered.forEach(p => {
+                const sub = p.qty * p.price;
+                msg += `${p.qty} x ${p.name} ($${sub.toLocaleString()})%0A`;
+                total += sub;
             });
 
-            message += `%0A💰 *TOTAL A PAGAR: $${total.toLocaleString()}*%0A%0A📍 Por favor confírmame el pedido para enviarte mi dirección.`;
-            
-            window.open(`https://wa.me/${WS_NUMBER}?text=${message}`, '_blank');
-        }
+            msg += `--------------------------%0A`;
+            msg += `*TOTAL A PAGAR: $${total.toLocaleString()}*`;
 
-        // Toggle para el panel administrativo
-        document.getElementById('toggle-admin').onclick = function() {
-            const panel = document.getElementById('admin-panel');
-            const pass = panel.classList.contains('hidden') ? prompt("Clave de acceso:") : null;
-            if (pass === "vibras" || !panel.classList.contains('hidden')) {
-                panel.classList.toggle('hidden');
-            } else if (pass !== null) {
-                alert("Clave incorrecta");
+            window.open(`https://wa.me/${WS_NUMBER}?text=${msg}`);
+        };
+
+        window.saveNewProduct = () => {
+            const n = document.getElementById('p-name').value;
+            const p = document.getElementById('p-price').value;
+            if(n && p) {
+                products.push({ id: Date.now(), name: n, price: parseInt(p), qty: 0 });
+                localStorage.setItem('troncal_prods', JSON.stringify(products));
+                renderMenu();
+                document.getElementById('admin-panel').classList.add('hidden');
             }
         };
 
+        document.getElementById('btn-admin-access').onclick = () => {
+            if(prompt("Clave:") === "vibras") document.getElementById('admin-panel').classList.toggle('hidden');
+        };
+
+        // Autorellenar datos del cliente si ya ha pedido antes
+        document.getElementById('c-name').value = localStorage.getItem('c_name') || "";
+        document.getElementById('c-address').value = localStorage.getItem('c_address') || "";
+
+        checkAppStatus();
         renderMenu();
     </script>
 </body>
