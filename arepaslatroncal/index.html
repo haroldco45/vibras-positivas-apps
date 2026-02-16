@@ -6,37 +6,40 @@
     <title>Arepas La Troncal - Pedidos</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #ffcc00; --secondary: #e67e22; --dark: #2c3e50; --light: #f8f9fa; --success: #25d366; }
+        :root { --primary: #ffcc00; --secondary: #e67e22; --dark: #1a1a1a; --light: #f4f4f4; --success: #25d366; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
         body { font-family: 'Poppins', sans-serif; background: var(--light); color: var(--dark); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
         header { background: var(--primary); padding: 15px; text-align: center; border-bottom: 4px solid var(--secondary); box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 10; }
-        header h1 { font-size: 1.3rem; text-transform: uppercase; }
+        header h1 { font-size: 1.3rem; text-transform: uppercase; font-weight: 600; }
 
-        .content { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 150px; }
+        .content { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 160px; }
 
-        /* Formulario de Datos del Cliente */
+        /* Datos del Cliente */
         .customer-data { background: #fff3cd; padding: 15px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #ffeeba; }
-        .customer-data h2 { font-size: 0.9rem; margin-bottom: 10px; text-align: center; color: #856404; }
+        .customer-data h2 { font-size: 0.85rem; margin-bottom: 10px; text-align: center; color: #856404; font-weight: 600; }
         input { width: 100%; padding: 12px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 10px; font-family: inherit; font-size: 14px; outline: none; }
 
-        /* Tarjetas de Producto */
-        .product-card { background: white; border-radius: 15px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 5px solid var(--primary); }
-        .product-info h3 { font-size: 1rem; margin-bottom: 2px; }
+        /* Tarjeta de Producto */
+        .product-card { background: white; border-radius: 15px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 6px solid var(--secondary); }
+        .product-info h3 { font-size: 0.95rem; margin-bottom: 2px; }
         .product-price { color: var(--secondary); font-weight: 600; font-size: 0.9rem; }
+        .product-desc { font-size: 0.75rem; color: #666; }
 
-        .qty-control { display: flex; align-items: center; gap: 12px; background: #f0f0f0; padding: 5px 10px; border-radius: 10px; }
-        .btn-qty { border: none; background: white; width: 28px; height: 28px; border-radius: 5px; font-weight: bold; cursor: pointer; }
-        .qty-num { font-weight: 600; min-width: 15px; text-align: center; }
+        .qty-control { display: flex; align-items: center; gap: 12px; background: #eee; padding: 6px 12px; border-radius: 12px; }
+        .btn-qty { border: none; background: white; width: 30px; height: 30px; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .qty-num { font-weight: 600; min-width: 15px; text-align: center; font-size: 1.1rem; }
 
-        /* Cajón de Total */
-        .total-box { background: var(--dark); color: white; padding: 15px; border-radius: 15px; text-align: center; margin-top: 20px; }
-        .total-box span { font-size: 1.5rem; font-weight: bold; color: var(--primary); }
+        /* Cajón de Total Mejorado */
+        .total-container { background: var(--dark); color: white; padding: 20px; border-radius: 20px; text-align: center; margin: 20px 0; border: 2px solid var(--primary); }
+        .total-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #aaa; }
+        .total-amount { font-size: 2.2rem; font-weight: 600; color: var(--primary); display: block; }
 
         /* Footer y Firma */
-        .footer-action { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 10px 15px; border-top: 1px solid #eee; z-index: 100; }
-        .btn-whatsapp { background: var(--success); color: white; border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: bold; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; }
-        .copyright { text-align: center; font-size: 0.6rem; color: #999; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .footer-action { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 12px 15px; border-top: 1px solid #eee; z-index: 100; }
+        .btn-whatsapp { background: var(--success); color: white; border: none; width: 100%; padding: 16px; border-radius: 15px; font-weight: bold; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4); }
+        
+        .copyright { text-align: center; font-size: 0.65rem; color: #bbb; margin-top: 15px; text-transform: uppercase; letter-spacing: 1.5px; }
 
         .hidden { display: none !important; }
     </style>
@@ -49,25 +52,25 @@
 
     <div class="content">
         <div class="customer-data">
-            <h2>📝 DATOS DEL PEDIDO</h2>
-            <input type="text" id="c-name" placeholder="Tu Nombre">
-            <input type="number" id="c-phone" placeholder="Tu Celular">
-            <input type="text" id="c-address" placeholder="Dirección de entrega">
+            <h2>🚚 DATOS DE ENTREGA</h2>
+            <input type="text" id="c-name" placeholder="Escribe tu Nombre">
+            <input type="number" id="c-phone" placeholder="Número de Celular">
+            <input type="text" id="c-address" placeholder="Dirección exacta">
         </div>
 
         <div id="menu-list">
             </div>
 
-        <div class="total-box">
-            TOTAL DEL PEDIDO<br>
-            $<span id="total-val">0</span>
+        <div class="total-container">
+            <span class="total-label">Valor total a pagar</span>
+            <span class="total-amount">$<span id="total-val">0</span></span>
         </div>
 
-        <button id="btn-admin-access" style="opacity: 0.1; background: none; border: none; width: 100%; margin-top: 30px; font-size: 0.5rem;">⚙️ ADMIN</button>
-        <div id="admin-panel" class="hidden">
-            <input type="text" id="p-name" placeholder="Nuevo Producto">
+        <button id="btn-admin-access" style="opacity: 0.05; background: none; border: none; width: 100%; padding: 20px; font-size: 0.5rem;">ADMIN</button>
+        <div id="admin-panel" class="hidden" style="background: #fff; padding: 15px; border-radius: 15px; border: 1px dashed #ccc;">
+            <input type="text" id="p-name" placeholder="Nombre del producto">
             <input type="number" id="p-price" placeholder="Precio">
-            <button onclick="saveNewProduct()" style="width:100%; padding:10px; background:var(--secondary); color:white; border-radius:10px; border:none;">+ AGREGAR</button>
+            <button onclick="saveNewProduct()" style="width:100%; padding:12px; background:var(--secondary); color:white; border-radius:10px; border:none; font-weight:bold;">+ AGREGAR PRODUCTO</button>
         </div>
 
         <p class="copyright">Desarrollada por Vibras Positivas © 2026<br>Todos los derechos reservados</p>
@@ -75,7 +78,7 @@
 
     <div class="footer-action">
         <button class="btn-whatsapp" onclick="processOrder()">
-            ✅ ENVIAR PEDIDO A WHATSAPP
+            🚀 PEDIR POR WHATSAPP
         </button>
     </div>
 
@@ -95,13 +98,14 @@
         const WS_NUMBER = "573122493344";
         let userPos = "";
 
-        // Captura GPS invisible
+        // Captura de ubicación
         navigator.geolocation.getCurrentPosition(p => {
             userPos = `https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
-        });
+        }, null, {enableHighAccuracy: true});
 
+        // Producto inicial configurado según tu instrucción
         let products = JSON.parse(localStorage.getItem('troncal_prods')) || [
-            { id: 1, name: "Paquete de Arepa Maíz Blanco", price: 5000, qty: 0 }
+            { id: 1, name: "Paquete de Arepas x 5 Unid.", price: 5000, qty: 0, desc: "Maíz blanco tradicional" }
         ];
 
         window.renderMenu = () => {
@@ -116,6 +120,7 @@
                 div.innerHTML = `
                     <div class="product-info">
                         <h3>${p.name}</h3>
+                        <div class="product-desc">${p.desc || 'Deliciosas y frescas'}</div>
                         <div class="product-price">$${p.price.toLocaleString()}</div>
                     </div>
                     <div class="qty-control">
@@ -134,34 +139,34 @@
         };
 
         window.processOrder = () => {
-            const name = document.getElementById('c-name').value;
-            const phone = document.getElementById('c-phone').value;
-            const address = document.getElementById('c-address').value;
+            const name = document.getElementById('c-name').value.trim();
+            const phone = document.getElementById('c-phone').value.trim();
+            const address = document.getElementById('c-address').value.trim();
             const ordered = products.filter(p => p.qty > 0);
 
-            if (!name || !phone || !address) return alert("Completa tus datos para el envío 📝");
-            if (ordered.length === 0) return alert("¿Cuántas arepas vas a llevar? 🌽");
+            if (!name || !phone || !address) return alert("Por favor, completa tus datos de entrega ✍️");
+            if (ordered.length === 0) return alert("Selecciona cuántas arepas deseas llevar 🌽");
 
             let msg = `*🧾 NUEVO PEDIDO - AREPAS LA TRONCAL*%0A`;
-            msg += `----------------------------------------%0A`;
-            msg += `*CLIENTE:* ${name.toUpperCase()}%0A`;
-            msg += `*CELULAR:* ${phone}%0A`;
-            msg += `*DIRECCIÓN:* ${address}%0A`;
-            if(userPos) msg += `*UBICACIÓN GPS:* ${userPos}%0A`;
-            msg += `----------------------------------------%0A`;
-            msg += `*DETALLE DEL PEDIDO:*%0A`;
+            msg += `------------------------------------------%0A`;
+            msg += `👤 *CLIENTE:* ${name.toUpperCase()}%0A`;
+            msg += `📞 *CELULAR:* ${phone}%0A`;
+            msg += `📍 *DIRECCIÓN:* ${address}%0A`;
+            if(userPos) msg += `📍 *UBICACIÓN GPS:* ${userPos}%0A`;
+            msg += `------------------------------------------%0A`;
+            msg += `*PRODUCTOS:*%0A`;
 
             let total = 0;
             ordered.forEach(p => {
                 const sub = p.qty * p.price;
-                msg += `• ${p.qty} x ${p.name} ($${sub.toLocaleString()})%0A`;
+                msg += `✅ ${p.qty} x ${p.name} -> *$${sub.toLocaleString()}*%0A`;
                 total += sub;
             });
 
-            msg += `----------------------------------------%0A`;
-            msg += `*TOTAL A COBRAR: $${total.toLocaleString()}*%0A`;
-            msg += `----------------------------------------%0A`;
-            msg += `_Pedido generado por Vibras Positivas App_`;
+            msg += `------------------------------------------%0A`;
+            msg += `💰 *TOTAL A COBRAR: $${total.toLocaleString()}*%0A`;
+            msg += `------------------------------------------%0A`;
+            msg += `_Enviado desde Vibras Positivas WebApp_`;
 
             window.open(`https://wa.me/${WS_NUMBER}?text=${msg}`);
         };
@@ -178,7 +183,7 @@
         };
 
         document.getElementById('btn-admin-access').onclick = () => {
-            if(prompt("Clave:") === "vibras") document.getElementById('admin-panel').classList.toggle('hidden');
+            if(prompt("Clave Admin:") === "vibras") document.getElementById('admin-panel').classList.toggle('hidden');
         };
 
         renderMenu();
