@@ -3,52 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Pizza de Franco - Pedidos Online</title>
+    <title>La Pizza de Franco - Menú Completo</title>
     <style>
         :root { --rojo: #ce2b37; --verde: #008c45; --blanco: #ffffff; --beige: #fdfaf5; --oscuro: #1a1a1a; --exito: #25D366; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--beige); margin: 0; padding: 10px; padding-bottom: 160px; }
-        
         #bloqueo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; text-align: center; padding-top: 100px; }
-        
-        /* HEADER CORREGIDO PARA EL LOGO */
         header { background: var(--rojo); color: white; padding: 25px 20px; text-align: center; border-radius: 0 0 30px 30px; margin: -10px -10px 15px -10px; border-bottom: 5px solid var(--verde); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .logo-pizza { width: 120px; height: auto; max-height: 120px; border-radius: 15px; border: 3px solid white; background: white; margin-bottom: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-
         .search-input { width: 100%; padding: 15px; border-radius: 50px; border: 2px solid var(--rojo); outline: none; margin-bottom: 15px; box-sizing: border-box; }
         .card-datos { background: white; padding: 20px; border-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: 2px solid var(--verde); }
         .input-cajon { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 16px; }
-        
         .section-title { font-size: 13px; font-weight: bold; color: var(--rojo); text-transform: uppercase; margin: 25px 0 10px; border-left: 5px solid var(--verde); padding: 8px; background: white; border-radius: 0 10px 10px 0; text-align: left; }
         .card-prod { background: white; padding: 15px; border-radius: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 12px; border-bottom: 4px solid var(--rojo); }
         .info-prod h3 { margin: 0; font-size: 15px; color: var(--oscuro); text-transform: uppercase; text-align: left; }
-        
+        .info-prod p { margin: 5px 0; font-size: 11px; color: #666; text-align: left; line-height: 1.3; }
         .selector-tamano { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 10px; }
         .btn-tamano { background: #f8f8f8; border: 1px solid #ddd; padding: 8px 2px; border-radius: 10px; font-size: 9px; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
         .btn-tamano.active { background: var(--verde); color: white; border-color: var(--verde); }
         .btn-tamano b { font-size: 10px; }
-
         .controles { display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee; }
         .btn-c { background: var(--oscuro); color: white; border: none; width: 35px; height: 35px; border-radius: 10px; font-weight: bold; cursor: pointer; }
         .cant-n { font-weight: bold; color: var(--rojo); font-size: 18px; }
-        
         .footer-pedido { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); border-radius: 25px 25px 0 0; z-index: 1000; }
         .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; }
-        footer { text-align: center; padding: 20px; font-size: 11px; color: #999; }
     </style>
 </head>
 <body>
-
 <div id="bloqueo"><h1>🔒</h1><h2>SERVICIO SUSPENDIDO</h2><p>Contacte a VIBRAS POSITIVAS</p></div>
-
 <div id="app-content">
     <header>
-        <img src="lapizzadefranco.PNG" alt="La Pizza de Franco Logo" class="logo-pizza">
+        <img src="lapizzadefranco.PNG" alt="Logo" class="logo-pizza">
         <h1 style="margin:0; font-size: 22px;">LA PIZZA DE FRANCO</h1>
         <small>Carrera 22, Colinas del Portal - Caucasia</small>
     </header>
-    
-    <input type="text" id="lupa" class="search-input" placeholder="🔍 Buscar pizza..." onkeyup="buscar()">
-    
+    <input type="text" id="lupa" class="search-input" placeholder="🔍 Buscar pizza o lasagña..." onkeyup="buscar()">
     <div class="card-datos">
         <div class="section-title">📍 Datos de Entrega</div>
         <input type="text" id="nom" class="input-cajon" placeholder="👤 Nombre Completo">
@@ -59,49 +47,59 @@
             <option value="Nequi">Nequi</option>
             <option value="Bancolombia">Bancolombia</option>
         </select>
-        <textarea id="obs" class="input-cajon" placeholder="📝 Notas (ej: sin cebolla, vueltas de 50...)"></textarea>
+        <textarea id="obs" class="input-cajon" placeholder="📝 Notas especiales..."></textarea>
     </div>
-
     <div id="menu"></div>
-
     <div class="footer-pedido">
         <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-weight:bold; font-size: 18px;">
             <span>TOTAL:</span><span id="total-vista" style="color: var(--verde);">$ 0</span>
         </div>
         <button class="btn-enviar" onclick="enviar()">🚀 ENVIAR PEDIDO POR WHATSAPP</button>
     </div>
-
-    <footer><b>ASETEC HM © 2026</b><br>Infraestructura Digital VIBRAS POSITIVAS</footer>
 </div>
-
 <script>
     const WA_FRANCO = "573242233812";
-    
     const carta = [
-        { cat: "🍕 Las Especiales de Franco", prods: [
-            { id: 1, n: "Franco Especial", p: { per: 44000, med: 78000, fam: 152000 } },
-            { id: 2, n: "Carbonara Casa", p: { per: 30000, med: 40000, fam: 72000 } },
-            { id: 3, n: "Llanera", p: { per: 36000, med: 56000, fam: 84000 } },
-            { id: 4, n: "Marinera (Mariscos)", p: { per: 37000, med: 57000, fam: 98000 } },
-            { id: 5, n: "Serrano y Champiñón", p: { per: 34000, med: 44000, fam: 77000 } }
+        { cat: "🍕 Especialidades Premium", prods: [
+            { id: 1, n: "2 Sabores Especial", d: "Serrano, Llanera, Mariscos y más", p: { per: 42000, med: 62000, fam: 132000 } },
+            { id: 2, n: "Especial Casa / Jamón Serrano", d: "Salsa casa, mozzarella, jamón serrano", p: { per: 44000, med: 78000, fam: 152000 } },
+            { id: 3, n: "Especial de la Casa Pro", d: "Tocineta, cherry, burrata, pesto, albahaca", p: { per: 40000, med: 78000, fam: 154000 } },
+            { id: 4, n: "Especial Jamón Serrano Pro", d: "Serrano, cherry, parmesano, burrata", p: { per: 44000, med: 80000, fam: 154000 } },
+            { id: 5, n: "Especial Napolitana Pro", d: "Salsa napolitana, burrata, albahaca", p: { per: 38000, med: 74000, fam: 147000 } },
+            { id: 6, n: "Carbonara de la Casa", d: "Tocineta, frutos secos, miel saborizada", p: { per: 30000, med: 40000, fam: 72000 } }
         ]},
-        { cat: "🍕 Tradicionales", prods: [
-            { id: 8, n: "Hawaiana", p: { per: 27000, med: 37000, fam: 78000 } },
-            { id: 9, n: "Pepperoni", p: { per: 34000, med: 46000, fam: 82000 } },
-            { id: 10, n: "Mexicana / Ranchera", p: { per: 32000, med: 42000, fam: 77000 } },
-            { id: 11, n: "Margarita", p: { per: 28000, med: 38000, fam: 75000 } },
-            { id: 12, n: "Napolitana", p: { per: 22000, med: 32000, fam: 62000 } },
-            { id: 13, n: "Jamón y Queso", p: { per: 25000, med: 35000, fam: 68000 } }
+        { cat: "🍕 Sabores Gourmet", prods: [
+            { id: 7, n: "Llanera", d: "Res y cerdo a la llanera, llanero, chimichurri", p: { per: 36000, med: 56000, fam: 84000 } },
+            { id: 8, n: "Paisa", d: "Chicharrón, maduro, molida, chorizo, aguacate", p: { per: 36000, med: 46000, fam: 88000 } },
+            { id: 9, n: "Mar y Tierra", d: "Mariscos y Pollo", p: { per: 34000, med: 54000, fam: 82000 } },
+            { id: 10, n: "Mariscos", d: "Mix de mariscos y pimentón", p: { per: 37000, med: 57000, fam: 98000 } },
+            { id: 11, n: "Capresa", d: "Tomate chonto, queso burrata y orégano", p: { per: 38000, med: 74000, fam: 147000 } },
+            { id: 12, n: "Especial Ranchera", d: "Ranchera, pepperoni, orégano, pimienta", p: { per: 38000, med: 48000, fam: 82000 } },
+            { id: 13, n: "Especial Pepperoni", d: "Pepperoni, champiñones, pimentón, cebolla roja", p: { per: 35000, med: 45000, fam: 82000 } }
         ]},
-        { cat: "🥘 Lasagñas", prods: [
-            { id: 21, n: "Lasagña Pollo", p: { per: 32000, med: 36000 } },
-            { id: 22, n: "Lasagña Mixta", p: { per: 34000, med: 38000 } },
-            { id: 23, n: "Lasagña Bologñesa", p: { per: 32000, med: 36000 } }
+        { cat: "🍕 Clásicas Franco", prods: [
+            { id: 14, n: "Jamón y Queso / Hawaiana", d: "Jamón y piña calada", p: { per: 36000, med: 47000, fam: 77000 } },
+            { id: 15, n: "Pepperonni Clásica", d: "Salsa napolitana y pepperoni", p: { per: 34000, med: 46000, fam: 82000 } },
+            { id: 16, n: "La Casa Tradicional", d: "Tocineta, aceitunas negras, maíz, chorizo", p: { per: 34000, med: 44000, fam: 80000 } },
+            { id: 17, n: "Ranchera", d: "Salchicha ranchera, pimentón, cebolla morada", p: { per: 32000, med: 42000, fam: 77000 } },
+            { id: 18, n: "Pollo y Champiñón", d: "Pollo desmechado y champiñones", p: { per: 32000, med: 42000, fam: 77000 } },
+            { id: 19, n: "Bologñesa", d: "Carne en salsa bologñesa y tocineta", p: { per: 32000, med: 42000, fam: 77000 } },
+            { id: 20, n: "Margarita", d: "Tomate cherry, albahaca, aceite oliva", p: { per: 28000, med: 38000, fam: 75000 } },
+            { id: 21, n: "Verduras", d: "Maíz, cherry, pimentón, aceitunas", p: { per: 32000, med: 42000, fam: 77000 } },
+            { id: 22, n: "Piña y Pollo", d: "Pollo, tocineta y piña", p: { per: 35000, med: 45000, fam: 80000 } },
+            { id: 23, n: "Napolitana Clásica", d: "Queso mozzarella y albahaca", p: { per: 22000, med: 32000, fam: 62000 } },
+            { id: 24, n: "Jamón y Queso Económica", d: "Jamón y mozzarella", p: { per: 25000, med: 35000, fam: 68000 } }
+        ]},
+        { cat: "🥘 Lasagñas Artesanales", prods: [
+            { id: 25, n: "Lasagña Personal Pollo", d: "Pollo, bechamel, napolitana", p: { per: 32000, med: 36000 } },
+            { id: 26, n: "Lasagña Mixta Pollo y Carne", d: "Pollo y Res seleccionada", p: { per: 34000, med: 38000 } },
+            { id: 27, n: "Lasagña Personal Bologñesa", d: "Carne molida especial", p: { per: 32000, med: 36000 } },
+            { id: 28, n: "Especial de Pollo Pro", d: "Pollo, tocineta, frutos secos", p: { per: 32000, med: 42000, fam: 77000 } },
+            { id: 29, n: "Vegetales con Pollo", d: "Berenjenas, pimentón ahumado, maíz", p: { per: 34000, med: 44000, fam: 80000 } }
         ]}
     ];
 
     let ped = {}; let sel = {};
-
     function render() {
         const m = document.getElementById('menu');
         carta.forEach(s => {
@@ -110,44 +108,39 @@
                 const c = document.createElement('div'); c.className='card-prod';
                 let btns = "";
                 for (let tam in p.p) {
-                    let txt = tam === 'per' ? 'Pers.' : tam === 'med' ? 'Med.' : 'Fam.';
+                    let txt = (tam === 'per') ? 'Pers.' : (tam === 'med') ? 'Med.' : 'Fam.';
+                    if(p.n.includes("Lasagña")) txt = (tam === 'per') ? 'Pequeña' : 'Grande';
                     btns += `<button class="btn-tamano" id="t-${p.id}-${tam}" onclick="setT(${p.id}, '${tam}', ${p.p[tam]})">${txt}<b>$${p.p[tam].toLocaleString()}</b></button>`;
                 }
-                c.innerHTML = `<div class="info-prod"><h3>${p.n}</h3></div><div class="selector-tamano">${btns}</div>
-                <div class="controles"><button class="btn-c" onclick="cant(${p.id},-1)">-</button><span id="q-${p.id}" class="cant-n">0</span><button class="btn-c" onclick="cant(${p.id},1)">+</button></div>`;
+                c.innerHTML = `<div class="info-prod"><h3>${p.n}</h3><p>${p.d}</p></div><div class="selector-tamano">${btns}</div><div class="controles"><button class="btn-c" onclick="cant(${p.id},-1)">-</button><span id="q-${p.id}" class="cant-n">0</span><button class="btn-c" onclick="cant(${p.id},1)">+</button></div>`;
                 m.appendChild(c);
             });
         });
     }
     render();
-
     function setT(id, t, p) {
         document.querySelectorAll(`[id^="t-${id}-"]`).forEach(b => b.classList.remove('active'));
         document.getElementById(`t-${id}-${t}`).classList.add('active');
         sel[id] = { t, p };
         calc();
     }
-
     function cant(id, v) {
-        if(!sel[id]) return alert("Por favor elige el tamaño de la pizza");
+        if(!sel[id]) return alert("Por favor elige el tamaño");
         ped[id] = Math.max(0, (ped[id] || 0) + v);
         document.getElementById(`q-${id}`).innerText = ped[id];
         calc();
     }
-
     function calc() {
         let total = 0;
         for(let id in ped) if(ped[id]) total += sel[id].p * ped[id];
         document.getElementById('total-vista').innerText = `$ ${total.toLocaleString()}`;
     }
-
     function buscar() {
         const q = document.getElementById('lupa').value.toLowerCase();
         document.querySelectorAll('.card-prod').forEach(c => c.style.display = c.innerText.toLowerCase().includes(q) ? "block" : "none");
     }
-
     function enviar() {
-        const n = document.getElementById('nom').value, d = document.getElementById('dir').value, c = document.getElementById('tel_cli').value, p = document.getElementById('pago').value, o = document.getElementById('obs').value;
+        const n = document.getElementById('nom').value, d = document.getElementById('dir').value, c = document.getElementById('tel_cli').value, p = document.getElementById('pago').value;
         if(!n || !d || !c) return alert("Faltan datos de envío");
         let r = ""; let total = 0;
         for(let id in ped) if(ped[id]) {
@@ -156,15 +149,8 @@
             total += sel[id].p * ped[id];
         }
         if(!r) return alert("Selecciona una pizza");
-        
-        const fecha = new Date().toLocaleString("es-CO", { timeZone: "America/Bogota" });
-        navigator.geolocation.getCurrentPosition(pos => {
-            const gps = `http://maps.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-            const msg = `*🍕 LA PIZZA DE FRANCO - PEDIDO*\n👤 *CLIENTE:* ${n}\n🏠 *DIR:* ${d}\n📞 *CEL:* ${c}\n💳 *PAGO:* ${p}\n📝 *OBS:* ${o || "N/A"}\n------------------\n🛒 *DETALLE:*\n${r}------------------\n💰 *TOTAL: $ ${total.toLocaleString()}*\n📅 *HORA:* ${fecha}\n📍 *MAPS:* ${gps}\n\n_VIBRAS POSITIVAS © 2026_`;
-            window.open(`https://wa.me/${WA_FRANCO}?text=${encodeURIComponent(msg)}`);
-        }, () => alert("Activa el GPS para validar el domicilio"));
+        window.open(`https://wa.me/${WA_FRANCO}?text=${encodeURIComponent("*🍕 LA PIZZA DE FRANCO*\n👤 " + n + "\n🏠 " + d + "\n📞 " + c + "\n💳 PAGO: " + p + "\n------------------\n" + r + "------------------\n💰 TOTAL: $" + total.toLocaleString())}`);
     }
-
     async function check() {
         try {
             const r = await fetch('https://haroldco45.github.io/control-vibras.js');
