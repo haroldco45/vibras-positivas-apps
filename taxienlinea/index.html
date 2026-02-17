@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Taxi Radar Multi-Flota - Vibras Positivas</title>
+    <title>Central Taxi Radar - Vibras Positivas</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         :root { --amarillo: #ffcc00; --negro: #1a1a1a; --verde: #2ecc71; --rojo: #e74c3c; }
@@ -15,7 +15,7 @@
         .input-pasajero { width: 100%; padding: 12px; margin: 4px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
         .btn-taxi { background: var(--amarillo); color: var(--negro); border: none; padding: 16px; border-radius: 12px; font-weight: bold; font-size: 16px; width: 100%; cursor: pointer; margin-top: 8px; box-shadow: 0 4px 0 #b38f00; }
         .btn-admin { position: fixed; top: 15px; right: 15px; z-index: 1002; background: rgba(0,0,0,0.5); border: none; border-radius: 50%; width: 40px; height: 40px; color: white; font-size: 20px; }
-        #modal-admin { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; color: white; padding: 20px; box-sizing: border-box; }
+        #modal-admin { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; color: white; padding: 20px; box-sizing: border-box; overflow-y: auto; }
         .modal-content { background: #222; padding: 25px; border-radius: 20px; border: 2px solid var(--amarillo); max-width: 400px; margin: auto; }
         .input-admin { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid var(--amarillo); background: #333; color: white; box-sizing: border-box; }
         .taxi-marker { font-size: 35px; text-align: center; transition: all 0.5s linear; }
@@ -28,16 +28,26 @@
 
 <div id="modal-admin">
     <div class="modal-content">
-        <h3 style="color:var(--amarillo);">CONFIGURACIÓN UNIDAD</h3>
-        <label>ID UNIDAD (Ej: taxi_01, taxi_02):</label>
-        <input type="text" id="adm-id" class="input-admin" placeholder="ID único">
-        <input type="text" id="adm-nombre" class="input-admin" placeholder="Nombre Conductor">
-        <input type="tel" id="adm-celular" class="input-admin" placeholder="WhatsApp">
-        <input type="text" id="adm-placa" class="input-admin" placeholder="Placa">
-        <button class="btn-taxi" onclick="guardarPerfil()">💾 GUARDAR UNIDAD</button>
-        <hr style="border:0.5px solid #444; margin:15px 0;">
-        <button class="btn-taxi" style="background:var(--verde); color:white;" onclick="pushEstado('disponible')">PONER DISPONIBLE</button>
-        <button class="btn-taxi" style="background:var(--rojo); color:white; margin-top:10px;" onclick="pushEstado('ocupado')">PONER OCUPADO</button>
+        <h3 style="color:var(--amarillo);">DESPACHO CENTRAL</h3>
+        
+        <div id="seccion-registro" style="border-bottom: 1px solid #444; padding-bottom: 15px; margin-bottom: 15px;">
+            <p style="font-size: 12px;">Paso 1: Registrar nueva unidad en el sistema</p>
+            <input type="text" id="reg-placa" class="input-admin" placeholder="Placa (Ej: ABC-123)">
+            <input type="tel" id="reg-celular" class="input-admin" placeholder="WhatsApp Taxi">
+            <button class="btn-taxi" onclick="registrarEnNube()">➕ REGISTRAR EN SISTEMA</button>
+        </div>
+
+        <div id="seccion-login">
+            <p style="font-size: 12px;">Paso 2: Activar este dispositivo como:</p>
+            <select id="select-taxi" class="input-admin">
+                <option value="">Cargando unidades...</option>
+            </select>
+            <button class="btn-taxi" style="background:var(--verde); color:white;" onclick="activarDispositivo()">✅ ACTIVAR ESTE CELULAR</button>
+        </div>
+        
+        <hr>
+        <button class="btn-taxi" style="background:var(--rojo); color:white;" onclick="pushEstado('ocupado')">PONER OCUPADO 🔴</button>
+        <button class="btn-taxi" style="background:var(--verde); color:white;" onclick="pushEstado('disponible')">PONER DISPONIBLE 🟢</button>
         <button onclick="document.getElementById('modal-admin').style.display='none'" style="background:none; border:none; color:var(--amarillo); margin-top:20px; cursor:pointer; width:100%;">CERRAR</button>
     </div>
 </div>
@@ -51,11 +61,11 @@
 
 <div class="panel-control">
     <div id="info-seleccionado" style="font-size:12px; margin-bottom:10px; font-weight:bold; color:var(--negro);">
-        🚕 Selecciona un taxi en el mapa para pedirlo
+        🚕 Toca un taxi en el mapa para pedirlo
     </div>
     <input type="text" id="pas-nombre" class="input-pasajero" placeholder="👤 Tu Nombre">
     <button id="btn-pedido" class="btn-taxi" onclick="solicitarGPS()" disabled>🚀 PEDIR TAXI SELECCIONADO</button>
-    <footer style="font-size:9px; color:#aaa; margin-top:8px;">APP DESARROLLADA POR VIBRAS POSITIVAS © 2026</footer>
+    <footer style="font-size:9px; color:#aaa; margin-top:8px;">VIBRAS POSITIVAS © 2026</footer>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -77,7 +87,7 @@
     const PIN_ACCESO = "1234";
 
     let map, markers = {}, taxiSeleccionado = null;
-    let configLocal = JSON.parse(localStorage.getItem('vp_taxi_config')) || { id: "taxi_01" };
+    let unidadActiva = JSON.parse(localStorage.getItem('vp_unidad_activa')) || null;
 
     function initMap() {
         map = L.map('map', { zoomControl: false }).setView([7.986, -75.193], 15);
@@ -85,41 +95,64 @@
     }
 
     function accesoAdmin() {
-        const pin = prompt("🔐 PIN de Conductor:");
+        const pin = prompt("🔐 PIN de Central:");
         if (pin === PIN_ACCESO) {
-            document.getElementById('adm-id').value = configLocal.id;
-            document.getElementById('adm-nombre').value = configLocal.nombre || "";
-            document.getElementById('adm-celular').value = configLocal.celular || "";
-            document.getElementById('adm-placa').value = configLocal.placa || "";
+            actualizarListaTaxis();
             document.getElementById('modal-admin').style.display='block';
         }
     }
 
-    function guardarPerfil() {
-        configLocal = {
-            id: document.getElementById('adm-id').value.trim() || "taxi_01",
-            nombre: document.getElementById('adm-nombre').value,
-            celular: document.getElementById('adm-celular').value,
-            placa: document.getElementById('adm-placa').value
-        };
-        localStorage.setItem('vp_taxi_config', JSON.stringify(configLocal));
-        pushEstado('disponible');
+    // --- FUNCIÓN PARA QUE TÚ REGISTRES DESDE TU CELULAR ---
+    function registrarEnNube() {
+        const placa = document.getElementById('reg-placa').value.toUpperCase().trim();
+        const cel = document.getElementById('reg-celular').value.trim();
+        if(!placa || !cel) return alert("Socio, llena placa y celular.");
+        
+        db.ref('taxis/' + placa).update({
+            placa: placa,
+            celular: cel,
+            estado: 'ocupado', // Por defecto ocupado hasta que el conductor se active
+            nombre: "Unidad " + placa
+        }).then(() => {
+            alert("✅ Unidad " + placa + " registrada en la central.");
+            actualizarListaTaxis();
+        });
+    }
+
+    function actualizarListaTaxis() {
+        db.ref('taxis').once('value', (snapshot) => {
+            const select = document.getElementById('select-taxi');
+            select.innerHTML = '<option value="">-- Selecciona tu placa --</option>';
+            snapshot.forEach((child) => {
+                const taxi = child.val();
+                select.innerHTML += `<option value="${taxi.placa}">${taxi.placa}</option>`;
+            });
+        });
+    }
+
+    function activarDispositivo() {
+        const placa = document.getElementById('select-taxi').value;
+        if(!placa) return alert("Selecciona una placa.");
+        
+        db.ref('taxis/' + placa).once('value', (snap) => {
+            unidadActiva = snap.val();
+            localStorage.setItem('vp_unidad_activa', JSON.stringify(unidadActiva));
+            alert("🚀 Este dispositivo ahora es el Taxi " + placa);
+            pushEstado('disponible');
+        });
     }
 
     function pushEstado(est) {
-        db.ref('taxis/' + configLocal.id).update({ 
-            estado: est, nombre: configLocal.nombre, celular: configLocal.celular, placa: configLocal.placa 
-        });
+        if(!unidadActiva) return alert("Primero activa esta unidad.");
+        db.ref('taxis/' + unidadActiva.placa).update({ estado: est });
         document.getElementById('modal-admin').style.display='none';
     }
 
-    // --- MAGIA MULTI-TAXI: Escucha a todos los taxis ---
     db.ref('taxis').on('value', (snapshot) => {
         const taxis = snapshot.val();
         for (let id in taxis) {
             const data = taxis[id];
             if (data.lat && data.lng) {
-                // Si el marcador no existe, se crea
                 if (!markers[id]) {
                     const icon = L.divIcon({ 
                         className: 'taxi-marker', 
@@ -127,15 +160,10 @@
                         iconSize: [40, 50], iconAnchor: [20, 25] 
                     });
                     markers[id] = L.marker([data.lat, data.lng], { icon: icon }).addTo(map);
-                    
-                    // Al tocar el taxi, se selecciona para pedirlo
                     markers[id].on('click', () => seleccionarTaxi(id, data));
                 } else {
-                    // Si ya existe, solo se mueve
                     markers[id].setLatLng([data.lat, data.lng]);
                 }
-
-                // Cambiar color si está ocupado
                 const markerElement = markers[id].getElement();
                 if (markerElement) {
                     markerElement.style.filter = (data.estado === 'ocupado') ? "grayscale(1) brightness(0.5)" : "none";
@@ -147,16 +175,15 @@
     function seleccionarTaxi(id, data) {
         if(data.estado === 'ocupado') return alert("Socio, ese taxi está ocupado.");
         taxiSeleccionado = data;
-        document.getElementById('info-seleccionado').innerHTML = `🚖 SELECCIONADO: ${data.placa} (${data.nombre})`;
+        document.getElementById('info-seleccionado').innerHTML = `🚖 SELECCIONADO: ${data.placa}`;
         document.getElementById('btn-pedido').disabled = false;
     }
 
     function iniciarRastreo() {
         if (navigator.geolocation) {
             navigator.geolocation.watchPosition((pos) => {
-                const local = JSON.parse(localStorage.getItem('vp_taxi_config'));
-                if(local && local.placa) {
-                    db.ref('taxis/' + local.id).update({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+                if(unidadActiva) {
+                    db.ref('taxis/' + unidadActiva.placa).update({ lat: pos.coords.latitude, lng: pos.coords.longitude });
                 }
             }, null, { enableHighAccuracy: true });
         }
@@ -164,12 +191,10 @@
 
     function solicitarGPS() {
         const pNombre = document.getElementById('pas-nombre').value.trim();
-        if(!pNombre) return alert("Ponga su nombre.");
-        if(!taxiSeleccionado) return;
-
+        if(!pNombre || !taxiSeleccionado) return alert("Nombre obligatorio.");
         navigator.geolocation.getCurrentPosition((pos) => {
             const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-            let msg = `*🚖 SOLICITUD TAXI #${taxiSeleccionado.placa}*\nPasajero: ${pNombre}\nRecoger en: ${gps}`;
+            const msg = `*🚖 SOLICITUD TAXI #${taxiSeleccionado.placa}*\nPasajero: ${pNombre}\nRecoger en: ${gps}`;
             window.location.href = `https://wa.me/57${taxiSeleccionado.celular}?text=${encodeURIComponent(msg)}`;
         });
     }
