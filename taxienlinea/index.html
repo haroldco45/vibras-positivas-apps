@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taxi en Tiempo Real - Vibras Positivas</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root { 
+            --amarillo: #ffcc00; 
+            --negro: #1a1a1a; 
+            --verde: #2ecc71; 
+            --rojo: #e74c3c;
+            --gris-claro: #f4f4f4;
+            --azul-claro: #e0f2f7;
+        }
+        body { 
+            font-family: 'Arial', sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: var(--gris-claro); 
+            overflow: hidden; /* Evita scrolls no deseados */
+        }
+        
+        header {
+            background: var(--negro); /* Fondo oscuro para el logo */
+            padding: 10px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1001; /* Para que quede encima del mapa */
+        }
+        .logo-vehiculo {
+            width: 80px; /* Tamaño del icono del vehículo */
+            height: auto;
+            display: block; /* Para centrarlo */
+            margin: 0 auto;
+            filter: invert(1) brightness(1.8); /* Lo hace amarillo y brillante sobre fondo oscuro */
+        }
+        h1.app-title {
+            color: var(--amarillo);
+            font-size: 1.8em;
+            margin: 5px 0 0;
+        }
+        .header-location {
+            color: #ccc;
+            font-size: 0.8em;
+            margin: 0;
+        }
+
+        #map { 
+            height: calc(100vh - 200px); /* Altura dinámica, ajustada para el header y el panel */
+            width: 100%; 
+            position: relative; /* Importante para el z-index */
+            z-index: 1;
+        }
+
+        .panel-control { 
+            height: 200px; /* Altura fija para el panel inferior */
+            background: white; 
+            padding: 15px; 
+            text-align: center; 
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1); 
+            border-radius: 20px 20px 0 0; 
+            position: relative; 
+            z-index: 1000; 
+            display: flex; /* Para organizar los elementos */
+            flex-direction: column;
+            justify-content: space-around;
+        }
+        
+        .status-badge { 
+            display: inline-block; 
+            padding: 8px 15px; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            font-size: 1.1em; 
+            margin-bottom: 10px; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .disponible { background: var(--verde); color: white; }
+        .ocupado { background: var(--rojo); color: white; }
+
+        .btn-taxi { 
+            background: var(--amarillo); 
+            color: var(--negro); 
+            border: none; 
+            padding: 15px 30px; 
+            border-radius: 15px; 
+            font-weight: bold; 
+            font-size: 1.2em; 
+            width: 90%; 
+            max-width: 300px;
+            cursor: pointer; 
+            box-shadow: 0 4px 0 #e6b800; /* Sombra 3D */
+            transition: all 0.2s ease;
+            margin: 0 auto; /* Centrar botón */
+        }
+        .btn-taxi:active { 
+            transform: translateY(4px); 
+            box-shadow: none; 
+        }
+
+        .vp-footer { 
+            font-size: 0.75em; 
+            color: #aaa; 
+            margin-top: 10px; 
+        }
+        
+        /* Icono de Taxi Personalizado en el mapa */
+        .taxi-map-icon { 
+            transition: all 0.5s linear; 
+            font-size: 2.2em; /* Tamaño del icono en el mapa */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        } 
+        .taxi-map-icon.disponible { color: var(--verde); }
+        .taxi-map-icon.ocupado { color: var(--rojo); }
+
+        /* Estilos para el popup del marker */
+        .leaflet-popup-content-wrapper {
+            border-radius: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        .leaflet-popup-content {
+            font-size: 1em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="https://haroldco45.github.io/vibras-positivas-apps/taxienlinea/taxi-icon.png" alt="Logo Taxi" class="logo-vehiculo">
+        <h1 class="app-title">TAXI VIBRAS POSITIVAS</h1>
+        <p class="header-location">🚏 Caucasia, Antioquia</p>
+    </header>
+
+    <div id="map"></div>
+
+    <div class="panel-control">
+        <div id="status" class="status-badge disponible">🟢 EN LÍNEA</div>
+        
+        <h3 style="margin:0; font-size: 1.3em;">¡Pide tu taxi ahora!</h3>
+        <p style="font-size: 0.9em; color: #666; margin-top: 5px;">Tu transporte seguro y rápido en Caucasia.</p>
+
+        <button class="btn-taxi" onclick="pedirTaxi()">🚖 SOLICITAR TAXI YA</button>
+
+        <div class="vp-footer">
+            Desarrollado por <b>VIBRAS POSITIVAS</b> © 2026 <br>
+            Derechos de Autor
+        </div>
+    </div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    // --- DATOS DE CONTACTO (MODIFICAR AQUÍ) ---
+    const WA_TAXI = "573117700431"; 
+    const TAXI_NAME = "TAXI VIBRAS POSITIVAS"; // Nombre del taxista o servicio
+    // ------------------------------------------
+
+    let map, marker;
+    let currentStatus = 'disponible'; // 'disponible' o 'ocupado'
+
+    // Iconos personalizados para el mapa
+    const disponibleIcon = L.divIcon({
+        className: 'taxi-map-icon disponible',
+        html: `<div>🚕</div>`,
+        iconSize: [35, 35],
+        iconAnchor: [17, 30], // Ajuste para que la punta del taxi sea la ubicación
+        popupAnchor: [0, -25]
+    });
+
+    const ocupadoIcon = L.divIcon({
+        className: 'taxi-map-icon ocupado',
+        html: `<div>🚫</div>`, // Podrías usar otro emoji o un taxi en rojo
+        iconSize: [35, 35],
+        iconAnchor: [17, 30],
+        popupAnchor: [0, -25]
+    });
+
+    // 1. Inicializar Mapa centrado en Caucasia
+    function initMap() {
+        map = L.map('map').setView([7.986, -75.193], 15); // Coordenadas aproximadas de Caucasia
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        marker = L.marker([7.986, -75.193], {icon: disponibleIcon}).addTo(map)
+            .bindPopup(`<b>${TAXI_NAME}</b><br>Estado: <span id="popup-status">Disponible</span>`)
+            .openPopup();
+    }
+
+    // 2. Actualizar la posición del taxi en el mapa
+    function actualizarPosicion() {
+        if (navigator.geolocation) {
+            navigator.geolocation.watchPosition((pos) => {
+                const { latitude, longitude } = pos.coords;
+                const newPos = [latitude, longitude];
+
+                marker.setLatLng(newPos);
+                map.panTo(newPos); // El mapa sigue al taxi
+
+            }, (err) => {
+                console.error("Error GPS:", err);
+                alert("Para un servicio óptimo, permite el acceso a tu ubicación GPS.");
+            }, {
+                enableHighAccuracy: true,
+                maximumAge: 1000, // No aceptar posiciones más viejas de 1 segundo
+                timeout: 5000     // Dar 5 segundos para obtener una posición
+            });
+        } else {
+            alert("Tu navegador no soporta geolocalización. La función de seguimiento no estará activa.");
+        }
+    }
+
+    // 3. Cambiar el estado del taxi (para el taxista)
+    // ESTA FUNCIÓN ES LA QUE EL TAXISTA USARÍA PARA CAMBIAR SU ESTADO
+    // Por ahora, solo simula cambios, luego lo conectaríamos a un backend.
+    function toggleStatus() {
+        if (currentStatus === 'disponible') {
+            currentStatus = 'ocupado';
+            document.getElementById('status').className = 'status-badge ocupado';
+            document.getElementById('status').innerHTML = '🔴 OCUPADO';
+            marker.setIcon(ocupadoIcon);
+            marker.setPopupContent(`<b>${TAXI_NAME}</b><br>Estado: <span id="popup-status">Ocupado</span>`);
+        } else {
+            currentStatus = 'disponible';
+            document.getElementById('status').className = 'status-badge disponible';
+            document.getElementById('status').innerHTML = '🟢 EN LÍNEA';
+            marker.setIcon(disponibleIcon);
+            marker.setPopupContent(`<b>${TAXI_NAME}</b><br>Estado: <span id="popup-status">Disponible</span>`);
+        }
+    }
+
+    // 4. Función para pedir el taxi por WhatsApp (para el pasajero)
+    function pedirTaxi() {
+        const msg = `*🚖 SOLICITUD DE TAXI - ${TAXI_NAME}*\nHola, te vi en el mapa de Vibras Positivas y necesito un servicio ahora mismo.`;
+        window.location.href = `https://wa.me/${WA_TAXI}?text=${encodeURIComponent(msg)}`;
+    }
+
+    window.onload = () => {
+        initMap();
+        actualizarPosicion();
+
+        // Para simular el cambio de estado del taxista, podrías agregar un botón en el futuro
+        // Por ahora, el estado inicial es "disponible"
+        // document.getElementById('status').addEventListener('click', toggleStatus); 
+    };
+</script>
+</body>
+</html>
