@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tienda El Progreso - Pedidos</title>
+    <style>
+        :root { --naranja: #ff6b35; --amarillo: #f7c59f; --oscuro: #2b2d42; --verde: #25d366; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #fefae0; color: #333; }
+        
+        header { 
+            background: linear-gradient(135deg, var(--naranja), #f9844a); 
+            color: white; padding: 20px 15px; text-align: center; 
+            border-bottom: 4px solid var(--amarillo);
+        }
+        .contacto-header { font-size: 13px; background: rgba(0,0,0,0.2); padding: 5px 12px; border-radius: 50px; display: inline-block; margin-top: 8px; }
+
+        .container { padding: 15px; max-width: 500px; margin: auto; }
+        
+        .card { background: white; border-radius: 20px; padding: 18px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        h3 { margin-top: 0; color: var(--naranja); border-bottom: 1px solid #eee; padding-bottom: 8px; font-size: 18px; }
+
+        .input-full { width: 100%; padding: 12px; margin: 5px 0 12px; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; font-size: 15px; }
+        
+        .item-pedido { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed #eee; }
+        .item-nombre { font-weight: bold; font-size: 15px; }
+        .item-precio { color: var(--naranja); font-weight: bold; font-size: 14px; }
+        .input-cant { width: 70px; padding: 10px; border-radius: 10px; border: 2px solid var(--amarillo); text-align: center; font-weight: bold; font-size: 16px; }
+
+        .total-box { background: var(--oscuro); color: white; padding: 20px; border-radius: 20px; text-align: center; font-size: 24px; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .subtotal-label { font-size: 13px; opacity: 0.9; display: block; margin-bottom: 5px; }
+
+        .btn-enviar { 
+            background: var(--verde); color: white; border: none; padding: 20px; border-radius: 15px; 
+            width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 15px;
+            box-shadow: 0 5px 0 #128c7e; transition: 0.2s;
+        }
+        .btn-enviar:active { transform: translateY(3px); box-shadow: none; }
+        
+        .btn-edit { background: #f0f0f0; color: #666; border: none; padding: 6px 12px; border-radius: 20px; font-size: 11px; margin-bottom: 10px; cursor: pointer; font-weight: bold; }
+        
+        footer { text-align: center; padding: 25px; font-size: 11px; color: #666; line-height: 1.5; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="font-size: 40px;">🏪</div>
+    <strong style="font-size: 22px; letter-spacing: 1px;">TIENDA EL PROGRESO</strong><br>
+    <div class="contacto-header">📲 WhatsApp Tienda: 3117700431</div>
+</header>
+
+<div class="container">
+    <div class="card">
+        <h3>👤 Datos de Entrega</h3>
+        <button class="btn-edit" onclick="editarDatos()">✏️ ACTUALIZAR MIS DATOS</button>
+        <div id="display-cliente">
+            <input type="text" id="nombre" class="input-full" placeholder="Tu Nombre">
+            <input type="tel" id="telefono" class="input-full" placeholder="Tu Número de Celular">
+            <input type="text" id="direccion" class="input-full" placeholder="Dirección Exacta en Caucasia">
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>🛍️ Canasta de Compras</h3>
+        
+        <div class="item-pedido">
+            <div class="item-info">
+                <div class="item-nombre">Arroz Superarroz (1kg)</div>
+                <div class="item-precio">$<span id="p1">4200</span></div>
+            </div>
+            <input type="number" id="c1" class="input-cant" value="0" min="0" onchange="calcular()">
+        </div>
+
+        <div class="item-pedido">
+            <div class="item-info">
+                <div class="item-nombre">Aceite Vegetal (900ml)</div>
+                <div class="item-precio">$<span id="p2">8500</span></div>
+            </div>
+            <input type="number" id="c2" class="input-cant" value="0" min="0" onchange="calcular()">
+        </div>
+
+        <div class="item-pedido">
+            <div class="item-info">
+                <div class="item-nombre">Panela (Unidad)</div>
+                <div class="item-precio">$<span id="p3">3500</span></div>
+            </div>
+            <input type="number" id="c3" class="input-cant" value="0" min="0" onchange="calcular()">
+        </div>
+
+        <label style="font-size: 13px; font-weight: bold; color: #555;">💳 ¿Cómo pagarás?:</label>
+        <select id="pago" class="input-full">
+            <option value="Efectivo">Efectivo (Contra entrega)</option>
+            <option value="Nequi">Nequi</option>
+            <option value="Bancolombia">Ahorro a la mano</option>
+        </select>
+
+        <label style="font-size: 13px; font-weight: bold; color: #555;">📝 Notas del Pedido:</label>
+        <textarea id="observaciones" class="input-full" style="height: 60px;" placeholder="Ej: Traer vueltas de 50 mil, el arroz que sea blanco..."></textarea>
+    </div>
+
+    <div class="total-box">
+        <span class="subtotal-label">TOTAL DEL MERCADO</span>
+        $<span id="total-final">0</span>
+    </div>
+
+    <button class="btn-enviar" onclick="enviarPedido()">🚀 ENVIAR PEDIDO A TIENDA</button>
+</div>
+
+<footer>
+    APP DESARROLLADA POR<br>
+    <strong style="color: var(--naranja);">VIBRAS POSITIVAS</strong><br>
+    © 2026 - DERECHOS DE AUTOR RESERVADOS<br>
+    CAUCASIA, ANTIOQUIA
+</footer>
+
+<script>
+    function calcular() {
+        const c1 = parseInt(document.getElementById('c1').value) || 0;
+        const p1 = parseInt(document.getElementById('p1').innerText);
+        const c2 = parseInt(document.getElementById('c2').value) || 0;
+        const p2 = parseInt(document.getElementById('p2').innerText);
+        const c3 = parseInt(document.getElementById('c3').value) || 0;
+        const p3 = parseInt(document.getElementById('p3').innerText);
+
+        const total = (c1 * p1) + (c2 * p2) + (c3 * p3);
+        document.getElementById('total-final').innerText = total.toLocaleString();
+    }
+
+    function editarDatos() {
+        localStorage.removeItem('cliente_progreso');
+        location.reload();
+    }
+
+    function enviarPedido() {
+        const nom = document.getElementById('nombre').value.trim();
+        const tel = document.getElementById('telefono').value.trim();
+        const dir = document.getElementById('direccion').value.trim();
+        const obs = document.getElementById('observaciones').value.trim();
+        const pago = document.getElementById('pago').value;
+        const total = document.getElementById('total-final').innerText;
+        
+        const c1 = document.getElementById('c1').value;
+        const c2 = document.getElementById('c2').value;
+        const c3 = document.getElementById('c3').value;
+
+        if(!nom || !tel || !dir) return alert("Socio, llene nombre, celular y dirección.");
+        if(total == "0") return alert("Añade productos a la canasta.");
+
+        localStorage.setItem('cliente_progreso', JSON.stringify({n: nom, t: tel, d: dir}));
+
+        navigator.geolocation.getCurrentPosition((pos) => {
+            const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+            
+            let factura = `*🛒 NUEVO PEDIDO - EL PROGRESO*\n`;
+            factura += `--------------------------------\n`;
+            factura += `👤 *CLIENTE:* ${nom}\n`;
+            factura += `📞 *TEL:* ${tel}\n`;
+            factura += `📍 *ENTREGA:* ${dir}\n`;
+            factura += `🛰️ *GPS:* ${gps}\n`;
+            factura += `--------------------------------\n`;
+            if(c1 > 0) factura += `🔸 Arroz (x${c1}) : $${(c1*4200).toLocaleString()}\n`;
+            if(c2 > 0) factura += `🔸 Aceite (x${c2}) : $${(c2*8500).toLocaleString()}\n`;
+            if(c3 > 0) factura += `🔸 Panela (x${c3}) : $${(c3*3500).toLocaleString()}\n`;
+            factura += `--------------------------------\n`;
+            factura += `💰 *TOTAL A PAGAR: $${total}*\n`;
+            factura += `💳 *METODO:* ${pago}\n`;
+            if(obs) factura += `📝 *NOTAS:* ${obs}\n`;
+            factura += `--------------------------------\n`;
+            factura += `_Desarrollado por Vibras Positivas_`;
+
+            window.location.href = `https://wa.me/573117700431?text=${encodeURIComponent(factura)}`;
+        });
+    }
+
+    window.onload = () => {
+        const guardado = JSON.parse(localStorage.getItem('cliente_progreso'));
+        if(guardado) {
+            document.getElementById('nombre').value = guardado.n;
+            document.getElementById('telefono').value = guardado.t;
+            document.getElementById('direccion').value = guardado.d;
+        }
+    }
+</script>
+</body>
+</html>
