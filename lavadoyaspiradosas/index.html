@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lavado y Aspirado A.S - Cotizaciones</title>
+    <style>
+        :root { --azul: #1a4fa1; --celeste: #e3f2fd; --dorado: #fbc02d; --oscuro: #333; --blanco: #ffffff; --exito: #25D366; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f0f4f8; margin: 0; padding: 10px; padding-bottom: 180px; color: var(--oscuro); }
+        
+        #bloqueo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; text-align: center; padding-top: 100px; }
+
+        header { background: var(--azul); color: white; padding: 25px; text-align: center; border-radius: 0 0 30px 30px; margin: -10px -10px 20px -10px; border-bottom: 5px solid var(--dorado); }
+        .logo-area { width: 100px; height: 100px; border-radius: 50%; border: 3px solid white; background: white; margin-bottom: 10px; object-fit: contain; }
+
+        .card-datos { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid var(--azul); }
+        .input-cajon { width: 100%; padding: 12px; margin: 6px 0; border: 1px solid #ddd; border-radius: 12px; font-size: 15px; box-sizing: border-box; outline: none; }
+        
+        .section-title { font-size: 13px; font-weight: bold; color: var(--azul); text-transform: uppercase; margin: 20px 0 10px; border-left: 5px solid var(--dorado); padding-left: 10px; }
+
+        /* Tarjetas de Servicio con Galería */
+        .card-serv { background: white; border-radius: 20px; overflow: hidden; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e1e8ed; }
+        .img-serv { width: 100%; height: 180px; object-fit: cover; border-bottom: 3px solid var(--dorado); }
+        .info-serv { padding: 15px; }
+        .info-serv h3 { margin: 0; font-size: 17px; color: var(--azul); }
+        .info-serv p { margin: 5px 0; font-size: 13px; color: #666; }
+
+        .controles { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; background: var(--celeste); padding: 10px; border-radius: 12px; }
+        .btn-c { background: var(--azul); color: white; border: none; width: 35px; height: 35px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 20px; }
+        .cant-n { font-weight: bold; color: var(--azul); font-size: 18px; }
+
+        .footer-total { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); border-radius: 25px 25px 0 0; z-index: 1000; text-align: center; }
+        .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; }
+
+        .hidden { display: none !important; }
+        footer { text-align: center; padding: 25px; font-size: 12px; color: #888; background: #fff; border-top: 1px solid #eee; margin-top: 20px; line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+<div id="bloqueo"><h1>🔒</h1><h2>SERVICIO SUSPENDIDO</h2><p>Contacte a VIBRAS POSITIVAS</p></div>
+
+<div id="app-content">
+    <header>
+        <img src="lavadoyaspiradosas.PNG" alt="Lavado A.S" class="logo-area">
+        <h1 style="margin:0; font-size: 22px;">LAVADO Y ASPIRADO A.S</h1>
+        <small>✨ Expertos en Limpieza Profunda - Caucasia</small>
+    </header>
+
+    <div class="card-datos">
+        <div id="form-datos">
+            <div class="section-title">Información del Cliente</div>
+            <input type="text" id="nom" class="input-cajon" placeholder="👤 Tu Nombre">
+            <input type="text" id="dir" class="input-cajon" placeholder="🏠 Dirección / Barrio">
+            <input type="tel" id="tel" class="input-cajon" placeholder="📞 Celular">
+            <button class="btn-enviar" style="background: var(--azul); margin-top: 10px;" onclick="guardarDatos()">💾 GUARDAR MIS DATOS</button>
+        </div>
+        <div id="datos-listos" class="hidden">
+            <p id="resumen-datos" style="margin:0; font-size: 14px; color: #555; white-space: pre-line;"></p>
+            <button onclick="editarDatos()" style="background: none; border: none; color: var(--azul); cursor: pointer; padding: 5px 0; font-size: 12px; text-decoration: underline;">✏️ Cambiar información</button>
+        </div>
+    </div>
+
+    <div class="section-title">Selecciona tus Servicios</div>
+    <div id="menu-servicios"></div>
+
+    <div class="card-datos" style="margin-top:20px;">
+        <div class="section-title">Detalles Adicionales</div>
+        <textarea id="obs" class="input-cajon" placeholder="📝 Cuéntanos más (ej: Manchas difíciles, tipo de tela, marca del carro...)" rows="3"></textarea>
+    </div>
+
+    <div class="footer-total">
+        <p style="margin: 0 0 10px 0; font-size: 13px; color: #666;">Se enviará una solicitud de cotización</p>
+        <button class="btn-enviar" onclick="enviarPedido()">🚀 SOLICITAR COTIZACIÓN</button>
+    </div>
+
+    <footer>
+        App desarrollada por <br>
+        <span style="font-weight: bold; color: #1a4fa1;">VIBRAS POSITIVAS</span> <br>
+        Derecho de Autor © 2026
+    </footer>
+</div>
+
+<script>
+    const WA_AS = "573148724290";
+    
+    const servicios = [
+        { id: 1, n: "Limpieza de Colchones", d: "Eliminación de ácaros y manchas profundas.", f: "antesydespues2.JPG" },
+        { id: 2, n: "Lavado de Muebles / Sofás", d: "Revive el color y frescura de tu sala.", f: "antesydespues1.JPG" },
+        { id: 3, n: "Sillas de Comedor / Sala", d: "Limpieza impecable pieza por pieza.", f: "antesydespues.JPG" },
+        { id: 4, n: "Coginería de Carros", d: "Aspirado y lavado detallado de interiores.", f: "lavadoyaspiradosas.PNG" },
+        { id: 5, n: "Lavado de Tapetes", d: "Tratamiento especial para fibras.", f: "lavadoyaspiradosas.PNG" }
+    ];
+
+    let ped = {};
+
+    function render() {
+        servicios.forEach(s => {
+            const div = document.createElement('div');
+            div.className = 'card-serv';
+            div.innerHTML = `
+                <img src="${s.f}" class="img-serv" onerror="this.src='https://via.placeholder.com/400x180?text=Servicio+A.S'">
+                <div class="info-serv">
+                    <h3>${s.n}</h3>
+                    <p>${s.d}</p>
+                    <div class="controles">
+                        <span style="font-size: 12px; color: var(--azul); font-weight: bold;">CANTIDAD:</span>
+                        <div>
+                            <button class="btn-c" onclick="cant(${s.id},-1)">-</button>
+                            <span id="q-${s.id}" class="cant-n">0</span>
+                            <button class="btn-c" onclick="cant(${s.id},1)">+</button>
+                        </div>
+                    </div>
+                </div>`;
+            document.getElementById('menu-servicios').appendChild(div);
+        });
+    }
+    render();
+
+    function cant(id, v) {
+        ped[id] = Math.max(0, (ped[id] || 0) + v);
+        document.getElementById(`q-${id}`).innerText = ped[id];
+    }
+
+    function guardarDatos() {
+        const d = { n: document.getElementById('nom').value, d: document.getElementById('dir').value, t: document.getElementById('tel').value };
+        if(d.n && d.d && d.t) { localStorage.setItem('vp_as_datos', JSON.stringify(d)); mostrarDatos(); }
+        else { alert("Por favor completa los datos de contacto."); }
+    }
+
+    function mostrarDatos() {
+        const g = JSON.parse(localStorage.getItem('vp_as_datos'));
+        if(g) {
+            document.getElementById('form-datos').classList.add('hidden');
+            document.getElementById('datos-listos').classList.remove('hidden');
+            document.getElementById('resumen-datos').innerText = `👤 ${g.n}\n🏠 ${g.d}\n📞 ${g.t}`;
+        }
+    }
+    window.onload = () => { mostrarDatos(); checkLock(); };
+
+    function editarDatos() { document.getElementById('form-datos').classList.remove('hidden'); document.getElementById('datos-listos').classList.add('hidden'); }
+
+    async function checkLock() {
+        try {
+            const res = await fetch('https://haroldco45.github.io/control-vibras.js');
+            const t = await res.text();
+            if(t.includes('"lavado-as": "suspendido"')) {
+                document.getElementById('bloqueo').style.display = 'block';
+                document.getElementById('app-content').style.display = 'none';
+            }
+        } catch(e){}
+    }
+
+    function enviarPedido() {
+        const c = JSON.parse(localStorage.getItem('vp_as_datos'));
+        if(!c) return alert("Socio, guarda tus datos primero.");
+        
+        let lista = "";
+        for(let id in ped) if(ped[id]) {
+            const s = servicios.find(x => x.id == id);
+            lista += `• ${s.n}: *${ped[id]} unidad(es)*\n`;
+        }
+        if(!lista) return alert("¡Selecciona al menos un servicio!");
+
+        navigator.geolocation.getCurrentPosition(pos => {
+            const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+            lanzar(c, lista, gps);
+        }, () => lanzar(c, lista, "No enviada"), { timeout: 4000 });
+    }
+
+    function lanzar(c, lista, gps) {
+        let msg = `*✨ LAVADO Y ASPIRADO A.S - SOLICITUD*\n--------------------------\n👤 *CLIENTE:* ${c.n}\n🏠 *DIR:* ${c.d}\n📞 *CEL:* ${c.t}\n--------------------------\n🛠️ *SERVICIOS A COTIZAR:*\n${lista}--------------------------\n📝 *OBS:* ${document.getElementById('obs').value || "N/A"}\n📍 *UBICACIÓN:* ${gps}\n\n_App desarrollada por Vibras Positivas_`;
+        window.location.href = `https://wa.me/${WA_AS}?text=${encodeURIComponent(msg)}`;
+    }
+</script>
+</body>
+</html>
