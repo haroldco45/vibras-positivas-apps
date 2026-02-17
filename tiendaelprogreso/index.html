@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lista de Compras - El Progreso</title>
+    <title>Lista de Compras Pro - El Progreso</title>
     <style>
-        :root { --naranja: #ff6b35; --amarillo: #f7c59f; --oscuro: #2b2d42; --verde: #25d366; }
+        :root { --naranja: #ff6b35; --amarillo: #f7c59f; --verde: #25d366; --blanco: #ffffff; }
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #fefae0; color: #333; }
         header { background: linear-gradient(135deg, var(--naranja), #f9844a); color: white; padding: 20px 15px; text-align: center; border-bottom: 4px solid var(--amarillo); }
         .container { padding: 15px; max-width: 500px; margin: auto; }
@@ -13,111 +13,114 @@
         h3 { margin-top: 0; color: var(--naranja); border-bottom: 1px solid #eee; padding-bottom: 8px; font-size: 18px; }
         .input-full { width: 100%; padding: 12px; margin: 5px 0 12px; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; font-size: 15px; }
         
-        /* Estilo de la Lista Editable */
-        .fila-lista { display: flex; gap: 8px; margin-bottom: 15px; align-items: center; border-bottom: 1px dashed #eee; padding-bottom: 10px; }
-        .input-prod { flex: 2; border: none; font-weight: bold; font-size: 14px; border-bottom: 1px solid #eee; padding: 5px; }
-        .input-unid { flex: 1; border: none; color: #666; font-size: 12px; border-bottom: 1px solid #eee; padding: 5px; }
-        .input-cant { width: 50px; padding: 8px; border-radius: 10px; border: 2px solid var(--amarillo); text-align: center; font-weight: bold; }
+        /* Estilo de la Lista de 3 Cajones */
+        .fila-lista { display: flex; gap: 5px; margin-bottom: 10px; align-items: center; background: #f9f9f9; padding: 10px; border-radius: 12px; }
+        .input-prod { flex: 2; padding: 8px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+        .input-unid { flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 8px; font-size: 12px; text-align: center; }
+        .input-cant { width: 50px; padding: 8px; border: 2px solid var(--amarillo); border-radius: 8px; text-align: center; font-weight: bold; }
 
-        .btn-enviar { background: var(--verde); color: white; border: none; padding: 20px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 15px; box-shadow: 0 5px 0 #128c7e; }
-        footer { text-align: center; padding: 25px; font-size: 11px; color: #666; }
+        .btn-accion { background: var(--naranja); color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
+        .btn-enviar { background: var(--verde); color: white; border: none; padding: 20px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 5px 0 #128c7e; }
+        footer { text-align: center; padding: 25px; font-size: 11px; color: #666; border-top: 1px solid #eee; margin-top: 20px; }
     </style>
 </head>
 <body>
 
 <header>
-    <div style="font-size: 40px;">📝</div>
-    <strong style="font-size: 22px;">MI LISTA DE COMPRAS</strong><br>
-    <div style="font-size: 12px; margin-top:5px;">Tienda El Progreso - 3117700431</div>
+    <div style="font-size: 40px;">🗒️</div>
+    <strong style="font-size: 22px;">MI LISTA DE MERCADO</strong><br>
+    <div style="font-size: 12px; margin-top:5px;">Tienda El Progreso - Caucasia</div>
 </header>
 
 <div class="container">
     <div class="card">
-        <h3>👤 Quién Recibe</h3>
+        <h3>👤 Datos del Cliente</h3>
         <input type="text" id="nombre" class="input-full" placeholder="Tu Nombre">
+        <input type="tel" id="celular" class="input-full" placeholder="Tu Celular">
         <input type="text" id="direccion" class="input-full" placeholder="Dirección en Caucasia">
     </div>
 
     <div class="card">
-        <h3>🛍️ Editar mi Lista</h3>
-        <p style="font-size: 11px; color: #888; margin-bottom: 15px;">Toca los nombres para editarlos:</p>
-        
+        <h3>🛍️ Armar mi Pedido</h3>
         <div id="contenedor-lista">
             <div class="fila-lista">
-                <input type="text" class="input-prod" value="Arroz Superarroz">
-                <input type="text" class="input-unid" value="1 kg">
-                <input type="number" class="input-cant" value="0" min="0">
-            </div>
-            <div class="fila-lista">
-                <input type="text" class="input-prod" value="Aceite Vegetal">
-                <input type="text" class="input-unid" value="900 ml">
-                <input type="number" class="input-cant" value="0" min="0">
-            </div>
-            <div class="fila-lista">
-                <input type="text" class="input-prod" value="Panela">
-                <input type="text" class="input-unid" value="Unidad">
-                <input type="number" class="input-cant" value="0" min="0">
-            </div>
-            <div class="fila-lista">
-                <input type="text" class="input-prod" value="Café">
-                <input type="text" class="input-unid" value="Media">
-                <input type="number" class="input-cant" value="0" min="0">
+                <input type="text" class="input-prod" placeholder="Producto">
+                <input type="text" class="input-unid" placeholder="Medida">
+                <input type="number" class="input-cant" value="1" min="1">
             </div>
         </div>
+        
+        <button class="btn-accion" onclick="adicionarFila()">➕ ADICIONAR PRODUCTO</button>
 
         <label style="font-size: 13px; font-weight: bold; color: #555;">📝 Notas Extra:</label>
-        <textarea id="observaciones" class="input-full" style="height: 60px;" placeholder="Ej: Traer vueltas de 50 mil..."></textarea>
+        <textarea id="observaciones" class="input-full" style="height: 60px;" placeholder="Ej: Traer vueltas de 50..."></textarea>
     </div>
 
-    <button class="btn-enviar" onclick="enviarLista()">🚀 ENVIAR LISTA POR WHATSAPP</button>
+    <button class="btn-enviar" onclick="enviarPedido()">🚀 ENVIAR LISTA A WHATSAPP</button>
 </div>
 
 <footer>
     APP DESARROLLADA POR<br>
     <strong>VIBRAS POSITIVAS</strong><br>
-    © 2026 - CAUCASIA, ANTIOQUIA
+    © 2026 - TODOS LOS DERECHOS RESERVADOS<br>
+    CAUCASIA, ANTIOQUIA
 </footer>
 
 <script>
-    function enviarLista() {
+    // Función para agregar nuevas filas de 3 cajones
+    function adicionarFila() {
+        const contenedor = document.getElementById('contenedor-lista');
+        const nuevaFila = document.createElement('div');
+        nuevaFila.className = 'fila-lista';
+        nuevaFila.innerHTML = `
+            <input type="text" class="input-prod" placeholder="Producto">
+            <input type="text" class="input-unid" placeholder="Medida">
+            <input type="number" class="input-cant" value="1" min="1">
+        `;
+        contenedor.appendChild(nuevaFila);
+    }
+
+    function enviarPedido() {
         const nom = document.getElementById('nombre').value.trim();
+        const cel = document.getElementById('celular').value.trim();
         const dir = document.getElementById('direccion').value.trim();
         const obs = document.getElementById('observaciones').value.trim();
         
-        if(!nom || !dir) return alert("Socio, llene nombre y dirección.");
+        if(!nom || !cel || !dir) return alert("Socio, llene nombre, celular y dirección.");
 
         const filas = document.querySelectorAll('.fila-lista');
-        let cuerpoLista = "";
+        let listaTexto = "";
         let tieneItems = false;
 
         filas.forEach(fila => {
-            const prod = fila.querySelector('.input-prod').value;
-            const unid = fila.querySelector('.input-unid').value;
+            const prod = fila.querySelector('.input-prod').value.trim();
+            const unid = fila.querySelector('.input-unid').value.trim();
             const cant = fila.querySelector('.input-cant').value;
 
-            if(parseInt(cant) > 0) {
-                cuerpoLista += `🔸 ${prod} (${unid}) x${cant}\n`;
+            if(prod !== "") {
+                listaTexto += `🔹 ${prod} (${unid || 'N/A'}) x${cant}\n`;
                 tieneItems = true;
             }
         });
 
-        if(!tieneItems) return alert("Ponga la cantidad en al menos un producto.");
+        if(!tieneItems) return alert("Escriba al menos un producto en la lista.");
 
         navigator.geolocation.getCurrentPosition((pos) => {
-            const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+            const gps = `http://maps.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
             
-            let mensaje = `*🛒 LISTA DE PEDIDO - EL PROGRESO*\n`;
-            mensaje += `--------------------------------\n`;
-            mensaje += `👤 *CLIENTE:* ${nom}\n`;
-            mensaje += `📍 *ENTREGA:* ${dir}\n`;
-            mensaje += `🛰️ *GPS:* ${gps}\n`;
-            mensaje += `--------------------------------\n`;
-            mensaje += cuerpoLista;
-            mensaje += `--------------------------------\n`;
-            if(obs) mensaje += `📝 *NOTAS:* ${obs}\n`;
-            mensaje += `_Desarrollado por Vibras Positivas_`;
+            let factura = `*🛒 LISTA DE PEDIDO - EL PROGRESO*\n`;
+            factura += `--------------------------------\n`;
+            factura += `👤 *CLIENTE:* ${nom}\n`;
+            factura += `📞 *CELULAR:* ${cel}\n`;
+            factura += `📍 *DIRECCIÓN:* ${dir}\n`;
+            factura += `🛰️ *UBICACIÓN:* ${gps}\n`;
+            factura += `--------------------------------\n`;
+            factura += listaTexto;
+            factura += `--------------------------------\n`;
+            if(obs) factura += `📝 *NOTAS:* ${obs}\n`;
+            factura += `_App Desarrollada por Vibras Positivas_`;
 
-            window.location.href = `https://wa.me/573117700431?text=${encodeURIComponent(mensaje)}`;
+            window.location.href = `https://wa.me/573117700431?text=${encodeURIComponent(factura)}`;
         });
     }
 </script>
