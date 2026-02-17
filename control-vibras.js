@@ -9,6 +9,8 @@ const controlVibras = {
     "bodega-la-central": "activo",
     "distribuciones-jm": "activo",
     "edogra-distribuciones": "activo",
+    "fabricadeagualaorquideaazul": "activo",
+
 
     // GASTRONOMÍA
     "estos-burgers": "activo",
