@@ -43,6 +43,7 @@ const controlVibras = {
     "atarrayas": "activo",
     "paula-areiza": "activo",
     "nelson-servicios": "activo",
+    "lavadoyaspiradosas": "activo",
 
     // TRANSPORTE E INVERSIONES
     "sotracor-caucasia": "activo",
