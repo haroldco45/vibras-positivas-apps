@@ -3,139 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Dulce Bocado - Pedidos Online</title>
+    <title>Dulce Bocado - Pedido Inteligente</title>
     <style>
         :root { --cafe: #5d4037; --crema: #f5f5f5; --dorado: #8d6e63; --verde-wa: #25d366; }
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--crema); color: var(--cafe); }
-        
-        header { background: white; padding: 20px; text-align: center; border-bottom: 4px solid var(--cafe); }
-        .logo-img { width: 150px; }
-        
-        .container { padding: 15px; max-width: 600px; margin: auto; }
-        .card { background: white; border-radius: 20px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        
-        .seccion-titulo { background: var(--cafe); color: white; padding: 8px 15px; border-radius: 10px; font-size: 14px; text-transform: uppercase; margin: 15px 0 10px; }
-        
-        .item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
-        .item-info { flex: 2; }
-        .item-nombre { font-weight: bold; font-size: 14px; }
-        .item-precio { font-size: 13px; color: var(--dorado); }
-        .input-cant { width: 50px; padding: 8px; border: 2px solid var(--crema); border-radius: 8px; text-align: center; font-weight: bold; }
-
+        header { background: white; padding: 15px; text-align: center; border-bottom: 4px solid var(--cafe); }
+        .logo-img { width: 120px; }
+        .container { padding: 10px; max-width: 500px; margin: auto; }
+        .card { background: white; border-radius: 20px; padding: 15px; margin-bottom: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        h3 { margin-top: 0; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
         .form-input { width: 100%; padding: 12px; margin: 5px 0 10px; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; }
-        
-        .total-sticky { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 500px; background: var(--cafe); color: white; padding: 15px; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 100; }
-        
+        .seccion-titulo { background: var(--cafe); color: white; padding: 8px 15px; border-radius: 10px; font-size: 13px; text-transform: uppercase; margin: 15px 0 10px; }
+        .item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f9f9f9; }
+        .item-nombre { font-weight: bold; font-size: 14px; }
+        .item-precio { font-size: 12px; color: var(--dorado); }
+        .input-cant { width: 50px; padding: 8px; border: 2px solid var(--crema); border-radius: 8px; text-align: center; font-weight: bold; }
+        .total-sticky { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 480px; background: var(--cafe); color: white; padding: 12px; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 100; }
         .btn-enviar { background: var(--verde-wa); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        
-        footer { text-align: center; padding: 30px 10px 120px; font-size: 11px; color: #888; }
+        footer { text-align: center; padding: 20px 10px 130px; font-size: 10px; color: #888; }
     </style>
 </head>
 <body>
 
 <header>
     <img src="dulcebocadopostresycafe.PNG" class="logo-img">
-    <div style="font-size: 12px; margin-top:5px;">☕ @dulcebocado_postresycafe</div>
+    <div style="font-size: 11px;">☕ Pedido Express - Caucasia</div>
 </header>
 
 <div class="container">
     <div class="card">
-        <h3>👤 Datos del Pedido</h3>
+        <h3>👤 Mis Datos (Se guardan automáticamente)</h3>
         <input type="text" id="nombre" class="form-input" placeholder="Nombre completo">
         <input type="tel" id="celular" class="form-input" placeholder="Celular">
-        <input type="text" id="direccion" class="form-input" placeholder="Dirección de entrega">
+        <input type="text" id="direccion" class="form-input" placeholder="Dirección en Caucasia">
         <select id="pago" class="form-input">
             <option value="Efectivo">Efectivo</option>
             <option value="Nequi">Nequi</option>
-            <option value="Bancolombia">Ahorro a la mano</option>
+            <option value="Ahorro a la mano">Ahorro a la mano</option>
         </select>
-        <textarea id="obs" class="form-input" placeholder="Observaciones (Ej: Sin azúcar, cambiar por...)"></textarea>
+        <textarea id="obs" class="form-input" style="height: 50px;" placeholder="Notas: Ej. Menos azúcar..."></textarea>
     </div>
 
     <div class="card">
         <h3>🍰 Nuestra Carta</h3>
-        
-        <div class="seccion-titulo">Desayunos</div>
-        <div id="lista-desayunos"></div>
-
-        <div class="seccion-titulo">Sándwiches y Gratinados</div>
-        <div id="lista-sandwiches"></div>
-
-        <div class="seccion-titulo">Para Picar</div>
-        <div id="lista-picar"></div>
-
-        <div class="seccion-titulo">Bebidas Calientes</div>
-        <div id="lista-calientes"></div>
-
-        <div class="seccion-titulo">Horneados</div>
-        <div id="lista-horneados"></div>
-
-        <div class="seccion-titulo">Postres</div>
-        <div id="lista-postres"></div>
-
-        <div class="seccion-titulo">Bebidas Frías</div>
-        <div id="lista-frias"></div>
+        <div id="contenedor-menu"></div>
     </div>
 
     <div class="total-sticky">
-        <span style="font-size: 12px; opacity: 0.8;">CUENTA ACTUAL</span><br>
-        <span style="font-size: 24px;">$</span><span id="cuenta-total" style="font-size: 24px;">0</span>
+        <span style="font-size: 11px; opacity: 0.8;">VALOR DEL PEDIDO</span><br>
+        <span style="font-size: 22px;">$</span><span id="cuenta-total" style="font-size: 22px;">0</span>
     </div>
 
-    <button class="btn-enviar" onclick="enviarPedido()">🚀 ENVIAR PEDIDO POR WHATSAPP</button>
+    <button class="btn-enviar" onclick="enviarPedido()">🚀 ENVIAR PEDIDO + GPS</button>
 
     <footer>
-        APP DESARROLLADA POR <br>
-        <strong>VIBRAS POSITIVAS</strong> <br>
-        © 2026 - DERECHOS DE AUTOR RESERVADOS
+        APP DESARROLLADA POR <strong style="color:var(--dorado)">VIBRAS POSITIVAS</strong><br>
+        © 2026 - Caucasia, Antioquia
     </footer>
 </div>
 
 <script>
     const menu = {
-        desayunos: [
-            {n: "Desayuno tradicional", p: 18000}, {n: "Bowl Costeño", p: 25000}, {n: "Huevos en cacerola Gratinados", p: 18000},
-            {n: "Desayuno con patacones", p: 20000}, {n: "Desayuno con waffles", p: 20000}, {n: "Waffles rellenos jamón queso tocineta", p: 20000},
-            {n: "Arepa con queso", p: 8000}, {n: "Arepa carne o pollo", p: 15000}, {n: "Arepa mixta", p: 20000}
-        ],
-        sandwiches: [
-            {n: "Sándwich sencillo jamón y queso", p: 8000}, {n: "Sándwich jamón queso y tocineta", p: 10000},
-            {n: "Sándwich pan danés jamón y queso", p: 10000}, {n: "Sándwich pan danés especial", p: 20000},
-            {n: "Gratinado de Tocineta", p: 18000}, {n: "Gratinado de Pollo", p: 20000}, {n: "Gratinado de Atún", p: 20000}, {n: "Gratinado de Carne", p: 20000}
-        ],
-        picar: [
-            {n: "Crepes de pollo", p: 22000}, {n: "Crepes de Atún", p: 22000}, {n: "Crepes de carne desmechada", p: 22000},
-            {n: "Maicitos", p: 22000}, {n: "Wraps de jamón y queso", p: 16000}, {n: "Wraps de pollo", p: 20000},
-            {n: "Wraps de carne", p: 20000}, {n: "Wraps de atún", p: 20000}, {n: "Nuggets de pollo", p: 20000}, {n: "Chuzo de pollo", p: 25000}
-        ],
-        calientes: [
-            {n: "Espresso", p: 5000}, {n: "Aromática", p: 6000}, {n: "Americano", p: 6000}, {n: "Chocolate", p: 9000},
-            {n: "Café con leche", p: 10000}, {n: "Milo", p: 10000}, {n: "Capuccino Tradicional", p: 10000},
-            {n: "Capuccino con vainilla", p: 12000}, {n: "Capuccino con bayles", p: 15000}, {n: "Mocachino", p: 12000}
-        ],
-        horneados: [
-            {n: "Palito relleno queso mozzarella", p: 6000}, {n: "Palito hojaldrado queso cuajada", p: 6000},
-            {n: "Croissant jamón y queso", p: 9000}, {n: "Pastel de arequipe", p: 9000}, {n: "Croissant integral avena", p: 10000},
-            {n: "Caña de espinaca y queso", p: 10000}, {n: "Pastel pollo y champiñones", p: 10000}, {n: "Croissant integral mozzarella/jamón", p: 12000},
-            {n: "Croissant integral pollo o carne", p: 18000}
-        ],
-        postres: [
-            {n: "Postre napoleón", p: 10000}, {n: "Arroz con leche", p: 10000}, {n: "Torta saludable", p: 10000},
-            {n: "Brownie con helado", p: 12000}, {n: "Affogato", p: 12000}, {n: "Pavé de leche klim", p: 12000},
-            {n: "Malteada", p: 14000}, {n: "Cookies NY", p: 8000}, {n: "Cookies con Helado", p: 10000}, {n: "Waffles dulces", p: 20000}
-        ],
-        frias: [
-            {n: "Coca Cola 400ml", p: 6000}, {n: "Americano frio", p: 9000}, {n: "Avena", p: 10000}, {n: "Capuccino frio", p: 12000},
-            {n: "Latte frio", p: 12000}, {n: "Milo frio", p: 12000}, {n: "Michelada", p: 12000}, {n: "Granizado de café", p: 12000},
-            {n: "Jugos naturales", p: 12000}, {n: "Agua pet 280ml", p: 4000}, {n: "Hatsu", p: 4000}, {n: "Malta mini", p: 4000},
-            {n: "Jugo Hit", p: 5000}, {n: "Alpin", p: 5000}, {n: "Agua pet 600ml", p: 5000}, {n: "Gaseosa 280ml", p: 5000},
-            {n: "Agua saborizada", p: 6000}, {n: "Fuze tea", p: 6000}, {n: "Soda Bretaña", p: 6000}, {n: "Cerveza", p: 6000}
-        ]
-    };
+        "Desayunos": [{n: "Desayuno tradicional", p: 18000}, {n: "Bowl Costeño", p: 25000}, {n: "Arepa con queso", p: 8000}],
+        "Sándwiches": [{n: "Sándwich sencillo", p: 8000}, {n: "Sándwich especial", p: 20000}, {n: "Gratinado Pollo", p: 20000}],
+        "Postres": [{n: "Postre napoleón", p: 10000}, {n: "Brownie con helado", p: 12000}, {n: "Waffles dulces", p: 20000}],
+        "Bebidas": [{n: "Capuccino", p: 10000}, {n: "Granizado de café", p: 12000}, {n: "Jugo Natural", p: 12000}]
+    }; // (Agrega todos los ítems aquí)
 
     function cargarMenu() {
+        const cont = document.getElementById('contenedor-menu');
         for (let cat in menu) {
-            const cont = document.getElementById('lista-' + cat);
+            cont.innerHTML += `<div class="seccion-titulo">${cat}</div>`;
             menu[cat].forEach((item, i) => {
                 cont.innerHTML += `
                     <div class="item">
@@ -143,7 +81,7 @@
                             <div class="item-nombre">${item.n}</div>
                             <div class="item-precio">$${item.p.toLocaleString()}</div>
                         </div>
-                        <input type="number" class="input-cant" id="${cat}-${i}" value="0" min="0" onchange="calcular()">
+                        <input type="number" class="input-cant" data-n="${item.n}" data-p="${item.p}" value="0" min="0" onchange="calcular()">
                     </div>`;
             });
         }
@@ -151,13 +89,21 @@
 
     function calcular() {
         let total = 0;
-        for (let cat in menu) {
-            menu[cat].forEach((item, i) => {
-                const cant = parseInt(document.getElementById(`${cat}-${i}`).value) || 0;
-                total += cant * item.p;
-            });
-        }
+        document.querySelectorAll('.input-cant').forEach(i => {
+            total += (parseInt(i.value) || 0) * parseInt(i.dataset.p);
+        });
         document.getElementById('cuenta-total').innerText = total.toLocaleString();
+    }
+
+    // MEMORIA: Recuperar datos guardados
+    window.onload = () => {
+        cargarMenu();
+        const saved = JSON.parse(localStorage.getItem('db_datos'));
+        if(saved) {
+            document.getElementById('nombre').value = saved.n;
+            document.getElementById('celular').value = saved.c;
+            document.getElementById('direccion').value = saved.d;
+        }
     }
 
     function enviarPedido() {
@@ -165,40 +111,42 @@
         const cel = document.getElementById('celular').value.trim();
         const dir = document.getElementById('direccion').value.trim();
         const pago = document.getElementById('pago').value;
-        const obs = document.getElementById('obs').value;
         const total = document.getElementById('cuenta-total').innerText;
-        const numPedido = Math.floor(Math.random() * 90000) + 10000;
 
-        if(!nom || !cel || !dir) return alert("Socio, por favor llena tus datos de contacto.");
-        if(total === "0") return alert("Añade algo delicioso al pedido.");
+        if(!nom || !cel || !dir || total === "0") return alert("Socio, revisa tus datos y selecciona algún producto.");
 
-        let factura = `*☕ PEDIDO DULCE BOCADO #${numPedido}*\n`;
-        factura += `--------------------------------\n`;
-        factura += `👤 *CLIENTE:* ${nom}\n`;
-        factura += `📞 *CEL:* ${cel}\n`;
-        factura += `📍 *ENTREGA:* ${dir}\n`;
-        factura += `💳 *PAGO:* ${pago}\n`;
-        factura += `--------------------------------\n`;
-        
-        for (let cat in menu) {
-            menu[cat].forEach((item, i) => {
-                const cant = parseInt(document.getElementById(`${cat}-${i}`).value) || 0;
-                if(cant > 0) {
-                    factura += `• ${item.n} (x${cant}) : $${(cant*item.p).toLocaleString()}\n`;
-                }
+        // GUARDAR DATOS para la próxima vez
+        localStorage.setItem('db_datos', JSON.stringify({n: nom, c: cel, d: dir}));
+
+        // CAPTURA DE GPS
+        navigator.geolocation.getCurrentPosition((pos) => {
+            const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+            const numPedido = Math.floor(Math.random() * 900) + 100;
+
+            let mensaje = `*☕ PEDIDO DULCE BOCADO #${numPedido}*\n`;
+            mensaje += `--------------------------------\n`;
+            mensaje += `👤 *CLIENTE:* ${nom}\n`;
+            mensaje += `📞 *CEL:* ${cel}\n`;
+            mensaje += `📍 *ENTREGA:* ${dir}\n`;
+            mensaje += `--------------------------------\n`;
+            
+            document.querySelectorAll('.input-cant').forEach(i => {
+                const cant = parseInt(i.value);
+                if(cant > 0) mensaje += `• ${i.dataset.n} (x${cant}) : $${(cant*i.dataset.p).toLocaleString()}\n`;
             });
-        }
-        
-        factura += `--------------------------------\n`;
-        factura += `💰 *TOTAL A PAGAR: $${total}*\n`;
-        if(obs) factura += `📝 *OBS:* ${obs}\n`;
-        factura += `--------------------------------\n`;
-        factura += `_App desarrollada por Vibras Positivas_`;
 
-        window.location.href = `https://wa.me/573234308895?text=${encodeURIComponent(factura)}`;
+            mensaje += `--------------------------------\n`;
+            mensaje += `💰 *TOTAL A PAGAR: $${total}*\n`;
+            mensaje += `💳 *METODO:* ${pago}\n`;
+            mensaje += `📍 *UBICACIÓN GPS:* ${gps}\n`;
+            mensaje += `--------------------------------\n`;
+            mensaje += `_App desarrollada por Vibras Positivas_`;
+
+            window.location.href = `https://wa.me/573234308895?text=${encodeURIComponent(mensaje)}`;
+        }, () => {
+            alert("Socio, activa el GPS para que el domiciliario llegue más rápido.");
+        });
     }
-
-    window.onload = cargarMenu;
 </script>
 </body>
 </html>
