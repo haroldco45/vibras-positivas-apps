@@ -3,23 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Taxi Radar Real-Time</title>
+    <title>Taxi Radar - Vibras Positivas</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         :root { --amarillo: #ffcc00; --negro: #1a1a1a; --verde: #2ecc71; --rojo: #e74c3c; }
-        html, body { height: 100%; margin: 0; padding: 0; display: flex; flex-direction: column; background: #f4f4f4; overflow: hidden; font-family: Arial, sans-serif; }
-        header { background: var(--negro); padding: 10px; text-align: center; border-bottom: 4px solid var(--amarillo); z-index: 1001; }
-        .logo-taxi { width: 50px; height: 50px; }
-        .app-title { color: var(--amarillo); font-size: 14px; font-weight: bold; margin-top: 5px; }
+        html, body { height: 100%; margin: 0; padding: 0; display: flex; flex-direction: column; background: #f4f4f4; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        header { background: var(--negro); padding: 10px; text-align: center; border-bottom: 4px solid var(--amarillo); z-index: 1001; flex-shrink: 0; }
+        .logo-taxi { width: 45px; height: 45px; }
+        .app-title { color: var(--amarillo); font-size: 14px; font-weight: bold; text-transform: uppercase; }
+
         #map { flex-grow: 1; width: 100%; z-index: 1; }
-        .panel-control { background: white; padding: 15px; text-align: center; border-radius: 25px 25px 0 0; z-index: 1000; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); }
-        .input-pasajero { width: 100%; padding: 10px; margin: 4px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
-        .status-badge { display: inline-block; padding: 5px 12px; border-radius: 50px; font-weight: bold; font-size: 11px; margin-bottom: 5px; color: white; }
-        .btn-taxi { background: var(--amarillo); color: var(--negro); border: none; padding: 16px; border-radius: 12px; font-weight: bold; font-size: 16px; width: 100%; cursor: pointer; margin-top: 8px; }
-        .btn-taxi:disabled { background: #ccc; cursor: not-allowed; }
-        .btn-admin { position: fixed; top: 15px; right: 15px; z-index: 1002; background: rgba(255,255,255,0.2); border: none; border-radius: 50%; width: 40px; height: 40px; color: white; font-size: 20px; }
-        #modal-admin { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; color: white; padding: 20px; box-sizing: border-box; }
-        .modal-content { background: #222; padding: 20px; border-radius: 20px; border: 2px solid var(--amarillo); max-width: 400px; margin: auto; }
+
+        .panel-control { 
+            background: white; padding: 15px; text-align: center; 
+            border-radius: 25px 25px 0 0; z-index: 1000; 
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1); flex-shrink: 0;
+        }
+        
+        .input-group { margin-bottom: 8px; }
+        .input-pasajero { width: 100%; padding: 12px; margin: 4px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
+        
+        .status-badge { display: inline-block; padding: 6px 15px; border-radius: 50px; font-weight: bold; font-size: 11px; margin-bottom: 8px; color: white; text-transform: uppercase; }
+        
+        .btn-taxi { 
+            background: var(--amarillo); color: var(--negro); border: none; padding: 16px; 
+            border-radius: 12px; font-weight: bold; font-size: 16px; width: 100%; 
+            cursor: pointer; box-shadow: 0 4px 0 #b38f00; transition: 0.2s;
+        }
+        .btn-taxi:active { transform: translateY(2px); box-shadow: 0 2px 0 #b38f00; }
+        .btn-taxi:disabled { background: #ccc; box-shadow: 0 4px 0 #999; cursor: not-allowed; color: #666; }
+
+        .btn-admin { position: fixed; top: 15px; right: 15px; z-index: 1002; background: rgba(0,0,0,0.5); border: none; border-radius: 50%; width: 40px; height: 40px; color: white; font-size: 20px; cursor: pointer; }
+
+        #modal-admin { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; color: white; padding: 20px; box-sizing: border-box; overflow-y: auto; }
+        .modal-content { background: #222; padding: 25px; border-radius: 25px; border: 2px solid var(--amarillo); max-width: 400px; margin: auto; }
+        .input-admin { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid var(--amarillo); background: #333; color: white; box-sizing: border-box; }
+
         .taxi-marker { font-size: 40px; transition: all 0.5s linear; }
     </style>
 </head>
@@ -29,29 +49,41 @@
 
 <div id="modal-admin">
     <div class="modal-content">
-        <h3>CONFIGURACIÓN TAXI</h3>
-        <input type="text" id="adm-nombre" placeholder="Nombre Conductor" style="width:100%; padding:10px; margin:5px 0;">
-        <input type="text" id="adm-placa" placeholder="Placa" style="width:100%; padding:10px; margin:5px 0;">
-        <button class="btn-taxi" onclick="guardarPerfil()">GUARDAR PERFIL</button>
-        <hr>
-        <button class="btn-taxi" style="background:var(--verde); color:white;" onclick="pushEstado('disponible')">PONER DISPONIBLE</button>
-        <button class="btn-taxi" style="background:var(--rojo); color:white; margin-top:10px;" onclick="pushEstado('ocupado')">PONER OCUPADO</button>
-        <button onclick="document.getElementById('modal-admin').style.display='none'" style="background:none; border:none; color:white; margin-top:20px; cursor:pointer;">CERRAR</button>
+        <h2 style="color:var(--amarillo); margin:0 0 15px 0;">AJUSTES TAXISTA</h2>
+        <label>Nombre del Conductor:</label>
+        <input type="text" id="adm-nombre" class="input-admin" placeholder="Ej: Juan Perez">
+        <label>WhatsApp del Taxi:</label>
+        <input type="tel" id="adm-celular" class="input-admin" placeholder="Ej: 3117700431">
+        <label>Placa del Vehículo:</label>
+        <input type="text" id="adm-placa" class="input-admin" placeholder="Ej: XYZ-123">
+        
+        <button class="btn-taxi" onclick="guardarPerfil()">💾 GUARDAR CONFIGURACIÓN</button>
+        <hr style="border: 0.5px solid #444; margin: 20px 0;">
+        <button class="btn-taxi" style="background:var(--verde); color:white;" onclick="pushEstado('disponible')">PONER DISPONIBLE 🟢</button>
+        <button class="btn-taxi" style="background:var(--rojo); color:white; margin-top:10px;" onclick="pushEstado('ocupado')">PONER OCUPADO 🔴</button>
+        
+        <button onclick="document.getElementById('modal-admin').style.display='none'" style="background:none; border:none; color:var(--amarillo); margin-top:20px; cursor:pointer; width:100%; font-weight:bold;">✖️ CERRAR</button>
     </div>
 </div>
 
 <header>
     <img src="taxi.PNG" class="logo-taxi">
-    <div id="txt-perfil" style="color:white; font-size:11px;">🚖 Cargando conductor...</div>
+    <div class="app-title">TAXI RADAR</div>
+    <div id="txt-perfil" style="color:white; font-size:11px; margin-top:3px;">Sincronizando...</div>
 </header>
 
 <div id="map"></div>
 
 <div class="panel-control">
-    <div id="status-badge" class="status-badge">SINCRONIZANDO...</div>
-    <input type="text" id="pas-nombre" class="input-pasajero" placeholder="👤 Tu Nombre">
+    <div id="status-badge" class="status-badge" style="background:#666;">CONECTANDO...</div>
+    
+    <div class="input-group">
+        <input type="text" id="pas-nombre" class="input-pasajero" placeholder="👤 Tu Nombre (Obligatorio)">
+        <input type="tel" id="pas-tel" class="input-pasajero" placeholder="📞 Tu Celular (Opcional)">
+    </div>
+
     <button id="btn-pedido" class="btn-taxi" onclick="solicitarGPS()">🚀 PEDIR TAXI (ENVÍA MI GPS)</button>
-    <footer style="font-size:9px; color:#aaa; margin-top:8px;">VIBRAS POSITIVAS © 2026</footer>
+    <footer style="font-size:9px; color:#aaa; margin-top:10px;">PROYECTO VIBRAS POSITIVAS © 2026</footer>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -59,7 +91,7 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-    // --- CREDENCIALES EXTRAÍDAS DE TU FIREBASE ---
+    // --- CONFIGURACIÓN DE TU FIREBASE ---
     const firebaseConfig = {
         apiKey: "AIzaSyA2sSDeV5kyAH2U7Cixl7a09a4EHxU3d30",
         authDomain: "taxi-radar-6f824.firebaseapp.com",
@@ -73,7 +105,7 @@
     const db = firebase.database();
 
     let map, marker;
-    let configLocal = JSON.parse(localStorage.getItem('vp_taxi_config')) || { nombre: "Sin Nombre", placa: "---", id: "taxi_unico" };
+    let configLocal = JSON.parse(localStorage.getItem('vp_taxi_config')) || { nombre: "Sin Nombre", celular: "3117700431", placa: "ABC-000", id: "taxi_unico" };
 
     function initMap() {
         map = L.map('map', { zoomControl: false }).setView([7.986, -75.193], 15);
@@ -82,28 +114,36 @@
         marker = L.marker([7.986, -75.193], { icon: icon }).addTo(map);
     }
 
+    // El Taxista envía datos a la nube
     function pushEstado(est) {
         db.ref('taxis/' + configLocal.id).update({ 
             estado: est, 
             nombre: configLocal.nombre, 
-            placa: configLocal.placa 
+            placa: configLocal.placa,
+            celular: configLocal.celular
         });
         document.getElementById('modal-admin').style.display='none';
     }
 
+    // Todos escuchan los cambios en tiempo real
     db.ref('taxis/' + configLocal.id).on('value', (snapshot) => {
         const data = snapshot.val();
         if(data) {
+            configLocal.celular = data.celular || configLocal.celular; // Sincroniza el cel del taxi
             const badge = document.getElementById('status-badge');
             const btn = document.getElementById('btn-pedido');
             const txt = document.getElementById('txt-perfil');
-            txt.innerText = `🚖 ${data.nombre} | 🆔 ${data.placa}`;
+            
+            txt.innerHTML = `🚖 <b>${data.nombre}</b> | 🆔 <b>${data.placa}</b>`;
+            
             if(data.estado === 'disponible') {
                 badge.innerText = "🟢 DISPONIBLE"; badge.style.background = "var(--verde)";
-                btn.disabled = false; marker._icon.style.filter = "none";
+                btn.disabled = false; btn.innerText = "🚀 PEDIR TAXI (ENVÍA MI GPS)";
+                marker._icon.style.filter = "none";
             } else {
                 badge.innerText = "🔴 OCUPADO"; badge.style.background = "var(--rojo)";
-                btn.disabled = true; marker._icon.style.filter = "grayscale(1) brightness(0.5)";
+                btn.disabled = true; btn.innerText = "⏳ TAXI OCUPADO POR AHORA";
+                marker._icon.style.filter = "grayscale(1) brightness(0.5)";
             }
             if(data.lat && data.lng) marker.setLatLng([data.lat, data.lng]);
         }
@@ -121,22 +161,44 @@
 
     function guardarPerfil() {
         configLocal.nombre = document.getElementById('adm-nombre').value;
+        configLocal.celular = document.getElementById('adm-celular').value;
         configLocal.placa = document.getElementById('adm-placa').value;
         localStorage.setItem('vp_taxi_config', JSON.stringify(configLocal));
         pushEstado('disponible');
+        alert("¡Configuración Guardada, Socio!");
     }
 
     function solicitarGPS() {
-        const pNombre = document.getElementById('pas-nombre').value;
-        if(!pNombre) return alert("Escribe tu nombre.");
+        const pNombre = document.getElementById('pas-nombre').value.trim();
+        const pTel = document.getElementById('pas-tel').value.trim();
+
+        if(!pNombre) return alert("Socio, ponga su nombre para el taxista.");
+
         navigator.geolocation.getCurrentPosition((pos) => {
-            const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-            const msg = `*🚖 PEDIDO TAXI #${configLocal.placa}*\nPasajero: ${pNombre}\nRecoger en: ${gps}`;
-            window.location.href = `https://wa.me/573117700431?text=${encodeURIComponent(msg)}`;
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+            const mapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+            
+            const mensaje = `*🚖 SOLICITUD DE TAXI #${configLocal.placa}*\n` +
+                            `------------------------------\n` +
+                            `👤 *Pasajero:* ${pNombre}\n` +
+                            `📞 *Teléfono:* ${pTel || 'No suministrado'}\n` +
+                            `📍 *Ubicación Actual:* ${mapsUrl}\n` +
+                            `------------------------------\n` +
+                            `_Enviado desde Taxi Radar_`;
+
+            window.location.href = `https://wa.me/57${configLocal.celular}?text=${encodeURIComponent(mensaje)}`;
         });
     }
 
-    window.onload = () => { initMap(); iniciarRastreo(); };
+    window.onload = () => { 
+        initMap(); 
+        iniciarRastreo();
+        // Cargar datos en el modal si existen
+        document.getElementById('adm-nombre').value = configLocal.nombre;
+        document.getElementById('adm-celular').value = configLocal.celular;
+        document.getElementById('adm-placa').value = configLocal.placa;
+    };
 </script>
 </body>
 </html>
