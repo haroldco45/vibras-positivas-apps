@@ -2,43 +2,44 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Taxi Radar Personal - Seguridad</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         :root { --amarillo: #ffcc00; --negro: #1a1a1a; --verde: #2ecc71; --rojo: #e74c3c; --blanco: #ffffff; }
-        body { font-family: 'Arial', sans-serif; margin: 0; padding: 0; background: #f4f4f4; overflow: hidden; }
+        
+        /* Ajuste de Pantalla Completa para evitar que el botón se pierda */
+        html, body { height: 100%; margin: 0; padding: 0; display: flex; flex-direction: column; background: #f4f4f4; overflow: hidden; }
         
         #bloqueo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; text-align: center; padding-top: 100px; }
 
         header { 
-            background: var(--negro); padding: 15px; text-align: center; border-bottom: 4px solid var(--amarillo);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); position: relative; z-index: 1001;
+            background: var(--negro); padding: 10px; text-align: center; border-bottom: 4px solid var(--amarillo);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); position: relative; z-index: 1001; flex-shrink: 0;
         }
-        .logo-taxi { width: 55px; height: 55px; object-fit: contain; }
-        .app-title { color: var(--amarillo); margin: 5px 0 0; font-size: 15px; font-weight: bold; text-transform: uppercase; }
+        .logo-taxi { width: 50px; height: 50px; object-fit: contain; }
+        .app-title { color: var(--amarillo); margin: 5px 0 0; font-size: 14px; font-weight: bold; text-transform: uppercase; }
 
-        #map { height: calc(100vh - 300px); width: 100%; position: relative; z-index: 1; }
+        /* El mapa ahora es flexible y el panel inferior se queda fijo abajo */
+        #map { flex-grow: 1; width: 100%; position: relative; z-index: 1; }
 
-        /* Panel de Control con Datos de Pasajero */
         .panel-control { 
-            height: 200px; background: white; padding: 15px; text-align: center; 
+            background: white; padding: 15px; text-align: center; 
             box-shadow: 0 -5px 15px rgba(0,0,0,0.1); border-radius: 25px 25px 0 0; 
-            position: relative; z-index: 1000; margin-top: -30px;
+            position: relative; z-index: 1000; flex-shrink: 0;
         }
         
-        .input-pasajero { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 14px; box-sizing: border-box; }
+        .input-pasajero { width: 100%; padding: 12px; margin: 4px 0; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box; }
         .status-badge { display: inline-block; padding: 4px 10px; border-radius: 50px; font-weight: bold; font-size: 10px; margin-bottom: 5px; }
         .disponible { background: var(--verde); color: white; }
         .ocupado { background: var(--rojo); color: white; }
 
         .btn-taxi { 
-            background: var(--amarillo); color: var(--negro); border: none; padding: 14px; 
-            border-radius: 12px; font-weight: bold; font-size: 15px; width: 100%; 
-            cursor: pointer; box-shadow: 0 4px 0 #b38f00; transition: 0.2s; margin-top: 5px;
+            background: var(--amarillo); color: var(--negro); border: none; padding: 16px; 
+            border-radius: 12px; font-weight: bold; font-size: 16px; width: 100%; 
+            cursor: pointer; box-shadow: 0 4px 0 #b38f00; transition: 0.2s; margin-top: 8px;
         }
 
-        /* Botón Engranaje Dueño */
         .btn-admin { position: fixed; top: 15px; right: 15px; z-index: 1002; background: rgba(255,255,255,0.2); border: none; border-radius: 50%; width: 40px; height: 40px; color: white; font-size: 20px; }
 
         #modal-admin {
@@ -86,13 +87,13 @@
 <div class="panel-control">
     <div id="status-badge" class="status-badge disponible">🟢 DISPONIBLE</div>
     
-    <div id="seccion-pasajero" style="text-align: left;">
+    <div id="seccion-pasajero">
         <input type="text" id="pas-nombre" class="input-pasajero" placeholder="👤 Tu Nombre (Obligatorio)">
         <input type="tel" id="pas-tel" class="input-pasajero" placeholder="📞 Tu Celular">
     </div>
 
     <button id="btn-pedido" class="btn-taxi" onclick="solicitarGPS()">🚀 PEDIR TAXI (ENVÍA MI GPS)</button>
-    <footer style="font-size:9px; color:#aaa; margin-top:8px;">APP DESARROLLADA POR <b>VIBRAS POSITIVAS</b> © 2026</footer>
+    <footer style="font-size:9px; color:#aaa; margin-top:8px;">VIBRAS POSITIVAS © 2026</footer>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -162,19 +163,11 @@
         if(!pNombre) return alert("Socio, ponga su nombre para que el taxista sepa quién es.");
         if(!config.celular) return alert("Taxi no configurado.");
 
-        // Guardar datos del pasajero localmente
         localStorage.setItem('vp_pasajero_datos', JSON.stringify({n: pNombre, t: pTel}));
 
         navigator.geolocation.getCurrentPosition((pos) => {
             const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-            let msg = `*🚖 SOLICITUD DE TAXI #${config.placa}*\n`;
-            msg += `--------------------------\n`;
-            msg += `👤 *PASAJERO:* ${pNombre}\n`;
-            msg += `📞 *TEL PASAJERO:* ${pTel || 'No provisto'}\n`;
-            msg += `📍 *RECOGER AQUÍ:* ${gps}\n`;
-            msg += `--------------------------\n`;
-            msg += `🚕 *UNIDAD:* ${config.placa}\n`;
-            msg += `_Vía Vibras Positivas_`;
+            let msg = `*🚖 SOLICITUD DE TAXI #${config.placa}*\n--------------------------\n👤 *PASAJERO:* ${pNombre}\n📞 *TEL:* ${pTel || 'No provisto'}\n📍 *RECOGER AQUÍ:* ${gps}\n--------------------------\n_Vía Vibras Positivas_`;
             window.location.href = `https://wa.me/${config.celular}?text=${encodeURIComponent(msg)}`;
         });
     }
