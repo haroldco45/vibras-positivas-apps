@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>La Orquídea Azul - Fábrica de Agua</title>
+    <style>
+        :root { 
+            --azul-oscuro: #0056b3; 
+            --azul-claro: #00a8e8; 
+            --blanco: #ffffff; 
+            --gris-fondo: #f0f8ff;
+        }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; padding: 0; 
+            background-color: var(--gris-fondo); 
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        header { 
+            background: linear-gradient(135deg, var(--azul-oscuro), var(--azul-claro)); 
+            color: white; padding: 30px 15px; text-align: center; 
+            border-bottom: 5px solid var(--blanco);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo-placeholder {
+            font-size: 50px; margin-bottom: 10px;
+        }
+
+        h1 { margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 2px; }
+        .tagline { font-size: 14px; opacity: 0.9; margin-top: 5px; }
+
+        .container { flex-grow: 1; padding: 20px; max-width: 500px; margin: 0 auto; width: 100%; box-sizing: border-box; }
+
+        .product-card {
+            background: white; border-radius: 20px; padding: 20px; text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 20px;
+            border: 1px solid #e1f0ff;
+        }
+
+        .product-image { font-size: 60px; margin-bottom: 15px; }
+
+        .input-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; font-size: 12px; color: #666; margin-bottom: 5px; margin-left: 5px; }
+        
+        input, select { 
+            width: 100%; padding: 12px; border-radius: 12px; 
+            border: 1px solid #ddd; font-size: 16px; box-sizing: border-box; 
+            background: #fdfdfd;
+        }
+
+        .btn-pedido { 
+            background: #25d366; color: white; border: none; padding: 18px; 
+            border-radius: 15px; font-weight: bold; font-size: 18px; width: 100%; 
+            cursor: pointer; box-shadow: 0 4px 0 #128c7e; transition: 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .btn-pedido:active { transform: translateY(3px); box-shadow: none; }
+
+        footer { 
+            background: var(--azul-oscuro); color: white; 
+            text-align: center; padding: 15px; font-size: 10px; 
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-placeholder">❄️</div>
+        <h1>La Orquídea Azul</h1>
+        <p class="tagline">Pureza y Frescura en cada gota</p>
+        <p style="font-size: 11px; margin-top: 10px;">📍 Caucasia, Antioquia</p>
+    </header>
+
+    <div class="container">
+        <div class="product-card">
+            <div class="product-image">💧</div>
+            <h3>Haz tu pedido de Agua</h3>
+            <p style="color: #666; font-size: 14px;">Servicio a domicilio rápido y confiable.</p>
+            
+            <div class="input-group">
+                <label>Tu Nombre:</label>
+                <input type="text" id="nombre" placeholder="Ej: Pedro Tejada">
+            </div>
+
+            <div class="input-group">
+                <label>Producto:</label>
+                <select id="producto">
+                    <option value="Botellón de 20L">Botellón de 20L</option>
+                    <option value="Paca de Bolsas">Paca de Bolsas</option>
+                    <option value="Botellas Personales">Botellas Personales</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Dirección en Caucasia:</label>
+                <input type="text" id="direccion" placeholder="Ej: Barrio El Aguila">
+            </div>
+
+            <button class="btn-pedido" onclick="enviarPedido()">
+                <span>📲 PEDIR POR WHATSAPP</span>
+            </button>
+        </div>
+    </div>
+
+    <footer>
+        APP DESARROLLADA POR <b>VIBRAS POSITIVAS</b> © 2026 <br>
+        Caucasia - Calidad Garantizada
+    </footer>
+
+    <script>
+        function enviarPedido() {
+            const nombre = document.getElementById('nombre').value.trim();
+            const producto = document.getElementById('producto').value;
+            const direccion = document.getElementById('direccion').value.trim();
+            const whatsapp = "573122682150";
+
+            if (!nombre || !direccion) {
+                alert("Socio, por favor llena tu nombre y dirección para la entrega.");
+                return;
+            }
+
+            const mensaje = `*💧 PEDIDO DE AGUA - LA ORQUÍDEA AZUL*\n` +
+                            `------------------------------\n` +
+                            `👤 *Cliente:* ${nombre}\n` +
+                            `📦 *Producto:* ${producto}\n` +
+                            `📍 *Dirección:* ${direccion}\n` +
+                            `------------------------------\n` +
+                            `_Enviado desde la App Web_`;
+
+            window.location.href = `https://wa.me/${whatsapp}?text=${encodeURIComponent(mensaje)}`;
+        }
+    </script>
+</body>
+</html>
