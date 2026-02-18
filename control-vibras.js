@@ -49,7 +49,7 @@ const controlVibras = {
     "lavadoyaspiradosas": "activo",
 
     // TRANSPORTE E INVERSIONES
-    "sotracor-caucasia": "activo",
+    "sotracor-caucasia": "suspendido",
     "inversiones-charlotte": "activo",
     "santuariolaprimera": "activo"
 };
