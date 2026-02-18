@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asados DelyPollos - Factura Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --rojo: #d32f2f; --verde: #25d366; --verde-boton: #4caf50; --gris-fondo: #f4f4f4; }
+        body { font-family: 'Roboto', sans-serif; margin: 0; background-color: var(--gris-fondo); display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 450px; background: white; min-height: 100vh; padding-bottom: 50px; box-shadow: 0 0 10px rgba(0,0,0,0.1); position: relative; }
+        
+        /* Bloqueo de Suscripción */
+        #bloqueo-sub {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(211, 47, 47, 0.98); z-index: 9999; color: white;
+            text-align: center; padding: 100px 20px; font-weight: bold;
+        }
+
+        .info-header { background: #fff; padding: 10px; text-align: center; font-size: 11px; border-bottom: 1px solid #ddd; }
+        header { background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=500'); background-size: cover; height: 140px; display: flex; justify-content: center; align-items: center; }
+        .logo { max-width: 180px; filter: drop-shadow(2px 2px 4px #000); }
+
+        .categories { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 15px; }
+        .cat-btn { padding: 10px; border: none; border-radius: 5px; color: white; font-weight: bold; font-size: 10px; cursor: pointer; text-transform: uppercase; }
+        .cat-btn.active { background-color: var(--rojo); }
+        .cat-btn.inactive { background-color: var(--verde-boton); }
+
+        .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0 15px; }
+        .product-card { background-color: var(--rojo); color: white; padding: 12px; border-radius: 10px; text-align: center; cursor: pointer; }
+        .product-name { font-size: 10px; font-weight: bold; height: 32px; display: flex; align-items: center; justify-content: center; line-height: 1.1; }
+        .product-price { font-size: 14px; display: block; margin-top: 5px; font-weight: bold; }
+
+        .form-section { padding: 15px; background: #fff; border-top: 5px solid var(--gris-fondo); }
+        .input-group { margin-bottom: 12px; }
+        .input-group label { display: block; font-size: 12px; margin-bottom: 4px; font-weight: bold; }
+        .input-group input, .input-group select, .input-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        
+        .cart-section { padding: 15px; background: #fff; border-top: 5px solid var(--gris-fondo); }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
+        .qty-controls { display: flex; align-items: center; gap: 8px; }
+        .qty-box { width: 30px; text-align: center; border: 1px solid #ccc; border-radius: 4px; font-weight: bold; }
+        .qty-btn { background: var(--verde-boton); border: none; color: white; width: 28px; height: 28px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+
+        .total-box { background: #f9f9f9; padding: 15px; border-radius: 8px; margin-top: 10px; text-align: right; }
+        .btn-whatsapp { width: 100%; padding: 18px; background-color: var(--verde); color: white; border: none; border-radius: 10px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 15px; display: none; }
+        
+        footer { text-align: center; padding: 30px 20px; font-size: 12px; color: #888; border-top: 1px solid #eee; }
+    </style>
+</head>
+<body>
+
+<div id="bloqueo-sub">
+    <h1>⚠️ APLICACIÓN SUSPENDIDA</h1>
+    <p>La suscripción de este servicio ha vencido.</p>
+    <p>Por favor, contacte al desarrollador para reactivar el menú.</p>
+</div>
+
+<div class="app-container" id="main-app">
+    <div class="info-header">📍 Frente al estadio de fútbol, Caucasia | 📞 3053522678</div>
+    <header><img src="ASADOS-DELYPOLLOS.PNG" alt="DelyPollos" class="logo"></header>
+
+    <div class="categories">
+        <button id="btn-BROASTER" class="cat-btn active" onclick="cambiarCategoria('BROASTER')">Broaster</button>
+        <button id="btn-ASADO" class="cat-btn inactive" onclick="cambiarCategoria('ASADO')">Asado</button>
+        <button id="btn-BANDEJAS" class="cat-btn inactive" onclick="cambiarCategoria('BANDEJAS')">Bandejas</button>
+        <button id="btn-BEBIDAS" class="cat-btn inactive" onclick="cambiarCategoria('BEBIDAS')">Bebidas</button>
+        <button id="btn-JUGOS" class="cat-btn inactive" onclick="cambiarCategoria('JUGOS')">Jugos</button>
+        <button id="btn-SOPAS" class="cat-btn inactive" onclick="cambiarCategoria('SOPAS')">Sopas</button>
+        <button id="btn-ADICIONES" class="cat-btn inactive" onclick="cambiarCategoria('ADICIONES')">Adiciones</button>
+        <button id="btn-DESAYUNOS" class="cat-btn inactive" onclick="cambiarCategoria('DESAYUNOS')">Desayunos</button>
+        <button id="btn-CASERITOS" class="cat-btn inactive" onclick="cambiarCategoria('CASERITOS')">Caseritos</button>
+    </div>
+
+    <div id="categoria-actual" style="padding: 10px 15px; font-weight: bold; text-transform: uppercase;">Categoría: Broaster</div>
+    <div class="products-grid" id="menu-container"></div>
+
+    <div class="form-section">
+        <strong style="font-size: 14px; color: var(--rojo);">DATOS DE ENTREGA</strong>
+        <div style="margin-top: 10px;">
+            <div class="input-group"><label>Nombre:</label><input type="text" id="nombre"></div>
+            <div class="input-group"><label>Dirección:</label><input type="text" id="direccion"></div>
+            <div class="input-group"><label>Celular:</label><input type="tel" id="tel-cliente"></div>
+            <div class="input-group">
+                <label>Forma de Pago:</label>
+                <select id="forma-pago">
+                    <option value="Efectivo">Efectivo</option>
+                    <option value="Transferencia Bancaria">Transferencia Bancaria</option>
+                    <option value="Datáfono">Datáfono</option>
+                </select>
+            </div>
+            <div class="input-group"><label>Observaciones (OBS):</label><textarea id="observaciones" rows="2"></textarea></div>
+        </div>
+    </div>
+
+    <div class="cart-section">
+        <strong style="font-size: 14px;">RESUMEN DE FACTURA</strong>
+        <div id="cart-list"></div>
+        <div id="resumen-valores" class="total-box" style="display: none;">
+            <div style="font-weight: bold; font-size: 20px; color: var(--rojo);">TOTAL: <span id="total-val">$0</span></div>
+            <button id="send-btn" class="btn-whatsapp" onclick="enviarPedido()">PEDIR POR WHATSAPP</button>
+        </div>
+    </div>
+
+    <footer>App desarrollada por <strong>VIBRAS POSITIVAS</strong></footer>
+</div>
+
+<script>
+    const FECHA_VENCIMIENTO = "2026-03-08"; 
+
+    function verificarSuscripcion() {
+        const hoy = new Date();
+        const vencimiento = new Date(FECHA_VENCIMIENTO);
+        if (hoy > vencimiento) {
+            document.getElementById('bloqueo-sub').style.display = 'block';
+            document.getElementById('main-app').style.opacity = '0.05';
+            document.getElementById('main-app').style.pointerEvents = 'none';
+        }
+    }
+
+    const menuData = {
+        'BROASTER': [
+            { id: 1, nombre: "POLLO ENTERO BROASTER", precio: 48000 }, { id: 2, nombre: "1/2 POLLO BROASTER", precio: 24000 },
+            { id: 3, nombre: "1/4 PERNIL BROASTER", precio: 13000 }, { id: 4, nombre: "1/4 PECHUGA BROASTER", precio: 15000 },
+            { id: 5, nombre: "PECHUGA BROASTER", precio: 12000 }, { id: 6, nombre: "ALA BROASTER", precio: 7000 },
+            { id: 7, nombre: "CONTRAMUSLO BROASTER", precio: 7000 }, { id: 8, nombre: "MUSLO BROASTER", precio: 6000 }
+        ],
+        'ASADO': [
+            { id: 9, nombre: "POLLO ENTERO ASADO", precio: 48000 }, { id: 10, nombre: "1/2 POLLO ASADO", precio: 24000 },
+            { id: 11, nombre: "1/4 PERNIL ASADO", precio: 13000 }, { id: 12, nombre: "1/4 PECHUGA ASADO", precio: 15000 }
+        ],
+        'BANDEJAS': [
+            { id: 13, nombre: "BANDEJA RES", precio: 20000 }, { id: 14, nombre: "BANDEJA CERDO", precio: 20000 },
+            { id: 15, nombre: "BANDEJA HIGADO", precio: 20000 }, { id: 16, nombre: "BANDEJA CHICHARRON", precio: 22000 },
+            { id: 17, nombre: "BANDEJA CARNE MOLIDA", precio: 20000 }, { id: 18, nombre: "BANDEJA PECHUGA PLANCHA", precio: 22000 },
+            { id: 19, nombre: "BANDEJA CHULETA DE CERDO", precio: 22000 }, { id: 20, nombre: "BANDEJA COSTILLA BBQ", precio: 22000 },
+            { id: 21, nombre: "BANDEJA CARNE DESMECHADA", precio: 20000 }, { id: 22, nombre: "BANDEJA POLLO DESMECHADO", precio: 20000 },
+            { id: 23, nombre: "BANDEJA TILAPIA", precio: 30000 }, { id: 24, nombre: "BANDEJA CACHAMA", precio: 25000 },
+            { id: 25, nombre: "BANDEJA BOCACHICO SUDADO", precio: 25000 }, { id: 26, nombre: "BANDEJA BOCACHICO FRITO", precio: 25000 },
+            { id: 27, nombre: "BANDEJA POLLO BROASTER 1P", precio: 20000 }, { id: 28, nombre: "BANDEJA POLLO BROASTER 2P", precio: 25000 },
+            { id: 29, nombre: "BANDEJA POLLO ASADO", precio: 25000 }
+        ],
+        'BEBIDAS': [
+            { id: 33, nombre: "COCACOLA 1.5", precio: 10000 }, { id: 34, nombre: "GASEOSA X400", precio: 5000 },
+            { id: 35, nombre: "JUGO HIT", precio: 5000 }, { id: 36, nombre: "BOTELLA AGUA", precio: 3000 },
+            { id: 37, nombre: "GATORADE", precio: 7000 }, { id: 38, nombre: "SODA", precio: 4000 },
+            { id: 39, nombre: "CERVEZA", precio: 5000 }, { id: 40, nombre: "ENERGIZANTE", precio: 3000 },
+            { id: 41, nombre: "AGUA PEQUEÑA", precio: 1500 }
+        ],
+        'JUGOS': [
+            { id: 42, nombre: "NISPERO", precio: 10000 }, { id: 43, nombre: "ZAPOTE", precio: 10000 },
+            { id: 44, nombre: "GUANABANA", precio: 10000 }, { id: 45, nombre: "BANANO", precio: 10000 },
+            { id: 46, nombre: "PIÑA", precio: 10000 }, { id: 47, nombre: "MARACUYA", precio: 10000 },
+            { id: 48, nombre: "MILO", precio: 10000 }, { id: 49, nombre: "GUARAPO", precio: 2000 },
+            { id: 50, nombre: "AVENA", precio: 2000 }, { id: 51, nombre: "NARANJA", precio: 10000 },
+            { id: 52, nombre: "LIMONADA", precio: 8000 }, { id: 53, nombre: "TOMATE DE ARBOL", precio: 10000 },
+            { id: 54, nombre: "JARRA DE JUGO", precio: 25000 }, { id: 55, nombre: "MORA", precio: 10000 },
+            { id: 56, nombre: "MICHELADA CEREZADA", precio: 12000 }
+        ],
+        'SOPAS': [
+            { id: 72, nombre: "SOPA DE RES", precio: 8000 }, { id: 73, nombre: "SOPA DE POLLO", precio: 8000 },
+            { id: 74, nombre: "SOPA DE PASTAS", precio: 8000 }, { id: 75, nombre: "SOPA DE FRIJOLES", precio: 8000 },
+            { id: 76, nombre: "LENTEJAS", precio: 8000 }, { id: 77, nombre: "SOPA DE GALLINA", precio: 10000 },
+            { id: 78, nombre: "MONDONGO COMPLETO", precio: 15000 }, { id: 79, nombre: "SOPA DE PESCADO", precio: 8000 },
+            { id: 80, nombre: "SOPA VERDURAS", precio: 8000 }, { id: 81, nombre: "SOPA RES SALADA", precio: 8000 },
+            { id: 82, nombre: "SOPA MONDONGO", precio: 10000 }, { id: 83, nombre: "GARBANZOS", precio: 8000 }
+        ],
+        'ADICIONES': [
+            { id: 57, nombre: "PAPAS A LA FRANCESA", precio: 7000 }, { id: 58, nombre: "ARROZ", precio: 3000 },
+            { id: 59, nombre: "ENSALADA", precio: 3000 }, { id: 60, nombre: "AREPAS FRITAS", precio: 2000 },
+            { id: 61, nombre: "YUCAS FRITAS", precio: 7000 }, { id: 62, nombre: "PAPAS COCINADAS", precio: 3000 },
+            { id: 63, nombre: "AGUACATE", precio: 4000 }, { id: 64, nombre: "HUEVO", precio: 2000 },
+            { id: 65, nombre: "PATACONES", precio: 5000 }, { id: 66, nombre: "CHICHARRON", precio: 12000 },
+            { id: 67, nombre: "RES", precio: 10000 }, { id: 68, nombre: "CERDO", precio: 10000 },
+            { id: 69, nombre: "HIGADO", precio: 10000 }, { id: 70, nombre: "PECHUGA PLANCHA", precio: 12000 },
+            { id: 71, nombre: "ARROZ POLLO", precio: 2000 }
+        ],
+        'DESAYUNOS': [
+            { id: 84, nombre: "DES. HUEVO", precio: 15000 }, { id: 85, nombre: "DES. HUEVOS RANCHEROS", precio: 15000 },
+            { id: 86, nombre: "DES. RES", precio: 16000 }, { id: 87, nombre: "DES. CERDO", precio: 16000 },
+            { id: 88, nombre: "DES. HIGADO", precio: 16000 }, { id: 89, nombre: "DES. CHICHARRON", precio: 18000 },
+            { id: 90, nombre: "CHOCOLATE", precio: 3000 }, { id: 91, nombre: "CAFE", precio: 2000 },
+            { id: 92, nombre: "DES. PECHUGA PLANCHA", precio: 18000 }, { id: 93, nombre: "DES. CHANGUA", precio: 8000 },
+            { id: 94, nombre: "AGUAPANELA", precio: 3000 }
+        ],
+        'CASERITOS': [
+            { id: 95, nombre: "CASERITO MOLIDA", precio: 10000 },
+            { id: 96, nombre: "CASERITO SUDADA", precio: 10000 },
+            { id: 97, nombre: "CASERITO CARNE DESMECHADA", precio: 10000 }
+        ]
+    };
+
+    let carrito = [];
+    let catActual = 'BROASTER';
+
+    window.onload = () => {
+        verificarSuscripcion();
+        ['nombre', 'direccion', 'tel-cliente'].forEach(f => { if(localStorage.getItem(f)) document.getElementById(f).value = localStorage.getItem(f); });
+        renderMenu();
+    };
+
+    function cambiarCategoria(cat) {
+        catActual = cat;
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.replace('active', 'inactive'));
+        const btn = document.getElementById('btn-' + cat);
+        if(btn) btn.classList.replace('inactive', 'active');
+        document.getElementById('categoria-actual').innerText = `Categoría: ${cat}`;
+        renderMenu();
+    }
+
+    function renderMenu() {
+        document.getElementById('menu-container').innerHTML = menuData[catActual].map(p => `
+            <div class="product-card" onclick="agregarAlCarrito(${p.id})">
+                <div class="product-name">${p.nombre}</div>
+                <span class="product-price">$${p.precio.toLocaleString()}</span>
+            </div>
+        `).join('');
+    }
+
+    function agregarAlCarrito(id) {
+        let prod;
+        for (let cat in menuData) { const found = menuData[cat].find(p => p.id === id); if (found) { prod = found; break; } }
+        const item = carrito.find(i => i.id === id);
+        if (item) item.cantidad++; else carrito.push({ ...prod, cantidad: 1 });
+        actualizarUI();
+    }
+
+    function modQty(id, delta) {
+        const item = carrito.find(i => i.id === id);
+        if (item) { item.cantidad += delta; if (item.cantidad <= 0) carrito = carrito.filter(i => i.id !== id); }
+        actualizarUI();
+    }
+
+    function actualizarUI() {
+        const lista = document.getElementById('cart-list');
+        const resumen = document.getElementById('resumen-valores');
+        if (carrito.length === 0) { lista.innerHTML = '<p style="color:#999; font-size:13px;">Selecciona productos.</p>'; resumen.style.display = 'none'; return; }
+        resumen.style.display = 'block';
+        document.getElementById('send-btn').style.display = 'block';
+        let total = 0;
+        lista.innerHTML = carrito.map(item => {
+            total += (item.precio * item.cantidad);
+            return `<div class="cart-item">
+                <div><strong>${item.nombre}</strong><br><small>$${item.precio.toLocaleString()} c/u</small></div>
+                <div class="qty-controls">
+                    <button class="qty-btn" onclick="modQty(${item.id}, -1)">-</button>
+                    <div class="qty-box">${item.cantidad}</div>
+                    <button class="qty-btn" onclick="modQty(${item.id}, 1)">+</button>
+                </div>
+            </div>`;
+        }).join('');
+        document.getElementById('total-val').innerText = `$${total.toLocaleString()}`;
+    }
+
+    function enviarPedido() {
+        const n = document.getElementById('nombre').value;
+        const d = document.getElementById('direccion').value;
+        const t = document.getElementById('tel-cliente').value;
+        const pago = document.getElementById('forma-pago').value;
+        const obs = document.getElementById('observaciones').value;
+
+        if(!n || !d || !t) return alert("Completa tus datos.");
+        localStorage.setItem('nombre', n); localStorage.setItem('direccion', d); localStorage.setItem('tel-cliente', t);
+
+        let msg = `*ASADOS DELYPOLLOS*\nFrente al Estadio | 3053522678\n--------------------------------\n*CLIENTE:* ${n}\n*TEL:* ${t}\n*DIR:* ${d}\n*PAGO:* ${pago}\n`;
+        if(obs) msg += `*OBS:* ${obs}\n`;
+        msg += `--------------------------------\n*FACTURA:*\n`;
+        let total = 0;
+        carrito.forEach(i => { total += (i.precio * i.cantidad); msg += `${i.cantidad}x ${i.nombre} ($${(i.precio*i.cantidad).toLocaleString()})\n`; });
+        msg += `--------------------------------\n*TOTAL: $${total.toLocaleString()}*\n\n¡Gracias por su compra!\n_App por VIBRAS POSITIVAS_`;
+
+        // ENLACE ACTUALIZADO AL 3053522678
+        window.open(`https://wa.me/573053522678?text=${encodeURIComponent(msg)}`);
+    }
+</script>
+</body>
+</html>
