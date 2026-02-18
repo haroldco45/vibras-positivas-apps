@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>A Bocados - Facturación Digital</title>
+    <title>A Bocados - Factura Detallada</title>
     <style>
         :root { --fucsia: #d81b60; --oscuro: #1a1a1a; --gris: #2d2d2d; --blanco: #ffffff; --verde: #25d366; }
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--oscuro); color: var(--blanco); }
@@ -31,7 +31,7 @@
 
 <header>
     <img src="aboados.PNG" class="logo-img">
-    <div style="font-size: 11px; color: #aaa; margin-top: 5px;">Innovación Gastronómica en Caucasia</div>
+    <div style="font-size: 11px; color: #aaa; margin-top: 5px;">Facturación Discriminada - Caucasia</div>
 </header>
 
 <div class="container">
@@ -54,16 +54,16 @@
     </div>
 
     <div class="total-sticky">
-        <span style="font-size: 12px; opacity: 0.9;">VALOR TOTAL DEL PEDIDO</span><br>
+        <span style="font-size: 12px; opacity: 0.9;">VALOR TOTAL A PAGAR</span><br>
         <span style="font-size: 26px; font-weight: bold;">$</span><span id="cuenta-total" style="font-size: 26px; font-weight: bold;">0</span>
     </div>
 
-    <button class="btn-enviar" onclick="enviarPedido()">🚀 ENVIAR PEDIDO + FACTURA</button>
+    <button class="btn-enviar" onclick="enviarPedido()">🚀 ENVIAR PEDIDO DISCRIMINADO</button>
 
     <footer>
         APP DESARROLLADA POR <br>
         <strong style="color:var(--fucsia)">VIBRAS POSITIVAS</strong><br>
-        © 2026 - TODOS LOS DERECHOS RESERVADOS
+        © 2026 - CAUCASIA, ANTIOQUIA
     </footer>
 </div>
 
@@ -137,7 +137,7 @@
         const pago = document.getElementById('pago').value;
         const obs = document.getElementById('obs').value.trim();
 
-        if(!nom || !cel || !dir || total === "0") return alert("Socio, llena tus datos y elige tu pedido.");
+        if(!nom || !cel || !dir || total === "0") return alert("Socio, llena tus datos y selecciona tus platos.");
 
         localStorage.setItem('abocados_datos', JSON.stringify({n: nom, c: cel, d: dir}));
 
@@ -151,15 +151,15 @@
             msg += `📞 *CEL:* ${cel}\n`;
             msg += `📍 *DIR:* ${dir}\n`;
             msg += `--------------------------------\n`;
-            msg += `*DETALLE DE FACTURA:*\n`;
+            msg += `*DESCRIMINACIÓN DE VALORES:*\n`;
             
             document.querySelectorAll('.input-cant').forEach(i => {
                 const cant = parseInt(i.value);
                 if(cant > 0) {
-                    const precio = parseInt(i.dataset.p);
-                    const subtotal = cant * precio;
+                    const vUnit = parseInt(i.dataset.p);
+                    const subtotal = cant * vUnit;
                     msg += `🔹 ${i.dataset.n}\n`;
-                    msg += `   ${cant} x $${precio.toLocaleString()} = *$${subtotal.toLocaleString()}*\n`;
+                    msg += `   ${cant} x $${vUnit.toLocaleString()} = *$${subtotal.toLocaleString()}*\n`;
                 }
             });
 
@@ -167,9 +167,9 @@
             msg += `💰 *TOTAL A COBRAR: $${total}*\n`;
             msg += `💳 *PAGO:* ${pago}\n`;
             if(obs) msg += `📝 *OBS:* ${obs}\n`;
-            msg += `📍 *MAPA:* ${gps}\n`;
+            msg += `📍 *GPS:* ${gps}\n`;
             msg += `--------------------------------\n`;
-            msg += `_App hecha por VIBRAS POSITIVAS_`;
+            msg += `_App desarrollada por Vibras Positivas_`;
 
             window.location.href = `https://wa.me/573014024397?text=${encodeURIComponent(msg)}`;
         }, () => { alert("Por favor activa el GPS."); });
