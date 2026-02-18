@@ -16,6 +16,7 @@ const controlVibras = {
     "deleitesaludable": "activo",
     "polloharana": "activo",
     "dulcebocadopostresycafe": "activo",
+    "abocados": "activo",
 
     // TIENDAS Y MERCADOS
     "tienda-azul": "activo",
