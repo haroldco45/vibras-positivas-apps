@@ -24,8 +24,8 @@
         .input-full { width: 100%; padding: 12px; margin: 5px 0 12px; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; font-size: 15px; }
         
         .item-pedido { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed #eee; }
-        .item-nombre { font-weight: bold; font-size: 15px; }
-        .item-precio { color: var(--azul); font-weight: bold; font-size: 14px; }
+        .item-nombre { font-weight: bold; font-size: 15px; flex: 1; }
+        .item-precio { color: var(--azul); font-weight: bold; font-size: 14px; margin-right: 10px; }
         .input-cant { width: 70px; padding: 10px; border-radius: 10px; border: 2px solid var(--azul-claro); text-align: center; font-weight: bold; font-size: 16px; }
 
         .total-box { background: var(--azul); color: white; padding: 20px; border-radius: 20px; text-align: center; font-size: 24px; font-weight: bold; box-shadow: 0 5px 15px rgba(0,119,182,0.3); }
@@ -47,7 +47,7 @@
 
 <header>
     <div class="logo-top">❄️</div>
-    <strong style="font-size: 22px; letter-spacing: 1px;">LA ORQUÍDEA AZUL</strong><br>
+    <strong style="font-size: 22px; letter-spacing: 1px;">FABRICA DE AGUA LA ORQUÍDEA AZUL</strong><br>
     <div class="contacto-header">📲 WhatsApp Fábrica: 3122682150</div>
 </header>
 
@@ -67,29 +67,37 @@
         
         <div class="item-pedido">
             <div class="item-info">
-                <div class="item-nombre">Botellón 20L</div>
-                <div class="item-precio">$<span id="p1">6000</span></div>
+                <div class="item-nombre">Paca Agua Bolsa x35</div>
+                <div class="item-precio">$<span id="p1">2500</span></div>
             </div>
             <input type="number" id="c1" class="input-cant" value="0" min="0" onchange="calcular()">
         </div>
 
         <div class="item-pedido">
             <div class="item-info">
-                <div class="item-nombre">Paca de Bolsas</div>
-                <div class="item-precio">$<span id="p2">4500</span></div>
+                <div class="item-nombre">Paca Hielo x18</div>
+                <div class="item-precio">$<span id="p2">2500</span></div>
             </div>
             <input type="number" id="c2" class="input-cant" value="0" min="0" onchange="calcular()">
+        </div>
+
+        <div class="item-pedido">
+            <div class="item-info">
+                <div class="item-nombre">Recarga Botellón</div>
+                <div class="item-precio">$<span id="p3">7000</span></div>
+            </div>
+            <input type="number" id="c3" class="input-cant" value="0" min="0" onchange="calcular()">
         </div>
 
         <label style="font-size: 13px; font-weight: bold; color: #555;">💳 Forma de Pago:</label>
         <select id="pago" class="input-full">
             <option value="Efectivo">Efectivo (Paga al recibir)</option>
             <option value="Nequi">Nequi</option>
-            <option value="Ahorro a la mano">Bancolombia Ahorro a la mano</option>
+            <option value="Ahorro a la mano">Ahorro a la mano</option>
         </select>
 
         <label style="font-size: 13px; font-weight: bold; color: #555;">📝 Observaciones:</label>
-        <textarea id="observaciones" class="input-full" style="height: 60px;" placeholder="Ej: Portería, timbre dañado..."></textarea>
+        <textarea id="observaciones" class="input-full" style="height: 60px;" placeholder="Ej: Portería, dejar en la tienda..."></textarea>
     </div>
 
     <div class="total-box">
@@ -103,17 +111,19 @@
 <footer>
     APP DESARROLLADA POR<br>
     <strong style="color: var(--azul);">VIBRAS POSITIVAS</strong><br>
-    © 2026 - DERECHOS DE AUTOR RESERVADOS<br>
-    CAUCASIA, ANTIOQUIA
+    © 2026 - CAUCASIA, ANTIOQUIA
 </footer>
 
 <script>
     function calcular() {
         const c1 = parseInt(document.getElementById('c1').value) || 0;
-        const p1 = parseInt(document.getElementById('p1').innerText);
+        const p1 = 2500;
         const c2 = parseInt(document.getElementById('c2').value) || 0;
-        const p2 = parseInt(document.getElementById('p2').innerText);
-        const total = (c1 * p1) + (c2 * p2);
+        const p2 = 2500;
+        const c3 = parseInt(document.getElementById('c3').value) || 0;
+        const p3 = 7000;
+
+        const total = (c1 * p1) + (c2 * p2) + (c3 * p3);
         document.getElementById('total-final').innerText = total.toLocaleString();
     }
 
@@ -129,34 +139,39 @@
         const obs = document.getElementById('observaciones').value.trim();
         const pago = document.getElementById('pago').value;
         const total = document.getElementById('total-final').innerText;
-        const c1 = document.getElementById('c1').value;
-        const c2 = document.getElementById('c2').value;
+        
+        const c1 = parseInt(document.getElementById('c1').value) || 0;
+        const c2 = parseInt(document.getElementById('c2').value) || 0;
+        const c3 = parseInt(document.getElementById('c3').value) || 0;
 
-        if(!nom || !tel || !dir) return alert("Socio, falta el nombre, el celular o la dirección.");
-        if(total == "0") return alert("Añade al menos un producto al pedido.");
+        if(!nom || !tel || !dir) return alert("Socio, faltan los datos del cliente.");
+        if(total == "0") return alert("Añade al menos un producto.");
 
         localStorage.setItem('cliente_orquidea_v2', JSON.stringify({n: nom, t: tel, d: dir}));
 
         navigator.geolocation.getCurrentPosition((pos) => {
-            const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+            const gps = `http://maps.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
             
-            let factura = `*💧 PEDIDO: LA ORQUÍDEA AZUL*\n`;
+            let factura = `*💧 PEDIDO: FABRICA DE AGUA LA ORQUÍDEA AZUL*\n`;
             factura += `--------------------------------\n`;
             factura += `👤 *CLIENTE:* ${nom}\n`;
             factura += `📞 *CELULAR:* ${tel}\n`;
             factura += `📍 *ENTREGA:* ${dir}\n`;
             factura += `🛰️ *GPS:* ${gps}\n`;
             factura += `--------------------------------\n`;
-            if(c1 > 0) factura += `🔹 Botellón 20L (x${c1}) : $${(c1*6000).toLocaleString()}\n`;
-            if(c2 > 0) factura += `🔹 Paca Bolsas (x${c2}) : $${(c2*4500).toLocaleString()}\n`;
+            if(c1 > 0) factura += `🔹 Paca Agua x35 (x${c1}) : $${(c1*2500).toLocaleString()}\n`;
+            if(c2 > 0) factura += `🔹 Paca Hielo x18 (x${c2}) : $${(c2*2500).toLocaleString()}\n`;
+            if(c3 > 0) factura += `🔹 Recarga Botellón (x${c3}) : $${(c3*7000).toLocaleString()}\n`;
             factura += `--------------------------------\n`;
-            factura += `💰 *TOTAL: $${total}*\n`;
+            factura += `💰 *TOTAL A PAGAR: $${total}*\n`;
             factura += `💳 *PAGO:* ${pago}\n`;
             if(obs) factura += `📝 *OBS:* ${obs}\n`;
             factura += `--------------------------------\n`;
-            factura += `_Desarrollado por Vibras Positivas_`;
+            factura += `_App de Vibras Positivas_`;
 
             window.location.href = `https://wa.me/573122682150?text=${encodeURIComponent(factura)}`;
+        }, () => {
+            alert("Socio, activa el GPS para poder enviar el pedido con ubicación.");
         });
     }
 
