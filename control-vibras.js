@@ -11,14 +11,11 @@ const controlVibras = {
     "edogra-distribuciones": "activo",
     "fabricadeagualaorquideaazul": "activo",
 
-
     // GASTRONOMÍA
     "estos-burgers": "activo",
     "deleitesaludable": "activo",
     "polloharana": "activo",
-    "polloharana": "activo",
     "dulcebocadopostresycafe": "activo",
-        
 
     // TIENDAS Y MERCADOS
     "tienda-azul": "activo",
@@ -49,13 +46,12 @@ const controlVibras = {
     "lavadoyaspiradosas": "activo",
 
     // TRANSPORTE E INVERSIONES
-    "sotracor-caucasia": "suspendido",
+    "sotracor-caucasia": "suspendido", // 🔴 Este ya está bloqueado
     "inversiones-charlotte": "activo",
     "santuariolaprimera": "activo"
 };
 
-// Función para verificar estado (Harold, no tocar esta parte)
+// Función verificadora
 function getEstadoApp(nombreApp) {
     return controlVibras[nombreApp] || "activo";
 }
-  
