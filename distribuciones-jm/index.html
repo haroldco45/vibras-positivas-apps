@@ -3,230 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Distribuciones JM - Pedidos</title>
+    <title>Distribuciones JM - Toma de Pedidos</title>
     <style>
-        :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris-claro: #f4f4f4; --exito: #25D366; }
-        body { font-family: 'Arial', sans-serif; background-color: var(--gris-claro); margin: 0; padding: 15px; padding-bottom: 180px; }
-        
-        /* Control Invisible */
-        #bloqueo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; text-align: center; padding-top: 100px; }
-
-        .card { max-width: 500px; margin: auto; background: var(--blanco); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #ddd; }
-        header { background: var(--secundario); color: var(--primario); padding: 25px; text-align: center; border-bottom: 4px solid var(--primario); }
-        .logo-area { font-size: 24px; font-weight: bold; text-transform: uppercase; }
-        
-        .content { padding: 15px; }
-        .section-title { font-size: 13px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid var(--primario); display: inline-block; }
-        
-        /* Columnas de la tabla */
-        .fila-pedido { display: grid; grid-template-columns: 25px 2fr 1fr 1fr 1.2fr; gap: 5px; margin-bottom: 8px; align-items: center; }
-        .num-item { font-size: 13px; font-weight: bold; color: var(--secundario); text-align: center; }
-        
-        input, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 10px; font-size: 14px; box-sizing: border-box; }
-        .head-tabla { font-size: 9px; color: #999; font-weight: bold; text-align: center; }
-        
-        /* CAJÓN DEL TOTAL RESALTADO */
-        .cajon-total { background: var(--secundario); color: var(--primario); padding: 15px; border-radius: 15px; margin: 15px 0; text-align: center; border: 2px solid var(--primario); }
-        .cajon-total small { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
-        .cajon-total b { font-size: 26px; display: block; margin-top: 5px; }
-
-        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .btn-gold { background: var(--primario); color: var(--secundario); }
-        .btn-add { background: #f9f9f9; color: #333; font-size: 13px; border: 1px dashed #bbb; margin-top: 10px; }
-        .btn-whatsapp { background: var(--exito); color: white; margin-top: 10px; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
-        
-        .hidden { display: none !important; }
-        
-        /* Pie de página solicitado */
-        footer { text-align: center; padding: 25px; font-size: 12px; color: #444; background: #fff; border-top: 1px solid #eee; margin-top: 20px; }
-        .vp-brand { color: var(--secundario); font-weight: bold; font-size: 14px; text-transform: uppercase; }
+        :root { --azul: #0d47a1; --dorado: #ffc107; --gris: #f4f4f4; }
+        body { font-family: sans-serif; background: var(--gris); margin: 0; padding: 10px; }
+        .card { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 15px; }
+        h3 { color: var(--azul); margin-top: 0; border-bottom: 2px solid var(--dorado); padding-bottom: 5px; }
+        input, select, datalist { width: 100%; padding: 10px; margin: 5px 0 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .btn { background: var(--azul); color: white; border: none; padding: 12px; width: 100%; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        .btn-add { background: #2e7d32; margin-top: 10px; }
+        .item-pedido { display: flex; justify-content: space-between; background: #eee; padding: 8px; margin-bottom: 5px; border-radius: 5px; font-size: 14px; }
     </style>
 </head>
 <body>
 
-<div id="bloqueo"><h1>🔒</h1><h2>SERVICIO SUSPENDIDO</h2><p>Contacte a VIBRAS POSITIVAS</p></div>
+<div class="card">
+    <h3>👤 Datos del Cliente</h3>
+    <input type="text" id="busquedaCliente" list="listaClientes" placeholder="Escriba nombre o celular..." oninput="seleccionarCliente(this.value)">
+    <datalist id="listaClientes"></datalist>
+    
+    <input type="text" id="nomCliente" placeholder="Nombre completo">
+    <input type="tel" id="telCliente" placeholder="Celular">
+    <input type="text" id="dirCliente" placeholder="Dirección y Barrio">
+</div>
 
-<div class="card" id="app-content">
-    <header>
-        <div class="logo-area">DISTRIBUCIONES JM</div>
-        <div style="font-size: 11px; color: white; margin-top: 5px;">DISTRIBUIDORA DE ABARROTES</div>
-    </header>
-
-    <div class="content">
-        <div id="seccion-cliente">
-            <div id="form-datos">
-                <input type="text" id="nom" placeholder="👤 Nombre o Negocio">
-                <input type="text" id="dir" placeholder="🏠 Dirección Exacta">
-                <input type="tel" id="tel" placeholder="📞 WhatsApp">
-                <button class="btn btn-gold" onclick="guardarInfo()">GUARDAR DATOS</button>
-            </div>
-            <div id="info-guardada" class="hidden">
-                <p id="resumen-cliente" style="font-size: 13px; background: #fff9db; padding: 12px; border-radius: 10px; border-left: 5px solid var(--primario); white-space: pre-line;"></p>
-                <button onclick="editarInfo()" style="font-size: 11px; color: #007bff; border: none; background: none;">✏️ Editar información</button>
-            </div>
-        </div>
-
-        <hr style="opacity: 0.1; margin: 20px 0;">
-
-        <div class="section-title">Lista de Pedido</div>
-        <div class="fila-pedido head-tabla">
-            <div>#</div>
-            <div>PRODUCTO</div>
-            <div>MED.</div>
-            <div>CANT.</div>
-            <div>PRECIO</div>
-        </div>
-
-        <div id="contenedor-filas">
-            <div class="fila-pedido">
-                <div class="num-item">1.</div>
-                <input type="text" class="p-nombre" placeholder="Producto">
-                <input type="text" class="p-medida" placeholder="Kg/Un">
-                <input type="number" class="p-cantidad" value="1" oninput="sumarTotal()">
-                <input type="number" class="p-valor" placeholder="$" oninput="sumarTotal()">
-            </div>
-        </div>
-
-        <button class="btn btn-add" onclick="agregarFila()">➕ AGREGAR OTRO PRODUCTO</button>
-
-        <div class="cajon-total">
-            <small>Valor Total del Pedido</small>
-            <b id="total-vista">$ 0</b>
-        </div>
-
-        <textarea id="obs" rows="2" placeholder="Observaciones adicionales..."></textarea>
-
-        <button class="btn btn-whatsapp" onclick="capturarUbicacion()">
-            <span>🚀 ENVIAR PEDIDO (WHATSAPP)</span>
-        </button>
+<div class="card">
+    <h3>📦 Agregar Productos</h3>
+    <input type="text" id="busquedaProd" list="listaProds" placeholder="Buscar o escribir producto nuevo..." oninput="cargarPrecioSugerido(this.value)">
+    <datalist id="listaProds"></datalist>
+    
+    <div style="display: flex; gap: 10px;">
+        <input type="number" id="precioProd" placeholder="Precio $">
+        <input type="number" id="cantProd" placeholder="Cant">
     </div>
+    <button class="btn btn-add" onclick="agregarAlCarrito()">+ Agregar al Pedido</button>
+</div>
 
-    <footer>
-        App hecha por <br>
-        <span class="vp-brand">VIBRAS POSITIVAS</span> <br>
-        Derecho de Autor © 2026
-    </footer>
+<div class="card">
+    <h3>🛒 Detalle del Pedido</h3>
+    <div id="carrito"></div>
+    <hr>
+    <div style="text-align: right; font-weight: bold; font-size: 18px;">
+        TOTAL: $<span id="totalPedido">0</span>
+    </div>
+    <button class="btn" style="margin-top: 15px; background: #25d366;" onclick="enviarPedido()">🚀 ENVIAR POR WHATSAPP</button>
 </div>
 
 <script>
-    const WHATSAPP_JM = "573238539266";
-    let contadorFilas = 1;
+    let dbClientes = JSON.parse(localStorage.getItem('jm_clientes')) || [];
+    let dbProductos = JSON.parse(localStorage.getItem('jm_productos')) || [];
+    let carrito = [];
 
-    async function checkSecurity() {
-        try {
-            const res = await fetch('https://haroldco45.github.io/control-vibras.js');
-            const d = await res.text();
-            if(d.includes('"distribuciones-jm": "suspendido"')) {
-                document.getElementById('bloqueo').style.display = 'block';
-                document.getElementById('app-content').style.display = 'none';
-            }
-        } catch(e){}
-    }
-    checkSecurity();
+    // Cargar listas al iniciar
+    function actualizarDatalists() {
+        const dlClientes = document.getElementById('listaClientes');
+        dlClientes.innerHTML = dbClientes.map(c => `<option value="${c.n} | ${c.t}">`).join('');
 
-    function agregarFila() {
-        contadorFilas++;
-        const contenedor = document.getElementById('contenedor-filas');
-        const nuevaFila = document.createElement('div');
-        nuevaFila.className = 'fila-pedido';
-        nuevaFila.innerHTML = `
-            <div class="num-item">${contadorFilas}.</div>
-            <input type="text" class="p-nombre">
-            <input type="text" class="p-medida">
-            <input type="number" class="p-cantidad" value="1" oninput="sumarTotal()">
-            <input type="number" class="p-valor" placeholder="$" oninput="sumarTotal()">
-        `;
-        contenedor.appendChild(nuevaFila);
+        const dlProds = document.getElementById('listaProds');
+        dlProds.innerHTML = dbProductos.map(p => `<option value="${p.n}">`).join('');
     }
 
-    function sumarTotal() {
-        let total = 0;
-        const cants = document.querySelectorAll('.p-cantidad');
-        const vals = document.querySelectorAll('.p-valor');
-        cants.forEach((c, i) => {
-            const q = parseFloat(c.value) || 0;
-            const v = parseFloat(vals[i].value) || 0;
-            total += (q * v);
-        });
-        document.getElementById('total-vista').innerText = `$ ${total.toLocaleString()}`;
-        return total;
-    }
-
-    function guardarInfo() {
-        const datos = { n: document.getElementById('nom').value, d: document.getElementById('dir').value, t: document.getElementById('tel').value };
-        if(datos.n && datos.d && datos.t) {
-            localStorage.setItem('vp_jm_final', JSON.stringify(datos));
-            mostrarInfo();
-        } else { alert("Completa tus datos de entrega."); }
-    }
-
-    function mostrarInfo() {
-        const guardado = JSON.parse(localStorage.getItem('vp_jm_final'));
-        if(guardado) {
-            document.getElementById('form-datos').classList.add('hidden');
-            document.getElementById('info-guardada').classList.remove('hidden');
-            document.getElementById('resumen-cliente').innerText = `👤 Negocio: ${guardado.n}\n🏠 Dirección: ${guardado.d}\n📞 WhatsApp: ${guardado.t}`;
+    function seleccionarCliente(val) {
+        const cliente = dbClientes.find(c => `${c.n} | ${c.t}` === val);
+        if(cliente) {
+            document.getElementById('nomCliente').value = cliente.n;
+            document.getElementById('telCliente').value = cliente.t;
+            document.getElementById('dirCliente').value = cliente.d;
         }
     }
 
-    function editarInfo() {
-        document.getElementById('form-datos').classList.remove('hidden');
-        document.getElementById('info-guardada').classList.add('hidden');
+    function cargarPrecioSugerido(val) {
+        const prod = dbProductos.find(p => p.n === val);
+        if(prod) document.getElementById('precioProd').value = prod.p;
     }
 
-    window.onload = mostrarInfo;
+    function agregarAlCarrito() {
+        const nombre = document.getElementById('busquedaProd').value;
+        const precio = parseFloat(document.getElementById('precioProd').value);
+        const cant = parseInt(document.getElementById('cantProd').value);
 
-    function capturarUbicacion() {
-        const datos = JSON.parse(localStorage.getItem('vp_jm_final'));
-        if(!datos) return alert("Primero guarda tus datos.");
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (pos) => enviarWhatsApp(datos, `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`),
-                () => enviarWhatsApp(datos, "Ubicación no enviada"),
-                { timeout: 5000 }
-            );
-        } else { enviarWhatsApp(datos, "GPS no soportado"); }
+        if(!nombre || !precio || !cant) return alert("Complete los datos del producto");
+
+        carrito.push({ n: nombre, p: precio, c: cant });
+        
+        // Guardar producto en la "memoria" si es nuevo o actualizó precio
+        const index = dbProductos.findIndex(p => p.n === nombre);
+        if(index === -1) dbProductos.push({ n: nombre, p: precio });
+        else dbProductos[index].p = precio;
+        
+        localStorage.setItem('jm_productos', JSON.stringify(dbProductos));
+        renderCarrito();
+        actualizarDatalists();
+        
+        // Limpiar campos de producto
+        document.getElementById('busquedaProd').value = '';
+        document.getElementById('precioProd').value = '';
+        document.getElementById('cantProd').value = '';
     }
 
-    function enviarWhatsApp(c, gps) {
-        let pedidoCuerpo = "";
-        let sumaFinal = 0;
-        const nombres = document.querySelectorAll('.p-nombre');
-        const medidas = document.querySelectorAll('.p-medida');
-        const cantidades = document.querySelectorAll('.p-cantidad');
-        const valores = document.querySelectorAll('.p-valor');
+    function renderCarrito() {
+        const cont = document.getElementById('carrito');
+        let total = 0;
+        cont.innerHTML = carrito.map((item, i) => {
+            total += (item.p * item.c);
+            return `<div class="item-pedido">
+                        <span>${item.n} (x${item.c})</span>
+                        <span>$${(item.p * item.c).toLocaleString()}</span>
+                    </div>`;
+        }).join('');
+        document.getElementById('totalPedido').innerText = total.toLocaleString();
+    }
 
-        let iReal = 1;
-        nombres.forEach((input, i) => {
-            if(input.value.trim() !== "") {
-                const q = parseFloat(cantidades[i].value) || 0;
-                const v = parseFloat(valores[i].value) || 0;
-                const sub = q * v;
-                sumaFinal += sub;
-                pedidoCuerpo += `${iReal}. ${input.value} (${medidas[i].value || 'und'})\n   ${q} x $${v.toLocaleString()} = *$${sub.toLocaleString()}*\n`;
-                iReal++;
-            }
-        });
+    function enviarPedido() {
+        const n = document.getElementById('nomCliente').value;
+        const t = document.getElementById('telCliente').value;
+        const d = document.getElementById('dirCliente').value;
 
-        if(!pedidoCuerpo) return alert("Agrega al menos un producto.");
+        if(!n || carrito.length === 0) return alert("Faltan datos del cliente o productos");
 
+        // Guardar/Actualizar Cliente en memoria
+        const idxC = dbClientes.findIndex(c => c.t === t);
+        if(idxC === -1) dbClientes.push({ n: n, t: t, d: d });
+        else dbClientes[idxC] = { n: n, t: t, d: d };
+        localStorage.setItem('jm_clientes', JSON.stringify(dbClientes));
+
+        // Formar mensaje de WhatsApp
         let msg = `*📦 DISTRIBUCIONES JM - PEDIDO*\n`;
+        msg += `👤 CLIENTE: ${n}\n📞 TEL: ${t}\n📍 DIR: ${d}\n`;
         msg += `--------------------------\n`;
-        msg += `👤 *CLIENTE:* ${c.n}\n🏠 *DIR:* ${c.d}\n📞 *TEL:* ${c.t}\n`;
+        carrito.forEach(i => {
+            msg += `🔹 ${i.n} (x${i.c}) = $${(i.p * i.c).toLocaleString()}\n`;
+        });
         msg += `--------------------------\n`;
-        msg += `🛒 *DETALLE DEL PEDIDO:*\n${pedidoCuerpo}`;
-        msg += `--------------------------\n`;
-        msg += `💰 *TOTAL A PAGAR: $${sumaFinal.toLocaleString()}*\n`;
-        
-        const obs = document.getElementById('obs').value;
-        if(obs) msg += `📝 *NOTA:* ${obs}\n`;
-        
-        msg += `--------------------------\n`;
-        msg += `📍 *GPS:* ${gps}\n\n`;
-        msg += `_App hecha por VIBRAS POSITIVAS_`;
+        msg += `💰 *TOTAL: $${document.getElementById('totalPedido').innerText}*`;
 
-        window.open(`https://wa.me/${WHATSAPP_JM}?text=${encodeURIComponent(msg)}`);
+        window.location.href = `https://wa.me/573014024397?text=${encodeURIComponent(msg)}`;
     }
+
+    window.onload = actualizarDatalists;
 </script>
 </body>
 </html>
