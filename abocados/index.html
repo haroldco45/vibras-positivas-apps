@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>A Bocados - Factura Detallada</title>
+    <title>A Bocados - Menú Digital</title>
     <style>
         :root { --fucsia: #d81b60; --oscuro: #1a1a1a; --gris: #2d2d2d; --blanco: #ffffff; --verde: #25d366; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--oscuro); color: var(--blanco); }
-        header { background: #000; padding: 20px; text-align: center; border-bottom: 4px solid var(--fucsia); }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--oscuro); color: var(--blanco); padding-bottom: 160px; }
+        header { background: #000; padding: 20px; text-align: center; border-bottom: 4px solid var(--fucsia); position: sticky; top: 0; z-index: 1001; }
         .logo-img { width: 140px; }
         .container { padding: 10px; max-width: 600px; margin: auto; }
         .card { background: var(--gris); border-radius: 20px; padding: 15px; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
@@ -15,81 +15,109 @@
         .form-input { width: 100%; padding: 12px; margin: 5px 0 10px; border-radius: 10px; border: 1px solid #444; background: #111; color: white; box-sizing: border-box; font-size: 15px; }
         .seccion-titulo { background: var(--fucsia); color: white; padding: 8px 15px; border-radius: 10px; font-size: 13px; text-transform: uppercase; margin: 20px 0 10px; font-weight: bold; text-align: center; }
         
-        .item { display: flex; gap: 10px; padding: 12px 0; border-bottom: 1px solid #333; align-items: center; }
+        .item { display: flex; gap: 10px; padding: 12px 0; border-bottom: 1px solid #333; align-items: flex-start; }
         .item-info { flex: 1; }
-        .item-nombre { font-weight: bold; font-size: 14px; color: var(--blanco); }
-        .item-desc { font-size: 11px; color: #aaa; margin-top: 2px; line-height: 1.2; }
-        .item-precio { font-size: 13px; color: var(--fucsia); font-weight: bold; margin-top: 4px; }
-        .input-cant { width: 55px; padding: 10px 5px; border: 2px solid var(--fucsia); border-radius: 10px; text-align: center; font-weight: bold; background: #000; color: white; flex-shrink: 0; }
+        .item-nombre { font-weight: bold; font-size: 15px; color: var(--blanco); }
+        .item-desc { font-size: 11px; color: #aaa; margin-top: 4px; line-height: 1.3; }
+        .item-precio { font-size: 14px; color: var(--fucsia); font-weight: bold; margin-top: 6px; }
+        
+        /* Controles de Cantidad + / - */
+        .controles-cant { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-top: 5px; }
+        .btn-cant { background: var(--gris); border: 1px solid var(--fucsia); color: white; width: 30px; height: 30px; border-radius: 50%; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .input-cant { width: 25px; text-align: center; font-weight: bold; background: none; border: none; color: white; font-size: 15px; }
 
-        .total-sticky { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 480px; background: var(--fucsia); color: white; padding: 15px; border-radius: 20px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.7); z-index: 100; }
-        .btn-enviar { background: var(--verde); color: white; border: none; padding: 20px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 0 #128c7e; }
-        footer { text-align: center; padding: 30px 10px 150px; font-size: 11px; color: #666; }
+        .total-sticky { position: fixed; bottom: 0; left: 0; width: 100%; background: #000; border-top: 4px solid var(--fucsia); padding: 15px; box-sizing: border-box; z-index: 1002; }
+        .btn-enviar { background: var(--verde); color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-size: 17px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 0 #128c7e; }
+        footer { text-align: center; padding: 20px 10px; font-size: 10px; color: #666; }
     </style>
 </head>
 <body>
 
 <header>
     <img src="aboados.PNG" class="logo-img">
-    <div style="font-size: 11px; color: #aaa; margin-top: 5px;">Facturación Discriminada - Caucasia</div>
+    <div style="font-size: 11px; color: #aaa; margin-top: 5px;">Cra. 20 & Cl. 22, Caucasia</div>
 </header>
 
 <div class="container">
     <div class="card">
         <h3>👤 Mis Datos</h3>
         <input type="text" id="nombre" class="form-input" placeholder="Nombre completo">
-        <input type="tel" id="celular" class="form-input" placeholder="Celular">
-        <input type="text" id="direccion" class="form-input" placeholder="Dirección en Caucasia">
+        <input type="text" id="direccion" class="form-input" placeholder="Barrio / Dirección">
+        
+        <label style="font-size: 12px; font-weight: bold; color: var(--fucsia);">🛵 Zona de Domicilio:</label>
+        <select id="zona-domicilio" class="form-input" onchange="calcular()">
+            <option value="5000">Urbano (Cerca) - $5.000</option>
+            <option value="8000">Hospital / Aeropuerto - $8.000</option>
+            <option value="10000">Campoalegre - $10.000</option>
+        </select>
+
         <select id="pago" class="form-input">
             <option value="Efectivo">Efectivo</option>
             <option value="Nequi">Nequi</option>
-            <option value="Ahorro a la mano">Ahorro a la mano</option>
+            <option value="Bancolombia">Ahorro a la mano</option>
         </select>
-        <textarea id="obs" class="form-input" style="height: 50px;" placeholder="Notas adicionales..."></textarea>
+        <textarea id="obs" class="form-input" style="height: 50px;" placeholder="Notas: Sin cebolla, portería..."></textarea>
     </div>
 
     <div class="card">
-        <h3>🍔 Nuestra Carta</h3>
+        <h3>📜 Nuestra Carta</h3>
         <div id="contenedor-menu"></div>
     </div>
+</div>
 
-    <div class="total-sticky">
-        <span style="font-size: 12px; opacity: 0.9;">VALOR TOTAL A PAGAR</span><br>
-        <span style="font-size: 26px; font-weight: bold;">$</span><span id="cuenta-total" style="font-size: 26px; font-weight: bold;">0</span>
+<div class="total-sticky">
+    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: bold;">
+        <span>TOTAL:</span>
+        <span style="color: var(--fucsia); font-size: 20px;">$<span id="cuenta-total">0</span></span>
     </div>
-
-    <button class="btn-enviar" onclick="enviarPedido()">🚀 ENVIAR PEDIDO DISCRIMINADO</button>
-
-    <footer>
-        APP DESARROLLADA POR <br>
-        <strong style="color:var(--fucsia)">VIBRAS POSITIVAS</strong><br>
-        © 2026 - CAUCASIA, ANTIOQUIA
-    </footer>
+    <button class="btn-enviar" onclick="enviarPedido()">🚀 ENVIAR PEDIDO POR WHATSAPP</button>
 </div>
 
 <script>
     const menu = {
+        "Entradas": [
+            {n: "Ceviche de Chicharrón", p: 25000, d: "Chicharrón crocante con cebolla morada, tomate, limón y cilantro."},
+            {n: "Papas con Tocineta", p: 13000, d: "Papas a la francesa con queso costeño, panceta y salsas."},
+            {n: "Patacones con Carne y Guacamole", p: 15000, d: "Patacones con carne molida en salsa y guacamole."}
+        ],
         "Hamburguesas": [
-            {n: "Sweet Bacon", p: 32000, d: "Carne res 146g al carbón, cheddar"},
-            {n: "Doble Americana", p: 26000, d: "Doble carne 100g artesanal"},
-            {n: "Orgasmics", p: 29000, d: "Combinación cremosa del chef"},
-            {n: "Doble Crispy", p: 29000, d: "Doble pollo crispy premium"},
-            {n: "Ambrosia", p: 32000, d: "Creación premium especial"},
-            {n: "Street Burger", p: 16000, d: "Carne 100g y mozzarella"},
-            {n: "Mexicana", p: 27500, d: "Guacamole, cheddar y jalapeños"},
-            {n: "Original", p: 12000, d: "Carne 90g y vegetales frescos"},
-            {n: "Americana", p: 25500, d: "Res 140g sellada mantequilla"}
+            {n: "Sweet Bacon", p: 32000, d: "Carne 146g, cheddar, mermelada de tocineta, philadelphia."},
+            {n: "Doble Americana", p: 26000, d: "Doble carne 100g, doble cheddar, pepinillos agridulces."},
+            {n: "Orgasmic", p: 29000, d: "Burger con DIP de piña caramelizada y chicharrón frito."},
+            {n: "Doble Crispy", p: 29000, d: "Dos piezas pollo crispy con doble mozzarella y salsa secreta."},
+            {n: "Pulled Pork", p: 28000, d: "Costilla desmechada BBQ, carne 146g y cebolla caramelizada."},
+            {n: "Ambrosia", p: 32000, d: "Carne 140g, costilla desmechada, chips de yuca y salsa uchuva."},
+            {n: "Pollo Crispy", p: 29000, d: "Pechuga apanada, carne res, doble mozzarella y BBQ."},
+            {n: "Street Burger", p: 16000, d: "Carne 100g, mozzarella, ripio de papa y vegetales."},
+            {n: "Triple M", p: 32000, d: "Carne 146g, philadelphia, pops de pechuga y BBQ corozo."},
+            {n: "Super Bacon", p: 29000, d: "Carne 140g, 4 lonjas de tocineta y cebolla grillé."},
+            {n: "Pinchada", p: 31000, d: "Chicharrones, carne res, huevo frito y cebolla BBQ."},
+            {n: "Mexicana", p: 27500, d: "Carne desmechada, carne 140g, guacamole y jalapeños."},
+            {n: "Mixta", p: 28000, d: "Carne 140g, pollo desmechado y aritos de cebolla."},
+            {n: "Original", p: 12000, d: "Carne 90g, mozzarella y cebolla caramelizada."},
+            {n: "Doble Carne", p: 33500, d: "Doble carne 140g, tocineta y doble mozzarella."}
         ],
-        "Perros y Parrilla": [
-            {n: "Sweet Dog", p: 27000, d: "Salchicha americana y cheddar"},
-            {n: "Americano", p: 22000, d: "Salchicha premium en pan brioche"},
-            {n: "Costichi", p: 43000, d: "400g costilla-chicharrón carbón"},
-            {n: "Costillas BBQ", p: 43000, d: "500g horneadas salsa secreta"}
+        "Parrilla": [
+            {n: "Costichi", p: 43000, d: "400g costilla-chicharrón al carbón con patacones o papas."},
+            {n: "Costillas BBQ", p: 43000, d: "500g horneadas bañadas en salsa BBQ."}
         ],
-        "Bebidas": [
-            {n: "Limonada Cerezada", p: 8000}, {n: "Limonada Coco", p: 13000},
-            {n: "Coca Cola 1.5L", p: 11000}, {n: "Aguila Light Lata", p: 6500},
-            {n: "Corona", p: 8000}, {n: "Stella Artois", p: 8000}
+        "Perros Calientes": [
+            {n: "Sweet Dog", p: 27000, d: "Salchicha americana, cheddar fundido y mermelada de tocineta."},
+            {n: "Chicken Dog", p: 24000, d: "Pollo desmechado, tártara, tocineta y cheddar."},
+            {n: "Americano", p: 22000, d: "Salchicha americana, pepinillo agridulce y tocineta."}
+        ],
+        "Papas Locas": [
+            {n: "Mixta Personal", p: 18000, d: "Carne y pollo desmechado, maicitos, tocineta y queso costeño."},
+            {n: "Papas de la Casa", p: 22000, d: "Carne y pollo, guacamole, pico de gallo y salsa agria."},
+            {n: "Especial Personal", p: 22000, d: "Salchicha ranchera, mozzarela, tocineta y aro de cebolla."}
+        ],
+        "Bebidas y Cervezas": [
+            {n: "Limonada Coco", p: 13000, d: "Refrescante y cremosa."},
+            {n: "Limonada Cerezada", p: 8000, d: ""},
+            {n: "Coca Cola 1.5L", p: 11000, d: ""},
+            {n: "Corona", p: 8000, d: ""},
+            {n: "Stella Artois", p: 8000, d: ""},
+            {n: "Aguila Light Lata", p: 6500, d: ""}
         ]
     };
 
@@ -98,82 +126,75 @@
         for (let cat in menu) {
             cont.innerHTML += `<div class="seccion-titulo">${cat}</div>`;
             menu[cat].forEach((item, i) => {
+                const id = cat.replace(/\s/g, '') + i;
                 cont.innerHTML += `
                     <div class="item">
                         <div class="item-info">
                             <div class="item-nombre">${item.n}</div>
-                            ${item.d ? `<div class="item-desc">${item.d}</div>` : ''}
+                            <div class="item-desc">${item.d}</div>
                             <div class="item-precio">$${item.p.toLocaleString()}</div>
                         </div>
-                        <input type="number" class="input-cant" data-n="${item.n}" data-p="${item.p}" value="0" min="0" onchange="calcular()">
+                        <div class="controles-cant">
+                            <button class="btn-cant" onclick="cambiarCant('${id}', -1)">-</button>
+                            <input type="text" class="input-cant" id="${id}" data-n="${item.n}" data-p="${item.p}" value="0" readonly>
+                            <button class="btn-cant" onclick="cambiarCant('${id}', 1)">+</button>
+                        </div>
                     </div>`;
             });
         }
     }
 
-    function calcular() {
-        let total = 0;
-        document.querySelectorAll('.input-cant').forEach(i => {
-            total += (parseInt(i.value) || 0) * parseInt(i.dataset.p);
-        });
-        document.getElementById('cuenta-total').innerText = total.toLocaleString();
+    function cambiarCant(id, delta) {
+        const input = document.getElementById(id);
+        let val = parseInt(input.value) + delta;
+        if (val < 0) val = 0;
+        input.value = val;
+        calcular();
     }
 
-    window.onload = () => {
-        cargarMenu();
-        const saved = JSON.parse(localStorage.getItem('abocados_datos'));
-        if(saved) {
-            document.getElementById('nombre').value = saved.n;
-            document.getElementById('celular').value = saved.c;
-            document.getElementById('direccion').value = saved.d;
-        }
-    };
+    function calcular() {
+        let subtotal = 0;
+        document.querySelectorAll('.input-cant').forEach(i => {
+            subtotal += (parseInt(i.value) || 0) * parseInt(i.dataset.p);
+        });
+        const domi = parseInt(document.getElementById('zona-domicilio').value) || 0;
+        document.getElementById('cuenta-total').innerText = (subtotal + domi).toLocaleString();
+    }
 
     function enviarPedido() {
         const nom = document.getElementById('nombre').value.trim();
-        const cel = document.getElementById('celular').value.trim();
         const dir = document.getElementById('direccion').value.trim();
+        const domiVal = parseInt(document.getElementById('zona-domicilio').value);
         const total = document.getElementById('cuenta-total').innerText;
-        const pago = document.getElementById('pago').value;
-        const obs = document.getElementById('obs').value.trim();
 
-        if(!nom || !cel || !dir || total === "0") return alert("Socio, llena tus datos y selecciona tus platos.");
+        if(!nom || !dir) return alert("Socio, por favor llena tus datos.");
 
-        localStorage.setItem('abocados_datos', JSON.stringify({n: nom, c: cel, d: dir}));
+        let factura = `*🍔 A BOCADOS - NUEVO PEDIDO*\n`;
+        factura += `--------------------------------\n`;
+        factura += `👤 *CLIENTE:* ${nom}\n`;
+        factura += `📍 *DIRECCIÓN:* ${dir}\n`;
+        factura += `--------------------------------\n`;
+        
+        document.querySelectorAll('.input-cant').forEach(i => {
+            const cant = parseInt(i.value);
+            if(cant > 0) {
+                const sub = cant * parseInt(i.dataset.p);
+                factura += `🔹 ${i.dataset.n}\n`;
+                factura += `   ${cant} x $${parseInt(i.dataset.p).toLocaleString()} = *$${sub.toLocaleString()}*\n`;
+            }
+        });
 
-        navigator.geolocation.getCurrentPosition((pos) => {
-            const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-            const numP = Math.floor(Math.random() * 9000) + 1000;
+        factura += `--------------------------------\n`;
+        factura += `🛵 *DOMICILIO:* $${domiVal.toLocaleString()}\n`;
+        factura += `💰 *TOTAL FINAL: $${total}*\n`;
+        factura += `💳 *PAGO:* ${document.getElementById('pago').value}\n`;
+        factura += `--------------------------------\n`;
+        factura += `_App hecha por VIBRAS POSITIVAS_`;
 
-            let msg = `*🍔 A BOCADOS - PEDIDO #${numP}*\n`;
-            msg += `--------------------------------\n`;
-            msg += `👤 *CLIENTE:* ${nom}\n`;
-            msg += `📞 *CEL:* ${cel}\n`;
-            msg += `📍 *DIR:* ${dir}\n`;
-            msg += `--------------------------------\n`;
-            msg += `*DESCRIMINACIÓN DE VALORES:*\n`;
-            
-            document.querySelectorAll('.input-cant').forEach(i => {
-                const cant = parseInt(i.value);
-                if(cant > 0) {
-                    const vUnit = parseInt(i.dataset.p);
-                    const subtotal = cant * vUnit;
-                    msg += `🔹 ${i.dataset.n}\n`;
-                    msg += `   ${cant} x $${vUnit.toLocaleString()} = *$${subtotal.toLocaleString()}*\n`;
-                }
-            });
-
-            msg += `--------------------------------\n`;
-            msg += `💰 *TOTAL A COBRAR: $${total}*\n`;
-            msg += `💳 *PAGO:* ${pago}\n`;
-            if(obs) msg += `📝 *OBS:* ${obs}\n`;
-            msg += `📍 *GPS:* ${gps}\n`;
-            msg += `--------------------------------\n`;
-            msg += `_App desarrollada por Vibras Positivas_`;
-
-            window.location.href = `https://wa.me/573014024397?text=${encodeURIComponent(msg)}`;
-        }, () => { alert("Por favor activa el GPS."); });
+        window.location.href = `https://wa.me/573014024397?text=${encodeURIComponent(factura)}`;
     }
+
+    window.onload = cargarMenu;
 </script>
 </body>
 </html>
