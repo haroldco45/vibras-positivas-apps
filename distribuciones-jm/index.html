@@ -2,59 +2,82 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Distribuciones JM - Toma de Pedidos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Distribuciones JM - Pedidos</title>
     <style>
-        :root { --azul: #0d47a1; --dorado: #ffc107; --gris: #f4f4f4; }
-        body { font-family: sans-serif; background: var(--gris); margin: 0; padding: 10px; }
-        .card { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 15px; }
-        h3 { color: var(--azul); margin-top: 0; border-bottom: 2px solid var(--dorado); padding-bottom: 5px; }
-        input, select, datalist { width: 100%; padding: 10px; margin: 5px 0 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        .btn { background: var(--azul); color: white; border: none; padding: 12px; width: 100%; border-radius: 5px; font-weight: bold; cursor: pointer; }
-        .btn-add { background: #2e7d32; margin-top: 10px; }
-        .item-pedido { display: flex; justify-content: space-between; background: #eee; padding: 8px; margin-bottom: 5px; border-radius: 5px; font-size: 14px; }
+        :root { --azul: #0d47a1; --dorado: #ffc107; --oscuro: #1a1a1a; --verde: #25d366; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 10px; padding-bottom: 120px; }
+        header { background: var(--azul); color: white; padding: 15px; text-align: center; border-bottom: 4px solid var(--dorado); border-radius: 0 0 20px 20px; margin: -10px -10px 15px -10px; }
+        .card { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 15px; }
+        h3 { color: var(--azul); margin-top: 0; font-size: 16px; text-transform: uppercase; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+        label { font-size: 12px; font-weight: bold; color: #666; }
+        input, select { width: 100%; padding: 12px; margin: 5px 0 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+        .btn { background: var(--azul); color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; box-shadow: 0 4px 0 #07306e; }
+        .btn:active { transform: translateY(2px); box-shadow: none; }
+        .btn-add { background: #2e7d32; box-shadow: 0 4px 0 #1b4d1f; margin-bottom: 10px; }
+        .item-pedido { display: flex; justify-content: space-between; align-items: center; background: #f9f9f9; padding: 10px; margin-bottom: 8px; border-left: 4px solid var(--dorado); border-radius: 5px; }
+        .total-box { background: var(--azul); color: white; padding: 20px; border-radius: 15px; text-align: center; margin-top: 10px; }
+        .btn-ws { background: var(--verde); box-shadow: 0 4px 0 #128c7e; margin-top: 20px; }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h3>👤 Datos del Cliente</h3>
-    <input type="text" id="busquedaCliente" list="listaClientes" placeholder="Escriba nombre o celular..." oninput="seleccionarCliente(this.value)">
-    <datalist id="listaClientes"></datalist>
-    
-    <input type="text" id="nomCliente" placeholder="Nombre completo">
-    <input type="tel" id="telCliente" placeholder="Celular">
-    <input type="text" id="dirCliente" placeholder="Dirección y Barrio">
-</div>
+<header>
+    <h2 style="margin:0">DISTRIBUCIONES JM</h2>
+    <div style="font-size: 11px; opacity: 0.9;">WhatsApp: 320 407 7185</div>
+</header>
 
-<div class="card">
-    <h3>📦 Agregar Productos</h3>
-    <input type="text" id="busquedaProd" list="listaProds" placeholder="Buscar o escribir producto nuevo..." oninput="cargarPrecioSugerido(this.value)">
-    <datalist id="listaProds"></datalist>
-    
-    <div style="display: flex; gap: 10px;">
-        <input type="number" id="precioProd" placeholder="Precio $">
-        <input type="number" id="cantProd" placeholder="Cant">
+<div class="container">
+    <div class="card">
+        <h3>👤 Datos del Cliente</h3>
+        <label>Buscar Cliente (Nombre o Cel):</label>
+        <input type="text" id="busquedaCliente" list="listaClientes" placeholder="Escriba para buscar..." oninput="seleccionarCliente(this.value)">
+        <datalist id="listaClientes"></datalist>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <input type="text" id="nomCliente" placeholder="Nombre">
+            <input type="tel" id="telCliente" placeholder="Celular">
+        </div>
+        <input type="text" id="dirCliente" placeholder="Dirección y Barrio">
     </div>
-    <button class="btn btn-add" onclick="agregarAlCarrito()">+ Agregar al Pedido</button>
-</div>
 
-<div class="card">
-    <h3>🛒 Detalle del Pedido</h3>
-    <div id="carrito"></div>
-    <hr>
-    <div style="text-align: right; font-weight: bold; font-size: 18px;">
-        TOTAL: $<span id="totalPedido">0</span>
+    <div class="card">
+        <h3>📦 Captura de Productos</h3>
+        <label>Producto:</label>
+        <input type="text" id="busquedaProd" list="listaProds" placeholder="Escriba producto nuevo o busque..." oninput="cargarPrecioSugerido(this.value)">
+        <datalist id="listaProds"></datalist>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div>
+                <label>Precio Unitario ($):</label>
+                <input type="number" id="precioProd" placeholder="0">
+            </div>
+            <div>
+                <label>Cantidad:</label>
+                <input type="number" id="cantProd" placeholder="0">
+            </div>
+        </div>
+        <button class="btn btn-add" onclick="agregarAlCarrito()">+ AGREGAR PRODUCTO</button>
     </div>
-    <button class="btn" style="margin-top: 15px; background: #25d366;" onclick="enviarPedido()">🚀 ENVIAR POR WHATSAPP</button>
+
+    <div class="card">
+        <h3>🛒 Pedido Actual</h3>
+        <div id="carrito"></div>
+        <div class="total-box">
+            <div style="font-size: 13px; opacity: 0.8;">VALOR TOTAL</div>
+            <div style="font-size: 30px; font-weight: bold;">$<span id="totalPedido">0</span></div>
+        </div>
+        <button class="btn btn-ws" onclick="enviarPedido()">🚀 ENVIAR PEDIDO Y GPS</button>
+        <button class="btn" style="background:#666; margin-top:10px; font-size:12px; padding:8px;" onclick="confirmarLimpiar()">Borrar todo el pedido</button>
+    </div>
 </div>
 
 <script>
+    // BASES DE DATOS LOCALES (LocalStorage)
     let dbClientes = JSON.parse(localStorage.getItem('jm_clientes')) || [];
     let dbProductos = JSON.parse(localStorage.getItem('jm_productos')) || [];
     let carrito = [];
 
-    // Cargar listas al iniciar
     function actualizarDatalists() {
         const dlClientes = document.getElementById('listaClientes');
         dlClientes.innerHTML = dbClientes.map(c => `<option value="${c.n} | ${c.t}">`).join('');
@@ -78,24 +101,24 @@
     }
 
     function agregarAlCarrito() {
-        const nombre = document.getElementById('busquedaProd').value;
+        const nombre = document.getElementById('busquedaProd').value.trim();
         const precio = parseFloat(document.getElementById('precioProd').value);
         const cant = parseInt(document.getElementById('cantProd').value);
 
-        if(!nombre || !precio || !cant) return alert("Complete los datos del producto");
+        if(!nombre || isNaN(precio) || isNaN(cant)) return alert("Por favor complete los datos del producto");
 
         carrito.push({ n: nombre, p: precio, c: cant });
         
-        // Guardar producto en la "memoria" si es nuevo o actualizó precio
+        // Mayordomía de Productos: Guardar para siempre en el celular
         const index = dbProductos.findIndex(p => p.n === nombre);
         if(index === -1) dbProductos.push({ n: nombre, p: precio });
-        else dbProductos[index].p = precio;
+        else dbProductos[index].p = precio; 
         
         localStorage.setItem('jm_productos', JSON.stringify(dbProductos));
         renderCarrito();
         actualizarDatalists();
         
-        // Limpiar campos de producto
+        // Limpiar campos de captura
         document.getElementById('busquedaProd').value = '';
         document.getElementById('precioProd').value = '';
         document.getElementById('cantProd').value = '';
@@ -105,39 +128,70 @@
         const cont = document.getElementById('carrito');
         let total = 0;
         cont.innerHTML = carrito.map((item, i) => {
-            total += (item.p * item.c);
-            return `<div class="item-pedido">
-                        <span>${item.n} (x${item.c})</span>
-                        <span>$${(item.p * item.c).toLocaleString()}</span>
-                    </div>`;
+            const sub = item.p * item.c;
+            total += sub;
+            return `
+                <div class="item-pedido">
+                    <div><strong>${item.n}</strong><br><small>${item.c} x $${item.p.toLocaleString()}</small></div>
+                    <div style="font-weight:bold;">$${sub.toLocaleString()}</div>
+                </div>`;
         }).join('');
         document.getElementById('totalPedido').innerText = total.toLocaleString();
     }
 
     function enviarPedido() {
-        const n = document.getElementById('nomCliente').value;
-        const t = document.getElementById('telCliente').value;
-        const d = document.getElementById('dirCliente').value;
+        const n = document.getElementById('nomCliente').value.trim();
+        const t = document.getElementById('telCliente').value.trim();
+        const d = document.getElementById('dirCliente').value.trim();
 
-        if(!n || carrito.length === 0) return alert("Faltan datos del cliente o productos");
+        if(!n || !t || carrito.length === 0) return alert("Faltan datos o productos para enviar.");
 
-        // Guardar/Actualizar Cliente en memoria
+        // Mayordomía de Clientes: Guardar para siempre en el celular
         const idxC = dbClientes.findIndex(c => c.t === t);
         if(idxC === -1) dbClientes.push({ n: n, t: t, d: d });
         else dbClientes[idxC] = { n: n, t: t, d: d };
         localStorage.setItem('jm_clientes', JSON.stringify(dbClientes));
 
-        // Formar mensaje de WhatsApp
-        let msg = `*📦 DISTRIBUCIONES JM - PEDIDO*\n`;
-        msg += `👤 CLIENTE: ${n}\n📞 TEL: ${t}\n📍 DIR: ${d}\n`;
-        msg += `--------------------------\n`;
+        // Obtener Ubicación GPS Real
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const lat = pos.coords.latitude;
+                    const lon = pos.coords.longitude;
+                    const gps = `https://www.google.com/maps?q=${lat},${lon}`;
+                    ejecutarEnvio(n, t, d, gps);
+                },
+                (err) => {
+                    console.warn(err);
+                    ejecutarEnvio(n, t, d, "No autorizada");
+                },
+                { enableHighAccuracy: true, timeout: 8000 }
+            );
+        } else {
+            ejecutarEnvio(n, t, d, "No compatible");
+        }
+    }
+
+    function ejecutarEnvio(n, t, d, gps) {
+        let msg = `*📦 DISTRIBUCIONES JM - NUEVO PEDIDO*\n`;
+        msg += `👤 *CLIENTE:* ${n}\n📞 *TEL:* ${t}\n📍 *DIR:* ${d}\n`;
+        msg += `--------------------------------\n`;
         carrito.forEach(i => {
-            msg += `🔹 ${i.n} (x${i.c}) = $${(i.p * i.c).toLocaleString()}\n`;
+            msg += `🔹 ${i.n} (x${i.c}) = *$${(i.p * i.c).toLocaleString()}*\n`;
         });
-        msg += `--------------------------\n`;
-        msg += `💰 *TOTAL: $${document.getElementById('totalPedido').innerText}*`;
+        msg += `--------------------------------\n`;
+        msg += `💰 *TOTAL A COBRAR: $${document.getElementById('totalPedido').innerText}*\n\n`;
+        msg += `📍 *UBICACIÓN CLIENTE:* ${gps}\n`;
+        msg += `_App de Distribuciones JM_`;
 
         window.location.href = `https://wa.me/573204077185?text=${encodeURIComponent(msg)}`;
+    }
+
+    function confirmarLimpiar() {
+        if(confirm("¿Seguro que quiere borrar el pedido actual?")) {
+            carrito = [];
+            renderCarrito();
+        }
     }
 
     window.onload = actualizarDatalists;
