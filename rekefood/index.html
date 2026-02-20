@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REKE FOOD - App Oficial</title>
+    <title>REKE FOOD - Pedidos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --naranja: #FF8C00; --amarillo: #FFD700; --negro: #1a1a1a; }
+        :root { --naranja: #FF8C00; }
         body {
-            /* Filigrana de fondo con el logo de Vibras Positivas */
             background-image: url('https://i.ibb.co/3ykX8kz/logo-vibras-positivas.png'); 
             background-attachment: fixed;
             background-position: center;
@@ -18,7 +17,15 @@
             background-color: rgba(255, 255, 255, 0.96);
             background-blend-mode: overlay;
         }
-        .bg-naranja { background-color: var(--naranja); }
+        .btn-gps-activo {
+            background-color: #3b82f6; /* Azul brillante para resaltar el GPS */
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
         .cuenta-flotante {
             position: fixed; bottom: 100px; right: 20px; z-index: 50;
             background-color: var(--naranja); color: white;
@@ -28,42 +35,47 @@
             position: fixed; bottom: 20px; left: 5%; width: 90%; z-index: 100;
             background-color: #25D366; box-shadow: 0 5px 20px rgba(0,0,0,0.4);
         }
-        .logo-principal {
-            max-width: 200px;
-            height: auto;
-            margin: 0 auto;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-        }
     </style>
 </head>
 <body class="p-4 pb-40 max-w-xl mx-auto font-sans">
 
     <header class="text-center mb-6">
-        <img src="rekefood.PNG" alt="Logo Reke Food" class="logo-principal mb-2">
+        <img src="rekefood.PNG" alt="Logo Reke Food" class="max-w-[180px] mx-auto mb-2">
         <h1 class="text-3xl font-black text-gray-900 italic uppercase">REKE FOOD</h1>
-        <p class="text-[11px] font-bold text-gray-500">Colinas del Portal | WhatsApp: 3207293667</p>
+        <p class="text-[11px] font-bold text-gray-500">Barrio Colinas del Portal | WhatsApp: 3207293667</p>
     </header>
 
     <section class="bg-white p-5 rounded-2xl shadow-xl border-t-8 border-orange-500 mb-8">
-        <h2 class="font-bold text-gray-800 mb-4 flex items-center gap-2">📍 DATOS DE ENVÍO</h2>
-        <div class="space-y-3">
+        <h2 class="font-bold text-gray-800 mb-4 flex items-center gap-2 italic">
+            <i class="fas fa-map-marker-alt text-red-600"></i> ¿DÓNDE ENTREGAMOS?
+        </h2>
+        <div class="space-y-4">
             <input type="text" id="nombre" placeholder="Nombre completo" class="w-full p-3 border rounded-xl outline-none focus:border-orange-500">
-            <div class="flex gap-2">
-                <input type="text" id="direccion" placeholder="Dirección exacta" class="flex-1 p-3 border rounded-xl outline-none focus:border-orange-500">
-                <button onclick="obtenerGPS()" class="bg-blue-600 text-white px-4 rounded-xl shadow active:scale-95">
-                    <i class="fas fa-location-arrow"></i>
+            
+            <div class="relative">
+                <input type="text" id="direccion" placeholder="Dirección o Barrio" class="w-full p-3 border rounded-xl outline-none focus:border-orange-500 pr-14">
+                <button onclick="obtenerUbicacionGPS()" class="absolute right-2 top-1.5 btn-gps-activo text-white p-2.5 rounded-lg shadow-lg" title="Usar mi ubicación actual">
+                    <i class="fas fa-location-crosshairs fa-lg"></i>
                 </button>
             </div>
-            <input type="hidden" id="gps_val">
-            <input type="tel" id="celular" placeholder="Celular" class="w-full p-3 border rounded-xl outline-none focus:border-orange-500">
-            <select id="pago" class="w-full p-3 border rounded-xl font-bold bg-gray-50">
-                <option value="Efectivo">Efectivo</option>
-                <option value="Nequi">Nequi</option>
-                <option value="Daviplata">Daviplata</option>
+            
+            <input type="hidden" id="gps_link">
+            
+            <div id="status_gps" class="hidden flex items-center gap-2 bg-blue-50 p-2 rounded-lg border border-blue-200">
+                <i class="fas fa-check-circle text-blue-600"></i>
+                <span class="text-blue-800 text-xs font-bold italic">¡Ubicación GPS capturada con éxito!</span>
+            </div>
+
+            <input type="tel" id="celular" placeholder="Número de Celular" class="w-full p-3 border rounded-xl outline-none focus:border-orange-500">
+            
+            <select id="pago" class="w-full p-3 border rounded-xl font-bold bg-gray-50 cursor-pointer">
+                <option value="Efectivo">Pagar en Efectivo</option>
+                <option value="Nequi">Pagar por Nequi</option>
+                <option value="Daviplata">Pagar por Daviplata</option>
             </select>
-            <textarea id="obs" placeholder="Observaciones (ej. Sin cebolla, cambio de 50k)" class="w-full p-3 border rounded-xl h-20"></textarea>
+            
+            <textarea id="obs" placeholder="Observaciones (ej: sin cebolla, traer cambio de $50k)" class="w-full p-3 border rounded-xl h-20"></textarea>
         </div>
-        <div id="gps_status" class="hidden text-center text-blue-600 font-bold text-xs mt-2 italic">✅ UBICACIÓN GPS VINCULADA</div>
     </section>
 
     <div id="lista-menu" class="space-y-6"></div>
@@ -72,7 +84,7 @@
         CUENTA: $0
     </div>
 
-    <button onclick="enviarWhatsApp()" class="btn-enviar-pedido text-white py-5 rounded-2xl font-black text-2xl flex items-center justify-center gap-3">
+    <button onclick="enviarPedidoWhatsApp()" class="btn-enviar-pedido text-white py-5 rounded-2xl font-black text-2xl flex items-center justify-center gap-3">
         <i class="fab fa-whatsapp"></i> ENVIAR PEDIDO
     </button>
 
@@ -136,10 +148,10 @@
                             <h3 class="font-bold text-gray-800 uppercase text-xs">${i.n}</h3>
                             <p class="text-red-600 font-black text-lg">$${i.p.toLocaleString()}</p>
                         </div>
-                        <div class="flex items-center gap-3 bg-gray-100 p-2 rounded-xl">
-                            <button onclick="updateQty(${i.id}, -1)" class="w-9 h-9 border rounded-lg font-bold bg-white shadow-sm active:bg-gray-200">-</button>
+                        <div class="flex items-center gap-3">
+                            <button onclick="updateQty(${i.id}, -1)" class="w-10 h-10 border rounded-lg font-bold bg-white shadow-sm">-</button>
                             <span id="qty-${i.id}" class="font-black text-xl w-6 text-center">0</span>
-                            <button onclick="updateQty(${i.id}, 1)" class="w-9 h-9 bg-naranja text-white rounded-lg font-bold shadow-sm active:opacity-80">+</button>
+                            <button onclick="updateQty(${i.id}, 1)" class="w-10 h-10 bg-orange-500 text-white rounded-lg font-bold shadow-sm">+</button>
                         </div>
                     </div>`;
                 });
@@ -159,26 +171,41 @@
             document.getElementById('btn-total').innerText = `CUENTA: $${total.toLocaleString()}`;
         }
 
-        function obtenerGPS() {
+        // --- FUNCIÓN GPS REFORZADA ---
+        function obtenerUbicacionGPS() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(p => {
-                    document.getElementById('gps_val').value = `https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
-                    document.getElementById('gps_status').classList.remove('hidden');
-                    alert("📍 Ubicación GPS capturada.");
-                }, () => { alert("No se pudo obtener el GPS."); });
+                navigator.geolocation.getCurrentPosition(function(posicion) {
+                    const lat = posicion.coords.latitude;
+                    const lon = posicion.coords.longitude;
+                    // Guardamos el link de Google Maps
+                    document.getElementById('gps_link').value = `https://www.google.com/maps?q=${lat},${lon}`;
+                    // Mostramos confirmación al usuario
+                    document.getElementById('status_gps').classList.remove('hidden');
+                    alert("📍 Ubicación capturada correctamente.");
+                }, function(error) {
+                    alert("Error: No pudimos acceder al GPS. Por favor escribe tu dirección manualmente.");
+                });
+            } else {
+                alert("Tu navegador no soporta GPS.");
             }
         }
 
-        function enviarWhatsApp() {
+        function enviarPedidoWhatsApp() {
             const nom = document.getElementById('nombre').value;
             const dir = document.getElementById('direccion').value;
+            const gps = document.getElementById('gps_link').value;
+
             if(!nom || !dir) return alert("Por favor escribe tu Nombre y Dirección.");
 
             let f = `*🍔 PEDIDO REKE FOOD* 🍔\n`;
             f += `----------------------------------\n`;
             f += `👤 *Cliente:* ${nom}\n`;
             f += `📍 *Dirección:* ${dir}\n`;
-            if(document.getElementById('gps_val').value) f += `🗺️ *GPS:* ${document.getElementById('gps_val').value}\n`;
+            
+            // Si capturó GPS, lo agrega a la factura de WhatsApp
+            if(gps) f += `🗺️ *Ubicación GPS:* ${gps}\n`;
+            
+            f += `📱 *Celular:* ${document.getElementById('celular').value}\n`;
             f += `💳 *Pago:* ${document.getElementById('pago').value}\n`;
             f += `----------------------------------\n`;
 
@@ -193,7 +220,7 @@
                 });
             }
 
-            if(t === 0) return alert("El carrito está vacío.");
+            if(t === 0) return alert("El carrito está vacío. Agregue productos.");
 
             f += `----------------------------------\n`;
             f += `💰 *TOTAL A PAGAR: $${t.toLocaleString()}*\n`;
@@ -201,6 +228,7 @@
             f += `📝 *Obs:* ${document.getElementById('obs').value || 'Ninguna'}\n\n`;
             f += `🚀 _Desarrollada por App Vibras Positivas_`;
 
+            // Enlace a tu WhatsApp
             window.open(`https://wa.me/573207293667?text=${encodeURIComponent(f)}`, '_blank');
         }
 
