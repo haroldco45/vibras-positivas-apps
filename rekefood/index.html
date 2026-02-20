@@ -7,214 +7,193 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --color-principal: #FF8C00; /* Naranja Vibras */
-            --color-secundario: #FFD700; /* Amarillo */
-            --color-oscuro: #1a1a1a;
-        }
+        :root { --vibras-naranja: #FF8C00; --vibras-negro: #1a1a1a; }
         body {
             background-image: url('https://i.ibb.co/3ykX8kz/logo-vibras-positivas.png'); 
             background-attachment: fixed;
             background-position: center;
             background-repeat: no-repeat;
             background-size: 80%;
-            background-color: rgba(255, 255, 255, 0.97);
+            background-color: rgba(255, 255, 255, 0.96);
             background-blend-mode: overlay;
         }
-        .bg-vibras { background-color: var(--color-principal); }
-        .text-vibras { color: var(--color-principal); }
-        .border-vibras { border-color: var(--color-principal); }
-        
-        .boton-cuenta {
-            position: fixed;
-            bottom: 95px;
-            right: 20px;
-            z-index: 50;
-            background-color: var(--color-principal);
-            color: white;
+        .bg-naranja { background-color: var(--vibras-naranja); }
+        .border-naranja { border-color: var(--vibras-naranja); }
+        .btn-cuenta {
+            position: fixed; bottom: 90px; right: 20px; z-index: 50;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            border: 2px solid white;
         }
-        .btn-whatsapp {
-            position: fixed;
-            bottom: 20px;
-            left: 5%;
-            width: 90%;
-            z-index: 100;
-            background-color: #25D366;
+        .btn-enviar {
+            position: fixed; bottom: 15px; left: 5%; width: 90%; z-index: 100;
             box-shadow: 0 5px 20px rgba(0,0,0,0.4);
         }
     </style>
 </head>
-<body class="p-4 pb-40 max-w-lg mx-auto font-sans">
+<body class="p-4 pb-40 max-w-xl mx-auto font-sans">
 
     <header class="text-center mb-6">
-        <img src="https://i.ibb.co/3ykX8kz/logo-vibras-positivas.png" alt="Logo" class="h-20 mx-auto mb-2">
-        <h1 class="text-4xl font-black text-gray-900 italic tracking-tight">REKE FOOD</h1>
-        <p class="text-xs font-bold text-gray-500 uppercase">Barrio Colinas del Portal | WhatsApp: 3207293667</p>
+        <img src="https://i.ibb.co/3ykX8kz/logo-vibras-positivas.png" alt="Vibras Positivas" class="h-16 mx-auto mb-2">
+        <h1 class="text-4xl font-black text-red-600 italic uppercase">REKE FOOD</h1>
+        <p class="text-[10px] font-bold text-gray-500 uppercase">Colinas del Portal | WhatsApp: 3207293667</p>
     </header>
 
-    <section class="bg-white p-5 rounded-2xl shadow-xl border-t-4 border-vibras mb-8">
-        <h2 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <i class="fas fa-truck text-vibras"></i> DATOS DE ENVÍO
-        </h2>
+    <section class="bg-white p-5 rounded-2xl shadow-xl border-t-8 border-naranja mb-8">
+        <h2 class="font-bold text-gray-800 mb-4 flex items-center gap-2">📍 ENTREGA Y PAGO</h2>
         <div class="space-y-3">
-            <input type="text" id="nombre" placeholder="Tu Nombre" class="w-full p-3 border rounded-xl outline-none focus:border-orange-500">
+            <input type="text" id="nombre" placeholder="Nombre completo" class="w-full p-3 border rounded-xl outline-none">
             <div class="flex gap-2">
-                <input type="text" id="direccion" placeholder="Dirección exacta" class="flex-1 p-3 border rounded-xl outline-none focus:border-orange-500">
-                <button onclick="obtenerGPS()" class="bg-blue-500 text-white px-4 rounded-xl shadow active:scale-90">
+                <input type="text" id="direccion" placeholder="Dirección / Barrio" class="flex-1 p-3 border rounded-xl outline-none">
+                <button onclick="obtenerGPS()" class="bg-blue-600 text-white px-4 rounded-xl shadow active:scale-90">
                     <i class="fas fa-location-dot"></i>
                 </button>
             </div>
-            <input type="hidden" id="gps_link">
-            <input type="tel" id="celular" placeholder="Número de Celular" class="w-full p-3 border rounded-xl outline-none focus:border-orange-500">
+            <input type="hidden" id="gps_val">
+            <input type="tel" id="celular" placeholder="Celular" class="w-full p-3 border rounded-xl outline-none">
             <select id="pago" class="w-full p-3 border rounded-xl font-bold bg-gray-50">
-                <option value="Efectivo">Efectivo (Pagas al recibir)</option>
+                <option value="Efectivo">Efectivo</option>
                 <option value="Nequi">Nequi</option>
                 <option value="Daviplata">Daviplata</option>
             </select>
-            <textarea id="obs" placeholder="Observaciones (ej. Sin cebolla, traer cambio de 50k)" class="w-full p-3 border rounded-xl"></textarea>
+            <textarea id="obs" placeholder="Observaciones (ej. Sin cebolla, cambio de 50k)" class="w-full p-3 border rounded-xl h-20"></textarea>
         </div>
-        <div id="status_gps" class="hidden text-center text-blue-600 text-xs font-bold mt-2 animate-pulse">📍 GPS ACTIVADO CORRECTAMENTE</div>
+        <div id="gps_status" class="hidden text-center text-blue-600 font-bold text-xs mt-2 italic">✅ GPS Vinculado</div>
     </section>
 
-    <div id="lista-menu" class="space-y-6">
-        </div>
+    <div id="lista-menu" class="space-y-6"></div>
 
-    <div id="btn-total" class="boton-cuenta px-6 py-3 rounded-full font-black text-xl">
-        Total: $0
+    <div id="btn-total" class="btn-cuenta bg-naranja text-white px-6 py-3 rounded-full font-black text-xl border-2 border-white">
+        TOTAL: $0
     </div>
 
-    <button onclick="finalizarPedido()" class="btn-whatsapp text-white py-4 rounded-2xl font-black text-xl flex items-center justify-center gap-3">
-        <i class="fab fa-whatsapp text-2xl"></i> ENVIAR PEDIDO
+    <button onclick="enviarWhatsApp()" class="btn-enviar bg-green-600 text-white py-4 rounded-2xl font-black text-2xl flex items-center justify-center gap-3">
+        <i class="fab fa-whatsapp"></i> ENVIAR PEDIDO
     </button>
 
-    <footer class="text-center mt-12 opacity-50 text-[10px] font-bold uppercase">
-        Desarrollada por App Vibras Positivas © Derechos Reservados
+    <footer class="text-center mt-12 opacity-40 text-[9px] font-bold uppercase tracking-tighter">
+        Desarrollada por App Vibras Positivas © Derechos de Autor Reservados
     </footer>
 
     <script>
-        // PRECIOS REALES EXTRAÍDOS DE TU CARTA
-        const menu = {
-            "HAMBURGUESAS": [
-                { id: 1, n: "Sencilla", p: 11000 },
-                { id: 2, n: "Especial", p: 14000 },
-                { id: 3, n: "Súper Reke", p: 18000 },
-                { id: 4, n: "Doble Carne", p: 17000 },
-                { id: 5, n: "Hamburguesa de Pollo", p: 13000 }
+        // BASE DE DATOS FIEL A LAS IMÁGENES
+        const carta = {
+            "HAMBURGUESAS (CON PAPA Y GASEOSA)": [
+                { id: 1, n: "Sencilla", p: 12000 },
+                { id: 2, n: "Especial", p: 15000 },
+                { id: 3, n: "Súper Reke", p: 20000 },
+                { id: 4, n: "Doble Carne", p: 18000 },
+                { id: 5, n: "Hamburguesa Pollo", p: 14000 }
             ],
             "PERROS CALIENTES": [
-                { id: 6, n: "Perro Sencillo", p: 8000 },
-                { id: 7, n: "Perro Especial", p: 12000 },
-                { id: 8, n: "Perro Suizo", p: 14000 },
-                { id: 9, n: "Perro Reke (Con todo)", p: 16000 }
+                { id: 6, n: "Perro Sencillo", p: 9000 },
+                { id: 7, n: "Perro Especial", p: 13000 },
+                { id: 8, n: "Perro Suizo", p: 15000 },
+                { id: 9, n: "Perro Reke", p: 16000 }
             ],
             "SALCHIPAPAS": [
-                { id: 10, n: "Salchipapa Sencilla", p: 10000 },
-                { id: 11, n: "Salchipapa Especial", p: 16000 },
+                { id: 10, n: "Salchipapa Sencilla", p: 11000 },
+                { id: 11, n: "Salchipapa Especial", p: 17000 },
                 { id: 12, n: "Reke-Especial", p: 22000 },
-                { id: 13, n: "Salchipapa Familiar", p: 30000 }
+                { id: 13, n: "Salchipapa Familiar", p: 32000 }
             ],
             "ADICIONES": [
-                { id: 14, n: "Queso Extra", p: 2000 },
-                { id: 15, n: "Tocineta", p: 3000 },
-                { id: 16, n: "Huevo Codorniz (x3)", p: 2000 },
-                { id: 17, n: "Carne Extra", p: 5000 },
-                { id: 18, n: "Papas Francesa", p: 5000 }
+                { id: 14, n: "Porción Papa Francesa", p: 6000 },
+                { id: 15, n: "Queso Extra", p: 3000 },
+                { id: 16, n: "Tocineta", p: 3500 },
+                { id: 17, n: "Carne / Pollo Extra", p: 5000 },
+                { id: 18, n: "Huevo Codorniz (x3)", p: 2000 }
             ],
             "BEBIDAS": [
-                { id: 19, n: "Gaseosa 350ml", p: 3000 },
-                { id: 20, n: "Gaseosa 1.5L", p: 6000 },
+                { id: 19, n: "Gaseosa 350ml", p: 3500 },
+                { id: 20, n: "Gaseosa 1.5L", p: 7000 },
                 { id: 21, n: "Jugo Hit", p: 3000 },
-                { id: 22, n: "Agua", p: 2000 },
-                { id: 23, n: "Cerveza", p: 5000 },
-                { id: 24, n: "Limonada", p: 4000 }
+                { id: 22, n: "Cerveza Corona/Club", p: 7000 },
+                { id: 23, n: "Limonada Natural", p: 5000 },
+                { id: 24, n: "Agua Botella", p: 2500 }
             ]
         };
 
-        let carrito = {};
+        let pedido = {};
 
-        function imprimirMenu() {
-            let html = '';
-            for (let cat in menu) {
-                html += `<h2 class="text-lg font-black bg-vibras text-white px-4 py-1 rounded-r-full inline-block mt-4 mb-2 shadow">${cat}</h2>`;
-                menu[cat].forEach(item => {
-                    html += `
-                    <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-vibras flex justify-between items-center mb-2">
+        function cargar() {
+            let h = '';
+            for (let c in carta) {
+                h += `<h2 class="text-lg font-black bg-gray-900 text-white px-4 py-1 rounded-r-full inline-block mt-4 mb-3 border-l-4 border-naranja shadow">${c}</h2>`;
+                carta[c].forEach(i => {
+                    h += `
+                    <div class="bg-white p-4 rounded-xl shadow-md border-b-4 border-naranja flex justify-between items-center mb-3">
                         <div class="flex-1">
-                            <h3 class="font-bold text-gray-800 text-sm uppercase">${item.n}</h3>
-                            <p class="text-red-600 font-black">$${item.p.toLocaleString()}</p>
+                            <h3 class="font-bold text-gray-800 uppercase text-xs">${i.n}</h3>
+                            <p class="text-red-600 font-black text-lg">$${i.p.toLocaleString()}</p>
                         </div>
-                        <div class="flex items-center gap-3">
-                            <button onclick="sumar(${item.id}, -1)" class="w-8 h-8 border rounded-lg font-bold">-</button>
-                            <span id="cant-${item.id}" class="font-bold w-4 text-center">0</span>
-                            <button onclick="sumar(${item.id}, 1)" class="w-8 h-8 bg-vibras text-white rounded-lg font-bold shadow">+</button>
+                        <div class="flex items-center gap-3 bg-gray-50 p-2 rounded-xl">
+                            <button onclick="m(${i.id}, -1)" class="w-9 h-9 border rounded-lg font-bold bg-white shadow-sm">-</button>
+                            <span id="c-${i.id}" class="font-black text-xl w-6 text-center">0</span>
+                            <button onclick="m(${i.id}, 1)" class="w-9 h-9 bg-naranja text-white rounded-lg font-bold shadow-sm">+</button>
                         </div>
                     </div>`;
                 });
             }
-            document.getElementById('lista-menu').innerHTML = html;
+            document.getElementById('lista-menu').innerHTML = h;
         }
 
-        function sumar(id, val) {
-            carrito[id] = (carrito[id] || 0) + val;
-            if (carrito[id] < 0) carrito[id] = 0;
-            document.getElementById(`cant-${id}`).innerText = carrito[id];
+        function m(id, v) {
+            pedido[id] = (pedido[id] || 0) + v;
+            if (pedido[id] < 0) pedido[id] = 0;
+            document.getElementById(`c-${id}`).innerText = pedido[id];
             
-            let total = 0;
-            for (let cat in menu) {
-                menu[cat].forEach(i => total += (carrito[i.id] || 0) * i.p);
+            let t = 0;
+            for (let c in carta) {
+                carta[c].forEach(i => t += (pedido[i.id] || 0) * i.p);
             }
-            document.getElementById('btn-total').innerText = `Total: $${total.toLocaleString()}`;
+            document.getElementById('btn-total').innerText = `TOTAL: $${t.toLocaleString()}`;
         }
 
         function obtenerGPS() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(pos => {
-                    document.getElementById('gps_link').value = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-                    document.getElementById('status_gps').classList.remove('hidden');
-                    alert("📍 Ubicación GPS capturada.");
+                navigator.geolocation.getCurrentPosition(p => {
+                    document.getElementById('gps_val').value = `https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
+                    document.getElementById('gps_status').classList.remove('hidden');
+                    alert("📍 GPS OK");
                 });
             }
         }
 
-        function finalizarPedido() {
-            const n = document.getElementById('nombre').value;
-            const d = document.getElementById('direccion').value;
-            if(!n || !d) return alert("Por favor escribe tu nombre y dirección.");
+        function enviarWhatsApp() {
+            const nom = document.getElementById('nombre').value;
+            const dir = document.getElementById('direccion').value;
+            if(!nom || !dir) return alert("Por favor ingresa nombre y dirección.");
 
-            let texto = `*🍔 NUEVO PEDIDO REKE FOOD 🍔*\n`;
-            texto += `----------------------------------\n`;
-            texto += `👤 *Cliente:* ${n}\n`;
-            texto += `📍 *Dirección:* ${d}\n`;
-            if(document.getElementById('gps_link').value) texto += `🗺️ *GPS:* ${document.getElementById('gps_link').value}\n`;
-            texto += `📱 *Celular:* ${document.getElementById('celular').value}\n`;
-            texto += `💳 *Pago:* ${document.getElementById('pago').value}\n`;
-            texto += `----------------------------------\n`;
+            let f = `*🍔 PEDIDO REKE FOOD - FACTURA* 🍔\n`;
+            f += `----------------------------------\n`;
+            f += `👤 *Cliente:* ${nom}\n`;
+            f += `📍 *Dirección:* ${dir}\n`;
+            if(document.getElementById('gps_val').value) f += `🗺️ *GPS:* ${document.getElementById('gps_val').value}\n`;
+            f += `💳 *Pago:* ${document.getElementById('pago').value}\n`;
+            f += `----------------------------------\n`;
 
-            let total = 0;
-            for (let cat in menu) {
-                menu[cat].forEach(i => {
-                    if(carrito[i.id] > 0) {
-                        let sub = carrito[i.id] * i.p;
-                        texto += `✅ ${carrito[i.id]}x ${i.n} ($${sub.toLocaleString()})\n`;
-                        total += sub;
+            let t = 0;
+            for (let c in carta) {
+                carta[c].forEach(i => {
+                    if(pedido[i.id] > 0) {
+                        let sub = pedido[i.id] * i.p;
+                        f += `✅ ${pedido[i.id]}x ${i.n} - $${sub.toLocaleString()}\n`;
+                        t += sub;
                     }
                 });
             }
 
-            if(total === 0) return alert("Selecciona productos para tu pedido.");
+            if(t === 0) return alert("El carrito está vacío.");
 
-            texto += `----------------------------------\n`;
-            texto += `💰 *TOTAL A COBRAR: $${total.toLocaleString()}*\n`;
-            texto += `----------------------------------\n`;
-            texto += `📝 *Obs:* ${document.getElementById('obs').value || 'Ninguna'}\n\n`;
-            texto += `🚀 _App Vibras Positivas Derechos de Autor_`;
+            f += `----------------------------------\n`;
+            f += `💰 *TOTAL A PAGAR: $${t.toLocaleString()}*\n`;
+            f += `----------------------------------\n`;
+            f += `📝 *Obs:* ${document.getElementById('obs').value || 'Ninguna'}\n\n`;
+            f += `🚀 _Desarrollada por App Vibras Positivas_`;
 
-            window.open(`https://wa.me/573207293667?text=${encodeURIComponent(texto)}`, '_blank');
+            window.open(`https://wa.me/573207293667?text=${encodeURIComponent(f)}`, '_blank');
         }
 
-        imprimirMenu();
+        cargar();
     </script>
 </body>
 </html>
