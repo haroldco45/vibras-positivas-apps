@@ -23,7 +23,7 @@
         }
         @keyframes pulse-blue {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
+            70% { transform: scale(1.03); box-shadow: 0 0 0 8px rgba(37, 99, 235, 0); }
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
         }
         .cuenta-flotante {
@@ -40,64 +40,69 @@
 <body class="p-4 pb-40 max-w-xl mx-auto font-sans">
 
     <header class="text-center mb-6">
-        <img src="rekefood.PNG" alt="Logo Reke Food" class="max-w-[160px] mx-auto mb-2">
+        <img src="rekefood.PNG" alt="Logo Reke Food" class="max-w-[180px] mx-auto mb-2">
         <h1 class="text-3xl font-black text-gray-900 italic uppercase">REKE FOOD</h1>
-        <p class="text-[10px] font-bold text-gray-400 italic">Desarrollado por Vibras Positivas</p>
+        <div id="bienvenida" class="text-orange-600 font-bold text-sm italic"></div>
     </header>
 
     <section class="bg-white p-4 rounded-2xl shadow-xl border-t-4 border-orange-500 mb-6">
         
         <div id="vista-resumida" class="hidden">
-            <div class="flex justify-between items-center bg-gray-50 p-3 rounded-xl border">
-                <div class="text-xs">
+            <div class="flex justify-between items-center bg-gray-50 p-3 rounded-xl border border-gray-200">
+                <div class="text-[11px]">
                     <p class="font-black text-gray-800 uppercase" id="resumen-nombre"></p>
                     <p class="text-gray-500 italic" id="resumen-dir"></p>
                 </div>
-                <button onclick="toggleEditor()" class="bg-orange-100 text-orange-600 px-3 py-1 rounded-lg text-xs font-bold border border-orange-200">
-                    <i class="fas fa-edit"></i> EDITAR
+                <button onclick="toggleEditor()" class="bg-orange-100 text-orange-600 px-3 py-1 rounded-lg text-[10px] font-bold border border-orange-200 uppercase">
+                    <i class="fas fa-edit"></i> Editar
                 </button>
             </div>
         </div>
 
         <div id="editor-datos" class="space-y-4 pt-2">
-            <h2 class="font-bold text-gray-700 flex items-center gap-2 text-sm uppercase">
-                <i class="fas fa-user-circle text-orange-500"></i> Datos de Entrega
+            <h2 class="font-bold text-gray-700 flex items-center gap-2 text-xs uppercase">
+                <i class="fas fa-user-circle text-orange-500"></i> Registro de Entrega
             </h2>
-            
-            <input type="text" id="nombre" placeholder="Nombre completo" class="w-full p-3 border rounded-xl outline-none focus:border-orange-500 bg-gray-50 text-sm">
-            <input type="text" id="direccion" placeholder="Dirección y Barrio" class="w-full p-3 border rounded-xl outline-none focus:border-orange-500 bg-gray-50 text-sm">
-            <input type="tel" id="celular_cliente" placeholder="Número de Celular" class="w-full p-3 border rounded-xl outline-none focus:border-orange-500 bg-gray-50 text-sm">
-            
-            <button onclick="finalizarEdicion()" id="btn-listo" class="hidden w-full bg-gray-800 text-white font-bold py-2 rounded-xl text-xs"> GUARDAR CAMBIOS </button>
+            <input type="text" id="nombre" placeholder="Nombre completo" class="w-full p-3 border rounded-xl outline-none focus:border-orange-500 bg-gray-50 text-sm font-semibold">
+            <input type="text" id="direccion" placeholder="Dirección y Barrio" class="w-full p-3 border rounded-xl outline-none focus:border-orange-500 bg-gray-50 text-sm font-semibold">
+            <input type="tel" id="celular_cliente" placeholder="Número de Celular" class="w-full p-3 border rounded-xl outline-none focus:border-orange-500 bg-gray-50 text-sm font-semibold">
+            <button onclick="guardarYContinuar()" id="btn-listo" class="w-full bg-gray-800 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-widest shadow-md"> 
+                Confirmar mis Datos
+            </button>
         </div>
 
         <div class="mt-4 border-t pt-4">
-            <button onclick="obtenerUbicacionReal()" class="w-full btn-gps-blink text-white font-black py-3 rounded-xl flex items-center justify-center gap-3 shadow-lg text-sm">
-                <i class="fas fa-location-dot"></i> ENVIAR MI UBICACIÓN GPS
+            <button onclick="obtenerUbicacionReal()" class="w-full btn-gps-blink text-white font-black py-4 rounded-xl flex items-center justify-center gap-3 shadow-lg text-xs uppercase">
+                <i class="fas fa-location-dot text-lg"></i> Vincular Ubicación GPS Actual
             </button>
             <div id="status_gps" class="hidden flex items-center justify-center gap-2 mt-2 text-green-600 font-bold text-[10px] uppercase italic">
-                <i class="fas fa-check-double"></i> GPS vinculado correctamente
+                <i class="fas fa-check-double"></i> GPS vinculado para este pedido
             </div>
             <input type="hidden" id="gps_url">
         </div>
     </section>
 
     <div class="bg-white p-4 rounded-2xl shadow-md mb-6 border-l-4 border-orange-500">
-        <select id="pago" class="w-full p-3 border rounded-xl font-bold bg-gray-50 text-sm mb-3">
+        <select id="pago" class="w-full p-3 border rounded-xl font-bold bg-gray-50 text-sm mb-3 cursor-pointer">
             <option value="Efectivo">Pagar en Efectivo</option>
-            <option value="Nequi">Nequi</option>
-            <option value="Daviplata">Daviplata</option>
+            <option value="Nequi">Pagar por Nequi</option>
+            <option value="Daviplata">Pagar por Daviplata</option>
         </select>
-        <textarea id="obs" placeholder="Observaciones adicionales..." class="w-full p-3 border rounded-xl h-16 bg-gray-50 text-sm"></textarea>
+        <textarea id="obs" placeholder="Observaciones: (Ej. Sin cebolla, traer cambio de 50k...)" class="w-full p-3 border rounded-xl h-20 bg-gray-50 text-sm"></textarea>
     </div>
 
     <div id="lista-menu" class="space-y-4"></div>
 
     <div id="btn-total" class="cuenta-flotante px-6 py-3 rounded-full font-black text-xl"> TOTAL: $0 </div>
 
-    <button onclick="enviarAlWhatsApp()" class="btn-enviar-pedido text-white py-5 rounded-2xl font-black text-2xl flex items-center justify-center gap-3">
+    <button onclick="enviarAlWhatsApp()" class="btn-enviar-pedido text-white py-5 rounded-2xl font-black text-2xl flex items-center justify-center gap-3 active:scale-95 transition-all">
         <i class="fab fa-whatsapp"></i> ENVIAR PEDIDO
     </button>
+
+    <footer class="text-center mt-12 opacity-50 text-[10px] font-bold uppercase">
+        <img src="https://i.ibb.co/3ykX8kz/logo-vibras-positivas.png" alt="Logo Vibras Positivas" class="h-10 mx-auto mb-2">
+        Desarrollado por Vibras Positivas
+    </footer>
 
     <script>
         const menuData = {
@@ -114,14 +119,8 @@
                 { id: 8, n: "Personal x2", p: 25000 },
                 { id: 9, n: "Personal x3", p: 35000 }
             ],
-            "PICADAS": [
-                { id: 10, n: "Picada x 2", p: 26000 },
-                { id: 11, n: "Picada x 3", p: 36000 }
-            ],
-            "PERROS": [
-                { id: 12, n: "Sencillo", p: 14000 },
-                { id: 13, n: "Especial", p: 22000 }
-            ],
+            "PICADAS": [{ id: 10, n: "Picada x 2", p: 26000 }, { id: 11, n: "Picada x 3", p: 36000 }],
+            "PERROS": [{ id: 12, n: "Sencillo", p: 14000 }, { id: 13, n: "Especial", p: 22000 }],
             "BEBIDAS": [
                 { id: 19, n: "Gaseosa Personal", p: 4000 }, { id: 20, n: "Gaseosa 1.5 L", p: 8000 },
                 { id: 21, n: "Jugo Hit", p: 5000 }, { id: 23, n: "Agua", p: 3000 }
@@ -134,12 +133,14 @@
 
         let carrito = {};
 
+        // --- LÓGICA DE MEMORIA AL INICIAR ---
         window.onload = function() {
-            const guardado = localStorage.getItem('reke_nombre');
-            if(guardado) {
-                document.getElementById('nombre').value = localStorage.getItem('reke_nombre');
+            const nombreGuardado = localStorage.getItem('reke_nombre');
+            if(nombreGuardado) {
+                document.getElementById('nombre').value = nombreGuardado;
                 document.getElementById('direccion').value = localStorage.getItem('reke_dir');
                 document.getElementById('celular_cliente').value = localStorage.getItem('reke_tel');
+                document.getElementById('bienvenida').innerText = `¡Hola de nuevo, ${nombreGuardado.split(' ')[0]}!`;
                 mostrarResumen();
             }
             renderMenu();
@@ -148,11 +149,18 @@
         function toggleEditor() {
             document.getElementById('editor-datos').classList.remove('hidden');
             document.getElementById('vista-resumida').classList.add('hidden');
-            document.getElementById('btn-listo').classList.remove('hidden');
         }
 
-        function finalizarEdicion() {
-            if(!document.getElementById('nombre').value) return alert("Escribe tu nombre");
+        function guardarYContinuar() {
+            const nom = document.getElementById('nombre').value;
+            const dir = document.getElementById('direccion').value;
+            const tel = document.getElementById('celular_cliente').value;
+
+            if(!nom || !dir || !tel) return alert("Por favor completa tus datos antes de continuar.");
+            
+            localStorage.setItem('reke_nombre', nom);
+            localStorage.setItem('reke_dir', dir);
+            localStorage.setItem('reke_tel', tel);
             mostrarResumen();
         }
 
@@ -161,26 +169,22 @@
             document.getElementById('resumen-dir').innerText = document.getElementById('direccion').value;
             document.getElementById('editor-datos').classList.add('hidden');
             document.getElementById('vista-resumida').classList.remove('hidden');
-            
-            localStorage.setItem('reke_nombre', document.getElementById('nombre').value);
-            localStorage.setItem('reke_dir', document.getElementById('direccion').value);
-            localStorage.setItem('reke_tel', document.getElementById('celular_cliente').value);
         }
 
         function renderMenu() {
             let html = '';
             for (let cat in menuData) {
-                html += `<h2 class="text-xs font-black bg-gray-900 text-white px-3 py-1 rounded-r-full inline-block mt-4 mb-2 border-l-4 border-orange-500 shadow uppercase">${cat}</h2>`;
+                html += `<h2 class="text-xs font-black bg-gray-900 text-white px-3 py-1 rounded-r-full inline-block mt-4 mb-2 border-l-4 border-orange-500 uppercase tracking-tighter">${cat}</h2>`;
                 menuData[cat].forEach(i => {
                     html += `
-                    <div class="bg-white p-3 rounded-xl shadow-sm border-b-2 border-orange-200 flex justify-between items-center mb-2">
+                    <div class="bg-white p-3 rounded-xl shadow-sm border-b-2 border-orange-100 flex justify-between items-center mb-2">
                         <div class="flex-1">
-                            <h3 class="font-bold text-gray-700 uppercase text-[10px]">${i.n}</h3>
+                            <h3 class="font-bold text-gray-700 uppercase text-[10px] leading-tight">${i.n}</h3>
                             <p class="text-orange-600 font-black text-md">$${i.p.toLocaleString()}</p>
                         </div>
                         <div class="flex items-center gap-2">
-                            <button onclick="updateQty(${i.id}, -1)" class="w-8 h-8 border rounded-lg font-bold bg-white">-</button>
-                            <span id="qty-${i.id}" class="font-black text-lg w-5 text-center text-gray-800">0</span>
+                            <button onclick="updateQty(${i.id}, -1)" class="w-8 h-8 border rounded-lg font-bold bg-white active:bg-gray-100">-</button>
+                            <span id="qty-${i.id}" class="font-black text-lg w-5 text-center">0</span>
                             <button onclick="updateQty(${i.id}, 1)" class="w-8 h-8 bg-orange-500 text-white rounded-lg font-bold shadow-sm">+</button>
                         </div>
                     </div>`;
@@ -206,8 +210,8 @@
                     const url = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
                     document.getElementById('gps_url').value = url;
                     document.getElementById('status_gps').classList.remove('hidden');
-                    alert("📍 GPS OK.");
-                }, function(err) { alert("Activa tu GPS."); });
+                    alert("📍 Ubicación GPS capturada con éxito.");
+                }, function(err) { alert("Por favor activa el GPS de tu celular."); });
             }
         }
 
@@ -217,7 +221,7 @@
             const tel = document.getElementById('celular_cliente').value;
             const gps = document.getElementById('gps_url').value;
 
-            if(!nom || !dir || !tel) return alert("Completa tus datos.");
+            if(!nom || !dir || !tel) return alert("Faltan tus datos de envío.");
 
             let msg = `*🍔 PEDIDO REKE FOOD* 🍔\n`;
             msg += `👤 *Cliente:* ${nom}\n`;
@@ -238,10 +242,10 @@
                 });
             }
 
-            if(t === 0) return alert("¡Elige algo rico primero!");
+            if(t === 0) return alert("Elige algún producto del menú.");
 
             msg += `----------------------------------\n`;
-            msg += `💰 *TOTAL: $${t.toLocaleString()}*\n`;
+            msg += `💰 *TOTAL A PAGAR: $${t.toLocaleString()}*\n`;
             msg += `📝 *Obs:* ${document.getElementById('obs').value || 'Ninguna'}\n\n`;
             msg += `🚀 _App por Vibras Positivas_`;
 
