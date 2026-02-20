@@ -9,6 +9,7 @@
     <style>
         :root { --naranja: #FF8C00; --amarillo: #FFD700; --negro: #1a1a1a; }
         body {
+            /* Filigrana de fondo con el logo de Vibras Positivas */
             background-image: url('https://i.ibb.co/3ykX8kz/logo-vibras-positivas.png'); 
             background-attachment: fixed;
             background-position: center;
@@ -18,7 +19,6 @@
             background-blend-mode: overlay;
         }
         .bg-naranja { background-color: var(--naranja); }
-        .text-naranja { color: var(--naranja); }
         .cuenta-flotante {
             position: fixed; bottom: 100px; right: 20px; z-index: 50;
             background-color: var(--naranja); color: white;
@@ -28,13 +28,19 @@
             position: fixed; bottom: 20px; left: 5%; width: 90%; z-index: 100;
             background-color: #25D366; box-shadow: 0 5px 20px rgba(0,0,0,0.4);
         }
+        .logo-principal {
+            max-width: 200px;
+            height: auto;
+            margin: 0 auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
     </style>
 </head>
 <body class="p-4 pb-40 max-w-xl mx-auto font-sans">
 
     <header class="text-center mb-6">
-        <img src="https://i.ibb.co/3ykX8kz/logo-vibras-positivas.png" alt="Vibras Positivas" class="h-20 mx-auto mb-2">
-        <h1 class="text-4xl font-black text-gray-900 italic uppercase">REKE FOOD</h1>
+        <img src="rekefood.PNG" alt="Logo Reke Food" class="logo-principal mb-2">
+        <h1 class="text-3xl font-black text-gray-900 italic uppercase">REKE FOOD</h1>
         <p class="text-[11px] font-bold text-gray-500">Colinas del Portal | WhatsApp: 3207293667</p>
     </header>
 
@@ -71,17 +77,18 @@
     </button>
 
     <footer class="text-center mt-12 opacity-40 text-[9px] font-bold uppercase">
+        <img src="https://i.ibb.co/3ykX8kz/logo-vibras-positivas.png" alt="Vibras Positivas" class="h-8 mx-auto mb-1 opacity-60">
         Desarrollada por App Vibras Positivas © Derechos de Autor
     </footer>
 
     <script>
-        // DATA EXTRAÍDA 100% DEL ARCHIVO RFCARTA.XLS
         const menuData = {
             "HAMBURGUESAS": [
                 { id: 1, n: "Sencilla", p: 16000 },
                 { id: 2, n: "Especial", p: 22000 }
             ],
             "PLATOS ESPECIALES": [
+                { id: 24, n: "Burger Arepa", p: 16000 },
                 { id: 3, n: "Chuzo de Pollo", p: 23000 },
                 { id: 4, n: "Arepa Especial", p: 18000 },
                 { id: 5, n: "Pechuga y Cerdo a la Plancha", p: 25000 },
@@ -157,7 +164,7 @@
                 navigator.geolocation.getCurrentPosition(p => {
                     document.getElementById('gps_val').value = `https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
                     document.getElementById('gps_status').classList.remove('hidden');
-                    alert("📍 Ubicación GPS capturada con éxito.");
+                    alert("📍 Ubicación GPS capturada.");
                 }, () => { alert("No se pudo obtener el GPS."); });
             }
         }
