@@ -17,6 +17,7 @@ const controlVibras = {
     "polloharana": "activo",
     "dulcebocadopostresycafe": "activo",
     "abocados": "activo",
+    "rekefood": "activo",
 
     // TIENDAS Y MERCADOS
     "tienda-azul": "activo",
