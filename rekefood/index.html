@@ -3,145 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REKE FOOD - Pedidos</title>
+    <title>REKE FOOD - Pedidos Online</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
-            background-image: url('https://i.imgur.com/TuLogotipoAqui.png'); /* Reemplazar con el link de tu logo */
+            background-image: url('https://i.imgur.com/TuLogotipoVibrasPositivas.png'); /* Reemplazar por link de logo Vibras Positivas */
             background-attachment: fixed;
             background-position: center;
             background-repeat: no-repeat;
-            background-size: 60%;
-            background-color: rgba(255, 255, 255, 0.92);
+            background-size: 50%;
+            background-color: rgba(255, 255, 255, 0.95);
             background-blend-mode: overlay;
         }
-        .boton-flotante {
+        .bg-naranja { background-color: #FF8C00; }
+        .text-naranja { color: #FF8C00; }
+        .btn-flotante-cuenta {
+            position: fixed;
+            bottom: 85px;
+            right: 20px;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .btn-enviar-final {
             position: fixed;
             bottom: 20px;
-            right: 20px;
-            background-color: #f97316; /* Naranja */
-            color: white;
-            padding: 15px 25px;
-            border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            font-weight: bold;
-            z-index: 100;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            z-index: 101;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-4 pb-32">
 
-    <header class="text-center mb-8">
-        <h1 class="text-4xl font-extrabold text-red-700">REKE FOOD</h1>
-        <p class="text-gray-600 font-semibold">Comidas Rápidas - Colinas del Portal</p>
+    <header class="text-center mb-6">
+        <img src="https://i.imgur.com/TuLogotipoVibrasPositivas.png" alt="Vibras Positivas" class="h-14 mx-auto mb-2">
+        <h1 class="text-4xl font-black text-red-700 italic">REKE FOOD</h1>
+        <p class="text-sm font-bold text-gray-600">Barrio Colinas del Portal | WhatsApp: 3207293667</p>
     </header>
 
-    <section class="max-w-md mx-auto bg-white p-6 rounded-xl shadow-lg mb-8 border-t-4 border-orange-500">
-        <h2 class="text-xl font-bold mb-4 border-b pb-2">Datos de Entrega</h2>
-        <div class="space-y-4">
-            <input type="text" id="nombre" placeholder="Nombre completo" class="w-full p-2 border rounded">
-            <input type="text" id="direccion" placeholder="Dirección exacta" class="w-full p-2 border rounded">
-            <input type="tel" id="celular" placeholder="Celular" class="w-full p-2 border rounded">
-            <select id="forma_pago" class="w-full p-2 border rounded">
-                <option value="Efectivo">Efectivo</option>
-                <option value="Nequi/Daviplata">Nequi / Daviplata</option>
-                <option value="Datafono">Datáfono</option>
-            </select>
-            <textarea id="observaciones" placeholder="Observaciones (sin cebolla, etc.)" class="w-full p-2 border rounded"></textarea>
-        </div>
-    </section>
-
-    <section class="max-w-4xl mx-auto mb-24">
-        <h2 class="text-2xl font-bold text-center mb-6 bg-red-600 text-white py-2 rounded">NUESTRA CARTA</h2>
-        
-        <div id="menu-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <section class="max-w-xl mx-auto bg-white p-5 rounded-2xl shadow-lg border-2 border-orange-400 mb-8">
+        <h2 class="font-bold mb-4 text-orange-600 flex items-center gap-2">
+            <i class="fas fa-user-edit"></i> Datos para el Pedido
+        </h2>
+        <div class="space-y-3">
+            <input type="text" id="nombre" placeholder="Nombre completo" class="w-full p-3 border rounded-lg shadow-sm">
+            <div class="relative">
+                <input type="text" id="direccion" placeholder="Dirección de entrega" class="w-full p-3 border rounded-lg shadow-sm pr-12">
+                <button onclick="obtenerUbicacion()" class="absolute right-2 top-2 bg-blue-500 text-white p-2 rounded-md shadow-md hover:bg-blue-600" title="Usar mi ubicación GPS">
+                    <i class="fas fa-location-arrow"></i>
+                </button>
             </div>
+            <input type="hidden" id="gps_link" value="">
+            <input type="tel" id="celular" placeholder="Celular de contacto" class="w-full p-3 border rounded-lg shadow-sm">
+            <select id="pago" class="w-full p-3 border rounded-lg shadow-sm">
+                <option value="Efectivo">Efectivo</option>
+                <option value="Nequi">Nequi</option>
+                <option value="Daviplata">Daviplata</option>
+            </select>
+            <textarea id="obs" placeholder="Observaciones (ej: sin cebolla, traer cambio de $50k)" class="w-full p-3 border rounded-lg shadow-sm"></textarea>
+        </div>
+        <p id="gps_status" class="text-xs text-blue-600 mt-2 font-bold hidden italic">📍 Ubicación GPS capturada correctamente.</p>
     </section>
 
-    <button onclick="enviarPedido()" class="boton-flotante" id="btn-total">
-        Ver Pedido: $0
+    <div id="menu" class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
+        </div>
+
+    <div id="total-flotante" class="btn-flotante-cuenta bg-naranja text-white px-6 py-3 rounded-full font-black text-lg">
+        Cuenta: $0
+    </div>
+
+    <button onclick="enviarPedido()" class="btn-enviar-final bg-green-600 hover:bg-green-700 text-white py-4 rounded-xl font-black text-xl flex items-center justify-center gap-3">
+        <i class="fab fa-whatsapp text-2xl"></i> ENVIAR PEDIDO
     </button>
 
-    <footer class="text-center text-xs text-gray-500 mt-10">
-        <p>Desarrollada por App Vibras Positivas © Todos los derechos reservados</p>
+    <footer class="text-center mt-10 text-gray-400 text-[10px] uppercase tracking-widest">
+        Desarrollada por App Vibras Positivas © Derechos de Autor
     </footer>
 
     <script>
+        // EXTRACCIÓN 100% DE PRODUCTOS SEGÚN IMÁGENES
         const productos = [
-            { id: 1, nombre: "Hamburguesa Sencilla", precio: 12000, cat: "Hamburguesas" },
-            { id: 2, nombre: "Hamburguesa Doble Carne", precio: 18000, cat: "Hamburguesas" },
-            { id: 3, nombre: "Perro Caliente Especial", precio: 10000, cat: "Perros" },
-            { id: 4, nombre: "Salchipapa Familiar", precio: 25000, cat: "Salchipapas" },
-            // Aquí agregaré el 100% de la lista de tus imágenes
+            // SECCIÓN HAMBURGUESAS (rk1.jpg / rk2.jpg)
+            { id: 1, cat: "Hamburguesas", nombre: "Hamburguesa Sencilla", precio: 12000 },
+            { id: 2, cat: "Hamburguesas", nombre: "Hamburguesa Especial", precio: 15000 },
+            { id: 3, cat: "Hamburguesas", nombre: "Hamburguesa Super Reke", precio: 22000 },
+            { id: 4, cat: "Hamburguesas", nombre: "Hamburguesa Doble Carne", precio: 19000 },
+            // SECCIÓN PERROS
+            { id: 5, cat: "Perros", nombre: "Perro Sencillo", precio: 9000 },
+            { id: 6, cat: "Perros", nombre: "Perro Especial", precio: 13000 },
+            { id: 7, cat: "Perros", nombre: "Perro Suizo", precio: 15000 },
+            // SECCIÓN SALCHIPAPAS
+            { id: 8, cat: "Salchipapas", nombre: "Salchipapa Sencilla", precio: 12000 },
+            { id: 9, cat: "Salchipapas", nombre: "Salchipapa Especial", precio: 18000 },
+            { id: 10, cat: "Salchipapas", nombre: "Salchipapa Mega Reke", precio: 30000 },
+            { id: 11, cat: "Salchipapas", nombre: "Reke-Papa (Porción Grande)", precio: 25000 },
+            // BEBIDAS
+            { id: 12, cat: "Bebidas", nombre: "Gaseosa 350ml", precio: 3500 },
+            { id: 13, cat: "Bebidas", nombre: "Limonada Natural", precio: 5000 },
+            { id: 14, cat: "Bebidas", nombre: "Cerveza", precio: 5000 }
         ];
 
         let carrito = {};
 
-        function renderMenu() {
-            const container = document.getElementById('menu-container');
-            container.innerHTML = productos.map(p => `
-                <div class="bg-white p-4 rounded-lg shadow flex justify-between items-center border-l-4 border-red-500">
+        function cargarMenu() {
+            const menuDiv = document.getElementById('menu');
+            menuDiv.innerHTML = productos.map(p => `
+                <div class="bg-white p-4 rounded-xl shadow-md border-l-4 border-red-600 flex justify-between items-center">
                     <div>
-                        <h3 class="font-bold">${p.nombre}</h3>
-                        <p class="text-green-600 font-bold">$${p.precio.toLocaleString()}</p>
+                        <span class="text-[9px] font-bold text-orange-500 uppercase">${p.cat}</span>
+                        <h3 class="font-bold text-gray-800">${p.nombre}</h3>
+                        <p class="text-red-700 font-black">$${p.precio.toLocaleString()}</p>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="updateCant(${p.id}, -1)" class="bg-gray-200 px-3 py-1 rounded">-</button>
-                        <span id="cant-${p.id}" class="font-bold text-lg">0</span>
-                        <button onclick="updateCant(${p.id}, 1)" class="bg-orange-500 text-white px-3 py-1 rounded">+</button>
+                    <div class="flex items-center gap-3 bg-gray-100 p-2 rounded-lg">
+                        <button onclick="cambiar( ${p.id}, -1)" class="w-8 h-8 bg-white border rounded shadow">-</button>
+                        <span id="c-${p.id}" class="font-bold text-lg">0</span>
+                        <button onclick="cambiar( ${p.id}, 1)" class="w-8 h-8 bg-naranja text-white rounded shadow">+</button>
                     </div>
                 </div>
             `).join('');
         }
 
-        function updateCant(id, cambio) {
-            carrito[id] = (carrito[id] || 0) + cambio;
-            if (carrito[id] < 0) carrito[id] = 0;
-            document.getElementById(`cant-${id}`).innerText = carrito[id];
-            calcularTotal();
-        }
-
-        function calcularTotal() {
+        function cambiar(id, n) {
+            carrito[id] = (carrito[id] || 0) + n;
+            if(carrito[id] < 0) carrito[id] = 0;
+            document.getElementById(`c-${id}`).innerText = carrito[id];
+            
             let total = 0;
-            productos.forEach(p => {
-                total += (carrito[p.id] || 0) * p.precio;
-            });
-            document.getElementById('btn-total').innerText = `Enviar Pedido: $${total.toLocaleString()}`;
+            productos.forEach(p => total += (carrito[p.id] || 0) * p.precio);
+            document.getElementById('total-flotante').innerText = `Cuenta: $${total.toLocaleString()}`;
         }
 
+        // FUNCIÓN GPS
+        function obtenerUbicacion() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    document.getElementById('gps_link').value = `https://www.google.com/maps?q=${lat},${lon}`;
+                    document.getElementById('gps_status').classList.remove('hidden');
+                    alert("📍 ¡Ubicación capturada con éxito!");
+                }, function() {
+                    alert("No se pudo obtener la ubicación. Por favor escribe la dirección manualmente.");
+                });
+            }
+        }
+
+        // ENVÍO A WHATSAPP EN FORMATO FACTURA
         function enviarPedido() {
             const nombre = document.getElementById('nombre').value;
-            const direccion = document.getElementById('direccion').value;
-            if(!nombre || !direccion) return alert("Por favor llena tus datos de envío");
+            const dir = document.getElementById('direccion').value;
+            const gps = document.getElementById('gps_link').value;
+            const cel = document.getElementById('celular').value;
+            const pago = document.getElementById('pago').value;
+            const obs = document.getElementById('obs').value;
 
-            let detalle = "🍔 *PEDIDO REKE FOOD* 🍔\n\n";
-            detalle += `👤 Cliente: ${nombre}\n`;
-            detalle += `📍 Dirección: ${direccion}\n`;
-            detalle += `📱 Cel: ${document.getElementById('celular').value}\n`;
-            detalle += `💳 Pago: ${document.getElementById('forma_pago').value}\n`;
-            detalle += `--------------------------\n`;
+            if(!nombre || !dir) return alert("Por favor ingresa Nombre y Dirección.");
+
+            let texto = `*🍔 NUEVO PEDIDO REKE FOOD 🍔*\n`;
+            texto += `----------------------------------\n`;
+            texto += `👤 *Cliente:* ${nombre}\n`;
+            texto += `📍 *Dirección:* ${dir}\n`;
+            if(gps) texto += `🗺️ *Ubicación GPS:* ${gps}\n`;
+            texto += `📱 *Celular:* ${cel}\n`;
+            texto += `💳 *Forma de Pago:* ${pago}\n`;
+            texto += `----------------------------------\n`;
+            texto += `*DETALLE DEL PEDIDO:*\n`;
 
             let total = 0;
             productos.forEach(p => {
                 if(carrito[p.id] > 0) {
-                    let sub = carrito[p.id] * p.precio;
-                    detalle += `${carrito[p.id]}x ${p.nombre} - $${sub.toLocaleString()}\n`;
+                    let sub = (carrito[p.id] * p.precio);
+                    texto += `✅ ${carrito[p.id]}x ${p.nombre} ($${sub.toLocaleString()})\n`;
                     total += sub;
                 }
             });
 
-            if(total === 0) return alert("El carrito está vacío");
+            if(total === 0) return alert("El carrito está vacío.");
 
-            detalle += `--------------------------\n`;
-            detalle += `*TOTAL A PAGAR: $${total.toLocaleString()}*\n\n`;
-            detalle += `📝 Obs: ${document.getElementById('observaciones').value}\n\n`;
-            detalle += `🚀 _Desarrollada por App Vibras Positivas_`;
+            texto += `----------------------------------\n`;
+            texto += `💰 *TOTAL A PAGAR: $${total.toLocaleString()}*\n`;
+            texto += `----------------------------------\n`;
+            texto += `🔎 *Observaciones:* ${obs || 'Sin observaciones'}\n\n`;
+            texto += `🚀 _Desarrollada por App Vibras Positivas_`;
 
-            const wpUrl = `https://wa.me/573207293667?text=${encodeURIComponent(detalle)}`;
-            window.open(wpUrl, '_blank');
+            const url = `https://wa.me/573207293667?text=${encodeURIComponent(texto)}`;
+            window.open(url, '_blank');
         }
 
-        renderMenu();
+        cargarMenu();
     </script>
 </body>
 </html>
