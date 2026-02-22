@@ -1,1 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>San Remo - Hamburguesería Smash</title>
+    <style>
+        :root { --naranja: #ff6d00; --negro: #0a0a0a; --gris: #1e1e1e; --blanco: #ffffff; --verde: #25d366; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--negro); color: var(--blanco); padding-bottom: 180px; }
+        header { background: #000; padding: 20px; text-align: center; border-bottom: 3px solid var(--naranja); position: sticky; top: 0; z-index: 1000; }
+        .logo { width: 100px; border-radius: 50%; border: 2px solid var(--naranja); }
+        .container { padding: 15px; max-width: 600px; margin: auto; }
+        .info-cocina { background: var(--gris); border-radius: 15px; padding: 15px; margin-bottom: 15px; border-left: 5px solid var(--naranja); font-size: 13px; }
+        .card { background: var(--gris); border-radius: 20px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        h3 { margin-top: 0; color: var(--naranja); text-transform: uppercase; font-size: 16px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .input-form { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #444; background: #111; color: white; box-sizing: border-box; }
+        .item { display: flex; gap: 12px; padding: 15px 0; border-bottom: 1px solid #333; align-items: center; }
+        .item-img { width: 70px; height: 70px; border-radius: 12px; object-fit: cover; background: #333; }
+        .item-info { flex: 1; }
+        .item-nombre { font-weight: bold; font-size: 15px; color: var(--naranja); }
+        .item-desc { font-size: 11px; color: #bbb; margin: 4px 0; line-height: 1.3; }
+        .item-precio { font-weight: bold; font-size: 14px; }
+        .controles { display: flex; align-items: center; gap: 10px; background: #000; padding: 5px 12px; border-radius: 50px; }
+        .btn-c { background: var(--naranja); border: none; color: white; width: 28px; height: 28px; border-radius: 50%; font-weight: bold; cursor: pointer; }
+        .cant { width: 20px; text-align: center; font-weight: bold; font-size: 15px; }
+        .footer-fixed { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 3px solid var(--naranja); padding: 15px; box-sizing: border-box; z-index: 1001; }
+        .btn-enviar { background: var(--verde); color: white; border: none; padding: 16px; border-radius: 12px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 0 #128c7e; }
+        .copy { text-align: center; font-size: 10px; color: #666; margin-top: 10px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
 
+<header>
+    <img src="logo.png" class="logo" alt="San Remo">
+    <div style="font-size: 18px; font-weight: bold; margin-top: 10px;">SAN REMO</div>
+    <div style="font-size: 11px; color: #ffab40;">HAMBURGUESERÍA SMASH</div>
+</header>
+
+<div class="container">
+    <div class="info-cocina">
+        📍 <b>COCINA OCULTA - CAUCASIA</b><br>
+        🕒 Miércoles a Domingo: 5:30 PM - 10:00 PM<br>
+        🛵 Solo Domicilios (Se requiere GPS para entrega)
+    </div>
+
+    <div class="card">
+        <h3>👤 Mis Datos (Para el Domicilio)</h3>
+        <input type="text" id="nombre" class="input-form" placeholder="Nombre completo">
+        <input type="tel" id="celular" class="input-form" placeholder="Número de Celular">
+        <input type="text" id="direccion" class="input-form" placeholder="Dirección / Barrio / Referencia">
+    </div>
+
+    <div id="menu-container"></div>
+</div>
+
+<div class="footer-fixed">
+    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: bold;">
+        <span>TOTAL DEL PEDIDO:</span>
+        <span style="color: var(--naranja); font-size: 20px;">$<span id="total-val">0</span></span>
+    </div>
+    <button class="btn-enviar" onclick="enviarPedido()">🚀 ENVIAR PEDIDO POR WHATSAPP</button>
+    <div class="copy">Desarrollada por VIBRAS POSITIVAS © Derechos de Autor</div>
+</div>
+
+<script>
+    const productos = [
+        { id: 1, n: "Dulce Pecado", p: 25000, d: "Dos carnes smash de 100g c/u, mermelada de tocineta de la casa, doble queso cheddar y pan artesanal.", img: "dulce_pecado.jpg" },
+        { id: 2, n: "American Smash", p: 24000, d: "Doble carne smash, cebolla grillé, pepinillos agridulces, doble queso cheddar y salsa especial.", img: "american_smash.jpg" },
+        { id: 3, n: "La Cremosa Cherry", p: 26000, d: "Dos carnes smash, queso crema philadelphia, reducción de frutos rojos (cherries) y tocineta crocante.", img: "cremosa_cherry.jpg" },
+        { id: 4, n: "San Remo Especial", p: 28000, d: "Doble carne smash, chicharrón crocante, queso costeño asado y salsa de la casa.", img: "san_remo_especial.jpg" },
+        { id: 5, n: "Papas Francesas", p: 8000, d: "Porción de papas crujientes con sal marina.", img: "papas.jpg" },
+        { id: 6, n: "Coca Cola Zero 400ml", p: 5000, d: "Bebida refrescante sin azúcar.", img: "coca_zero.jpg" },
+        { id: 7, n: "Coca Cola Original 400ml", p: 5000, d: "Bebida original.", img: "coca_normal.jpg" }
+    ];
+
+    function cargarMenu() {
+        const container = document.getElementById('menu-container');
+        let html = '<div class="card"><h3>🍔 Nuestro Menú Smash</h3>';
+        productos.forEach(p => {
+            html += `
+                <div class="item">
+                    <img src="${p.img}" class="item-img" onerror="this.src='https://via.placeholder.com/70?text=San+Remo'">
+                    <div class="item-info">
+                        <div class="item-nombre">${p.n}</div>
+                        <div class="item-desc">${p.d}</div>
+                        <div class="item-precio">$${p.p.toLocaleString()}</div>
+                    </div>
+                    <div class="controles">
+                        <button class="btn-c" onclick="cambiarCant(${p.id}, -1)">-</button>
+                        <span class="cant" id="cant-${p.id}">0</span>
+                        <button class="btn-c" onclick="cambiarCant(${p.id}, 1)">+</button>
+                    </div>
+                </div>`;
+        });
+        html += '</div>';
+        container.innerHTML = html;
+    }
+
+    let carrito = {};
+
+    function cambiarCant(id, delta) {
+        if (!carrito[id]) carrito[id] = 0;
+        carrito[id] += delta;
+        if (carrito[id] < 0) carrito[id] = 0;
+        document.getElementById(`cant-${id}`).innerText = carrito[id];
+        actualizarTotal();
+    }
+
+    function actualizarTotal() {
+        let total = 0;
+        productos.forEach(p => {
+            if (carrito[p.id]) total += p.p * carrito[p.id];
+        });
+        document.getElementById('total-val').innerText = total.toLocaleString();
+    }
+
+    function enviarPedido() {
+        const nom = document.getElementById('nombre').value.trim();
+        const cel = document.getElementById('celular').value.trim();
+        const dir = document.getElementById('direccion').value.trim();
+        const total = document.getElementById('total-val').innerText;
+
+        if (!nom || !cel || !dir || total === "0") {
+            alert("Socio, completa los datos y selecciona al menos una hamburguesa.");
+            return;
+        }
+
+        // Memoria inteligente (LocalStorage)
+        localStorage.setItem('sanremo_user', JSON.stringify({ n: nom, c: cel, d: dir }));
+
+        // Obtener GPS
+        navigator.geolocation.getCurrentPosition((pos) => {
+            const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+            
+            let msg = `*🍔 SAN REMO - NUEVO PEDIDO*\n`;
+            msg += `------------------------------\n`;
+            msg += `👤 *CLIENTE:* ${nom}\n`;
+            msg += `📞 *CELULAR:* ${cel}\n`;
+            msg += `📍 *DIRECCIÓN:* ${dir}\n`;
+            msg += `------------------------------\n`;
+            
+            productos.forEach(p => {
+                if (carrito[p.id] > 0) {
+                    let sub = p.p * carrito[p.id];
+                    msg += `🔹 ${p.n} (x${carrito[p.id]}) = *$${sub.toLocaleString()}*\n`;
+                }
+            });
+            
+            msg += `------------------------------\n`;
+            msg += `💰 *TOTAL A PAGAR: $${total}*\n`;
+            msg += `📍 *GPS DOMICILIO:* ${gps}\n\n`;
+            msg += `_App desarrollada por VIBRAS POSITIVAS_`;
+
+            window.location.href = `https://wa.me/573217072960?text=${encodeURIComponent(msg)}`;
+        }, () => {
+            alert("Para entregas en Cocina Oculta, por favor activa el GPS.");
+        });
+    }
+
+    window.onload = () => {
+        cargarMenu();
+        const saved = JSON.parse(localStorage.getItem('sanremo_user'));
+        if (saved) {
+            document.getElementById('nombre').value = saved.n;
+            document.getElementById('celular').value = saved.c;
+            document.getElementById('direccion').value = saved.d;
+        }
+    };
+</script>
+</body>
+</html>
