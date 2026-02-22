@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>San Remo - Hamburguesería Smash</title>
-    <meta http-equiv="cache-control" content="no-cache">
+    <title>San Remo Hamburguesería</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <style>
         :root { --naranja: #ff6d00; --negro: #0a0a0a; --gris: #1e1e1e; --blanco: #ffffff; --verde: #25d366; }
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--negro); color: var(--blanco); padding-bottom: 220px; }
         header { background: #000; padding: 20px; text-align: center; border-bottom: 3px solid var(--naranja); position: sticky; top: 0; z-index: 1000; }
         .logo { width: 85px; border-radius: 50%; border: 2px solid var(--naranja); }
         .container { padding: 15px; max-width: 600px; margin: auto; }
-        .info-cocina { background: var(--gris); border-radius: 15px; padding: 12px; margin-bottom: 15px; border-left: 5px solid var(--naranja); font-size: 12px; }
         .card { background: var(--gris); border-radius: 20px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
         h3 { margin-top: 0; color: var(--naranja); text-transform: uppercase; font-size: 14px; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px; }
         .input-form { width: 100%; padding: 12px; margin: 5px 0 12px; border-radius: 10px; border: 1px solid #444; background: #111; color: white; box-sizing: border-box; font-size: 14px; }
         .seccion-titulo { background: #222; color: var(--naranja); padding: 10px; border-radius: 8px; font-size: 12px; font-weight: bold; margin: 25px 0 10px; text-transform: uppercase; text-align: center; }
         .item { display: flex; gap: 12px; padding: 15px 0; border-bottom: 1px solid #333; align-items: center; }
-        /* Ajuste de imagen para asegurar que se vea */
         .item-img { width: 85px; height: 85px; border-radius: 12px; object-fit: cover; background: #333; flex-shrink: 0; border: 1px solid #444; }
         .item-info { flex: 1; }
         .item-nombre { font-weight: bold; font-size: 15px; color: var(--blanco); }
@@ -26,35 +26,31 @@
         .controles { display: flex; align-items: center; gap: 10px; background: #000; padding: 6px 12px; border-radius: 50px; border: 1px solid #333; }
         .btn-c { background: var(--naranja); border: none; color: white; width: 28px; height: 28px; border-radius: 50%; font-weight: bold; cursor: pointer; }
         .total-sticky { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 3px solid var(--naranja); padding: 18px; box-sizing: border-box; z-index: 1001; }
-        .btn-enviar { background: var(--verde); color: white; border: none; padding: 16px; border-radius: 12px; width: 100%; font-size: 17px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 0 #128c7e; }
+        .btn-enviar { background: var(--verde); color: white; border: none; padding: 16px; border-radius: 12px; width: 100%; font-size: 17px; font-weight: bold; cursor: pointer; }
         .copy { text-align: center; font-size: 9px; color: #555; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <header>
-    <img src="logo.png" class="logo" alt="Logo">
-    <div style="font-size: 20px; font-weight: bold; margin-top: 8px;">SAN REMO</div>
+    <img src="logo.png" class="logo" alt="San Remo Logo">
+    <div style="font-size: 20px; font-weight: bold; margin-top: 8px; letter-spacing: 2px;">SAN REMO</div>
 </header>
 
 <div class="container">
-    <div class="info-cocina">
-        🕒 <b>ATENCIÓN:</b> Miércoles a Domingo (5:30 PM - 10:00 PM)<br>
-        📍 <b>CAUCASIA:</b> Solo domicilios con GPS.
-    </div>
-
     <div class="card">
-        <h3>👤 MIS DATOS (EDITOR ACTIVO)</h3>
-        <input type="text" id="nombre" class="input-form" placeholder="Nombre completo" oninput="guardarDatos()">
-        <input type="tel" id="celular" class="input-form" placeholder="WhatsApp" oninput="guardarDatos()">
-        <input type="text" id="direccion" class="input-form" placeholder="Dirección / Barrio" oninput="guardarDatos()">
+        <h3>👤 MIS DATOS DE ENTREGA</h3>
+        <input type="text" id="nombre" class="input-form" placeholder="Tu Nombre" oninput="guardarDatos()">
+        <input type="tel" id="celular" class="input-form" placeholder="Tu Celular" oninput="guardarDatos()">
+        <input type="text" id="direccion" class="input-form" placeholder="Dirección / Barrio / Referencia" oninput="guardarDatos()">
         
+        <label style="font-size: 11px; color: var(--naranja); font-weight: bold;">FORMA DE PAGO:</label>
         <select id="pago" class="input-form">
-            <option value="Efectivo">Efectivo</option>
+            <option value="Efectivo">Efectivo (Llevar cambio)</option>
             <option value="Nequi">Nequi</option>
             <option value="Bancolombia">Ahorro a la mano</option>
         </select>
-        <textarea id="obs" class="input-form" style="height: 50px;" placeholder="¿Notas especiales?"></textarea>
+        <textarea id="obs" class="input-form" style="height: 60px;" placeholder="Observaciones especiales..."></textarea>
     </div>
 
     <div id="menu-dinamico"></div>
@@ -65,22 +61,26 @@
         <span>TOTAL:</span>
         <span style="color: var(--naranja); font-size: 24px;">$<span id="total-val">0</span></span>
     </div>
-    <button class="btn-enviar" onclick="enviarPedido()">🚀 PEDIR POR WHATSAPP</button>
+    <button class="btn-enviar" onclick="enviarPedido()">🚀 ENVIAR PEDIDO</button>
     <div class="copy">Desarrollada por VIBRAS POSITIVAS © 2026</div>
 </div>
 
 <script>
-    // LISTA DE PRODUCTOS - Verifica que en tu GitHub las fotos estén en la carpeta "img"
+    // LISTA DE PLATOS Y PRECIOS REALES
     const menu = {
         "BURGER SMASH": [
             { id: 1, n: "SAN REMO SMASH", p: 14000, d: "Carne Smash 100g, queso cheddar, cebolla picada, pepinillos, mostaza y ketchup.", img: "img/1.jpg" },
-            { id: 2, n: "CHEDDAR & BACON", p: 18000, d: "Carne Smash 100g, doble cheddar, tocineta crocante y salsa especial.", img: "img/2.jpg" },
-            { id: 3, n: "AMERICAN SMASH", p: 20000, d: "Doble carne Smash, doble cheddar, cebolla grillé, pepinillos y salsa.", img: "img/3.jpg" },
+            { id: 2, n: "CHEDDAR & BACON", p: 18000, d: "Carne Smash 100g, doble queso cheddar, tocineta crocante y salsa especial.", img: "img/2.jpg" },
+            { id: 3, n: "AMERICAN SMASH", p: 20000, d: "Doble carne Smash (200g), doble cheddar, cebolla grillé y pepinillos.", img: "img/3.jpg" },
             { id: 4, n: "LA PECADO (DULCE)", p: 22000, d: "Doble carne Smash, queso crema, mermelada de tocineta y cebolla crunchy.", img: "img/4.jpg" }
         ],
-        "EXTRAS Y BEBIDAS": [
-            { id: 5, n: "Papas Francesas", p: 7000, d: "Porción crujiente.", img: "img/5.jpg" },
-            { id: 6, n: "Coca Cola 400ml", p: 5000, d: "Original o Zero.", img: "img/7.jpg" }
+        "EXTRAS": [
+            { id: 5, n: "PORCIÓN DE PAPAS", p: 7000, d: "Papas francesas crujientes.", img: "img/5.jpg" },
+            { id: 6, n: "EXTRA CARNE", p: 6000, d: "Adición de carne Smash 100g.", img: "img/6.jpg" }
+        ],
+        "BEBIDAS": [
+            { id: 7, n: "COCA COLA 400ml", p: 5000, d: "Sabor original o Zero.", img: "img/7.jpg" },
+            { id: 8, n: "TÉ HATSU", p: 8000, d: "Té premium en botella.", img: "img/8.jpg" }
         ]
     };
 
@@ -89,12 +89,13 @@
     function renderizarMenu() {
         const container = document.getElementById('menu-dinamico');
         let html = '';
+        const v = new Date().getTime(); // Parámetro para forzar carga de imagen nueva
         for (const cat in menu) {
             html += `<div class="seccion-titulo">${cat}</div><div class="card">`;
             menu[cat].forEach(p => {
                 html += `
                     <div class="item">
-                        <img src="${p.img}?v=1" class="item-img" onerror="this.src='https://via.placeholder.com/85?text=Img+No+Encontrada'">
+                        <img src="${p.img}?v=${v}" class="item-img" onerror="this.src='https://via.placeholder.com/85?text=San+Remo'">
                         <div class="item-info">
                             <div class="item-nombre">${p.n}</div>
                             <div class="item-desc">${p.d}</div>
@@ -128,40 +129,33 @@
     }
 
     function guardarDatos() {
-        const datos = { n: document.getElementById('nombre').value, c: document.getElementById('celular').value, d: document.getElementById('direccion').value };
-        localStorage.setItem('san_remo_local_v1', JSON.stringify(datos));
+        const d = { n: document.getElementById('nombre').value, c: document.getElementById('celular').value, d: document.getElementById('direccion').value };
+        localStorage.setItem('sanremo_data_final', JSON.stringify(d));
     }
 
     function enviarPedido() {
         const n = document.getElementById('nombre').value;
-        const c = document.getElementById('celular').value;
-        const d = document.getElementById('direccion').value;
-        const p = document.getElementById('pago').value;
-        const o = document.getElementById('obs').value;
         const total = document.getElementById('total-val').innerText;
-
         if (!n || total === "0") return alert("Completa tus datos y el pedido.");
 
         navigator.geolocation.getCurrentPosition((pos) => {
             const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-            let msg = `*🍔 SAN REMO - PEDIDO*\n👤 *CLIENTE:* ${n}\n📞 *CEL:* ${c}\n📍 *DIR:* ${d}\n------------------\n`;
+            let msg = `*🍔 SAN REMO - PEDIDO*\n👤 *CLIENTE:* ${n}\n📞 *CEL:* ${document.getElementById('celular').value}\n📍 *DIR:* ${document.getElementById('direccion').value}\n------------------\n`;
             for (const cat in menu) {
-                menu[cat].forEach(item => {
-                    if (carrito[item.id] > 0) msg += `🔹 ${item.n} (x${carrito[item.id]}) = $${(item.p * carrito[item.id]).toLocaleString()}\n`;
-                });
+                menu[cat].forEach(p => { if (carrito[p.id] > 0) msg += `🔹 ${p.n} (x${carrito[p.id]}) = $${(p.p * carrito[p.id]).toLocaleString()}\n`; });
             }
-            msg += `------------------\n💰 *TOTAL: $${total}*\n💳 *PAGO:* ${p}\n📝 *NOTA:* ${o}\n📍 *GPS:* ${gps}`;
+            msg += `------------------\n💰 *TOTAL: $${total}*\n💳 *PAGO:* ${document.getElementById('pago').value}\n📝 *NOTA:* ${document.getElementById('obs').value}\n📍 *GPS:* ${gps}`;
             window.location.href = `https://wa.me/573217072960?text=${encodeURIComponent(msg)}`;
         }, () => alert("Activa el GPS para enviar el pedido."));
     }
 
     window.onload = () => {
         renderizarMenu();
-        const saved = JSON.parse(localStorage.getItem('san_remo_local_v1'));
-        if (saved) {
-            document.getElementById('nombre').value = saved.n || "";
-            document.getElementById('celular').value = saved.c || "";
-            document.getElementById('direccion').value = saved.d || "";
+        const s = JSON.parse(localStorage.getItem('sanremo_data_final'));
+        if (s) {
+            document.getElementById('nombre').value = s.n || "";
+            document.getElementById('celular').value = s.c || "";
+            document.getElementById('direccion').value = s.d || "";
         }
     };
 </script>
