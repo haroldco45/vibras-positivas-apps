@@ -48,7 +48,7 @@
 
 <header>
     <img src="TITAN.PNG" alt="TITAN" class="logo-titan">
-    <div style="font-size: 11px; color: white; margin-top: 5px; letter-spacing: 1px;">CAUCASIA • FUERZA EN CADA SABOR</div>
+    <div style="font-size: 11px; color: white; margin-top: 5px; letter-spacing: 1px;">CAUCASIA • WHATSAPP: 3116250029</div>
 </header>
 
 <div class="container" id="app-content">
@@ -57,14 +57,14 @@
         <div class="section-title">Datos para Despacho</div>
         <div id="cliente-info-guardada" class="hidden">
             <p id="texto-resumen" style="font-size: 13px; background: #fffcf0; padding: 15px; border-radius: 10px; border: 1px solid var(--titan-oro); white-space: pre-line;"></p>
-            <button onclick="mostrarEditor()" style="background: none; border: none; color: #007bff; font-size: 11px; cursor: pointer; font-weight: bold;">⚙️ ACTUALIZAR DATOS</button>
+            <button onclick="mostrarEditor()" style="background: none; border: none; color: #007bff; font-size: 11px; cursor: pointer; font-weight: bold;">⚙️ ACTUALIZAR MIS DATOS</button>
         </div>
         <div id="cliente-editor">
             <input type="text" id="c_nombre" placeholder="Nombre o Razón Social">
             <input type="text" id="c_direccion" placeholder="Dirección de entrega">
-            <button class="btn-gps" onclick="obtenerGPS()" id="btn-gps-txt">📍 TOCAR AQUÍ PARA USAR GPS</button>
-            <input type="tel" id="c_celular" placeholder="WhatsApp">
-            <button class="btn btn-gold" onclick="guardarCliente()">GUARDAR DATOS</button>
+            <button class="btn-gps" onclick="obtenerGPS()" id="btn-gps-txt">📍 TOCAR PARA ENVIAR UBICACIÓN GPS</button>
+            <input type="tel" id="c_celular" placeholder="Celular (WhatsApp) del cliente">
+            <button class="btn btn-gold" onclick="guardarCliente()">GUARDAR MIS DATOS</button>
         </div>
     </div>
 
@@ -124,7 +124,7 @@
 
     <div class="card">
         <div class="section-title">Observaciones</div>
-        <textarea id="observaciones" rows="3" placeholder="📝 Notas adicionales..."></textarea>
+        <textarea id="observaciones" rows="3" placeholder="📝 ¿Alguna instrucción adicional?"></textarea>
         <button class="btn btn-whatsapp" onclick="enviarPedido()">
             🚀 ENVIAR PEDIDO A WHATSAPP
         </button>
@@ -158,11 +158,11 @@
             document.getElementById('btn-gps-txt').innerText = "⏳ LOCALIZANDO...";
             navigator.geolocation.getCurrentPosition((p) => {
                 gps_link = `https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
-                document.getElementById('btn-gps-txt').innerText = "✅ UBICACIÓN CAPTURADA";
+                document.getElementById('btn-gps-txt').innerText = "✅ UBICACIÓN LISTA";
                 document.getElementById('btn-gps-txt').style.background = "#dcfce7";
             }, () => {
                 alert("Socio, activa el GPS de tu celular.");
-                document.getElementById('btn-gps-txt').innerText = "❌ GPS DESACTIVADO";
+                document.getElementById('btn-gps-txt').innerText = "❌ GPS NO DISPONIBLE";
             });
         }
     }
@@ -175,7 +175,7 @@
             g: gps_link 
         };
         if(d.n && d.d && d.c) { localStorage.setItem('vp_titan_cache', JSON.stringify(d)); verificarDatos(); }
-        else { alert("Socio, llena tus datos para el envío."); }
+        else { alert("Socio, llena todos los datos del cliente."); }
     }
 
     function verificarDatos() {
@@ -184,7 +184,7 @@
             document.getElementById('cliente-editor').classList.add('hidden');
             document.getElementById('cliente-info-guardada').classList.remove('hidden');
             gps_link = g.g || "";
-            document.getElementById('texto-resumen').innerText = `👤 CLIENTE: ${g.n}\n📍 DIR: ${g.d}\n📞 CEL: ${g.c}${g.g ? '\n📍 Ubicación GPS guardada' : ''}`;
+            document.getElementById('texto-resumen').innerText = `👤 CLIENTE: ${g.n}\n📍 DIR: ${g.d}\n📞 CEL: ${g.c}${g.g ? '\n📍 UBICACIÓN GPS: REGISTRADA' : ''}`;
         }
     }
 
@@ -195,24 +195,24 @@
 
     function enviarPedido() {
         const c = JSON.parse(localStorage.getItem('vp_titan_cache'));
-        if(!c) return alert("Guarda tus datos antes de enviar.");
+        if(!c) return alert("Guarda los datos del cliente primero.");
 
         let msj = `*📦 ALIMENTOS TITÁN - CAUCASIA*\n`;
         msj += `--------------------------\n`;
         msj += `👤 *CLIENTE:* ${c.n}\n📍 *DIR:* ${c.d}\n📞 *CEL:* ${c.c}\n`;
-        if(c.g) msj += `📍 *GPS:* ${c.g}\n`;
+        if(c.g) msj += `📍 *UBICACIÓN:* ${c.g}\n`;
         msj += `--------------------------\n`;
         
         const prods = document.querySelectorAll('.p-qty');
         let hay = false;
         prods.forEach(p => { if(p.value > 0) { msj += `• ${p.getAttribute('data-name')} x${p.value}\n`; hay = true; }});
 
-        if(!hay) return alert("No has seleccionado productos.");
+        if(!hay) return alert("Socio, el pedido está vacío.");
 
         const obs = document.getElementById('observaciones').value;
         if(obs) msj += `\n📝 *OBS:* ${obs}`;
 
-        msj += `\n\n_Pedido generado por Vibras Positivas_`;
+        msj += `\n\n_Generado por Vibras Positivas_`;
         window.location.href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msj)}`;
     }
 </script>
