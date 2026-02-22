@@ -18,6 +18,7 @@ const controlVibras = {
     "dulcebocadopostresycafe": "activo",
     "abocados": "activo",
     "rekefood": "activo",
+    "sanremohamburgueseria": "activo",
 
     // TIENDAS Y MERCADOS
     "tienda-azul": "activo",
