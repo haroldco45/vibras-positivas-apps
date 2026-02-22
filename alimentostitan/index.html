@@ -6,7 +6,7 @@
     <title>ALIMENTOS TITÁN - Caucasia</title>
     <style>
         :root { --titan-rojo: #701c1c; --titan-oro: #b38e44; --oscuro: #1a1a1a; --blanco: #ffffff; --gris: #f8f9fa; --verde-ws: #25D366; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--gris); margin: 0; padding: 0; padding-bottom: 150px; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--gris); margin: 0; padding: 0; padding-bottom: 180px; }
         
         #bloqueo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; text-align: center; padding-top: 100px; }
 
@@ -24,26 +24,27 @@
         .btn-gps { background: #eef2ff; color: #3730a3; border: 1px dashed #3730a3; padding: 10px; border-radius: 10px; width: 100%; cursor: pointer; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
 
         .producto-card { display: flex; align-items: center; gap: 12px; background: #fff; padding: 12px; border-radius: 15px; border: 1px solid #f0f0f0; margin-bottom: 12px; }
-        .producto-img { width: 90px; height: 90px; object-fit: cover; border-radius: 10px; border: 1px solid var(--titan-oro); }
+        .producto-img { width: 80px; height: 80px; object-fit: cover; border-radius: 10px; border: 1px solid var(--titan-oro); }
         .producto-info { flex: 1; }
-        .producto-info h4 { margin: 0; font-size: 13px; color: var(--oscuro); text-transform: uppercase; }
-        .producto-info p { margin: 3px 0; font-size: 10px; color: #666; line-height: 1.2; }
-        .producto-precio { color: var(--titan-rojo); font-weight: bold; font-size: 15px; margin-top: 5px; }
-        .p-qty { width: 75px !important; margin: 0 !important; text-align: center; border: 2px solid var(--titan-oro) !important; font-weight: bold; border-radius: 8px; }
+        .producto-info h4 { margin: 0; font-size: 12px; color: var(--oscuro); text-transform: uppercase; }
+        .producto-precio { color: var(--titan-rojo); font-weight: bold; font-size: 14px; margin-top: 4px; }
+        
+        .p-qty { width: 70px !important; margin: 0 !important; text-align: center; border: 2px solid var(--titan-oro) !important; font-weight: bold; border-radius: 8px; }
 
-        .btn { width: 100%; padding: 16px; border: none; border-radius: 15px; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .btn-gold { background: var(--titan-oro); color: white; }
-        .btn-whatsapp { background: var(--verde-ws); color: white; box-shadow: 0 5px 15px rgba(37,211,102,0.3); }
+        /* CAJON DE TOTAL */
+        .total-box { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--titan-rojo); color: white; padding: 20px; border-radius: 25px 25px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.2); z-index: 1000; text-align: center; box-sizing: border-box; }
+        .total-val { font-size: 24px; font-weight: 900; color: var(--titan-oro); }
+
+        .btn-whatsapp { background: var(--verde-ws); color: white; padding: 12px; width: 100%; border: none; border-radius: 12px; font-weight: bold; font-size: 16px; margin-top: 10px; cursor: pointer; }
 
         .hidden { display: none !important; }
-        footer { text-align: center; padding: 25px; font-size: 11px; color: #999; }
-        .vp-brand { color: var(--titan-rojo); font-weight: bold; }
+        footer { text-align: center; padding: 10px; font-size: 11px; color: #999; }
+        .vp-brand { color: var(--titan-oro); font-weight: bold; }
     </style>
 </head>
 <body>
 
 <a href="catalogo-titan.pdf" target="_blank" class="btn-pdf"><span>📄 VER CATÁLOGO</span></a>
-
 <div id="bloqueo"><h1>🔒</h1><h2>SERVICIO SUSPENDIDO</h2></div>
 
 <header>
@@ -57,14 +58,14 @@
         <div class="section-title">Datos para Despacho</div>
         <div id="cliente-info-guardada" class="hidden">
             <p id="texto-resumen" style="font-size: 13px; background: #fffcf0; padding: 15px; border-radius: 10px; border: 1px solid var(--titan-oro); white-space: pre-line;"></p>
-            <button onclick="mostrarEditor()" style="background: none; border: none; color: #007bff; font-size: 11px; cursor: pointer; font-weight: bold;">⚙️ ACTUALIZAR MIS DATOS</button>
+            <button onclick="mostrarEditor()" style="background: none; border: none; color: #007bff; font-size: 11px; cursor: pointer;">⚙️ EDITAR MIS DATOS</button>
         </div>
         <div id="cliente-editor">
             <input type="text" id="c_nombre" placeholder="Nombre o Razón Social">
             <input type="text" id="c_direccion" placeholder="Dirección de entrega">
             <button class="btn-gps" onclick="obtenerGPS()" id="btn-gps-txt">📍 TOCAR PARA ENVIAR UBICACIÓN GPS</button>
-            <input type="tel" id="c_celular" placeholder="Celular (WhatsApp) del cliente">
-            <button class="btn btn-gold" onclick="guardarCliente()">GUARDAR MIS DATOS</button>
+            <input type="tel" id="c_celular" placeholder="Celular del cliente">
+            <button onclick="guardarCliente()" style="width:100%; padding:14px; background:var(--titan-oro); color:white; border:none; border-radius:12px; font-weight:bold;">GUARDAR DATOS</button>
         </div>
     </div>
 
@@ -75,65 +76,59 @@
             <img src="chorizodecerdotradicional.JPG" class="producto-img">
             <div class="producto-info">
                 <h4>Chorizo Tradicional</h4>
-                <p>Clásico sabor casero. (6 unidades - 400g)</p>
-                <div class="producto-precio">$15.000</div>
+                <div class="producto-precio" data-price="15000">$15.000</div>
             </div>
-            <input type="number" class="p-qty" placeholder="0" data-name="Chorizo Tradicional">
+            <input type="number" class="p-qty" placeholder="0" min="0" oninput="calcularTotal()" data-name="Chorizo Tradicional" data-price="15000">
         </div>
 
         <div class="producto-card">
             <img src="chorizodecerdoconjalapeno.JPG" class="producto-img">
             <div class="producto-info">
                 <h4>Chorizo con Jalapeño</h4>
-                <p>Toque justo de picante. (6 unidades - 400g)</p>
-                <div class="producto-precio">$15.000</div>
+                <div class="producto-precio" data-price="15000">$15.000</div>
             </div>
-            <input type="number" class="p-qty" placeholder="0" data-name="Chorizo Jalapeño">
+            <input type="number" class="p-qty" placeholder="0" min="0" oninput="calcularTotal()" data-name="Chorizo Jalapeño" data-price="15000">
         </div>
 
         <div class="producto-card">
             <img src="chorizodecerdotradicional.JPG" class="producto-img">
             <div class="producto-info">
                 <h4>Chorizo Tradicional XL</h4>
-                <p>27 cm por unidad. (5 unidades - 600g)</p>
-                <div class="producto-precio">$25.000</div>
+                <div class="producto-precio" data-price="25000">$25.000</div>
             </div>
-            <input type="number" class="p-qty" placeholder="0" data-name="Chorizo Tradicional XL">
+            <input type="number" class="p-qty" placeholder="0" min="0" oninput="calcularTotal()" data-name="Chorizo Tradicional XL" data-price="25000">
         </div>
 
         <div class="producto-card">
             <img src="chorizodecerdotradicionaltipococtelero.JPG" class="producto-img">
             <div class="producto-info">
                 <h4>Tipo Coctelero</h4>
-                <p>Ideal para pasabocas. (16 unidades - 300g)</p>
-                <div class="producto-precio">$10.000</div>
+                <div class="producto-precio" data-price="10000">$10.000</div>
             </div>
-            <input type="number" class="p-qty" placeholder="0" data-name="Tradicional Coctelero">
+            <input type="number" class="p-qty" placeholder="0" min="0" oninput="calcularTotal()" data-name="Tradicional Coctelero" data-price="10000">
         </div>
 
         <div class="producto-card">
             <img src="chorizodecerdotradicionalyjalapeno.JPG" class="producto-img">
             <div class="producto-info">
                 <h4>Tradicional y Jalapeño</h4>
-                <p>Mix de sabores auténticos.</p>
-                <div class="producto-precio">$5.000</div>
+                <div class="producto-precio" data-price="5000">$5.000</div>
             </div>
-            <input type="number" class="p-qty" placeholder="0" data-name="Mix Tradicional y Jalapeño">
+            <input type="number" class="p-qty" placeholder="0" min="0" oninput="calcularTotal()" data-name="Mix Tradicional y Jalapeño" data-price="15000">
         </div>
-    </div>
 
-    <div class="card">
-        <div class="section-title">Observaciones</div>
-        <textarea id="observaciones" rows="3" placeholder="📝 ¿Alguna instrucción adicional?"></textarea>
-        <button class="btn btn-whatsapp" onclick="enviarPedido()">
-            🚀 ENVIAR PEDIDO A WHATSAPP
-        </button>
+        <textarea id="observaciones" rows="2" placeholder="📝 Notas adicionales..."></textarea>
     </div>
 
     <footer>
-        Aliado Comercial: <strong>CAUCASIA</strong><br>
-        Desarrollado por <span class="vp-brand">VIBRAS POSITIVAS</span>
+        Aliado: <strong>CAUCASIA</strong> | App por <span class="vp-brand">VIBRAS POSITIVAS</span>
     </footer>
+</div>
+
+<div class="total-box">
+    <div style="font-size: 12px; margin-bottom: 5px;">VALOR TOTAL DEL PEDIDO:</div>
+    <div class="total-val" id="total-general">$ 0</div>
+    <button class="btn-whatsapp" onclick="enviarPedido()">🚀 ENVIAR FACTURA A WHATSAPP</button>
 </div>
 
 <script>
@@ -161,10 +156,21 @@
                 document.getElementById('btn-gps-txt').innerText = "✅ UBICACIÓN LISTA";
                 document.getElementById('btn-gps-txt').style.background = "#dcfce7";
             }, () => {
-                alert("Socio, activa el GPS de tu celular.");
-                document.getElementById('btn-gps-txt').innerText = "❌ GPS NO DISPONIBLE";
+                alert("Activa el GPS.");
             });
         }
+    }
+
+    function calcularTotal() {
+        let total = 0;
+        const inputs = document.querySelectorAll('.p-qty');
+        inputs.forEach(input => {
+            const cant = parseInt(input.value) || 0;
+            const precio = parseInt(input.getAttribute('data-price'));
+            total += (cant * precio);
+        });
+        document.getElementById('total-general').innerText = `$ ${total.toLocaleString()}`;
+        return total;
     }
 
     function guardarCliente() {
@@ -174,17 +180,17 @@
             c: document.getElementById('c_celular').value,
             g: gps_link 
         };
-        if(d.n && d.d && d.c) { localStorage.setItem('vp_titan_cache', JSON.stringify(d)); verificarDatos(); }
-        else { alert("Socio, llena todos los datos del cliente."); }
+        if(d.n && d.d && d.c) { localStorage.setItem('vp_titan_v3', JSON.stringify(d)); verificarDatos(); }
+        else { alert("Llena los datos del cliente."); }
     }
 
     function verificarDatos() {
-        const g = JSON.parse(localStorage.getItem('vp_titan_cache'));
+        const g = JSON.parse(localStorage.getItem('vp_titan_v3'));
         if(g) { 
             document.getElementById('cliente-editor').classList.add('hidden');
             document.getElementById('cliente-info-guardada').classList.remove('hidden');
             gps_link = g.g || "";
-            document.getElementById('texto-resumen').innerText = `👤 CLIENTE: ${g.n}\n📍 DIR: ${g.d}\n📞 CEL: ${g.c}${g.g ? '\n📍 UBICACIÓN GPS: REGISTRADA' : ''}`;
+            document.getElementById('texto-resumen').innerText = `👤 CLIENTE: ${g.n}\n📍 DIR: ${g.d}\n📞 CEL: ${g.c}${g.g ? '\n📍 GPS: REGISTRADO' : ''}`;
         }
     }
 
@@ -194,25 +200,42 @@
     }
 
     function enviarPedido() {
-        const c = JSON.parse(localStorage.getItem('vp_titan_cache'));
-        if(!c) return alert("Guarda los datos del cliente primero.");
+        const c = JSON.parse(localStorage.getItem('vp_titan_v3'));
+        if(!c) return alert("Guarda los datos del despacho.");
 
-        let msj = `*📦 ALIMENTOS TITÁN - CAUCASIA*\n`;
-        msj += `--------------------------\n`;
-        msj += `👤 *CLIENTE:* ${c.n}\n📍 *DIR:* ${c.d}\n📞 *CEL:* ${c.c}\n`;
-        if(c.g) msj += `📍 *UBICACIÓN:* ${c.g}\n`;
-        msj += `--------------------------\n`;
+        let subtotal = 0;
+        let msj = `*📄 FACTURA DE PEDIDO - TITÁN*\n`;
+        msj += `--------------------------------\n`;
+        msj += `👤 *CLIENTE:* ${c.n}\n`;
+        msj += `📞 *CELULAR:* ${c.c}\n`;
+        msj += `📍 *DIRECCIÓN:* ${c.d}\n`;
+        if(c.g) msj += `🌍 *UBICACIÓN:* ${c.g}\n`;
+        msj += `--------------------------------\n`;
+        msj += `*DETALLE DEL PEDIDO:*\n\n`;
         
         const prods = document.querySelectorAll('.p-qty');
         let hay = false;
-        prods.forEach(p => { if(p.value > 0) { msj += `• ${p.getAttribute('data-name')} x${p.value}\n`; hay = true; }});
+        prods.forEach(p => { 
+            const cant = parseInt(p.value) || 0;
+            if(cant > 0) { 
+                const precio = parseInt(p.getAttribute('data-price'));
+                const sub = cant * precio;
+                msj += `• ${p.getAttribute('data-name')}\n   ${cant} und x $${precio.toLocaleString()} = *$${sub.toLocaleString()}*\n`; 
+                subtotal += sub;
+                hay = true; 
+            }
+        });
 
-        if(!hay) return alert("Socio, el pedido está vacío.");
+        if(!hay) return alert("Socio, no has marcado productos.");
 
+        msj += `--------------------------------\n`;
+        msj += `💰 *TOTAL A PAGAR: $${subtotal.toLocaleString()}*\n`;
+        msj += `--------------------------------\n`;
+        
         const obs = document.getElementById('observaciones').value;
-        if(obs) msj += `\n📝 *OBS:* ${obs}`;
+        if(obs) msj += `📝 *NOTA:* ${obs}\n\n`;
 
-        msj += `\n\n_Generado por Vibras Positivas_`;
+        msj += `_App de Alimentos Titán - Vibras Positivas_`;
         window.location.href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msj)}`;
     }
 </script>
