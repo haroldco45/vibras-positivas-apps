@@ -19,6 +19,7 @@ const controlVibras = {
     "abocados": "activo",
     "rekefood": "activo",
     "sanremohamburgueseria": "activo",
+    "alimentostitan": "activo",
 
     // TIENDAS Y MERCADOS
     "tienda-azul": "activo",
@@ -49,7 +50,6 @@ const controlVibras = {
     "lavadoyaspiradosas": "activo",
 
     // TRANSPORTE E INVERSIONES
-    "sotracor-caucasia": "suspendido", // 🔴 Este ya está bloqueado
     "inversiones-charlotte": "activo",
     "santuariolaprimera": "activo"
 };
