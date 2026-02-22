@@ -16,134 +16,122 @@
         .item { display: flex; gap: 12px; padding: 15px 0; border-bottom: 1px solid #333; align-items: center; }
         .item-img { width: 90px; height: 90px; border-radius: 12px; object-fit: cover; background: #333; flex-shrink: 0; border: 1px solid #444; }
         .item-info { flex: 1; }
-        .item-nombre { font-weight: bold; font-size: 15px; color: var(--blanco); text-transform: uppercase; }
-        .item-desc { font-size: 11px; color: #aaa; margin: 4px 0; line-height: 1.3; }
-        .item-precio { font-weight: bold; font-size: 15px; color: var(--naranja); }
-        .controles { display: flex; align-items: center; gap: 10px; background: #000; padding: 6px 12px; border-radius: 50px; border: 1px solid #333; }
-        .btn-c { background: var(--naranja); border: none; color: white; width: 30px; height: 30px; border-radius: 50%; font-weight: bold; cursor: pointer; }
+        .item-nombre { font-weight: bold; font-size: 14px; color: var(--blanco); text-transform: uppercase; }
+        .item-desc { font-size: 10px; color: #aaa; margin: 4px 0; line-height: 1.2; }
+        .item-precio { font-weight: bold; font-size: 14px; color: var(--naranja); }
+        .controles { display: flex; align-items: center; gap: 8px; background: #000; padding: 6px; border-radius: 50px; border: 1px solid #333; }
+        .btn-c { background: var(--naranja); border: none; color: white; width: 28px; height: 28px; border-radius: 50%; font-weight: bold; cursor: pointer; }
         .total-sticky { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 3px solid var(--naranja); padding: 20px; box-sizing: border-box; z-index: 1001; }
-        .btn-enviar { background: var(--verde); color: white; border: none; padding: 16px; border-radius: 12px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; }
-        .copy { text-align: center; font-size: 9px; color: #555; margin-top: 10px; text-transform: uppercase; }
+        .btn-enviar { background: var(--verde); color: white; border: none; padding: 16px; border-radius: 12px; width: 100%; font-size: 17px; font-weight: bold; cursor: pointer; }
+        .copy { text-align: center; font-size: 9px; color: #555; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <header>
-    <img src="logo.png" class="logo" alt="San Remo">
-    <div style="font-size: 22px; font-weight: bold; margin-top: 8px; letter-spacing: 2px;">SAN REMO</div>
+    <img src="sanremo.PNG" class="logo" alt="San Remo Logo">
+    <div style="font-size: 20px; font-weight: bold; margin-top: 8px; letter-spacing: 2px;">SAN REMO</div>
 </header>
 
 <div class="container">
     <div class="card">
-        <h3>👤 DATOS DE ENTREGA</h3>
-        <input type="text" id="nombre" class="input-form" placeholder="Tu Nombre" oninput="guardarDatos()">
-        <input type="tel" id="celular" class="input-form" placeholder="WhatsApp" oninput="guardarDatos()">
-        <input type="text" id="direccion" class="input-form" placeholder="Dirección / Barrio" oninput="guardarDatos()">
-        
+        <h3>👤 DATOS DE DOMICILIO</h3>
+        <input type="text" id="nombre" class="input-form" placeholder="Nombre completo" oninput="guardar()">
+        <input type="tel" id="cel" class="input-form" placeholder="WhatsApp" oninput="guardar()">
+        <input type="text" id="dir" class="input-form" placeholder="Dirección / Barrio en Caucasia" oninput="guardar()">
         <select id="pago" class="input-form">
             <option value="Efectivo">Efectivo</option>
             <option value="Nequi">Nequi</option>
             <option value="Bancolombia">Ahorro a la mano</option>
         </select>
-        <textarea id="obs" class="input-form" placeholder="¿Notas especiales? (Sin cebolla, etc.)"></textarea>
+        <textarea id="obs" class="input-form" style="height: 50px;" placeholder="¿Cómo quieres tu pedido?"></textarea>
     </div>
 
     <div class="card">
-        <h3>🍔 MENÚ SMASH</h3>
-        <div id="lista-productos"></div>
+        <h3>🍔 NUESTRO MENÚ SMASH</h3>
+        <div id="lista-menu"></div>
     </div>
 </div>
 
 <div class="total-sticky">
-    <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-weight: bold;">
+    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: bold;">
         <span>TOTAL:</span>
-        <span style="color: var(--naranja); font-size: 26px;">$<span id="total-val">0</span></span>
+        <span style="color: var(--naranja); font-size: 24px;">$<span id="total-val">0</span></span>
     </div>
-    <button class="btn-enviar" onclick="enviarPedido()">🚀 PEDIR POR WHATSAPP</button>
+    <button class="btn-enviar" onclick="enviar()">🚀 ENVIAR PEDIDO POR WHATSAPP</button>
     <div class="copy">DESARROLLADA POR VIBRAS POSITIVAS © 2026</div>
 </div>
 
 <script>
-    /* ⚠️ SOCIO: REVISA AQUÍ LOS PRECIOS Y NOMBRES ⚠️
-       Asegúrate que los archivos se llamen exactamente 1.jpg, 2.jpg, etc.
-       Si están en la raíz, NO llevan "img/".
-    */
+    // PRODUCTOS SINCRONIZADOS CON TU REPOSITORIO
     const productos = [
-        { id: 1, n: "SAN REMO SMASH", p: 14000, d: "Carne Smash 100g, cheddar, cebolla picada, pepinillos, mostaza y ketchup.", img: "1.jpg" },
-        { id: 2, n: "CHEDDAR & BACON", p: 18000, d: "Doble queso cheddar, tocineta crocante y salsa especial.", img: "2.jpg" },
-        { id: 3, n: "AMERICAN SMASH", p: 20000, d: "Doble carne Smash (200g), doble cheddar, cebolla grillé y pepinillos.", img: "3.jpg" },
-        { id: 4, n: "LA PECADO (DULCE)", p: 22000, d: "Doble carne, philadelphia, mermelada de tocineta y cebolla crunchy.", img: "4.jpg" },
-        { id: 5, n: "PORCIÓN DE PAPAS", p: 7000, d: "Papas francesas seleccionadas y crujientes.", img: "5.jpg" },
-        { id: 6, n: "COCA COLA 400ml", p: 5000, d: "Original o Zero.", img: "6.jpg" }
+        { id: 1, n: "DULCE PECADO", p: 25000, d: "Nuestra smash burger insignia con el toque dulce perfecto.", img: "dulce_pecado.JPG" },
+        { id: 2, n: "AMERICAN SMASH", p: 24000, d: "El sabor clásico americano con carnes smash y queso fundido.", img: "americansmashburger.JPG" },
+        { id: 3, n: "LA CREMOSA CHERRY", p: 26000, d: "Explosión de sabor con queso crema y reducción de cerezas.", img: "lacremosacherrysmashburger.JPG" },
+        { id: 4, n: "LA TOCIMELADA", p: 25000, d: "Tocineta bañada en miel artesanal sobre carnes smash.", img: "latocimeladasmashburger.JPG" },
+        { id: 5, n: "PAPAS A LA FRANCESA", p: 8000, d: "Porción de papas crujientes y doraditas.", img: "papasalafrancesa.JPG" },
+        { id: 6, n: "COCA COLA ORIGINAL", p: 5000, d: "400ml de sabor original.", img: "cocacolaoriginal400.JPG" },
+        { id: 7, n: "COCA COLA ZERO", p: 5000, d: "400ml de sabor sin azúcar.", img: "cocacolazero400.JPG" }
     ];
 
     let carrito = {};
 
-    function renderMenu() {
-        const cont = document.getElementById('lista-productos');
-        const v = new Date().getTime(); // Para evitar caché
-        cont.innerHTML = productos.map(p => `
+    function render() {
+        const v = new Date().getTime();
+        document.getElementById('lista-menu').innerHTML = productos.map(p => `
             <div class="item">
-                <img src="${p.img}?v=${v}" class="item-img" onerror="this.src='https://via.placeholder.com/90?text=S+R'">
+                <img src="${p.img}?v=${v}" class="item-img" onerror="this.src='https://via.placeholder.com/90?text=San+Remo'">
                 <div class="item-info">
                     <div class="item-nombre">${p.n}</div>
                     <div class="item-desc">${p.d}</div>
                     <div class="item-precio">$${p.p.toLocaleString()}</div>
                 </div>
                 <div class="controles">
-                    <button class="btn-c" onclick="cambiarCant(${p.id}, -1)">-</button>
+                    <button class="btn-c" onclick="cambiar(${p.id}, -1)">-</button>
                     <span class="cant" id="cant-${p.id}">0</span>
-                    <button class="btn-c" onclick="cambiarCant(${p.id}, 1)">+</button>
+                    <button class="btn-c" onclick="cambiar(${p.id}, 1)">+</button>
                 </div>
             </div>
         `).join('');
     }
 
-    function cambiarCant(id, delta) {
+    function cambiar(id, delta) {
         carrito[id] = (carrito[id] || 0) + delta;
         if (carrito[id] < 0) carrito[id] = 0;
         document.getElementById(`cant-${id}`).innerText = carrito[id];
-        actualizarTotal();
+        let t = 0;
+        productos.forEach(p => { if(carrito[p.id]) t += p.p * carrito[p.id]; });
+        document.getElementById('total-val').innerText = t.toLocaleString();
     }
 
-    function actualizarTotal() {
-        let total = 0;
-        productos.forEach(p => { if (carrito[p.id]) total += p.p * carrito[p.id]; });
-        document.getElementById('total-val').innerText = total.toLocaleString();
+    function guardar() {
+        const d = { n: document.getElementById('nombre').value, c: document.getElementById('cel').value, d: document.getElementById('dir').value };
+        localStorage.setItem('san_remo_store', JSON.stringify(d));
     }
 
-    function guardarDatos() {
-        const d = { n: document.getElementById('nombre').value, c: document.getElementById('celular').value, d: document.getElementById('direccion').value };
-        localStorage.setItem('sr_data_v5', JSON.stringify(d));
-    }
-
-    function enviarPedido() {
+    function enviar() {
         const n = document.getElementById('nombre').value;
         const total = document.getElementById('total-val').innerText;
-        if (!n || total === "0") return alert("Completa tus datos y el pedido.");
+        if (!n || total === "0") return alert("Socio, falta el nombre o los platos.");
 
         navigator.geolocation.getCurrentPosition((pos) => {
-            const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-            let msg = `*🍔 SAN REMO - PEDIDO*\n------------------\n👤 *CLIENTE:* ${n}\n📞 *CEL:* ${document.getElementById('celular').value}\n📍 *DIR:* ${document.getElementById('direccion').value}\n------------------\n`;
-            
+            const gps = `http://maps.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+            let msg = `*🍔 SAN REMO - PEDIDO*\n👤 *CLIENTE:* ${n}\n📞 *CEL:* ${document.getElementById('cel').value}\n📍 *DIR:* ${document.getElementById('dir').value}\n------------------\n`;
             productos.forEach(p => {
-                if (carrito[p.id] > 0) {
-                    msg += `🔹 ${p.n} (x${carrito[p.id]}) = $${(p.p * carrito[p.id]).toLocaleString()}\n`;
-                }
+                if (carrito[p.id] > 0) msg += `🔹 ${p.n} (x${carrito[p.id]}) = $${(p.p * carrito[p.id]).toLocaleString()}\n`;
             });
-
             msg += `------------------\n💰 *TOTAL: $${total}*\n💳 *PAGO:* ${document.getElementById('pago').value}\n📝 *OBS:* ${document.getElementById('obs').value}\n📍 *GPS:* ${gps}`;
             window.location.href = `https://wa.me/573217072960?text=${encodeURIComponent(msg)}`;
         }, () => alert("Activa el GPS para enviar el pedido."));
     }
 
     window.onload = () => {
-        renderMenu();
-        const s = JSON.parse(localStorage.getItem('sr_data_v5'));
+        render();
+        const s = JSON.parse(localStorage.getItem('san_remo_store'));
         if (s) {
             document.getElementById('nombre').value = s.n || "";
-            document.getElementById('celular').value = s.c || "";
-            document.getElementById('direccion').value = s.d || "";
+            document.getElementById('cel').value = s.c || "";
+            document.getElementById('dir').value = s.d || "";
         }
     };
 </script>
