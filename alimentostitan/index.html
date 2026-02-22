@@ -5,147 +5,122 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ALIMENTOS TITÁN - Pedidos</title>
     <style>
-        :root { 
-            --titan-rojo: #701c1c; 
-            --titan-oro: #b38e44; 
-            --oscuro: #1a1a1a; 
-            --blanco: #ffffff; 
-            --gris: #f8f9fa;
-            --verde-ws: #25D366;
-        }
-        
+        :root { --titan-rojo: #701c1c; --titan-oro: #b38e44; --oscuro: #1a1a1a; --blanco: #ffffff; --gris: #f8f9fa; --verde-ws: #25D366; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--gris); margin: 0; padding: 0; padding-bottom: 150px; }
-        
         #bloqueo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; text-align: center; padding-top: 100px; }
-
-        header { background: var(--titan-rojo); color: var(--titan-oro); padding: 30px 15px; text-align: center; border-bottom: 5px solid var(--titan-oro); position: relative; }
-        .logo-titan { max-width: 180px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
-        
-        .btn-pdf {
-            position: fixed; top: 20px; right: 15px; z-index: 1001;
-            background: var(--titan-oro); color: white; text-decoration: none;
-            padding: 10px 15px; border-radius: 50px; font-size: 11px; font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 2px solid white;
-            display: flex; align-items: center; gap: 5px;
-        }
-
+        header { background: var(--titan-rojo); color: var(--titan-oro); padding: 30px 15px; text-align: center; border-bottom: 5px solid var(--titan-oro); }
+        .logo-titan { max-width: 160px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+        .btn-pdf { position: fixed; top: 20px; right: 15px; z-index: 1001; background: var(--titan-oro); color: white; text-decoration: none; padding: 10px 15px; border-radius: 50px; font-size: 11px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 2px solid white; display: flex; align-items: center; gap: 5px; }
         .container { max-width: 500px; margin: auto; padding: 15px; }
         .card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #eee; }
         .section-title { font-size: 14px; font-weight: bold; color: var(--titan-rojo); text-transform: uppercase; margin-bottom: 15px; border-left: 4px solid var(--titan-oro); padding-left: 10px; }
-
-        input, select, textarea { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ddd; border-radius: 12px; font-size: 15px; box-sizing: border-box; }
-        
-        .producto-card { display: flex; align-items: center; gap: 15px; background: #fff; padding: 10px; border-radius: 15px; border: 1px solid #f0f0f0; margin-bottom: 10px; }
-        .producto-img { width: 90px; height: 90px; object-fit: cover; border-radius: 10px; border: 1px solid var(--titan-oro); background: #eee; }
+        input, textarea { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ddd; border-radius: 12px; font-size: 15px; box-sizing: border-box; }
+        .producto-card { display: flex; align-items: center; gap: 12px; background: #fff; padding: 10px; border-radius: 15px; border: 1px solid #f0f0f0; margin-bottom: 10px; }
+        .producto-img { width: 90px; height: 90px; object-fit: cover; border-radius: 10px; border: 1px solid var(--titan-oro); }
         .producto-info { flex: 1; }
-        .producto-info h4 { margin: 0; font-size: 14px; color: var(--oscuro); text-transform: uppercase; }
-        .producto-info p { margin: 3px 0; font-size: 11px; color: #666; line-height: 1.2; }
-        .producto-precio { color: var(--titan-rojo); font-weight: bold; font-size: 15px; margin-top: 5px; }
-        .p-qty { width: 80px !important; margin: 0 !important; text-align: center; border: 2px solid var(--titan-oro) !important; font-weight: bold; }
-
-        .btn { width: 100%; padding: 16px; border: none; border-radius: 15px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 10px 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .producto-info h4 { margin: 0; font-size: 13px; color: var(--oscuro); text-transform: uppercase; }
+        .producto-info p { margin: 3px 0; font-size: 10px; color: #666; line-height: 1.1; white-space: pre-line; }
+        .producto-precio { color: var(--titan-rojo); font-weight: bold; font-size: 14px; }
+        .p-qty { width: 75px !important; margin: 0 !important; text-align: center; border: 2px solid var(--titan-oro) !important; font-weight: bold; border-radius: 8px; }
+        .btn { width: 100%; padding: 16px; border: none; border-radius: 15px; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-gold { background: var(--titan-oro); color: white; }
-        .btn-whatsapp { background: var(--verde-ws); color: white; box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3); }
-
+        .btn-whatsapp { background: var(--verde-ws); color: white; margin-top: 15px; }
         .hidden { display: none !important; }
-        footer { text-align: center; padding: 30px; font-size: 12px; color: #888; border-top: 1px solid #eee; margin-top: 20px; }
+        footer { text-align: center; padding: 20px; font-size: 11px; color: #999; }
         .vp-brand { color: var(--titan-rojo); font-weight: bold; }
     </style>
 </head>
 <body>
 
-<a href="catalogo-titan.pdf" target="_blank" class="btn-pdf">
-    <span>📄 VER CATÁLOGO PDF</span>
-</a>
-
-<div id="bloqueo"><h1>🔒</h1><h2>SERVICIO SUSPENDIDO</h2><p>Contacte a VIBRAS POSITIVAS</p></div>
+<a href="catalogo-titan.pdf" target="_blank" class="btn-pdf"><span>📄 CATÁLOGO PDF</span></a>
+<div id="bloqueo"><h1>🔒</h1><h2>SERVICIO SUSPENDIDO</h2></div>
 
 <header>
-    <img src="TITAN.PNG" alt="Logo Titán" class="logo-titan">
-    <div style="font-size: 12px; color: white; margin-top: 5px; letter-spacing: 2px;">FUERZA EN CADA SABOR</div>
+    <img src="TITAN.PNG" alt="TITAN" class="logo-titan">
+    <div style="font-size: 11px; color: white; margin-top: 5px; letter-spacing: 1px;">FUERZA EN CADA SABOR</div>
 </header>
 
 <div class="container" id="app-content">
-    
     <div class="card">
         <div class="section-title">Información de Despacho</div>
         <div id="cliente-info-guardada" class="hidden">
-            <p id="texto-resumen" style="font-size: 14px; background: #fffcf0; padding: 15px; border-radius: 10px; border: 1px solid var(--titan-oro); white-space: pre-line;"></p>
-            <button onclick="mostrarEditor()" style="background: none; border: none; color: #007bff; font-size: 12px; cursor: pointer; font-weight: bold;">⚙️ EDITAR MIS DATOS</button>
+            <p id="texto-resumen" style="font-size: 13px; background: #fffcf0; padding: 12px; border-radius: 10px; border: 1px solid var(--titan-oro); white-space: pre-line;"></p>
+            <button onclick="mostrarEditor()" style="background: none; border: none; color: #007bff; font-size: 11px; cursor: pointer; font-weight: bold;">⚙️ CAMBIAR MIS DATOS</button>
         </div>
         <div id="cliente-editor">
-            <input type="text" id="c_nombre" placeholder="Nombre / Negocio">
+            <input type="text" id="c_nombre" placeholder="Nombre / Razón Social">
             <input type="text" id="c_direccion" placeholder="Dirección de entrega">
-            <input type="tel" id="c_celular" placeholder="WhatsApp de contacto">
-            <button class="btn btn-gold" onclick="guardarCliente()">GUARDAR MIS DATOS</button>
+            <input type="tel" id="c_celular" placeholder="Celular de contacto">
+            <button class="btn btn-gold" onclick="guardarCliente()">GUARDAR DATOS</button>
         </div>
     </div>
 
     <div class="card">
-        <div class="section-title">Portafolio Castizo</div>
+        <div class="section-title">Nuestros Productos Castizo</div>
         
         <div class="producto-card">
-            <img src="TRADICIONAL.png" class="producto-img" alt="Chorizo Tradicional">
+            <img src="TRADICIONAL.png" class="producto-img">
             <div class="producto-info">
-                <h4>Chorizo Tradicional</h4>
-                <p>100% carne de cerdo. Fuerza y tradición. (6 unidades - 400g)</p>
+                <h4>Chorizo de Cerdo Tradicional</h4>
+                <p>Clásico sabor casero, fuerza y tradición. (6 unidades - 400g)</p>
                 <div class="producto-precio">$15.000</div>
             </div>
-            <input type="number" class="p-qty" placeholder="Cant" data-name="Chorizo Tradicional (6 und)">
+            <input type="number" class="p-qty" placeholder="0" data-name="Chorizo Tradicional">
         </div>
 
         <div class="producto-card">
-            <img src="JALAPENO.png" class="producto-img" alt="Chorizo Jalapeño">
+            <img src="JALAPENO.png" class="producto-img">
             <div class="producto-info">
-                <h4>Chorizo con Jalapeño</h4>
-                <p>Toque justo de picante. Experiencia intensa. (6 unidades - 400g)</p>
+                <h4>Chorizo de Cerdo con Jalapeño</h4>
+                <p>Toque justo de picante, experiencias intensas. (6 unidades - 400g)</p>
                 <div class="producto-precio">$15.000</div>
             </div>
-            <input type="number" class="p-qty" placeholder="Cant" data-name="Chorizo Jalapeño (6 und)">
+            <input type="number" class="p-qty" placeholder="0" data-name="Chorizo con Jalapeño">
         </div>
 
         <div class="producto-card">
-            <img src="XL.png" class="producto-img" alt="Chorizo XL">
+            <img src="XL.png" class="producto-img">
             <div class="producto-info">
                 <h4>Chorizo Tradicional XL</h4>
-                <p>27 cm por unidad. Máximo sabor. (5 unidades - 600g)</p>
+                <p>27 cm por unidad. 100% carne de cerdo. (5 unidades - 600g)</p>
                 <div class="producto-precio">$25.000</div>
             </div>
-            <input type="number" class="p-qty" placeholder="Cant" data-name="Chorizo XL (5 und)">
+            <input type="number" class="p-qty" placeholder="0" data-name="Chorizo Tradicional XL">
         </div>
 
         <div class="producto-card">
-            <img src="COCTELERO.png" class="producto-img" alt="Chorizo Coctel">
+            <img src="COCTELERO.png" class="producto-img">
             <div class="producto-info">
-                <h4>Tipo Coctelero</h4>
+                <h4>Tradicional Tipo Coctelero</h4>
                 <p>Ideal para reuniones y pasabocas. (16 unidades - 300g)</p>
                 <div class="producto-precio">$10.000</div>
             </div>
-            <input type="number" class="p-qty" placeholder="Cant" data-name="Chorizo Coctel (16 und)">
+            <input type="number" class="p-qty" placeholder="0" data-name="Tradicional Tipo Coctelero">
+        </div>
+
+        <div class="producto-card">
+            <img src="TRADICIONALYJALAPENO.png" class="producto-img">
+            <div class="producto-info">
+                <h4>Tradicional y Jalapeño</h4>
+                <p>Sabor auténtico con el toque justo de picante. (Mix de sabores)</p>
+                <div class="producto-precio">$15.000</div>
+            </div>
+            <input type="number" class="p-qty" placeholder="0" data-name="Combo Tradicional y Jalapeño">
         </div>
     </div>
 
     <div class="card">
-        <textarea id="observaciones" placeholder="📝 Notas adicionales para el pedido..."></textarea>
-        <button class="btn btn-whatsapp" onclick="enviarPedido()">
-            🚀 ENVIAR PEDIDO A WHATSAPP
-        </button>
+        <textarea id="observaciones" placeholder="📝 Notas para el despacho..."></textarea>
+        <button class="btn btn-whatsapp" onclick="enviarPedido()">🚀 ENVIAR PEDIDO A WHATSAPP</button>
     </div>
 
-    <footer>
-        App Oficial - ALIMENTOS TITÁN<br>
-        Desarrollado por <span class="vp-brand">VIBRAS POSITIVAS</span><br>
-        © 2026
-    </footer>
+    <footer>Desarrollado por <span class="vp-brand">VIBRAS POSITIVAS</span></footer>
 </div>
 
 <script>
     const WHATSAPP_TITAN = "573116250625"; 
 
-    window.onload = () => { 
-        verificarDatos();
-        checkLock(); 
-    };
+    window.onload = () => { verificarDatos(); checkLock(); };
 
     async function checkLock() {
         try {
@@ -159,15 +134,9 @@
     }
 
     function guardarCliente() {
-        const d = { 
-            n: document.getElementById('c_nombre').value.trim(), 
-            d: document.getElementById('c_direccion').value.trim(), 
-            c: document.getElementById('c_celular').value.trim() 
-        };
-        if(d.n && d.d && d.c) { 
-            localStorage.setItem('vp_titan_cliente', JSON.stringify(d)); 
-            verificarDatos(); 
-        } else { alert("Socio, por favor llena los datos de despacho."); }
+        const d = { n: document.getElementById('c_nombre').value, d: document.getElementById('c_direccion').value, c: document.getElementById('c_celular').value };
+        if(d.n && d.d && d.c) { localStorage.setItem('vp_titan_cliente', JSON.stringify(d)); verificarDatos(); }
+        else { alert("Socio, llena los datos de despacho."); }
     }
 
     function verificarDatos() {
@@ -179,41 +148,21 @@
         }
     }
 
-    function mostrarEditor() { 
-        document.getElementById('cliente-editor').classList.remove('hidden');
-        document.getElementById('cliente-info-guardada').classList.add('hidden');
-    }
+    function mostrarEditor() { document.getElementById('cliente-editor').classList.remove('hidden'); document.getElementById('cliente-info-guardada').classList.add('hidden'); }
 
     function enviarPedido() {
         const c = JSON.parse(localStorage.getItem('vp_titan_cliente'));
-        if(!c) return alert("Socio, primero guarda tus datos de cliente.");
-
-        let msj = `*📦 ALIMENTOS TITÁN - NUEVO PEDIDO*\n`;
-        msj += `--------------------------\n`;
-        msj += `👤 *CLIENTE:* ${c.n}\n📍 *DIR:* ${c.d}\n📞 *TEL:* ${c.c}\n`;
-        msj += `--------------------------\n`;
-        msj += `🛒 *DETALLE DEL PEDIDO:* \n`;
-
+        if(!c) return alert("Guarda tus datos primero.");
+        let msj = `*📦 ALIMENTOS TITÁN - NUEVO PEDIDO*\n--------------------------\n👤 *CLIENTE:* ${c.n}\n📍 *DIR:* ${c.d}\n--------------------------\n🛒 *PRODUCTOS:* \n`;
         const prods = document.querySelectorAll('.p-qty');
-        let hayPedido = false;
-
-        prods.forEach(p => {
-            if(p.value > 0) {
-                msj += `• ${p.getAttribute('data-name')} x${p.value}\n`;
-                hayPedido = true;
-            }
-        });
-
-        if(!hayPedido) return alert("Socio, no has seleccionado ningún producto.");
-
+        let hay = false;
+        prods.forEach(p => { if(p.value > 0) { msj += `• ${p.getAttribute('data-name')} (x${p.value})\n`; hay = true; }});
+        if(!hay) return alert("Socio, no has marcado ningún producto.");
         const obs = document.getElementById('observaciones').value;
-        if(obs) msj += `\n📝 *OBS:* ${obs}\n`;
-
-        msj += `\n_Enviado desde App Vibras Positivas_`;
-
+        if(obs) msj += `\n📝 *OBS:* ${obs}`;
+        msj += `\n\n_App de Alimentos Titán - Vibras Positivas_`;
         window.location.href = `https://wa.me/${WHATSAPP_TITAN}?text=${encodeURIComponent(msj)}`;
     }
 </script>
-
 </body>
 </html>
