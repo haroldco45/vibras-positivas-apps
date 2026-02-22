@@ -142,7 +142,7 @@
             productos.forEach(p => {
                 if (carrito[p.id] > 0) msg += `🔹 ${p.n} (x${carrito[p.id]}) = $${(p.p * carrito[p.id]).toLocaleString()}\n`;
             });
-            msg += `------------------\n💰 *TOTAL: $${total}*\n💳 *PAGO:* ${document.getElementById('pago').value}\n📝 *OBS:* ${document.getElementById('obs').value}\n📍 *UBICACIÓN:* ${gps}`;
+            msg += `------------------\n💰 *TOTAL: $${total}*\n💳 *PAGO:* ${document.getElementById('pago').value}\n📝 *OBS:* ${document.getElementById('obs').value}\n📍 *UBICACIÓN:* ${gps}\n\n_Hecho por VIBRAS POSITIVAS - Derechos de Autor_`;
             window.location.href = `https://wa.me/573217072960?text=${encodeURIComponent(msg)}`;
         }, () => alert("Socio, activa el GPS para poder enviarte el pedido."));
     }
