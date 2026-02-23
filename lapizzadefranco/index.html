@@ -7,30 +7,21 @@
     <style>
         :root { --rojo: #ce2b37; --verde: #008c45; --blanco: #ffffff; --beige: #fdfaf5; --oscuro: #1a1a1a; --exito: #25D366; --oro: #b38e44; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--beige); margin: 0; padding: 10px; padding-bottom: 220px; }
-        
         header { background: var(--rojo); color: white; padding: 20px; text-align: center; border-radius: 0 0 30px 30px; margin: -10px -10px 15px -10px; border-bottom: 5px solid var(--verde); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .logo-pizza { width: 85px; border-radius: 15px; border: 2px solid white; background: white; margin-bottom: 8px; }
-
         .btn-pdf { display: block; background: var(--oro); color: white; text-decoration: none; text-align: center; padding: 12px; border-radius: 12px; font-weight: bold; margin-bottom: 15px; border: 2px solid white; font-size: 14px; }
-
         .card { background: white; padding: 18px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 15px; border: 1px solid #eee; }
         .section-title { font-size: 12px; font-weight: bold; color: var(--rojo); text-transform: uppercase; margin-bottom: 12px; border-left: 5px solid var(--verde); padding-left: 10px; }
-
         input, textarea, select { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 15px; outline: none; }
-        
-        /* BUSCADOR CON OJO EXTRACTOR 100% */
         .search-box { position: relative; }
         #busqueda-prod { border: 2.5px solid var(--rojo); font-weight: bold; background: #fff; }
         .sugerencias { background: white; border: 1px solid #ddd; border-radius: 10px; position: absolute; width: 100%; z-index: 1000; max-height: 300px; overflow-y: auto; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-        .sugerencia-item { padding: 14px; border-bottom: 1px solid #eee; cursor: pointer; }
+        .sugerencia-item { padding: 14px; border-bottom: 1px solid #eee; cursor: pointer; text-align: left; }
         .sugerencia-item b { color: var(--rojo); display: block; font-size: 14px; text-transform: uppercase; }
         .sugerencia-item span { font-size: 11px; color: #555; line-height: 1.2; }
-
         .btn-gps { background: #f0f7f4; color: var(--verde); border: 1px dashed var(--verde); padding: 10px; border-radius: 10px; width: 100%; cursor: pointer; font-size: 12px; font-weight: bold; margin: 5px 0; }
-        
         .footer-pedido { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 20px; box-shadow: 0 -8px 25px rgba(0,0,0,0.1); border-radius: 25px 25px 0 0; z-index: 1000; }
         .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; }
-
         .item-agregado { background: #fdfaf5; padding: 15px; border-radius: 15px; border: 2px solid var(--oro); margin-top: 10px; }
         .cant-n { font-weight: 900; color: var(--rojo); font-size: 22px; margin: 0 15px; }
     </style>
@@ -84,7 +75,7 @@
                     <div id="sel-subtotal" style="font-weight:900; color:var(--verde); font-size: 19px;">$ 0</div>
                 </div>
             </div>
-            <textarea id="obs" rows="2" placeholder="📝 Notas especiales (Sin cebolla, sabores de gaseosa, etc.)" style="margin-top:10px;"></textarea>
+            <textarea id="obs" rows="2" placeholder="📝 Notas especiales (Sin cebolla, etc.)" style="margin-top:10px;"></textarea>
         </div>
     </div>
 </div>
@@ -102,46 +93,45 @@
     let itemActivo = null;
     let cantidad = 1;
 
-    // BASE DE DATOS 100% CARTA (Extraída del PDF)
+    // BASE DE DATOS CORREGIDA (Sin errores de sintaxis)
     const carta = [
         { n: "2 SABORES ESPECIAL", d: "jamon serrano, esp.casa, llanera, mariscos, mar y tierra, esp. napolitana, capresa, especial jamon serrano", p: { Personal: 42000, Mediano: 62000, Familiar: 132000 } },
-        { n: "PIZZA ESP.CASA.JAMON SERRANO", d: "", p: { Personal: 44000, Mediano: 78000, Familiar: 152000 } },
-        { n: "2 SABORES", d: "", p: { Personal: 370000, Mediano: 47000, Familiar: 89000 } },
-        { n: "JAMON QUESO HAWAIANA", d: "", p: { Personal: 36000, Mediano: 47000, Familiar: 77000 } },
-        { n: "JAMON Y QUESO, d: "Base pizza,napolitana,queso mozzarella,jamon", p: { Personal: 25000, Mediano: 35000, Familiar: 88000 } },
-        { n: "NAPOLITANA", d: "Base pizza, queso mozzarella, albaha", p: { Personal: 22000, Mediano: 32000, Familiar: 62000 } },
-        { n: "HAWAIANA", d: "Base pizza, salsa napolitana, queso mozzarella,jamon, piña", p: { Personal: 27000, Mediano: 37000, Familiar: 78000 } },
-        { n: "MARGARITA", d: "Base de pizza, salsa napolitana, queso mozzarella, tmate cherry, albahaca, oregano, aceite de oliva, pimienta", p: { Personal: 28000, Mediano: 38000, Familiar: 75000 } },
-        { n: "LA CASA", d: "Base de pizza, salsa de la casa, qaueso mozzarella, jamon, tocineta, aceitunas negras,maiz tierno, chorizo", p: { Personal: 34000, Mediano: 44000, Familiar: 80000 } },
-        { n: "CARBONARA DE LA CASA", d: "Base de pizza, salsa italiana, queso mozzarella, tocineta, jamon, frutos secos (maiz, almendra, nueces), albahaca, miel saborizada", p: { Personal: 30000, Mediano: 40000, Familiar: 72000 } },
-        { n: "BOLOGÑESA", d: "Base pizza, salsa de la casa, queso mozzarella, jamon, tocineta, salsa bologñesa", p: { Personal: 32000, Mediano: 42000, Familiar: 77000 } },
-        { n: "RANCHERA", d: "Base pizza, Salchicha ranchera picante, queso mozzarella,salchicha ranchera, pimenton, cebolla morada", p: { Personal: 32000, Mediano: 42000, Familiar: 77000 } },
-        { n: "ESPECIAL RANCHERA", d: "Base de pizza, salsa napolitana, queso mozzarella, salchicha ranchera, pepperoni, oregano y pimienta", p: { Personal: 38000, Mediano: 48000, Familiar: 82000 } },
-        { n: "JAMON SERRANO Y CHAMPIÑON", d: "Base de pizza, salsa pomodoro, queso mozzarella, champiñon, tomates cherry, jamon serrano, albahaca, oregano", p: { Personal: 34000, Mediano: 44000, Familiar: 77000 } },
-        { n: "PEPPERONI", d: "Base de pizza, salsa napolitana, queso mozzarella, pepperoni", p: { Personal: 34000, Mediano: 46000, Familiar: 82000 } },
-        { n: "POLLO Y CHAMPIGÑON", d: "Base de pizza, salsa napolitana, queso mozzarella, champigñon, pollo", p: { Personal: 32000, Mediano: 42000, Familiar: 77000 } },
-        { n: "VERDURAS", d: "Base de pizza, salsa, salsa napolitana, queso mozzarella, maiz, tomate cherry, pimenton y aceitunas negras", p: { Personal: 32000, Mediano: 42000, Familiar: 77000 } },
-        { n: "CAPRESA", d: "Base de pizza, salsa napolitana, queso mozzarella, tomate chonto, queso burrata, y oregano", p: { Personal: 38000, Mediano: 74000, Familiar: 147000 } },
-        { n: "LLANERA", d: "Base de pizza, salsa napolitana, queso mozzarella, salsa pesto, queso mozzarella, carne de res y cerdo a la llanerea, queso llanero, chimichurri", p: { Pequeña: 36000, Mediano: 56000, Grande: 84000 } },
-        { n: "MAR Y TIERRA", d: "Base pizza, salsa de la casa, queso mozzarella, mariscos y pollo", p: { Pequeña: 34000, Mediana: 54000, Grande: 82000 } },
-        { n: "PAISA", d: "Base de pizza, salsa pomodoro, queso mozzarella, chicharron,maduro, carne molida, chorizo, aguacate", p: { Pequeña: 36000, Mediana: 46000, Grande: 88000 } },
-        { n: "MARISCOS", d: "Base de pizza, salsa de la casa, queso mozzarella, mariscos, pimenton", p: { Pequeña: 37000, Mediana: 57000, Grande: 98000 } },
-        { n: "ESPECIAL DE LA CASA", d: "Base de pizza, salsa de la casa, queso mozzarella, pollo, tocineta, tomate cherry confitado, queso burrata, salsa pesto, albahaca, oregano", p: { Pequeña: 40000, Mediana: 78000, Grande: 154000 } }
-        { n: "ESPECIAL DE POLLO", d: "Base de pizza, salsa de la casa, queso mozzarella, jamon, tocineta, frutos secos, pollo", p: { Pequeña: 32000, Mediana: 42000, Grande: 77000 } }
-        { n: "VEGETALES CON POLLO", d: "Base de pizza, salsa pesto, queso mozzarella, escabeche de berenjenas, pimenton ahumado, champigñon, maiz tierno, pollo", p: { Pequeña: 34000, Mediana: 44000, Grande: 80000 } }
-        { n: "ESPECIAL PEPPERONI", d: "Base de pizza, napolitana, queso mozzarella, champigñones, pimenton, oregano, cebolla roja", p: { Pequeña: 38000, Mediana: 74000, Grande: 147000 } }
-        { n: "PIÑA Y POLLO", d: "Base de pizza, napolitana, queso mozzarella, jamon, tocineta, piña, pollo", p: { Pequeña: 35000, Mediana: 45000, Grande: 80000 } }
-	    { n: "ESPECIAL JAMON SERRANO", d: "Base de pizza, salsa napolitana, jamon serrano, queso mozzarella, champigñon, escamas de parmesano, queso burrata", p: { Pequeña: 44000, Mediana: 80000, Grande: 154000 } }
-	    { n: "LASAGÑA PERSONAL POLLO", d: "Pasta, pollo, jamon, salsa napolitana, salsa bechamel, queso mozzarella", p: { Pequeña: 32000, Grande: 360000 } }
-	    { n: "LASAGÑA PERSONAL BOLOGÑESA" d: "", p: { Pequeña: 32000, Grande: 360000 } }
-	    { n: "LASAGÑA MIXTA POLLO Y CARNE", d: "", p: { Pequeña: 32000, Grande:36000 } }
+        { n: "PIZZA ESP.CASA.JAMON SERRANO", d: "Burrata, serrano, cherry", p: { Personal: 44000, Mediano: 78000, Familiar: 152000 } },
+        { n: "2 SABORES TRADICIONAL", d: "Combina dos sabores clásicos", p: { Personal: 37000, Mediano: 47000, Familiar: 89000 } },
+        { n: "JAMON QUESO HAWAIANA", d: "Mezcla tradicional", p: { Personal: 36000, Mediano: 47000, Familiar: 77000 } },
+        { n: "JAMON Y QUESO", d: "Base pizza, napolitana, queso mozzarella, jamon", p: { Personal: 25000, Mediano: 35000, Familiar: 88000 } },
+        { n: "NAPOLITANA", d: "Base pizza, queso mozzarella, albahaca", p: { Personal: 22000, Mediano: 32000, Familiar: 62000 } },
+        { n: "HAWAIANA", d: "Base pizza, salsa napolitana, queso mozzarella, jamon, piña", p: { Personal: 27000, Mediano: 37000, Familiar: 78000 } },
+        { n: "MARGARITA", d: "Tomate cherry, albahaca, aceite de oliva", p: { Personal: 28000, Mediano: 38000, Familiar: 75000 } },
+        { n: "LA CASA", d: "Salsa de la casa, jamon, tocineta, aceitunas, maiz, chorizo", p: { Personal: 34000, Mediano: 44000, Familiar: 80000 } },
+        { n: "CARBONARA DE LA CASA", d: "Tocineta, jamon, frutos secos, miel", p: { Personal: 30000, Mediano: 40000, Familiar: 72000 } },
+        { n: "BOLOGÑESA", d: "Carne bologñesa, tocineta, jamon", p: { Personal: 32000, Mediano: 42000, Familiar: 77000 } },
+        { n: "RANCHERA", d: "Salchicha ranchera, pimenton, cebolla morada", p: { Personal: 32000, Mediano: 42000, Familiar: 77000 } },
+        { n: "ESPECIAL RANCHERA", d: "Ranchera, pepperoni, oregano, pimienta", p: { Personal: 38000, Mediano: 48000, Familiar: 82000 } },
+        { n: "JAMON SERRANO Y CHAMPIÑON", d: "Jamon serrano, champiñon, cherry", p: { Personal: 34000, Mediano: 44000, Familiar: 77000 } },
+        { n: "PEPPERONI", d: "Doble pepperoni, mozzarella", p: { Personal: 34000, Mediano: 46000, Familiar: 82000 } },
+        { n: "POLLO Y CHAMPIGÑON", d: "Pollo, champigñon, mozzarella", p: { Personal: 32000, Mediano: 42000, Familiar: 77000 } },
+        { n: "VERDURAS", d: "Maiz, cherry, pimenton, aceitunas", p: { Personal: 32000, Mediano: 42000, Familiar: 77000 } },
+        { n: "CAPRESA", d: "Tomate chonto, burrata, oregano", p: { Personal: 38000, Mediano: 74000, Familiar: 147000 } },
+        { n: "LLANERA", d: "Res y cerdo llanero, queso llanero, chimichurri", p: { Personal: 36000, Mediano: 56000, Familiar: 84000 } },
+        { n: "MAR Y TIERRA", d: "Mariscos y pollo", p: { Personal: 34000, Mediano: 54000, Familiar: 82000 } },
+        { n: "PAISA", d: "Chicharron, maduro, carne molida, aguacate", p: { Personal: 36000, Mediano: 46000, Familiar: 88000 } },
+        { n: "MARISCOS", d: "Mix de mariscos, pimenton", p: { Personal: 37000, Mediano: 57000, Familiar: 98000 } },
+        { n: "ESPECIAL DE LA CASA", d: "Pollo, tocineta, cherry, burrata, pesto", p: { Personal: 40000, Mediano: 78000, Familiar: 154000 } },
+        { n: "ESPECIAL DE POLLO", d: "Jamon, tocineta, frutos secos, pollo", p: { Personal: 32000, Mediano: 42000, Familiar: 77000 } },
+        { n: "VEGETALES CON POLLO", d: "Berenjena, pimenton, champiñon, maiz, pollo", p: { Personal: 34000, Mediano: 44000, Familiar: 80000 } },
+        { n: "ESPECIAL PEPPERONI", d: "Pepperoni, champiñon, pimenton, cebolla roja", p: { Personal: 38000, Mediano: 74000, Familiar: 147000 } },
+        { n: "PIÑA Y POLLO", d: "Jamon, tocineta, piña, pollo", p: { Personal: 35000, Mediano: 45000, Familiar: 80000 } },
+        { n: "ESPECIAL JAMON SERRANO", d: "Serrano, champiñon, parmesano, burrata", p: { Personal: 44000, Mediano: 80000, Familiar: 154000 } },
+        { n: "LASAGÑA PERSONAL POLLO", d: "Pasta, pollo, jamon, bechamel", p: { Pequeña: 32000, Grande: 36000 } },
+        { n: "LASAGÑA PERSONAL BOLOGÑESA", d: "Carne molida, napolitana", p: { Pequeña: 32000, Grande: 36000 } },
+        { n: "LASAGÑA MIXTA", d: "Pollo y carne res", p: { Pequeña: 32000, Grande: 36000 } }
     ];
 
     function ojoExtractor(val) {
         const box = document.getElementById('box-sugerencias');
         if (val.length < 1) { box.style.display = 'none'; return; }
         
-        // BUSCADOR QUE MIRA CADA PALABRA EN NOMBRE Y DESCRIPCIÓN
         const terminos = val.toLowerCase().split(" ");
         const res = carta.filter(p => {
             const contenido = (p.n + " " + p.d).toLowerCase();
@@ -157,7 +147,7 @@
             `).join('');
             box.style.display = 'block';
         } else {
-            box.innerHTML = '<div style="padding:15px; font-size:12px; color:red;">No hay coincidencias...</div>';
+            box.innerHTML = '<div style="padding:15px; color:red;">No hay coincidencias...</div>';
             box.style.display = 'block';
         }
     }
