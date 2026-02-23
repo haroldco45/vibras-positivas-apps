@@ -3,42 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>La Pizza de Franco - Pedido Inteligente</title>
+    <title>La Pizza de Franco - Buscador Total</title>
     <style>
         :root { --rojo: #ce2b37; --verde: #008c45; --blanco: #ffffff; --beige: #fdfaf5; --oscuro: #1a1a1a; --exito: #25D366; --oro: #b38e44; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--beige); margin: 0; padding: 10px; padding-bottom: 200px; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--beige); margin: 0; padding: 10px; padding-bottom: 220px; }
         
         #bloqueo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; text-align: center; padding-top: 100px; }
         
         header { background: var(--rojo); color: white; padding: 20px; text-align: center; border-radius: 0 0 30px 30px; margin: -10px -10px 15px -10px; border-bottom: 5px solid var(--verde); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .logo-pizza { width: 90px; border-radius: 15px; border: 2px solid white; background: white; margin-bottom: 8px; }
 
-        .btn-pdf { display: block; background: var(--oro); color: white; text-decoration: none; text-align: center; padding: 14px; border-radius: 15px; font-weight: bold; margin-bottom: 20px; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .btn-pdf { display: block; background: var(--oro); color: white; text-decoration: none; text-align: center; padding: 14px; border-radius: 15px; font-weight: bold; margin-bottom: 20px; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 14px; }
 
         .card { background: white; padding: 20px; border-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #eee; }
         .section-title { font-size: 13px; font-weight: bold; color: var(--rojo); text-transform: uppercase; margin-bottom: 12px; border-left: 5px solid var(--verde); padding-left: 10px; }
 
-        input, textarea, select { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 15px; }
+        input, textarea, select { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 15px; outline: none; }
         
-        /* BUSCADOR AVANZADO */
+        /* BUSCADOR CON OJO EXTRACTOR */
         .search-box { position: relative; }
-        #busqueda-prod { border: 2px solid var(--rojo); font-weight: bold; }
-        .sugerencias { background: white; border: 1px solid #ddd; border-radius: 12px; position: absolute; width: 100%; z-index: 100; max-height: 250px; overflow-y: auto; display: none; box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-top: -5px; }
-        .sugerencia-item { padding: 12px; cursor: pointer; border-bottom: 1px solid #f0f0f0; font-size: 13px; line-height: 1.4; }
-        .sugerencia-item b { color: var(--rojo); display: block; text-transform: uppercase; }
-        .sugerencia-item span { color: #666; font-size: 11px; }
-        .sugerencia-item:hover { background: #fff9f0; }
+        #busqueda-prod { border: 2.5px solid var(--rojo); background: #fff; font-weight: bold; }
+        #busqueda-prod:focus { box-shadow: 0 0 10px rgba(206, 43, 55, 0.2); }
+        
+        .sugerencias { background: white; border: 1px solid #ddd; border-radius: 12px; position: absolute; width: 100%; z-index: 1000; max-height: 300px; overflow-y: auto; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.15); margin-top: -5px; }
+        .sugerencia-item { padding: 15px; cursor: pointer; border-bottom: 1px solid #f0f0f0; transition: 0.2s; }
+        .sugerencia-item:hover { background: #fffcf5; }
+        .sugerencia-item b { color: var(--rojo); display: block; text-transform: uppercase; font-size: 14px; }
+        .sugerencia-item span { color: #555; font-size: 11px; line-height: 1.3; display: block; margin-top: 3px; }
 
-        /* ITEM SELECCIONADO */
-        .item-agregado { background: #fdfaf5; padding: 15px; border-radius: 15px; border: 1.5px solid var(--oro); margin-top: 10px; }
-        .controles-cant { display: flex; align-items: center; gap: 15px; margin-top: 10px; justify-content: space-between; }
-        .btn-c { background: var(--oscuro); color: white; border: none; width: 35px; height: 35px; border-radius: 10px; font-weight: bold; font-size: 20px; }
-        .cant-n { font-weight: bold; color: var(--rojo); font-size: 22px; }
+        .item-agregado { background: #fdfaf5; padding: 15px; border-radius: 18px; border: 2px solid var(--oro); margin-top: 15px; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .footer-pedido { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 20px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); border-radius: 25px 25px 0 0; z-index: 1000; }
-        .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
+        .controles-cant { display: flex; align-items: center; gap: 15px; margin-top: 12px; justify-content: space-between; }
+        .btn-c { background: var(--oscuro); color: white; border: none; width: 40px; height: 40px; border-radius: 12px; font-weight: bold; font-size: 24px; cursor: pointer; }
+        .cant-n { font-weight: 900; color: var(--rojo); font-size: 24px; }
 
-        .btn-gps { background: #f0f4ff; color: #1e40af; border: 1px dashed #1e40af; padding: 10px; border-radius: 10px; width: 100%; cursor: pointer; font-size: 12px; font-weight: bold; margin-bottom: 5px; }
+        .footer-pedido { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 20px; box-shadow: 0 -8px 25px rgba(0,0,0,0.1); border-radius: 30px 30px 0 0; z-index: 1000; }
+        .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 18px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-enviar:active { transform: scale(0.98); }
+
+        .btn-gps { background: #f0f7f4; color: var(--verde); border: 1px dashed var(--verde); padding: 12px; border-radius: 12px; width: 100%; cursor: pointer; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -48,18 +52,19 @@
 <div id="app-content">
     <header>
         <img src="lapizzadefranco.PNG" alt="Logo" class="logo-pizza">
-        <h1 style="margin:0; font-size: 20px; letter-spacing: 1px;">LA PIZZA DE FRANCO</h1>
+        <h1 style="margin:0; font-size: 22px;">LA PIZZA DE FRANCO</h1>
+        <div style="font-size: 11px; letter-spacing: 2px; opacity: 0.9;">MENU INTERACTIVO</div>
     </header>
 
     <div style="padding: 10px;">
-        <a href="pizzafranco.pdf" target="_blank" class="btn-pdf">📖 ABRIR CARTA COMPLETA (PDF)</a>
+        <a href="pizzafranco.pdf" target="_blank" class="btn-pdf">📖 VER CARTA COMPLETA (PDF)</a>
 
         <div class="card">
-            <div class="section-title">📍 Datos de Entrega</div>
-            <input type="text" id="nom" placeholder="👤 Nombre y Apellido">
-            <input type="text" id="dir" placeholder="🏠 Dirección / Barrio">
-            <button class="btn-gps" onclick="obtenerGPS()" id="btn-gps-txt">📍 TOCAR PARA ENVIAR UBICACIÓN GPS</button>
-            <input type="tel" id="tel_cli" placeholder="📞 Celular">
+            <div class="section-title">👤 Tus Datos</div>
+            <input type="text" id="nom" placeholder="¿A nombre de quién?">
+            <input type="text" id="dir" placeholder="Dirección y Barrio">
+            <button class="btn-gps" onclick="obtenerGPS()" id="btn-gps-txt">📍 TOCAR AQUÍ PARA UBICACIÓN GPS</button>
+            <input type="tel" id="tel_cli" placeholder="Número de Celular">
             <select id="pago">
                 <option value="Efectivo">Efectivo</option>
                 <option value="Nequi">Nequi</option>
@@ -68,18 +73,18 @@
         </div>
 
         <div class="card">
-            <div class="section-title">🍕 Busca tu Pizza, Lasagña o Bebida</div>
+            <div class="section-title">🔍 Buscador Inteligente</div>
             <div class="search-box">
-                <input type="text" id="busqueda-prod" placeholder="🔍 Escribe ingredientes o nombre..." onkeyup="buscarGlobal(this.value)">
+                <input type="text" id="busqueda-prod" placeholder="Escribe ingrediente o nombre..." onkeyup="ojoExtractor(this.value)">
                 <div id="box-sugerencias" class="sugerencias"></div>
             </div>
 
             <div id="area-seleccion" style="display:none;">
                 <div class="item-agregado">
-                    <div id="sel-nombre" style="font-weight:900; color:var(--oscuro); text-transform: uppercase;"></div>
-                    <div id="sel-desc" style="font-size: 11px; color: #666; margin-bottom: 10px;"></div>
+                    <div id="sel-nombre" style="font-weight:900; color:var(--oscuro); text-transform: uppercase; font-size: 16px;"></div>
+                    <div id="sel-desc" style="font-size: 11px; color: #666; margin-bottom: 12px; font-style: italic;"></div>
                     
-                    <label style="font-size: 11px; font-weight: bold;">ELIGE EL TAMAÑO:</label>
+                    <label style="font-size: 11px; font-weight: bold; color: var(--rojo);">SELECCIONA TAMAÑO / PORCIÓN:</label>
                     <select id="sel-tamano" onchange="recalcular()"></select>
                     
                     <div class="controles-cant">
@@ -88,66 +93,78 @@
                             <span id="sel-cant" class="cant-n">1</span>
                             <button class="btn-c" onclick="cambiarCant(1)">+</button>
                         </div>
-                        <div id="sel-subtotal" style="font-weight:900; color:var(--verde); font-size: 18px;"></div>
+                        <div id="sel-subtotal" style="font-weight:900; color:var(--verde); font-size: 20px;"></div>
                     </div>
                 </div>
-                <textarea id="obs" rows="2" placeholder="📝 Notas (Ej: Sin cebolla, cambiar por...)"></textarea>
+                <textarea id="obs" rows="2" placeholder="📝 Notas especiales (Sin cebolla, bien tostada...)"></textarea>
             </div>
         </div>
     </div>
 
     <div class="footer-pedido">
-        <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-weight:bold; font-size: 19px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:900; font-size: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
             <span>TOTAL:</span><span id="total-vista" style="color: var(--verde);">$ 0</span>
         </div>
-        <button class="btn-enviar" onclick="enviar()">🚀 ENVIAR PEDIDO WHATSAPP</button>
+        <button class="btn-enviar" onclick="enviar()">🚀 ENVIAR PEDIDO A WHATSAPP</button>
     </div>
 </div>
 
 <script>
-    const WA_NUMBER = "573242233812";
+    const WA_FRANCO = "573242233812";
     let gps_link = "";
     let itemActivo = null;
     let cantidad = 1;
 
-    // BASE DE DATOS 100% FIEL AL CATÁLOGO
+    // BASE DE DATOS EXTRACTORA (100% CARTA FRANCO)
     const carta = [
-        { n: "Especial de la Casa Pro", d: "Tocineta, cherry, pesto, albahaca y burrata", p: { Personal: 40000, Mediano: 78000, Familiar: 154000 } },
-        { n: "Jamón Serrano Pro", d: "Serrano, cherry, parmesano y burrata", p: { Personal: 44000, Mediano: 80000, Familiar: 154000 } },
-        { n: "Napolitana Pro", d: "Salsa napolitana, cherry y burrata", p: { Personal: 38000, Mediano: 74000, Familiar: 147000 } },
-        { n: "Capresa Pro", d: "Tomate chonto, burrata y orégano", p: { Personal: 38000, Mediano: 74000, Familiar: 147000 } },
-        { n: "Carbonara de la Casa", d: "Tocineta, frutos secos y miel", p: { Personal: 30000, Mediano: 40000, Familiar: 72000 } },
-        { n: "Llanera", d: "Res y cerdo llanero, chimichurri", p: { Personal: 36000, Mediano: 56000, Familiar: 84000 } },
-        { n: "Paisa", d: "Chicharrón, maduro, molida, chorizo, aguacate", p: { Personal: 36000, Mediano: 46000, Familiar: 88000 } },
-        { n: "Mar y Tierra", d: "Mariscos y Pollo", p: { Personal: 34000, Mediano: 54000, Familiar: 82000 } },
-        { n: "Hawaiana", d: "Jamón y piña calada", p: { Personal: 27000, Mediano: 37000, Familiar: 78000 } },
-        { n: "Pepperoni", d: "Salsa napolitana y pepperoni", p: { Personal: 34000, Mediano: 46000, Familiar: 82000 } },
-        { n: "Lasagña Pollo Pro", d: "Pollo, tocineta y frutos secos", p: { Pequeña: 32000, Grande: 42000 } },
-        { n: "Lasagña Mixta", d: "Pollo y Carne de res", p: { Pequeña: 34000, Grande: 38000 } },
-        { n: "Gaseosa 1.5 L", d: "Variedad de sabores", p: { Unica: 8000 } },
-        { n: "Gaseosa Personal", d: "Sabores variados", p: { Unica: 3500 } }
+        { n: "Especial de la Casa Pro", d: "Burrata, Tocineta, tomate cherry, pesto, albahaca", p: { Personal: 40000, Mediano: 78000, Familiar: 154000 } },
+        { n: "Jamón Serrano Pro", d: "Burrata, Jamón serrano, tomate cherry, parmesano", p: { Personal: 44000, Mediano: 80000, Familiar: 154000 } },
+        { n: "Napolitana Pro", d: "Burrata, Salsa napolitana de la casa, tomate cherry", p: { Personal: 38000, Mediano: 74000, Familiar: 147000 } },
+        { n: "Capresa Pro", d: "Burrata, Tomate chonto, orégano, aceite de oliva", p: { Personal: 38000, Mediano: 74000, Familiar: 147000 } },
+        { n: "Carbonara de la Casa", d: "Tocineta, frutos secos, miel, base blanca", p: { Personal: 30000, Mediano: 40000, Familiar: 72000 } },
+        { n: "Llanera", d: "Carne de res llanera, cerdo llanero, chimichurri", p: { Personal: 36000, Mediano: 56000, Familiar: 84000 } },
+        { n: "Paisa", d: "Chicharrón cruncy, maduro, carne molida, chorizo, aguacate", p: { Personal: 36000, Mediano: 46000, Familiar: 88000 } },
+        { n: "Mar y Tierra", d: "Mix de mariscos seleccionados, pollo desmechado", p: { Personal: 34000, Mediano: 54000, Familiar: 82000 } },
+        { n: "Mariscos Especial", d: "Mix de mariscos, pimentón, base napolitana", p: { Personal: 37000, Mediano: 57000, Familiar: 98000 } },
+        { n: "Serrano y Champiñón", d: "Jamón serrano, tomate cherry, champiñones frescos", p: { Personal: 34000, Mediano: 44000, Familiar: 77000 } },
+        { n: "Especial Pepperoni", d: "Pepperoni premium, champiñón, pimentón, cebolla roja", p: { Personal: 35000, Mediano: 45000, Familiar: 82000 } },
+        { n: "Ranchera Especial", d: "Salchicha ranchera, pepperoni, orégano, pimienta", p: { Personal: 38000, Mediano: 48000, Familiar: 82000 } },
+        { n: "Hawaiana", d: "Jamón seleccionado y piña calada artesanal", p: { Personal: 27000, Mediano: 37000, Familiar: 78000 } },
+        { n: "Pepperoni Clásica", d: "Doble pepperoni y salsa napolitana", p: { Personal: 34000, Mediano: 46000, Familiar: 82000 } },
+        { n: "Mexicana", d: "Carne, maíz tierno, picante suave, nachos cruncy", p: { Personal: 32000, Mediano: 42000, Familiar: 77000 } },
+        { n: "Pollo y Champiñón", d: "Pollo desmechado jugoso y champiñones", p: { Personal: 32000, Mediano: 42000, Familiar: 77000 } },
+        { n: "Carnes Clásica", d: "Res, cerdo, tocineta y jamón", p: { Personal: 32000, Mediano: 42000, Familiar: 77000 } },
+        { n: "Margarita", d: "Tomate cherry, albahaca fresca, aceite de oliva", p: { Personal: 28000, Mediano: 38000, Familiar: 75000 } },
+        { n: "Vegetariana", d: "Maíz, cherry, pimentón, aceitunas negras", p: { Personal: 32000, Mediano: 42000, Familiar: 77000 } },
+        { n: "Lasagña Pollo Pro", d: "Pollo, tocineta, frutos secos, pasta artesanal", p: { Pequeña: 32000, Grande: 42000 } },
+        { n: "Lasagña Mixta", d: "Pollo, carne de res, bechamel, mozzarella", p: { Pequeña: 34000, Grande: 38000 } },
+        { n: "Lasagña Boloñesa", d: "Carne molida seleccionada en salsa roja", p: { Pequeña: 32000, Grande: 36000 } },
+        { n: "Gaseosa 1.5 L", d: "Coca-Cola, Postobón, Quatro", p: { Unica: 8000 } },
+        { n: "Gaseosa Personal", d: "Botella 400ml", p: { Unica: 3500 } }
     ];
 
-    function buscarGlobal(val) {
+    function ojoExtractor(val) {
         const box = document.getElementById('box-sugerencias');
         if (val.length < 1) { box.style.display = 'none'; return; }
         
-        // Busca en nombre y en descripción (Cualquier palabra)
-        const res = carta.filter(p => 
-            p.n.toLowerCase().includes(val.toLowerCase()) || 
-            (p.d && p.d.toLowerCase().includes(val.toLowerCase()))
-        );
+        // BÚSQUEDA 100% POR CUALQUIER PALABRA EN NOMBRE O DESCRIPCIÓN
+        const terminos = val.toLowerCase().split(" ");
+        const res = carta.filter(p => {
+            const contenido = (p.n + " " + (p.d || "")).toLowerCase();
+            return terminos.every(t => contenido.includes(t));
+        });
 
         if (res.length > 0) {
             box.innerHTML = res.map(p => `
                 <div class="sugerencia-item" onclick='seleccionar("${p.n}")'>
                     <b>${p.n}</b>
-                    <span>${p.d || ""}</span>
+                    <span>${p.d || "Tradicional de la casa"}</span>
                 </div>
             `).join('');
             box.style.display = 'block';
         } else {
-            box.style.display = 'none';
+            box.innerHTML = '<div style="padding:15px; font-size:12px; color:red;">No encontramos ese producto o ingrediente...</div>';
+            box.style.display = 'block';
         }
     }
 
@@ -162,7 +179,7 @@
         const selectTam = document.getElementById('sel-tamano');
         selectTam.innerHTML = "";
         for (let t in itemActivo.p) {
-            selectTam.innerHTML += `<option value="${t}">${t.toUpperCase()} ($${itemActivo.p[t].toLocaleString()})</option>`;
+            selectTam.innerHTML += `<option value="${t}">${t.toUpperCase()} - $${itemActivo.p[t].toLocaleString()}</option>`;
         }
         
         document.getElementById('area-seleccion').style.display = 'block';
@@ -192,7 +209,7 @@
                 gps_link = `https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
                 document.getElementById('btn-gps-txt').innerText = "✅ UBICACIÓN LISTA";
                 document.getElementById('btn-gps-txt').style.background = "#dcfce7";
-            }, () => alert("Socio, activa el GPS para el domicilio."));
+            }, () => alert("Socio, activa el GPS para que el domiciliario llegue fácil."));
         }
     }
 
@@ -203,7 +220,7 @@
               p = document.getElementById('pago').value, 
               o = document.getElementById('obs').value;
 
-        if (!n || !d || !itemActivo) return alert("Faltan datos o elegir el producto.");
+        if (!n || !d || !itemActivo) return alert("Por favor llena tus datos y busca tu pizza.");
 
         const tam = document.getElementById('sel-tamano').value;
         const precioU = itemActivo.p[tam];
@@ -211,25 +228,25 @@
 
         let msj = `*🍕 LA PIZZA DE FRANCO*\n`;
         msj += `👤 *CLIENTE:* ${n}\n`;
-        msj += `🏠 *DIR:* ${d}\n`;
-        if(gps_link) msj += `📍 *MAPA:* ${gps_link}\n`;
-        msj += `📞 *TEL:* ${c}\n`;
+        msj += `🏠 *DIRECCIÓN:* ${d}\n`;
+        if(gps_link) msj += `📍 *GPS:* ${gps_link}\n`;
+        msj += `📞 *WHATSAPP:* ${c}\n`;
         msj += `💳 *PAGO:* ${p}\n`;
         msj += `--------------------------\n`;
-        msj += `*DETALLE DEL PEDIDO:*\n`;
+        msj += `*PEDIDO:*\n`;
         msj += `• ${itemActivo.n}\n`;
-        msj += `  Desc: _${itemActivo.d || "Tradicional" }_\n`;
-        msj += `  Tam: ${tam.toUpperCase()}\n`;
-        msj += `  Cant: ${cantidad} und x $${precioU.toLocaleString()}\n`;
+        msj += `  PORCIÓN: ${tam.toUpperCase()}\n`;
+        msj += `  CANTIDAD: ${cantidad} x $${precioU.toLocaleString()}\n`;
         if(o) msj += `\n📝 *NOTA:* ${o}\n`;
         msj += `--------------------------\n`;
         msj += `💰 *SUBTOTAL: $${total.toLocaleString()}*\n`;
         msj += `🔥 *TOTAL A PAGAR: $${total.toLocaleString()}*\n\n`;
-        msj += `_App por Vibras Positivas_`;
+        msj += `_App desarrollada por Vibras Positivas_`;
 
-        window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msj)}`);
+        window.open(`https://wa.me/${WA_FRANCO}?text=${encodeURIComponent(msj)}`);
     }
 
+    // CONTROL DE BLOQUEO
     async function check() {
         try {
             const r = await fetch('https://haroldco45.github.io/control-vibras.js');
