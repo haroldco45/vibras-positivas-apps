@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>La Pizza de Franco - App VIP</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <title>La Pizza de Franco - Pedido VIP</title>
     <style>
         :root { --rojo: #ce2b37; --verde: #008c45; --blanco: #ffffff; --beige: #fdfaf5; --oscuro: #1a1a1a; --exito: #25D366; --oro: #b38e44; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--beige); margin: 0; padding: 10px; padding-bottom: 250px; }
@@ -12,154 +11,200 @@
         header { background: var(--rojo); color: white; padding: 20px; text-align: center; border-radius: 0 0 30px 30px; margin: -10px -10px 15px -10px; border-bottom: 5px solid var(--verde); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .logo-pizza { width: 80px; border-radius: 15px; border: 2px solid white; background: white; margin-bottom: 8px; }
 
+        .btn-pdf-abrir { display: block; background: var(--oro); color: white; text-decoration: none; text-align: center; padding: 12px; border-radius: 12px; font-weight: bold; margin-bottom: 15px; border: 2px solid white; font-size: 14px; }
+
         .card { background: white; padding: 18px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 15px; border: 1px solid #eee; }
         .section-title { font-size: 12px; font-weight: bold; color: var(--rojo); text-transform: uppercase; margin-bottom: 12px; border-left: 5px solid var(--verde); padding-left: 10px; }
 
-        input, textarea, select { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 14px; }
+        input, textarea, select { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 15px; }
         
-        /* BUSCADOR */
-        #busqueda-prod { border: 2px solid var(--rojo); background: #fffcf0; font-weight: bold; }
-        .sugerencias { background: white; border: 1px solid #ddd; border-radius: 10px; position: absolute; width: 90%; z-index: 1000; max-height: 250px; overflow-y: auto; display: none; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .sugerencia-item { padding: 12px; border-bottom: 1px solid #eee; cursor: pointer; font-size: 13px; }
+        .search-box { position: relative; }
+        #busqueda-prod { border: 2px solid var(--rojo); background: #fff; font-weight: bold; }
+        .sugerencias { background: white; border: 1px solid #ddd; border-radius: 10px; position: absolute; width: 100%; z-index: 1000; max-height: 250px; overflow-y: auto; display: none; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .sugerencia-item { padding: 12px; border-bottom: 1px solid #eee; cursor: pointer; }
+        .sugerencia-item b { color: var(--rojo); display: block; font-size: 14px; }
+        .sugerencia-item span { font-size: 11px; color: #666; }
 
-        .btn-gps { background: var(--verde); color: white; border: none; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: bold; width: 100%; margin-top: 5px; cursor: pointer; }
+        .btn-gps { background: #f0f7f4; color: var(--verde); border: 1px dashed var(--verde); padding: 10px; border-radius: 10px; width: 100%; cursor: pointer; font-size: 12px; font-weight: bold; margin: 5px 0; }
         
         .footer-pedido { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 20px; box-shadow: 0 -8px 25px rgba(0,0,0,0.1); border-radius: 25px 25px 0 0; z-index: 1000; }
-        .btn-enviar { background: var(--exito); color: white; border: none; padding: 16px; border-radius: 15px; width: 100%; font-size: 17px; font-weight: bold; }
+        .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; }
+
+        .item-agregado { background: #fdfaf5; padding: 15px; border-radius: 15px; border: 2.5px solid var(--oro); margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <header>
     <img src="lapizzadefranco.PNG" alt="Logo" class="logo-pizza">
-    <h1 style="margin:0; font-size: 18px;">LA PIZZA DE FRANCO</h1>
-    <p style="margin:0; font-size: 12px;">Pedidos Directos del Catálogo PDF</p>
+    <h1 style="margin:0; font-size: 20px;">LA PIZZA DE FRANCO</h1>
+    <p style="margin:0; font-size: 11px; opacity: 0.9;">MENU INTERACTIVO</p>
 </header>
 
-<div style="padding: 5px;">
-    <div class="card">
-        <div class="section-title">📍 Ubicación y Datos</div>
-        <input type="text" id="nom" placeholder="Tu Nombre">
-        <input type="text" id="dir" placeholder="Dirección de entrega">
-        <button class="btn-gps" onclick="obtenerGPS()">🛰️ ACTIVAR MI GPS (Capturar Dirección)</button>
-        <input type="tel" id="tel_cli" placeholder="WhatsApp / Celular">
-    </div>
-
-    <div class="card" style="position: relative;">
-        <div class="section-title">🔍 Buscar en el Catálogo</div>
-        <input type="text" id="busqueda-prod" placeholder="Escribe: Pizza, Lasagna, Gaseosa..." onkeyup="filtrarPDF(this.value)">
-        <div id="box-sugerencias" class="sugerencias"></div>
-        
-        <div id="item-seleccionado" style="display:none; margin-top: 15px; background: #fff9f0; padding: 10px; border-radius: 10px; border: 1px dashed var(--oro);">
-            <p style="margin:0; font-size: 11px; color: #666;">Seleccionaste:</p>
-            <textarea id="prod_final" rows="2" style="background:transparent; border:none; font-weight:bold; padding:0; height: auto;" readonly></textarea>
-            
-            <div style="display: flex; gap: 8px; margin-top: 10px;">
-                <div style="flex: 1;"><small>Cant:</small><input type="number" id="cant" value="1" onchange="calc()"></div>
-                <div style="flex: 2;"><small>Precio Catálogo $:</small><input type="number" id="precio_u" placeholder="Ver en PDF" onkeyup="calc()"></div>
-            </div>
-        </div>
-    </div>
+<div style="padding: 10px;">
+    <a href="pizzafranco.pdf" target="_blank" class="btn-pdf-abrir">📖 VER CARTA COMPLETA (PDF)</a>
 
     <div class="card">
-        <div class="section-title">💳 Pago y Notas</div>
+        <div class="section-title">📍 Datos de Entrega</div>
+        <input type="text" id="nom" placeholder="👤 Tu Nombre">
+        <input type="text" id="dir" placeholder="🏠 Dirección y Barrio">
+        <button class="btn-gps" onclick="obtenerGPS()" id="btn-gps-txt">📍 TOCAR AQUÍ PARA UBICACIÓN GPS</button>
+        <input type="tel" id="tel_cli" placeholder="📞 Celular / WhatsApp">
         <select id="pago">
-            <option value="Efectivo">💵 Efectivo</option>
-            <option value="Transferencia Nequi/Daviplata">📱 Transferencia (Nequi/Daviplata)</option>
-            <option value="Datafono">💳 Datáfono</option>
+            <option value="Efectivo">Efectivo</option>
+            <option value="Nequi">Nequi</option>
+            <option value="Bancolombia">Bancolombia</option>
+            <option value="Datafono">Datáfono</option>
         </select>
-        <textarea id="obs" placeholder="Observaciones: (Sin cebolla, sabor de gaseosa, etc.)"></textarea>
+    </div>
+
+    <div class="card">
+        <div class="section-title">🍕 ¿Qué quieres pedir hoy?</div>
+        <div class="search-box">
+            <input type="text" id="busqueda-prod" placeholder="Escribe: Sabores, Pollo, Burrata, Mix..." onkeyup="buscarPro(this.value)">
+            <div id="box-sugerencias" class="sugerencias"></div>
+        </div>
+
+        <div id="area-seleccion" style="display:none;">
+            <div class="item-agregado">
+                <div id="sel-nombre" style="font-weight:900; color:var(--oscuro); text-transform: uppercase; font-size: 16px;"></div>
+                <div id="sel-desc" style="font-size: 11px; color: #666; margin-bottom: 12px;"></div>
+                
+                <label style="font-size: 11px; font-weight: bold;">TAMAÑO / PORCIÓN:</label>
+                <select id="sel-tamano" onchange="recalcular()"></select>
+                
+                <div style="display:flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                    <div style="display:flex; align-items: center; gap: 10px;">
+                        <button onclick="cambiarCant(-1)" style="width:35px; height:35px; border-radius: 8px; border:none; background: var(--oscuro); color:white; font-weight:bold;">-</button>
+                        <span id="sel-cant" style="font-weight:bold; font-size: 20px; color: var(--rojo);">1</span>
+                        <button onclick="cambiarCant(1)" style="width:35px; height:35px; border-radius: 8px; border:none; background: var(--oscuro); color:white; font-weight:bold;">+</button>
+                    </div>
+                    <div id="sel-subtotal" style="font-weight:900; color:var(--verde); font-size: 18px;">$ 0</div>
+                </div>
+            </div>
+            <textarea id="obs" rows="2" placeholder="📝 Notas especiales (Sin cebolla, sabores de gaseosa, etc.)" style="margin-top:10px;"></textarea>
+        </div>
     </div>
 </div>
 
 <div class="footer-pedido">
-    <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-weight:bold; font-size: 18px;">
+    <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-weight:900; font-size: 20px;">
         <span>TOTAL:</span><span id="total-vista" style="color: var(--verde);">$ 0</span>
     </div>
-    <button class="btn-enviar" onclick="enviarWhatsApp()">🚀 ENVIAR PEDIDO POR WHATSAPP</button>
+    <button class="btn-enviar" onclick="enviarPedido()">🚀 ENVIAR PEDIDO WHATSAPP</button>
 </div>
 
 <script>
-    const PDF_PATH = 'pizzafranco.pdf'; // El archivo debe estar en la misma carpeta
-    let datosPDF = [];
+    const WA_NUMBER = "573242233812";
+    let gps_link = "";
+    let itemActivo = null;
+    let cantidad = 1;
 
-    // INICIALIZAR LECTURA DE PDF
-    async function cargarPDF() {
-        const loadingTask = pdfjsLib.getDocument(PDF_PATH);
-        try {
-            const pdf = await loadingTask.promise;
-            let contenido = "";
-            for (let i = 1; i <= pdf.numPages; i++) {
-                const page = await pdf.getPage(i);
-                const text = await page.getTextContent();
-                contenido += text.items.map(s => s.str).join(" ") + " ";
-            }
-            // Dividimos por palabras clave o espacios grandes para crear una "lista"
-            datosPDF = contenido.split(/ {2,}/).filter(t => t.length > 5);
-            console.log("Catálogo PDF cargado");
-        } catch (e) {
-            alert("No se pudo leer el archivo pizzafranco.pdf. Verifica que el nombre sea exacto.");
-        }
-    }
-    cargarPDF();
+    // BASE DE DATOS ULTRA-EXTRACTORA (Incluye ingredientes y palabras clave)
+    const carta = [
+        { n: "Especial de la Casa Pro", d: "Burrata, tocineta, cherry, pesto, albahaca", p: { Personal: 40000, Mediano: 78000, Familiar: 154000 } },
+        { n: "Jamón Serrano Pro", d: "Burrata, serrano, cherry, parmesano", p: { Personal: 44000, Mediano: 80000, Familiar: 154000 } },
+        { n: "Napolitana Pro", d: "Burrata, salsa napolitana de la casa, cherry", p: { Personal: 38000, Mediano: 74000, Familiar: 147000 } },
+        { n: "Carbonara de la Casa", d: "Tocineta, frutos secos, miel, sabores gourmet", p: { Personal: 30000, Mediano: 40000, Familiar: 72000 } },
+        { n: "Paisa", d: "Chicharrón, maduro, carne molida, chorizo, aguacate", p: { Personal: 36000, Mediano: 46000, Familiar: 88000 } },
+        { n: "Mar y Tierra", d: "Mix de mariscos, pollo, sabores del mar", p: { Personal: 34000, Mediano: 54000, Familiar: 82000 } },
+        { n: "Hawaiana Especial", d: "Jamón, piña calada artesanal, sabores clásicos", p: { Personal: 27000, Mediano: 37000, Familiar: 78000 } },
+        { n: "Pepperoni", d: "Doble pepperoni, salsa napolitana", p: { Personal: 34000, Mediano: 46000, Familiar: 82000 } },
+        { n: "Pollo y Champiñón", d: "Pollo desmechado, champiñones frescos", p: { Personal: 32000, Mediano: 42000, Familiar: 77000 } },
+        { n: "Lasagña Pollo Pro", d: "Pollo, tocineta, frutos secos, pasta artesanal", p: { Pequeña: 32000, Grande: 42000 } },
+        { n: "Lasagña Mixta", d: "Pollo, carne, bechamel", p: { Pequeña: 34000, Grande: 38000 } },
+        { n: "Gaseosa 1.5 L", d: "Coca-Cola, Postobon, sabores surtidos", p: { Unica: 8000 } },
+        { n: "Gaseosa Personal", d: "Sabores variados 400ml", p: { Unica: 3500 } }
+    ];
 
-    function filtrarPDF(q) {
+    function buscarPro(val) {
         const box = document.getElementById('box-sugerencias');
-        if (q.length < 3) { box.style.display = 'none'; return; }
+        if (val.length < 1) { box.style.display = 'none'; return; }
         
-        const matches = datosPDF.filter(i => i.toLowerCase().includes(q.toLowerCase())).slice(0, 10);
-        
-        if (matches.length > 0) {
-            box.innerHTML = matches.map(m => `<div class="sugerencia-item" onclick="pick('${m.trim()}')">${m.trim()}</div>`).join('');
+        const res = carta.filter(p => 
+            p.n.toLowerCase().includes(val.toLowerCase()) || 
+            p.d.toLowerCase().includes(val.toLowerCase())
+        );
+
+        if (res.length > 0) {
+            box.innerHTML = res.map(p => `
+                <div class="sugerencia-item" onclick='seleccionar("${p.n}")'>
+                    <b>${p.n}</b>
+                    <span>${p.d}</span>
+                </div>
+            `).join('');
+            box.style.display = 'block';
+        } else {
+            box.innerHTML = '<div style="padding:10px; font-size:12px; color:red;">No encontramos ese producto o ingrediente...</div>';
             box.style.display = 'block';
         }
     }
 
-    function pick(t) {
-        document.getElementById('item-seleccionado').style.display = 'block';
-        document.getElementById('prod_final').value = t;
+    function seleccionar(nombre) {
+        itemActivo = carta.find(p => p.n === nombre);
         document.getElementById('box-sugerencias').style.display = 'none';
-        document.getElementById('busqueda-prod').value = "";
+        document.getElementById('busqueda-prod').value = nombre;
+        document.getElementById('sel-nombre').innerText = itemActivo.n;
+        document.getElementById('sel-desc').innerText = itemActivo.d;
+        
+        const sel = document.getElementById('sel-tamano');
+        sel.innerHTML = "";
+        for (let t in itemActivo.p) {
+            sel.innerHTML += `<option value="${t}">${t.toUpperCase()} ($${itemActivo.p[t].toLocaleString()})</option>`;
+        }
+        
+        document.getElementById('area-seleccion').style.display = 'block';
+        cantidad = 1;
+        document.getElementById('sel-cant').innerText = cantidad;
+        recalcular();
     }
 
-    // GPS
+    function cambiarCant(v) {
+        cantidad = Math.max(1, cantidad + v);
+        document.getElementById('sel-cant').innerText = cantidad;
+        recalcular();
+    }
+
+    function recalcular() {
+        if (!itemActivo) return;
+        const tam = document.getElementById('sel-tamano').value;
+        const precio = itemActivo.p[tam];
+        const sub = precio * cantidad;
+        document.getElementById('sel-subtotal').innerText = `$ ${sub.toLocaleString()}`;
+        document.getElementById('total-vista').innerText = `$ ${sub.toLocaleString()}`;
+    }
+
     function obtenerGPS() {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(pos => {
-                const lat = pos.coords.latitude;
-                const lon = pos.coords.longitude;
-                document.getElementById('dir').value = `Ubicación GPS: https://www.google.com/maps?q=${lat},${lon}`;
-                alert("📍 Ubicación capturada con éxito");
-            }, () => alert("Error al obtener GPS. Activa los permisos."));
+            document.getElementById('btn-gps-txt').innerText = "⏳ LOCALIZANDO...";
+            navigator.geolocation.getCurrentPosition((p) => {
+                gps_link = `https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
+                document.getElementById('btn-gps-txt').innerText = "✅ UBICACIÓN LISTA";
+                document.getElementById('btn-gps-txt').style.background = "#dcfce7";
+            }, () => alert("Socio, activa el GPS para el domicilio."));
         }
     }
 
-    function calc() {
-        const total = document.getElementById('cant').value * document.getElementById('precio_u').value;
-        document.getElementById('total-vista').innerText = `$ ${total.toLocaleString()}`;
-    }
-
-    function enviarWhatsApp() {
-        const n = document.getElementById('nom').value,
-              d = document.getElementById('dir').value,
-              p = document.getElementById('prod_final').value,
-              c = document.getElementById('cant').value,
-              v = document.getElementById('precio_u').value,
-              pg = document.getElementById('pago').value,
+    function enviarPedido() {
+        const n = document.getElementById('nom').value, d = document.getElementById('dir').value,
+              c = document.getElementById('tel_cli').value, p = document.getElementById('pago').value,
               o = document.getElementById('obs').value;
 
-        if(!n || !p || !v) return alert("Faltan datos o precio.");
+        if (!n || !d || !itemActivo) return alert("Por favor llena tus datos y selecciona un producto.");
 
-        let msj = `*🍕 LA PIZZA DE FRANCO*\n👤 *CLIENTE:* ${n}\n📍 *DIR:* ${d}\n------------------\n`;
-        msj += `📦 *PRODUCTO:* ${p}\n`;
-        msj += `🔢 *CANT:* ${c} x $${Number(v).toLocaleString()}\n`;
-        msj += `💳 *PAGO:* ${pg}\n`;
+        const tam = document.getElementById('sel-tamano').value;
+        const total = itemActivo.p[tam] * cantidad;
+
+        let msj = `*🍕 LA PIZZA DE FRANCO*\n`;
+        msj += `👤 *CLIENTE:* ${n}\n🏠 *DIR:* ${d}\n`;
+        if(gps_link) msj += `📍 *GPS:* ${gps_link}\n`;
+        msj += `📞 *TEL:* ${c}\n💳 *PAGO:* ${p}\n`;
+        msj += `--------------------------\n*PEDIDO:*\n`;
+        msj += `• ${itemActivo.n}\n  Tam: ${tam.toUpperCase()}\n  Cant: ${cantidad} x $${itemActivo.p[tam].toLocaleString()}\n`;
         if(o) msj += `📝 *NOTAS:* ${o}\n`;
-        msj += `------------------\n`;
-        msj += `🔥 *TOTAL:* $${(c*v).toLocaleString()}\n\n`;
-        msj += `_Enviado desde el buscador PDF de Vibras Positivas_`;
+        msj += `--------------------------\n💰 *TOTAL: $${total.toLocaleString()}*\n\n_Vibras Positivas_`;
 
-        window.open(`https://wa.me/573242233812?text=${encodeURIComponent(msj)}`);
+        window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msj)}`);
     }
 </script>
 </body>
