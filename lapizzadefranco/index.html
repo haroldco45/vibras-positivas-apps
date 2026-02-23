@@ -3,30 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>La Pizza de Franco - Buscador Real PDF</title>
+    <title>La Pizza de Franco - Lector Real PDF</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
     <style>
         :root { --rojo: #ce2b37; --verde: #008c45; --blanco: #ffffff; --beige: #fdfaf5; --oscuro: #1a1a1a; --exito: #25D366; --oro: #b38e44; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--beige); margin: 0; padding: 10px; padding-bottom: 220px; }
         
-        header { background: var(--rojo); color: white; padding: 20px; text-align: center; border-radius: 0 0 30px 30px; margin: -10px -10px 15px -10px; border-bottom: 5px solid var(--verde); }
+        header { background: var(--rojo); color: white; padding: 20px; text-align: center; border-radius: 0 0 30px 30px; margin: -10px -10px 15px -10px; border-bottom: 5px solid var(--verde); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .logo-pizza { width: 90px; border-radius: 15px; border: 2px solid white; background: white; margin-bottom: 8px; }
+
+        .btn-pdf { display: block; background: var(--oro); color: white; text-decoration: none; text-align: center; padding: 14px; border-radius: 15px; font-weight: bold; margin-bottom: 20px; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
         .card { background: white; padding: 20px; border-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #eee; }
         .section-title { font-size: 13px; font-weight: bold; color: var(--rojo); text-transform: uppercase; margin-bottom: 12px; border-left: 5px solid var(--verde); padding-left: 10px; }
 
-        input, textarea, select { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 15px; outline: none; }
+        input, textarea, select { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 15px; }
         
-        /* BUSCADOR PDF REAL */
+        /* BUSCADOR DINÁMICO PDF */
         .search-box { position: relative; }
         #busqueda-prod { border: 2.5px solid var(--rojo); font-weight: bold; background: #fff; }
-        
-        .sugerencias { background: white; border: 1px solid #ddd; border-radius: 12px; position: absolute; width: 100%; z-index: 1000; max-height: 300px; overflow-y: auto; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.15); margin-top: -5px; }
-        .sugerencia-item { padding: 15px; cursor: pointer; border-bottom: 1px solid #f0f0f0; }
-        .sugerencia-item b { color: var(--rojo); display: block; text-transform: uppercase; font-size: 14px; }
-        .sugerencia-item span { color: #555; font-size: 11px; display: block; }
+        .sugerencias { background: white; border: 1px solid #ddd; border-radius: 12px; position: absolute; width: 100%; z-index: 1000; max-height: 350px; overflow-y: auto; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+        .sugerencia-item { padding: 15px; cursor: pointer; border-bottom: 1px solid #f0f0f0; font-size: 14px; line-height: 1.4; color: #333; }
+        .sugerencia-item:hover { background: #fdfaf5; }
+        .sugerencia-item b { color: var(--rojo); }
 
-        .item-agregado { background: #fdfaf5; padding: 15px; border-radius: 18px; border: 2px solid var(--oro); margin-top: 15px; }
+        .item-pedido-form { background: #fdfaf5; padding: 15px; border-radius: 18px; border: 2px solid var(--oro); margin-top: 15px; }
         .footer-pedido { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 20px; box-shadow: 0 -8px 25px rgba(0,0,0,0.1); border-radius: 30px 30px 0 0; z-index: 1000; }
         .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 18px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; }
     </style>
@@ -36,113 +37,132 @@
 <div id="app-content">
     <header>
         <img src="lapizzadefranco.PNG" alt="Logo" class="logo-pizza">
-        <h1 style="margin:0; font-size: 22px;">LA PIZZA DE FRANCO</h1>
-        <div style="font-size: 11px; letter-spacing: 2px;">LECTOR DE CATÁLOGO PDF</div>
+        <h1 style="margin:0; font-size: 20px;">LA PIZZA DE FRANCO</h1>
+        <small>Buscador de Productos en Tiempo Real</small>
     </header>
 
     <div style="padding: 10px;">
+        <a href="pizzafranco.pdf" target="_blank" class="btn-pdf">📖 ABRIR PDF ORIGINAL</a>
+
         <div class="card">
-            <div class="section-title">👤 Datos de Entrega</div>
-            <input type="text" id="nom" placeholder="Tu nombre">
-            <input type="text" id="dir" placeholder="Dirección">
+            <div class="section-title">👤 Datos del Cliente</div>
+            <input type="text" id="nom" placeholder="Nombre completo">
+            <input type="text" id="dir" placeholder="Dirección de entrega">
             <input type="tel" id="tel_cli" placeholder="Celular">
-            <select id="pago">
-                <option value="Efectivo">Efectivo</option>
-                <option value="Nequi">Nequi</option>
-            </select>
         </div>
 
         <div class="card">
-            <div class="section-title">🔍 BUSCAR EN EL PDF (Cualquier palabra)</div>
+            <div class="section-title">🔍 BUSCAR DENTRO DEL PDF</div>
             <div class="search-box">
-                <input type="text" id="busqueda-prod" placeholder="Ej: SABORES, BURRATA, POLLO..." onkeyup="buscarEnPDF(this.value)">
+                <input type="text" id="busqueda-prod" placeholder="Escribe cualquier palabra del catálogo..." onkeyup="buscarEnElPDF(this.value)">
                 <div id="box-sugerencias" class="sugerencias"></div>
             </div>
 
-            <div id="area-seleccion" style="display:none;">
-                <div class="item-agregado">
-                    <div id="sel-nombre" style="font-weight:900; color:var(--oscuro); text-transform: uppercase;"></div>
-                    <input type="text" id="prod-manual" placeholder="Escribe exactamente qué vas a pedir">
-                    <input type="number" id="cant" value="1" min="1" onchange="recalcular()">
-                    <input type="number" id="precio-u" placeholder="Precio unitario $" onkeyup="recalcular()">
+            <div id="form-pedido" style="display:none;" class="item-pedido-form">
+                <p style="font-size: 12px; margin-bottom: 5px;"><b>Producto Seleccionado:</b></p>
+                <textarea id="prod_final" rows="3" style="font-size: 13px; background: #eee;" readonly></textarea>
+                
+                <div style="display: flex; gap: 10px;">
+                    <input type="number" id="cant" value="1" min="1" onchange="calcular()" style="width: 30%;">
+                    <input type="number" id="precio_u" placeholder="Precio $" onkeyup="calcular()" style="width: 70%;">
                 </div>
+                <textarea id="obs" placeholder="Observaciones (Sabor, notas, etc.)"></textarea>
             </div>
         </div>
     </div>
 
     <div class="footer-pedido">
-        <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:900; font-size: 20px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-weight:bold; font-size: 19px;">
             <span>TOTAL:</span><span id="total-vista" style="color: var(--verde);">$ 0</span>
         </div>
-        <button class="btn-enviar" onclick="enviar()">🚀 ENVIAR PEDIDO</button>
+        <button class="btn-enviar" onclick="enviar()">🚀 ENVIAR PEDIDO POR WHATSAPP</button>
     </div>
 </div>
 
 <script>
     const PDF_URL = 'pizzafranco.pdf'; 
-    let textoCompletoPDF = "";
+    let lineasCatalogo = [];
 
-    // 1. CARGAR Y "EXTRAER" TODO EL TEXTO DEL PDF AL ABRIR LA APP
-    async function cargarPDF() {
-        const loadingTask = pdfjsLib.getDocument(PDF_URL);
-        const pdf = await loadingTask.promise;
-        let fullText = "";
+    // 1. FUNCIÓN QUE LEE EL PDF Y LO CONVIERTE EN TEXTO AL CARGAR LA APP
+    async function inicializarLector() {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
         
-        for (let i = 1; i <= pdf.numPages; i++) {
-            const page = await pdf.getPage(i);
-            const content = await page.getTextContent();
-            fullText += content.items.map(s => s.str).join(" ") + "\n";
+        try {
+            const loadingTask = pdfjsLib.getDocument(PDF_URL);
+            const pdf = await loadingTask.promise;
+            let textoExtraido = "";
+
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const content = await page.getTextContent();
+                textoExtraido += content.items.map(item => item.str).join(" ") + "\n";
+            }
+            
+            // Limpiamos el texto y lo dividimos por bloques lógicos
+            lineasCatalogo = textoExtraido.split(/[.!?]\s+/); 
+            console.log("PDF leído correctamente");
+        } catch (error) {
+            console.error("Error leyendo el PDF: ", error);
         }
-        textoCompletoPDF = fullText;
-        console.log("PDF Cargado y leído");
     }
-    cargarPDF();
+    inicializarLector();
 
-    // 2. BUSCADOR QUE MIRA DENTRO DEL TEXTO EXTRAÍDO
-    function buscarEnPDF(val) {
+    // 2. BUSCADOR QUE FILTRA EN EL TEXTO DEL PDF
+    function buscarEnElPDF(query) {
         const box = document.getElementById('box-sugerencias');
-        if (val.length < 2) { box.style.display = 'none'; return; }
+        if (query.length < 2) { box.style.display = 'none'; return; }
 
-        // Dividimos el texto del PDF por líneas para simular productos
-        const lineas = textoCompletoPDF.split("\n");
-        const coincidencias = lineas.filter(l => l.toLowerCase().includes(val.toLowerCase())).slice(0, 10);
+        const resultados = lineasCatalogo.filter(linea => 
+            linea.toLowerCase().includes(query.toLowerCase())
+        ).slice(0, 8); // Mostramos los primeros 8 resultados
 
-        if (coincidencias.length > 0) {
-            box.innerHTML = coincidencias.map(l => `
-                <div class="sugerencia-item" onclick="seleccionar('${l.trim()}')">
-                    <b>Resultado encontrado:</b>
-                    <span>${l.trim()}</span>
+        if (resultados.length > 0) {
+            box.innerHTML = resultados.map(res => `
+                <div class="sugerencia-item" onclick="seleccionar('${res.trim().replace(/'/g, "\\'")}')">
+                    ${res.trim()}
                 </div>
             `).join('');
             box.style.display = 'block';
         } else {
-            box.innerHTML = '<div style="padding:10px; color:red;">No se encontró "' + val + '" en el catálogo PDF</div>';
+            box.innerHTML = '<div style="padding:15px; color:red;">No se encontró "' + query + '" en el PDF.</div>';
             box.style.display = 'block';
         }
     }
 
     function seleccionar(texto) {
-        document.getElementById('area-seleccion').style.display = 'block';
-        document.getElementById('sel-nombre').innerText = "Encontrado en PDF:";
-        document.getElementById('prod-manual').value = texto;
+        document.getElementById('form-pedido').style.display = 'block';
+        document.getElementById('prod_final').value = texto;
         document.getElementById('box-sugerencias').style.display = 'none';
-        document.getElementById('busqueda-prod').value = texto;
+        document.getElementById('busqueda-prod').value = "";
     }
 
-    function recalcular() {
+    function calcular() {
         const c = document.getElementById('cant').value;
-        const p = document.getElementById('precio-u').value;
-        document.getElementById('total-vista').innerText = `$ ${(c * p).toLocaleString()}`;
+        const p = document.getElementById('precio_u').value;
+        const total = c * p;
+        document.getElementById('total-vista').innerText = `$ ${total.toLocaleString()}`;
     }
 
     function enviar() {
-        const n = document.getElementById('nom').value, d = document.getElementById('dir').value, 
-              prod = document.getElementById('prod-manual').value, c = document.getElementById('cant').value,
-              p = document.getElementById('precio-u').value;
+        const n = document.getElementById('nom').value, 
+              d = document.getElementById('dir').value,
+              p = document.getElementById('prod_final').value,
+              c = document.getElementById('cant').value,
+              v = document.getElementById('precio_u').value,
+              o = document.getElementById('obs').value;
 
-        if(!n || !prod || !p) return alert("Completa los datos y el precio.");
+        if(!n || !p || !v) return alert("Por favor completa los datos y el precio.");
 
-        let msj = `*🍕 LA PIZZA DE FRANCO*\n👤 ${n}\n🏠 ${d}\n------------------\n• ${c}x ${prod}\n💰 TOTAL: $${(c*p).toLocaleString()}\n------------------\n_Vibras Positivas_`;
+        const subtotal = c * v;
+        let msj = `*🍕 LA PIZZA DE FRANCO*\n👤 *CLIENTE:* ${n}\n🏠 *DIR:* ${d}\n------------------\n`;
+        msj += `📦 *PRODUCTO:* ${p}\n`;
+        msj += `🔢 *CANT:* ${c} x $${Number(v).toLocaleString()}\n`;
+        if(o) msj += `📝 *OBS:* ${o}\n`;
+        msj += `------------------\n`;
+        msj += `💰 *SUBTOTAL:* $${subtotal.toLocaleString()}\n`;
+        msj += `🔥 *TOTAL:* $${subtotal.toLocaleString()}\n\n`;
+        msj += `_Pedido desde App de Vibras Positivas_`;
+
         window.open(`https://wa.me/573242233812?text=${encodeURIComponent(msj)}`);
     }
 </script>
