@@ -3,261 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>La Pizza de Franco - Buscador Total</title>
+    <title>La Pizza de Franco - Buscador Real PDF</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
     <style>
         :root { --rojo: #ce2b37; --verde: #008c45; --blanco: #ffffff; --beige: #fdfaf5; --oscuro: #1a1a1a; --exito: #25D366; --oro: #b38e44; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--beige); margin: 0; padding: 10px; padding-bottom: 220px; }
         
-        #bloqueo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; text-align: center; padding-top: 100px; }
-        
-        header { background: var(--rojo); color: white; padding: 20px; text-align: center; border-radius: 0 0 30px 30px; margin: -10px -10px 15px -10px; border-bottom: 5px solid var(--verde); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        header { background: var(--rojo); color: white; padding: 20px; text-align: center; border-radius: 0 0 30px 30px; margin: -10px -10px 15px -10px; border-bottom: 5px solid var(--verde); }
         .logo-pizza { width: 90px; border-radius: 15px; border: 2px solid white; background: white; margin-bottom: 8px; }
-
-        .btn-pdf { display: block; background: var(--oro); color: white; text-decoration: none; text-align: center; padding: 14px; border-radius: 15px; font-weight: bold; margin-bottom: 20px; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 14px; }
 
         .card { background: white; padding: 20px; border-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #eee; }
         .section-title { font-size: 13px; font-weight: bold; color: var(--rojo); text-transform: uppercase; margin-bottom: 12px; border-left: 5px solid var(--verde); padding-left: 10px; }
 
         input, textarea, select { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 15px; outline: none; }
         
-        /* BUSCADOR CON OJO EXTRACTOR */
+        /* BUSCADOR PDF REAL */
         .search-box { position: relative; }
-        #busqueda-prod { border: 2.5px solid var(--rojo); background: #fff; font-weight: bold; }
-        #busqueda-prod:focus { box-shadow: 0 0 10px rgba(206, 43, 55, 0.2); }
+        #busqueda-prod { border: 2.5px solid var(--rojo); font-weight: bold; background: #fff; }
         
         .sugerencias { background: white; border: 1px solid #ddd; border-radius: 12px; position: absolute; width: 100%; z-index: 1000; max-height: 300px; overflow-y: auto; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.15); margin-top: -5px; }
-        .sugerencia-item { padding: 15px; cursor: pointer; border-bottom: 1px solid #f0f0f0; transition: 0.2s; }
-        .sugerencia-item:hover { background: #fffcf5; }
+        .sugerencia-item { padding: 15px; cursor: pointer; border-bottom: 1px solid #f0f0f0; }
         .sugerencia-item b { color: var(--rojo); display: block; text-transform: uppercase; font-size: 14px; }
-        .sugerencia-item span { color: #555; font-size: 11px; line-height: 1.3; display: block; margin-top: 3px; }
+        .sugerencia-item span { color: #555; font-size: 11px; display: block; }
 
-        .item-agregado { background: #fdfaf5; padding: 15px; border-radius: 18px; border: 2px solid var(--oro); margin-top: 15px; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .controles-cant { display: flex; align-items: center; gap: 15px; margin-top: 12px; justify-content: space-between; }
-        .btn-c { background: var(--oscuro); color: white; border: none; width: 40px; height: 40px; border-radius: 12px; font-weight: bold; font-size: 24px; cursor: pointer; }
-        .cant-n { font-weight: 900; color: var(--rojo); font-size: 24px; }
-
+        .item-agregado { background: #fdfaf5; padding: 15px; border-radius: 18px; border: 2px solid var(--oro); margin-top: 15px; }
         .footer-pedido { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 20px; box-shadow: 0 -8px 25px rgba(0,0,0,0.1); border-radius: 30px 30px 0 0; z-index: 1000; }
-        .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 18px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-enviar:active { transform: scale(0.98); }
-
-        .btn-gps { background: #f0f7f4; color: var(--verde); border: 1px dashed var(--verde); padding: 12px; border-radius: 12px; width: 100%; cursor: pointer; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
+        .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 18px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
-
-<div id="bloqueo"><h1>🔒</h1><h2>SERVICIO SUSPENDIDO</h2></div>
 
 <div id="app-content">
     <header>
         <img src="lapizzadefranco.PNG" alt="Logo" class="logo-pizza">
         <h1 style="margin:0; font-size: 22px;">LA PIZZA DE FRANCO</h1>
-        <div style="font-size: 11px; letter-spacing: 2px; opacity: 0.9;">MENU INTERACTIVO</div>
+        <div style="font-size: 11px; letter-spacing: 2px;">LECTOR DE CATÁLOGO PDF</div>
     </header>
 
     <div style="padding: 10px;">
-        <a href="pizzafranco.pdf" target="_blank" class="btn-pdf">📖 VER CARTA COMPLETA (PDF)</a>
-
         <div class="card">
-            <div class="section-title">👤 Tus Datos</div>
-            <input type="text" id="nom" placeholder="¿A nombre de quién?">
-            <input type="text" id="dir" placeholder="Dirección y Barrio">
-            <button class="btn-gps" onclick="obtenerGPS()" id="btn-gps-txt">📍 TOCAR AQUÍ PARA UBICACIÓN GPS</button>
-            <input type="tel" id="tel_cli" placeholder="Número de Celular">
+            <div class="section-title">👤 Datos de Entrega</div>
+            <input type="text" id="nom" placeholder="Tu nombre">
+            <input type="text" id="dir" placeholder="Dirección">
+            <input type="tel" id="tel_cli" placeholder="Celular">
             <select id="pago">
                 <option value="Efectivo">Efectivo</option>
                 <option value="Nequi">Nequi</option>
-                <option value="Bancolombia">Bancolombia</option>
             </select>
         </div>
 
         <div class="card">
-            <div class="section-title">🔍 Buscador Inteligente</div>
+            <div class="section-title">🔍 BUSCAR EN EL PDF (Cualquier palabra)</div>
             <div class="search-box">
-                <input type="text" id="busqueda-prod" placeholder="Escribe ingrediente o nombre..." onkeyup="ojoExtractor(this.value)">
+                <input type="text" id="busqueda-prod" placeholder="Ej: SABORES, BURRATA, POLLO..." onkeyup="buscarEnPDF(this.value)">
                 <div id="box-sugerencias" class="sugerencias"></div>
             </div>
 
             <div id="area-seleccion" style="display:none;">
                 <div class="item-agregado">
-                    <div id="sel-nombre" style="font-weight:900; color:var(--oscuro); text-transform: uppercase; font-size: 16px;"></div>
-                    <div id="sel-desc" style="font-size: 11px; color: #666; margin-bottom: 12px; font-style: italic;"></div>
-                    
-                    <label style="font-size: 11px; font-weight: bold; color: var(--rojo);">SELECCIONA TAMAÑO / PORCIÓN:</label>
-                    <select id="sel-tamano" onchange="recalcular()"></select>
-                    
-                    <div class="controles-cant">
-                        <div>
-                            <button class="btn-c" onclick="cambiarCant(-1)">-</button>
-                            <span id="sel-cant" class="cant-n">1</span>
-                            <button class="btn-c" onclick="cambiarCant(1)">+</button>
-                        </div>
-                        <div id="sel-subtotal" style="font-weight:900; color:var(--verde); font-size: 20px;"></div>
-                    </div>
+                    <div id="sel-nombre" style="font-weight:900; color:var(--oscuro); text-transform: uppercase;"></div>
+                    <input type="text" id="prod-manual" placeholder="Escribe exactamente qué vas a pedir">
+                    <input type="number" id="cant" value="1" min="1" onchange="recalcular()">
+                    <input type="number" id="precio-u" placeholder="Precio unitario $" onkeyup="recalcular()">
                 </div>
-                <textarea id="obs" rows="2" placeholder="📝 Notas especiales (Sin cebolla, bien tostada...)"></textarea>
             </div>
         </div>
     </div>
 
     <div class="footer-pedido">
-        <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:900; font-size: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:900; font-size: 20px;">
             <span>TOTAL:</span><span id="total-vista" style="color: var(--verde);">$ 0</span>
         </div>
-        <button class="btn-enviar" onclick="enviar()">🚀 ENVIAR PEDIDO A WHATSAPP</button>
+        <button class="btn-enviar" onclick="enviar()">🚀 ENVIAR PEDIDO</button>
     </div>
 </div>
 
 <script>
-    const WA_FRANCO = "573242233812";
-    let gps_link = "";
-    let itemActivo = null;
-    let cantidad = 1;
+    const PDF_URL = 'pizzafranco.pdf'; 
+    let textoCompletoPDF = "";
 
-    // BASE DE DATOS EXTRACTORA (100% CARTA FRANCO)
-    const carta = [
-        { n: "Especial de la Casa Pro", d: "Burrata, Tocineta, tomate cherry, pesto, albahaca", p: { Personal: 40000, Mediano: 78000, Familiar: 154000 } },
-        { n: "Jamón Serrano Pro", d: "Burrata, Jamón serrano, tomate cherry, parmesano", p: { Personal: 44000, Mediano: 80000, Familiar: 154000 } },
-        { n: "Napolitana Pro", d: "Burrata, Salsa napolitana de la casa, tomate cherry", p: { Personal: 38000, Mediano: 74000, Familiar: 147000 } },
-        { n: "Capresa Pro", d: "Burrata, Tomate chonto, orégano, aceite de oliva", p: { Personal: 38000, Mediano: 74000, Familiar: 147000 } },
-        { n: "Carbonara de la Casa", d: "Tocineta, frutos secos, miel, base blanca", p: { Personal: 30000, Mediano: 40000, Familiar: 72000 } },
-        { n: "Llanera", d: "Carne de res llanera, cerdo llanero, chimichurri", p: { Personal: 36000, Mediano: 56000, Familiar: 84000 } },
-        { n: "Paisa", d: "Chicharrón cruncy, maduro, carne molida, chorizo, aguacate", p: { Personal: 36000, Mediano: 46000, Familiar: 88000 } },
-        { n: "Mar y Tierra", d: "Mix de mariscos seleccionados, pollo desmechado", p: { Personal: 34000, Mediano: 54000, Familiar: 82000 } },
-        { n: "Mariscos Especial", d: "Mix de mariscos, pimentón, base napolitana", p: { Personal: 37000, Mediano: 57000, Familiar: 98000 } },
-        { n: "Serrano y Champiñón", d: "Jamón serrano, tomate cherry, champiñones frescos", p: { Personal: 34000, Mediano: 44000, Familiar: 77000 } },
-        { n: "Especial Pepperoni", d: "Pepperoni premium, champiñón, pimentón, cebolla roja", p: { Personal: 35000, Mediano: 45000, Familiar: 82000 } },
-        { n: "Ranchera Especial", d: "Salchicha ranchera, pepperoni, orégano, pimienta", p: { Personal: 38000, Mediano: 48000, Familiar: 82000 } },
-        { n: "Hawaiana", d: "Jamón seleccionado y piña calada artesanal", p: { Personal: 27000, Mediano: 37000, Familiar: 78000 } },
-        { n: "Pepperoni Clásica", d: "Doble pepperoni y salsa napolitana", p: { Personal: 34000, Mediano: 46000, Familiar: 82000 } },
-        { n: "Mexicana", d: "Carne, maíz tierno, picante suave, nachos cruncy", p: { Personal: 32000, Mediano: 42000, Familiar: 77000 } },
-        { n: "Pollo y Champiñón", d: "Pollo desmechado jugoso y champiñones", p: { Personal: 32000, Mediano: 42000, Familiar: 77000 } },
-        { n: "Carnes Clásica", d: "Res, cerdo, tocineta y jamón", p: { Personal: 32000, Mediano: 42000, Familiar: 77000 } },
-        { n: "Margarita", d: "Tomate cherry, albahaca fresca, aceite de oliva", p: { Personal: 28000, Mediano: 38000, Familiar: 75000 } },
-        { n: "Vegetariana", d: "Maíz, cherry, pimentón, aceitunas negras", p: { Personal: 32000, Mediano: 42000, Familiar: 77000 } },
-        { n: "Lasagña Pollo Pro", d: "Pollo, tocineta, frutos secos, pasta artesanal", p: { Pequeña: 32000, Grande: 42000 } },
-        { n: "Lasagña Mixta", d: "Pollo, carne de res, bechamel, mozzarella", p: { Pequeña: 34000, Grande: 38000 } },
-        { n: "Lasagña Boloñesa", d: "Carne molida seleccionada en salsa roja", p: { Pequeña: 32000, Grande: 36000 } },
-        { n: "Gaseosa 1.5 L", d: "Coca-Cola, Postobón, Quatro", p: { Unica: 8000 } },
-        { n: "Gaseosa Personal", d: "Botella 400ml", p: { Unica: 3500 } }
-    ];
-
-    function ojoExtractor(val) {
-        const box = document.getElementById('box-sugerencias');
-        if (val.length < 1) { box.style.display = 'none'; return; }
+    // 1. CARGAR Y "EXTRAER" TODO EL TEXTO DEL PDF AL ABRIR LA APP
+    async function cargarPDF() {
+        const loadingTask = pdfjsLib.getDocument(PDF_URL);
+        const pdf = await loadingTask.promise;
+        let fullText = "";
         
-        // BÚSQUEDA 100% POR CUALQUIER PALABRA EN NOMBRE O DESCRIPCIÓN
-        const terminos = val.toLowerCase().split(" ");
-        const res = carta.filter(p => {
-            const contenido = (p.n + " " + (p.d || "")).toLowerCase();
-            return terminos.every(t => contenido.includes(t));
-        });
+        for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+            fullText += content.items.map(s => s.str).join(" ") + "\n";
+        }
+        textoCompletoPDF = fullText;
+        console.log("PDF Cargado y leído");
+    }
+    cargarPDF();
 
-        if (res.length > 0) {
-            box.innerHTML = res.map(p => `
-                <div class="sugerencia-item" onclick='seleccionar("${p.n}")'>
-                    <b>${p.n}</b>
-                    <span>${p.d || "Tradicional de la casa"}</span>
+    // 2. BUSCADOR QUE MIRA DENTRO DEL TEXTO EXTRAÍDO
+    function buscarEnPDF(val) {
+        const box = document.getElementById('box-sugerencias');
+        if (val.length < 2) { box.style.display = 'none'; return; }
+
+        // Dividimos el texto del PDF por líneas para simular productos
+        const lineas = textoCompletoPDF.split("\n");
+        const coincidencias = lineas.filter(l => l.toLowerCase().includes(val.toLowerCase())).slice(0, 10);
+
+        if (coincidencias.length > 0) {
+            box.innerHTML = coincidencias.map(l => `
+                <div class="sugerencia-item" onclick="seleccionar('${l.trim()}')">
+                    <b>Resultado encontrado:</b>
+                    <span>${l.trim()}</span>
                 </div>
             `).join('');
             box.style.display = 'block';
         } else {
-            box.innerHTML = '<div style="padding:15px; font-size:12px; color:red;">No encontramos ese producto o ingrediente...</div>';
+            box.innerHTML = '<div style="padding:10px; color:red;">No se encontró "' + val + '" en el catálogo PDF</div>';
             box.style.display = 'block';
         }
     }
 
-    function seleccionar(nombre) {
-        itemActivo = carta.find(p => p.n === nombre);
-        document.getElementById('box-sugerencias').style.display = 'none';
-        document.getElementById('busqueda-prod').value = nombre;
-        
-        document.getElementById('sel-nombre').innerText = itemActivo.n;
-        document.getElementById('sel-desc').innerText = itemActivo.d || "";
-        
-        const selectTam = document.getElementById('sel-tamano');
-        selectTam.innerHTML = "";
-        for (let t in itemActivo.p) {
-            selectTam.innerHTML += `<option value="${t}">${t.toUpperCase()} - $${itemActivo.p[t].toLocaleString()}</option>`;
-        }
-        
+    function seleccionar(texto) {
         document.getElementById('area-seleccion').style.display = 'block';
-        cantidad = 1;
-        document.getElementById('sel-cant').innerText = cantidad;
-        recalcular();
-    }
-
-    function cambiarCant(v) {
-        cantidad = Math.max(1, cantidad + v);
-        document.getElementById('sel-cant').innerText = cantidad;
-        recalcular();
+        document.getElementById('sel-nombre').innerText = "Encontrado en PDF:";
+        document.getElementById('prod-manual').value = texto;
+        document.getElementById('box-sugerencias').style.display = 'none';
+        document.getElementById('busqueda-prod').value = texto;
     }
 
     function recalcular() {
-        if (!itemActivo) return;
-        const tam = document.getElementById('sel-tamano').value;
-        const sub = itemActivo.p[tam] * cantidad;
-        document.getElementById('sel-subtotal').innerText = `$ ${sub.toLocaleString()}`;
-        document.getElementById('total-vista').innerText = `$ ${sub.toLocaleString()}`;
-    }
-
-    function obtenerGPS() {
-        if (navigator.geolocation) {
-            document.getElementById('btn-gps-txt').innerText = "⏳ LOCALIZANDO...";
-            navigator.geolocation.getCurrentPosition((p) => {
-                gps_link = `https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
-                document.getElementById('btn-gps-txt').innerText = "✅ UBICACIÓN LISTA";
-                document.getElementById('btn-gps-txt').style.background = "#dcfce7";
-            }, () => alert("Socio, activa el GPS para que el domiciliario llegue fácil."));
-        }
+        const c = document.getElementById('cant').value;
+        const p = document.getElementById('precio-u').value;
+        document.getElementById('total-vista').innerText = `$ ${(c * p).toLocaleString()}`;
     }
 
     function enviar() {
-        const n = document.getElementById('nom').value, 
-              d = document.getElementById('dir').value, 
-              c = document.getElementById('tel_cli').value, 
-              p = document.getElementById('pago').value, 
-              o = document.getElementById('obs').value;
+        const n = document.getElementById('nom').value, d = document.getElementById('dir').value, 
+              prod = document.getElementById('prod-manual').value, c = document.getElementById('cant').value,
+              p = document.getElementById('precio-u').value;
 
-        if (!n || !d || !itemActivo) return alert("Por favor llena tus datos y busca tu pizza.");
+        if(!n || !prod || !p) return alert("Completa los datos y el precio.");
 
-        const tam = document.getElementById('sel-tamano').value;
-        const precioU = itemActivo.p[tam];
-        const total = precioU * cantidad;
-
-        let msj = `*🍕 LA PIZZA DE FRANCO*\n`;
-        msj += `👤 *CLIENTE:* ${n}\n`;
-        msj += `🏠 *DIRECCIÓN:* ${d}\n`;
-        if(gps_link) msj += `📍 *GPS:* ${gps_link}\n`;
-        msj += `📞 *WHATSAPP:* ${c}\n`;
-        msj += `💳 *PAGO:* ${p}\n`;
-        msj += `--------------------------\n`;
-        msj += `*PEDIDO:*\n`;
-        msj += `• ${itemActivo.n}\n`;
-        msj += `  PORCIÓN: ${tam.toUpperCase()}\n`;
-        msj += `  CANTIDAD: ${cantidad} x $${precioU.toLocaleString()}\n`;
-        if(o) msj += `\n📝 *NOTA:* ${o}\n`;
-        msj += `--------------------------\n`;
-        msj += `💰 *SUBTOTAL: $${total.toLocaleString()}*\n`;
-        msj += `🔥 *TOTAL A PAGAR: $${total.toLocaleString()}*\n\n`;
-        msj += `_App desarrollada por Vibras Positivas_`;
-
-        window.open(`https://wa.me/${WA_FRANCO}?text=${encodeURIComponent(msj)}`);
+        let msj = `*🍕 LA PIZZA DE FRANCO*\n👤 ${n}\n🏠 ${d}\n------------------\n• ${c}x ${prod}\n💰 TOTAL: $${(c*p).toLocaleString()}\n------------------\n_Vibras Positivas_`;
+        window.open(`https://wa.me/573242233812?text=${encodeURIComponent(msj)}`);
     }
-
-    // CONTROL DE BLOQUEO
-    async function check() {
-        try {
-            const r = await fetch('https://haroldco45.github.io/control-vibras.js');
-            const t = await r.text();
-            if(t.includes('"la-pizza-de-franco": "suspendido"')) {
-                document.getElementById('bloqueo').style.display='block';
-                document.getElementById('app-content').style.display='none';
-            }
-        } catch(e){}
-    }
-    check();
 </script>
 </body>
 </html>
