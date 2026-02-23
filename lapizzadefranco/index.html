@@ -3,132 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>La Pizza de Franco - Pedido Rápido</title>
+    <title>La Pizza de Franco - Pedido Inteligente</title>
     <style>
         :root { --rojo: #ce2b37; --verde: #008c45; --blanco: #ffffff; --beige: #fdfaf5; --oscuro: #1a1a1a; --exito: #25D366; --oro: #b38e44; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--beige); margin: 0; padding: 10px; padding-bottom: 180px; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--beige); margin: 0; padding: 10px; padding-bottom: 200px; }
         
         #bloqueo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; text-align: center; padding-top: 100px; }
         
         header { background: var(--rojo); color: white; padding: 20px; text-align: center; border-radius: 0 0 30px 30px; margin: -10px -10px 15px -10px; border-bottom: 5px solid var(--verde); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .logo-pizza { width: 100px; border-radius: 15px; border: 3px solid white; background: white; margin-bottom: 10px; }
+        .logo-pizza { width: 90px; border-radius: 15px; border: 2px solid white; background: white; margin-bottom: 8px; }
 
-        /* BOTÓN CATÁLOGO PDF */
-        .btn-pdf { display: block; background: var(--oro); color: white; text-decoration: none; text-align: center; padding: 12px; border-radius: 15px; font-weight: bold; margin-bottom: 20px; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        .btn-pdf { display: block; background: var(--oro); color: white; text-decoration: none; text-align: center; padding: 14px; border-radius: 15px; font-weight: bold; margin-bottom: 20px; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
         .card { background: white; padding: 20px; border-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #eee; }
-        .section-title { font-size: 14px; font-weight: bold; color: var(--rojo); text-transform: uppercase; margin-bottom: 15px; border-left: 5px solid var(--verde); padding-left: 10px; }
+        .section-title { font-size: 13px; font-weight: bold; color: var(--rojo); text-transform: uppercase; margin-bottom: 12px; border-left: 5px solid var(--verde); padding-left: 10px; }
 
-        input, textarea, select { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 16px; font-family: inherit; }
+        input, textarea, select { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 15px; }
         
-        .btn-gps { background: #eef2ff; color: #3730a3; border: 1px dashed #3730a3; padding: 10px; border-radius: 10px; width: 100%; cursor: pointer; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
+        /* BUSCADOR AVANZADO */
+        .search-box { position: relative; }
+        #busqueda-prod { border: 2px solid var(--rojo); font-weight: bold; }
+        .sugerencias { background: white; border: 1px solid #ddd; border-radius: 12px; position: absolute; width: 100%; z-index: 100; max-height: 250px; overflow-y: auto; display: none; box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-top: -5px; }
+        .sugerencia-item { padding: 12px; cursor: pointer; border-bottom: 1px solid #f0f0f0; font-size: 13px; line-height: 1.4; }
+        .sugerencia-item b { color: var(--rojo); display: block; text-transform: uppercase; }
+        .sugerencia-item span { color: #666; font-size: 11px; }
+        .sugerencia-item:hover { background: #fff9f0; }
 
-        /* INTERACTIVIDAD DE PRODUCTOS */
-        .item-pedido { background: #f9f9f9; padding: 15px; border-radius: 15px; border: 1px solid #eee; margin-bottom: 10px; position: relative; }
-        .sugerencias { background: white; border: 1px solid #ddd; border-radius: 0 0 12px 12px; position: absolute; width: 90%; z-index: 100; max-height: 150px; overflow-y: auto; display: none; box-shadow: 0 5px 10px rgba(0,0,0,0.1); }
-        .sugerencia-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
-        .sugerencia-item:hover { background: #fdfaf5; }
-
-        .controles-cant { display: flex; align-items: center; gap: 15px; margin-top: 10px; }
+        /* ITEM SELECCIONADO */
+        .item-agregado { background: #fdfaf5; padding: 15px; border-radius: 15px; border: 1.5px solid var(--oro); margin-top: 10px; }
+        .controles-cant { display: flex; align-items: center; gap: 15px; margin-top: 10px; justify-content: space-between; }
         .btn-c { background: var(--oscuro); color: white; border: none; width: 35px; height: 35px; border-radius: 10px; font-weight: bold; font-size: 20px; }
-        .cant-n { font-weight: bold; color: var(--rojo); font-size: 20px; }
+        .cant-n { font-weight: bold; color: var(--rojo); font-size: 22px; }
 
         .footer-pedido { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 20px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); border-radius: 25px 25px 0 0; z-index: 1000; }
-        .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
+
+        .btn-gps { background: #f0f4ff; color: #1e40af; border: 1px dashed #1e40af; padding: 10px; border-radius: 10px; width: 100%; cursor: pointer; font-size: 12px; font-weight: bold; margin-bottom: 5px; }
     </style>
 </head>
 <body>
 
-<div id="bloqueo"><h1>🔒</h1><h2>SERVICIO SUSPENDIDO</h2><p>Contacte a VIBRAS POSITIVAS</p></div>
+<div id="bloqueo"><h1>🔒</h1><h2>SERVICIO SUSPENDIDO</h2></div>
 
 <div id="app-content">
     <header>
         <img src="lapizzadefranco.PNG" alt="Logo" class="logo-pizza">
-        <h1 style="margin:0; font-size: 20px;">LA PIZZA DE FRANCO</h1>
-        <div style="font-size: 12px; opacity: 0.9;">Caucasia - Pedidos Express</div>
+        <h1 style="margin:0; font-size: 20px; letter-spacing: 1px;">LA PIZZA DE FRANCO</h1>
     </header>
 
-    <div class="container">
-        <a href="pizzafranco.pdf" target="_blank" class="btn-pdf">📖 VER CARTA EN PDF (CLIC AQUÍ)</a>
+    <div style="padding: 10px;">
+        <a href="pizzafranco.pdf" target="_blank" class="btn-pdf">📖 ABRIR CARTA COMPLETA (PDF)</a>
 
         <div class="card">
-            <div class="section-title">📍 Datos para el envío</div>
-            <input type="text" id="nom" placeholder="👤 Tu nombre completo">
-            <input type="text" id="dir" placeholder="🏠 Dirección exacta">
-            <button class="btn-gps" onclick="obtenerGPS()" id="btn-gps-txt">📍 TOCAR AQUÍ PARA ENVIAR TU UBICACIÓN GPS</button>
-            <input type="tel" id="tel_cli" placeholder="📞 Número de Celular">
+            <div class="section-title">📍 Datos de Entrega</div>
+            <input type="text" id="nom" placeholder="👤 Nombre y Apellido">
+            <input type="text" id="dir" placeholder="🏠 Dirección / Barrio">
+            <button class="btn-gps" onclick="obtenerGPS()" id="btn-gps-txt">📍 TOCAR PARA ENVIAR UBICACIÓN GPS</button>
+            <input type="tel" id="tel_cli" placeholder="📞 Celular">
             <select id="pago">
                 <option value="Efectivo">Efectivo</option>
                 <option value="Nequi">Nequi</option>
                 <option value="Bancolombia">Bancolombia</option>
             </select>
-            <textarea id="obs" rows="2" placeholder="📝 Notas (ej: sin cebolla, apto 4, etc...)"></textarea>
         </div>
 
         <div class="card">
-            <div class="section-title">🍕 ¿Qué vas a pedir hoy?</div>
-            <div id="lista-productos">
-                <div class="item-pedido">
-                    <input type="text" id="busqueda-prod" placeholder="Escribe tu pizza o lasagña..." onkeyup="filtrarProductos(this.value)">
-                    <div id="box-sugerencias" class="sugerencias"></div>
+            <div class="section-title">🍕 Busca tu Pizza, Lasagña o Bebida</div>
+            <div class="search-box">
+                <input type="text" id="busqueda-prod" placeholder="🔍 Escribe ingredientes o nombre..." onkeyup="buscarGlobal(this.value)">
+                <div id="box-sugerencias" class="sugerencias"></div>
+            </div>
+
+            <div id="area-seleccion" style="display:none;">
+                <div class="item-agregado">
+                    <div id="sel-nombre" style="font-weight:900; color:var(--oscuro); text-transform: uppercase;"></div>
+                    <div id="sel-desc" style="font-size: 11px; color: #666; margin-bottom: 10px;"></div>
                     
-                    <div id="detalle-seleccion" style="display:none; margin-top:10px;">
-                        <div id="prod-nombre" style="font-weight:bold; color:var(--oscuro);"></div>
-                        <select id="prod-tamano" onchange="actualizarPrecioSeleccionado()" style="margin-top:5px;"></select>
-                        
-                        <div class="controles-cant">
-                            <button class="btn-c" onclick="ajustarCant(-1)">-</button>
-                            <span id="cant-actual" class="cant-n">1</span>
-                            <button class="btn-c" onclick="ajustarCant(1)">+</button>
-                            <span id="precio-subtotal" style="margin-left:auto; font-weight:bold; color:var(--verde);"></span>
+                    <label style="font-size: 11px; font-weight: bold;">ELIGE EL TAMAÑO:</label>
+                    <select id="sel-tamano" onchange="recalcular()"></select>
+                    
+                    <div class="controles-cant">
+                        <div>
+                            <button class="btn-c" onclick="cambiarCant(-1)">-</button>
+                            <span id="sel-cant" class="cant-n">1</span>
+                            <button class="btn-c" onclick="cambiarCant(1)">+</button>
                         </div>
+                        <div id="sel-subtotal" style="font-weight:900; color:var(--verde); font-size: 18px;"></div>
                     </div>
                 </div>
+                <textarea id="obs" rows="2" placeholder="📝 Notas (Ej: Sin cebolla, cambiar por...)"></textarea>
             </div>
-            <p style="font-size: 11px; color: #888; text-align: center;">Busca el producto de la carta y el sistema te dará el precio.</p>
         </div>
     </div>
 
     <div class="footer-pedido">
-        <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-weight:bold; font-size: 18px;">
-            <span>TOTAL A PAGAR:</span><span id="total-vista" style="color: var(--verde);">$ 0</span>
+        <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-weight:bold; font-size: 19px;">
+            <span>TOTAL:</span><span id="total-vista" style="color: var(--verde);">$ 0</span>
         </div>
-        <button class="btn-enviar" onclick="enviar()">🚀 ENVIAR PEDIDO POR WHATSAPP</button>
+        <button class="btn-enviar" onclick="enviar()">🚀 ENVIAR PEDIDO WHATSAPP</button>
     </div>
 </div>
 
 <script>
-    const WA_FRANCO = "573242233812";
+    const WA_NUMBER = "573242233812";
     let gps_link = "";
-    let productoSeleccionado = null;
-    let cantidadActual = 1;
+    let itemActivo = null;
+    let cantidad = 1;
 
-    // Base de datos integrada de tu carta
+    // BASE DE DATOS 100% FIEL AL CATÁLOGO
     const carta = [
-        { n: "Especial de la Casa Pro", p: { Personal: 40000, Mediana: 78000, Familiar: 154000 } },
-        { n: "Jamón Serrano Pro", p: { Personal: 44000, Mediana: 80000, Familiar: 154000 } },
-        { n: "Carbonara de la Casa", p: { Personal: 30000, Mediana: 40000, Familiar: 72000 } },
-        { n: "Llanera", p: { Personal: 36000, Mediana: 56000, Familiar: 84000 } },
-        { n: "Paisa", p: { Personal: 36000, Mediana: 46000, Familiar: 88000 } },
-        { n: "Hawaiana", p: { Personal: 27000, Mediana: 37000, Familiar: 78000 } },
-        { n: "Pepperoni", p: { Personal: 34000, Mediana: 46000, Familiar: 82000 } },
-        { n: "Carnes", p: { Personal: 32000, Mediana: 42000, Familiar: 77000 } },
-        { n: "Pollo y Champiñón", p: { Personal: 32000, Mediana: 42000, Familiar: 77000 } },
-        { n: "Lasagña Pollo Pro", p: { Pequeña: 32000, Grande: 42000 } },
-        { n: "Lasagña Mixta", p: { Pequeña: 34000, Grande: 38000 } },
-        { n: "Lasagña Boloñesa", p: { Pequeña: 32000, Grande: 36000 } },
-        { n: "Gaseosa 1.5 L", p: { Unica: 8000 } },
-        { n: "Gaseosa Personal", p: { Unica: 3500 } }
+        { n: "Especial de la Casa Pro", d: "Tocineta, cherry, pesto, albahaca y burrata", p: { Personal: 40000, Mediano: 78000, Familiar: 154000 } },
+        { n: "Jamón Serrano Pro", d: "Serrano, cherry, parmesano y burrata", p: { Personal: 44000, Mediano: 80000, Familiar: 154000 } },
+        { n: "Napolitana Pro", d: "Salsa napolitana, cherry y burrata", p: { Personal: 38000, Mediano: 74000, Familiar: 147000 } },
+        { n: "Capresa Pro", d: "Tomate chonto, burrata y orégano", p: { Personal: 38000, Mediano: 74000, Familiar: 147000 } },
+        { n: "Carbonara de la Casa", d: "Tocineta, frutos secos y miel", p: { Personal: 30000, Mediano: 40000, Familiar: 72000 } },
+        { n: "Llanera", d: "Res y cerdo llanero, chimichurri", p: { Personal: 36000, Mediano: 56000, Familiar: 84000 } },
+        { n: "Paisa", d: "Chicharrón, maduro, molida, chorizo, aguacate", p: { Personal: 36000, Mediano: 46000, Familiar: 88000 } },
+        { n: "Mar y Tierra", d: "Mariscos y Pollo", p: { Personal: 34000, Mediano: 54000, Familiar: 82000 } },
+        { n: "Hawaiana", d: "Jamón y piña calada", p: { Personal: 27000, Mediano: 37000, Familiar: 78000 } },
+        { n: "Pepperoni", d: "Salsa napolitana y pepperoni", p: { Personal: 34000, Mediano: 46000, Familiar: 82000 } },
+        { n: "Lasagña Pollo Pro", d: "Pollo, tocineta y frutos secos", p: { Pequeña: 32000, Grande: 42000 } },
+        { n: "Lasagña Mixta", d: "Pollo y Carne de res", p: { Pequeña: 34000, Grande: 38000 } },
+        { n: "Gaseosa 1.5 L", d: "Variedad de sabores", p: { Unica: 8000 } },
+        { n: "Gaseosa Personal", d: "Sabores variados", p: { Unica: 3500 } }
     ];
 
-    function filtrarProductos(val) {
+    function buscarGlobal(val) {
         const box = document.getElementById('box-sugerencias');
-        if (val.length < 2) { box.style.display = 'none'; return; }
+        if (val.length < 1) { box.style.display = 'none'; return; }
         
-        const sugerencias = carta.filter(p => p.n.toLowerCase().includes(val.toLowerCase()));
-        if (sugerencias.length > 0) {
-            box.innerHTML = sugerencias.map(p => `<div class="sugerencia-item" onclick='seleccionar("${p.n}")'>${p.n}</div>`).join('');
+        // Busca en nombre y en descripción (Cualquier palabra)
+        const res = carta.filter(p => 
+            p.n.toLowerCase().includes(val.toLowerCase()) || 
+            (p.d && p.d.toLowerCase().includes(val.toLowerCase()))
+        );
+
+        if (res.length > 0) {
+            box.innerHTML = res.map(p => `
+                <div class="sugerencia-item" onclick='seleccionar("${p.n}")'>
+                    <b>${p.n}</b>
+                    <span>${p.d || ""}</span>
+                </div>
+            `).join('');
             box.style.display = 'block';
         } else {
             box.style.display = 'none';
@@ -136,37 +152,37 @@
     }
 
     function seleccionar(nombre) {
-        productoSeleccionado = carta.find(p => p.n === nombre);
+        itemActivo = carta.find(p => p.n === nombre);
         document.getElementById('box-sugerencias').style.display = 'none';
         document.getElementById('busqueda-prod').value = nombre;
         
-        // Configurar Tamaños
-        const selectTam = document.getElementById('prod-tamano');
+        document.getElementById('sel-nombre').innerText = itemActivo.n;
+        document.getElementById('sel-desc').innerText = itemActivo.d || "";
+        
+        const selectTam = document.getElementById('sel-tamano');
         selectTam.innerHTML = "";
-        for (let t in productoSeleccionado.p) {
-            selectTam.innerHTML += `<option value="${t}">${t} - $${productoSeleccionado.p[t].toLocaleString()}</option>`;
+        for (let t in itemActivo.p) {
+            selectTam.innerHTML += `<option value="${t}">${t.toUpperCase()} ($${itemActivo.p[t].toLocaleString()})</option>`;
         }
         
-        document.getElementById('prod-nombre').innerText = nombre;
-        document.getElementById('detalle-seleccion').style.display = 'block';
-        cantidadActual = 1;
-        document.getElementById('cant-actual').innerText = cantidadActual;
-        actualizarPrecioSeleccionado();
+        document.getElementById('area-seleccion').style.display = 'block';
+        cantidad = 1;
+        document.getElementById('sel-cant').innerText = cantidad;
+        recalcular();
     }
 
-    function ajustarCant(v) {
-        cantidadActual = Math.max(1, cantidadActual + v);
-        document.getElementById('cant-actual').innerText = cantidadActual;
-        actualizarPrecioSeleccionado();
+    function cambiarCant(v) {
+        cantidad = Math.max(1, cantidad + v);
+        document.getElementById('sel-cant').innerText = cantidad;
+        recalcular();
     }
 
-    function actualizarPrecioSeleccionado() {
-        if (!productoSeleccionado) return;
-        const tam = document.getElementById('prod-tamano').value;
-        const precioUnitario = productoSeleccionado.p[tam];
-        const subtotal = precioUnitario * cantidadActual;
-        document.getElementById('precio-subtotal').innerText = `$ ${subtotal.toLocaleString()}`;
-        document.getElementById('total-vista').innerText = `$ ${subtotal.toLocaleString()}`;
+    function recalcular() {
+        if (!itemActivo) return;
+        const tam = document.getElementById('sel-tamano').value;
+        const sub = itemActivo.p[tam] * cantidad;
+        document.getElementById('sel-subtotal').innerText = `$ ${sub.toLocaleString()}`;
+        document.getElementById('total-vista').innerText = `$ ${sub.toLocaleString()}`;
     }
 
     function obtenerGPS() {
@@ -174,9 +190,9 @@
             document.getElementById('btn-gps-txt').innerText = "⏳ LOCALIZANDO...";
             navigator.geolocation.getCurrentPosition((p) => {
                 gps_link = `https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
-                document.getElementById('btn-gps-txt').innerText = "✅ UBICACIÓN REGISTRADA";
+                document.getElementById('btn-gps-txt').innerText = "✅ UBICACIÓN LISTA";
                 document.getElementById('btn-gps-txt').style.background = "#dcfce7";
-            }, () => alert("Socio, activa el GPS."));
+            }, () => alert("Socio, activa el GPS para el domicilio."));
         }
     }
 
@@ -187,29 +203,33 @@
               p = document.getElementById('pago').value, 
               o = document.getElementById('obs').value;
 
-        if (!n || !d || !productoSeleccionado) return alert("Completa tus datos y selecciona un producto.");
+        if (!n || !d || !itemActivo) return alert("Faltan datos o elegir el producto.");
 
-        const tam = document.getElementById('prod-tamano').value;
-        const total = productoSeleccionado.p[tam] * cantidadActual;
+        const tam = document.getElementById('sel-tamano').value;
+        const precioU = itemActivo.p[tam];
+        const total = precioU * cantidad;
 
         let msj = `*🍕 LA PIZZA DE FRANCO*\n`;
         msj += `👤 *CLIENTE:* ${n}\n`;
         msj += `🏠 *DIR:* ${d}\n`;
-        if(gps_link) msj += `📍 *GPS:* ${gps_link}\n`;
+        if(gps_link) msj += `📍 *MAPA:* ${gps_link}\n`;
         msj += `📞 *TEL:* ${c}\n`;
         msj += `💳 *PAGO:* ${p}\n`;
         msj += `--------------------------\n`;
-        msj += `• ${cantidadActual}x ${productoSeleccionado.n}\n`;
-        msj += `  Tamaño: ${tam}\n`;
-        if(o) msj += `📝 *NOTA:* ${o}\n`;
+        msj += `*DETALLE DEL PEDIDO:*\n`;
+        msj += `• ${itemActivo.n}\n`;
+        msj += `  Desc: _${itemActivo.d || "Tradicional" }_\n`;
+        msj += `  Tam: ${tam.toUpperCase()}\n`;
+        msj += `  Cant: ${cantidad} und x $${precioU.toLocaleString()}\n`;
+        if(o) msj += `\n📝 *NOTA:* ${o}\n`;
         msj += `--------------------------\n`;
-        msj += `💰 *TOTAL: $${total.toLocaleString()}*\n\n`;
-        msj += `_Enviado desde la App Vibras Positivas_`;
+        msj += `💰 *SUBTOTAL: $${total.toLocaleString()}*\n`;
+        msj += `🔥 *TOTAL A PAGAR: $${total.toLocaleString()}*\n\n`;
+        msj += `_App por Vibras Positivas_`;
 
-        window.open(`https://wa.me/${WA_FRANCO}?text=${encodeURIComponent(msj)}`);
+        window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msj)}`);
     }
 
-    // Sistema de bloqueo de seguridad
     async function check() {
         try {
             const r = await fetch('https://haroldco45.github.io/control-vibras.js');
