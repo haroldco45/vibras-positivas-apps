@@ -2,156 +2,214 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Pizza de Franco - Carta Completa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>La Pizza de Franco - Pedido Rápido</title>
     <style>
-        :root { --rojo: #ce2b37; --verde: #008c45; --blanco: #ffffff; --beige: #fdfaf5; --oscuro: #1a1a1a; --exito: #25D366; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--beige); margin: 0; padding: 10px; padding-bottom: 160px; }
+        :root { --rojo: #ce2b37; --verde: #008c45; --blanco: #ffffff; --beige: #fdfaf5; --oscuro: #1a1a1a; --exito: #25D366; --oro: #b38e44; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--beige); margin: 0; padding: 10px; padding-bottom: 180px; }
+        
         #bloqueo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; text-align: center; padding-top: 100px; }
-        header { background: var(--rojo); color: white; padding: 25px 20px; text-align: center; border-radius: 0 0 30px 30px; margin: -10px -10px 15px -10px; border-bottom: 5px solid var(--verde); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .logo-pizza { width: 120px; height: auto; max-height: 120px; border-radius: 15px; border: 3px solid white; background: white; margin-bottom: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-        .search-input { width: 100%; padding: 15px; border-radius: 50px; border: 2px solid var(--rojo); outline: none; margin-bottom: 15px; box-sizing: border-box; }
-        .card-datos { background: white; padding: 20px; border-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: 2px solid var(--verde); }
-        .input-cajon { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 16px; }
-        .section-title { font-size: 13px; font-weight: bold; color: var(--rojo); text-transform: uppercase; margin: 25px 0 10px; border-left: 5px solid var(--verde); padding: 8px; background: white; border-radius: 0 10px 10px 0; text-align: left; }
-        .card-prod { background: white; padding: 15px; border-radius: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 12px; border-bottom: 4px solid var(--rojo); }
-        .info-prod h3 { margin: 0; font-size: 15px; color: var(--oscuro); text-transform: uppercase; text-align: left; }
-        .info-prod p { margin: 5px 0; font-size: 11px; color: #666; text-align: left; line-height: 1.3; }
-        .selector-tamano { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 10px; }
-        .btn-tamano { background: #f8f8f8; border: 1px solid #ddd; padding: 8px 2px; border-radius: 10px; font-size: 9px; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
-        .btn-tamano.active { background: var(--verde); color: white; border-color: var(--verde); }
-        .btn-tamano b { font-size: 10px; }
-        .controles { display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee; }
-        .btn-c { background: var(--oscuro); color: white; border: none; width: 35px; height: 35px; border-radius: 10px; font-weight: bold; cursor: pointer; }
-        .cant-n { font-weight: bold; color: var(--rojo); font-size: 18px; }
-        .footer-pedido { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); border-radius: 25px 25px 0 0; z-index: 1000; }
-        .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; }
+        
+        header { background: var(--rojo); color: white; padding: 20px; text-align: center; border-radius: 0 0 30px 30px; margin: -10px -10px 15px -10px; border-bottom: 5px solid var(--verde); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .logo-pizza { width: 100px; border-radius: 15px; border: 3px solid white; background: white; margin-bottom: 10px; }
+
+        /* BOTÓN CATÁLOGO PDF */
+        .btn-pdf { display: block; background: var(--oro); color: white; text-decoration: none; text-align: center; padding: 12px; border-radius: 15px; font-weight: bold; margin-bottom: 20px; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+
+        .card { background: white; padding: 20px; border-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #eee; }
+        .section-title { font-size: 14px; font-weight: bold; color: var(--rojo); text-transform: uppercase; margin-bottom: 15px; border-left: 5px solid var(--verde); padding-left: 10px; }
+
+        input, textarea, select { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #ddd; border-radius: 12px; box-sizing: border-box; font-size: 16px; font-family: inherit; }
+        
+        .btn-gps { background: #eef2ff; color: #3730a3; border: 1px dashed #3730a3; padding: 10px; border-radius: 10px; width: 100%; cursor: pointer; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
+
+        /* INTERACTIVIDAD DE PRODUCTOS */
+        .item-pedido { background: #f9f9f9; padding: 15px; border-radius: 15px; border: 1px solid #eee; margin-bottom: 10px; position: relative; }
+        .sugerencias { background: white; border: 1px solid #ddd; border-radius: 0 0 12px 12px; position: absolute; width: 90%; z-index: 100; max-height: 150px; overflow-y: auto; display: none; box-shadow: 0 5px 10px rgba(0,0,0,0.1); }
+        .sugerencia-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
+        .sugerencia-item:hover { background: #fdfaf5; }
+
+        .controles-cant { display: flex; align-items: center; gap: 15px; margin-top: 10px; }
+        .btn-c { background: var(--oscuro); color: white; border: none; width: 35px; height: 35px; border-radius: 10px; font-weight: bold; font-size: 20px; }
+        .cant-n { font-weight: bold; color: var(--rojo); font-size: 20px; }
+
+        .footer-pedido { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 20px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); border-radius: 25px 25px 0 0; z-index: 1000; }
+        .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; }
     </style>
 </head>
 <body>
+
 <div id="bloqueo"><h1>🔒</h1><h2>SERVICIO SUSPENDIDO</h2><p>Contacte a VIBRAS POSITIVAS</p></div>
+
 <div id="app-content">
     <header>
         <img src="lapizzadefranco.PNG" alt="Logo" class="logo-pizza">
-        <h1 style="margin:0; font-size: 22px;">LA PIZZA DE FRANCO</h1>
-        <small>Carrera 22, Colinas del Portal - Caucasia</small>
+        <h1 style="margin:0; font-size: 20px;">LA PIZZA DE FRANCO</h1>
+        <div style="font-size: 12px; opacity: 0.9;">Caucasia - Pedidos Express</div>
     </header>
-    <input type="text" id="lupa" class="search-input" placeholder="🔍 Buscar pizza o lasagña..." onkeyup="buscar()">
-    <div class="card-datos">
-        <div class="section-title">📍 Datos de Entrega</div>
-        <input type="text" id="nom" class="input-cajon" placeholder="👤 Nombre Completo">
-        <input type="text" id="dir" class="input-cajon" placeholder="🏠 Dirección Exacta">
-        <input type="tel" id="tel_cli" class="input-cajon" placeholder="📞 Celular">
-        <select id="pago" class="input-cajon">
-            <option value="Efectivo">Efectivo</option>
-            <option value="Nequi">Nequi</option>
-            <option value="Bancolombia">Bancolombia</option>
-        </select>
-        <textarea id="obs" class="input-cajon" placeholder="📝 Notas (ej: sin cebolla, vueltas de 50...)"></textarea>
+
+    <div class="container">
+        <a href="pizzafranco.pdf" target="_blank" class="btn-pdf">📖 VER CARTA EN PDF (CLIC AQUÍ)</a>
+
+        <div class="card">
+            <div class="section-title">📍 Datos para el envío</div>
+            <input type="text" id="nom" placeholder="👤 Tu nombre completo">
+            <input type="text" id="dir" placeholder="🏠 Dirección exacta">
+            <button class="btn-gps" onclick="obtenerGPS()" id="btn-gps-txt">📍 TOCAR AQUÍ PARA ENVIAR TU UBICACIÓN GPS</button>
+            <input type="tel" id="tel_cli" placeholder="📞 Número de Celular">
+            <select id="pago">
+                <option value="Efectivo">Efectivo</option>
+                <option value="Nequi">Nequi</option>
+                <option value="Bancolombia">Bancolombia</option>
+            </select>
+            <textarea id="obs" rows="2" placeholder="📝 Notas (ej: sin cebolla, apto 4, etc...)"></textarea>
+        </div>
+
+        <div class="card">
+            <div class="section-title">🍕 ¿Qué vas a pedir hoy?</div>
+            <div id="lista-productos">
+                <div class="item-pedido">
+                    <input type="text" id="busqueda-prod" placeholder="Escribe tu pizza o lasagña..." onkeyup="filtrarProductos(this.value)">
+                    <div id="box-sugerencias" class="sugerencias"></div>
+                    
+                    <div id="detalle-seleccion" style="display:none; margin-top:10px;">
+                        <div id="prod-nombre" style="font-weight:bold; color:var(--oscuro);"></div>
+                        <select id="prod-tamano" onchange="actualizarPrecioSeleccionado()" style="margin-top:5px;"></select>
+                        
+                        <div class="controles-cant">
+                            <button class="btn-c" onclick="ajustarCant(-1)">-</button>
+                            <span id="cant-actual" class="cant-n">1</span>
+                            <button class="btn-c" onclick="ajustarCant(1)">+</button>
+                            <span id="precio-subtotal" style="margin-left:auto; font-weight:bold; color:var(--verde);"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p style="font-size: 11px; color: #888; text-align: center;">Busca el producto de la carta y el sistema te dará el precio.</p>
+        </div>
     </div>
-    <div id="menu"></div>
+
     <div class="footer-pedido">
         <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-weight:bold; font-size: 18px;">
-            <span>TOTAL:</span><span id="total-vista" style="color: var(--verde);">$ 0</span>
+            <span>TOTAL A PAGAR:</span><span id="total-vista" style="color: var(--verde);">$ 0</span>
         </div>
-        <button class="btn-enviar" onclick="enviar()">🚀 ENVIAR PEDIDO</button>
+        <button class="btn-enviar" onclick="enviar()">🚀 ENVIAR PEDIDO POR WHATSAPP</button>
     </div>
 </div>
+
 <script>
     const WA_FRANCO = "573242233812";
+    let gps_link = "";
+    let productoSeleccionado = null;
+    let cantidadActual = 1;
+
+    // Base de datos integrada de tu carta
     const carta = [
-        { cat: "🍕 Las Especiales Pro (Con Burrata)", prods: [
-            { id: 1, n: "Especial de la Casa Pro", d: "Tocineta, cherry, pesto, albahaca y burrata", p: { per: 40000, med: 78000, fam: 154000 } },
-            { id: 2, n: "Jamón Serrano Pro", d: "Serrano, cherry, parmesano y burrata", p: { per: 44000, med: 80000, fam: 154000 } },
-            { id: 3, n: "Napolitana Pro", d: "Salsa napolitana, cherry y burrata", p: { per: 38000, med: 74000, fam: 147000 } },
-            { id: 4, n: "Capresa Pro", d: "Tomate chonto, burrata y orégano", p: { per: 38000, med: 74000, fam: 147000 } }
-        ]},
-        { cat: "🍕 Gourmet Franco", prods: [
-            { id: 5, n: "Carbonara de la Casa", d: "Tocineta, frutos secos y miel", p: { per: 30000, med: 40000, fam: 72000 } },
-            { id: 6, n: "Llanera", d: "Res y cerdo llanero, chimichurri", p: { per: 36000, med: 56000, fam: 84000 } },
-            { id: 7, n: "Paisa", d: "Chicharrón, maduro, molida, chorizo, aguacate", p: { per: 36000, med: 46000, fam: 88000 } },
-            { id: 8, n: "Mar y Tierra", d: "Mariscos y Pollo", p: { per: 34000, med: 54000, fam: 82000 } },
-            { id: 9, n: "Mariscos Especial", d: "Mix de mariscos y pimentón", p: { per: 37000, med: 57000, fam: 98000 } },
-            { id: 10, n: "Serrano y Champiñón", d: "Jamón serrano, cherry y champiñón", p: { per: 34000, med: 44000, fam: 77000 } },
-            { id: 11, n: "Especial Pepperoni", d: "Pepperoni, champiñón, pimentón, cebolla roja", p: { per: 35000, med: 45000, fam: 82000 } },
-            { id: 12, n: "Ranchera Especial", d: "Ranchera, pepperoni, orégano y pimienta", p: { per: 38000, med: 48000, fam: 82000 } }
-        ]},
-        { cat: "🍕 Clásicas e Italianas", prods: [
-            { id: 13, n: "Hawaiana", d: "Jamón y piña calada", p: { per: 27000, med: 37000, fam: 78000 } },
-            { id: 14, n: "Pepperonni", d: "Salsa napolitana y pepperoni", p: { per: 34000, med: 46000, fam: 82000 } },
-            { id: 15, n: "Mexicana", d: "Carne, maíz, picante y nachos", p: { per: 32000, med: 42000, fam: 77000 } },
-            { id: 16, n: "Pollo y Champiñón", d: "Pollo desmechado y champiñón", p: { per: 32000, med: 42000, fam: 77000 } },
-            { id: 17, n: "Carnes", d: "Res, cerdo, tocineta y jamón", p: { per: 32000, med: 42000, fam: 77000 } },
-            { id: 18, n: "Margarita", d: "Tomate cherry, albahaca y aceite de oliva", p: { per: 28000, med: 38000, fam: 75000 } },
-            { id: 19, n: "Boloñesa", d: "Carne en salsa boloñesa y tocineta", p: { per: 32000, med: 42000, fam: 77000 } },
-            { id: 20, n: "Vegetariana", d: "Maíz, cherry, pimentón y aceitunas", p: { per: 32000, med: 42000, fam: 77000 } },
-            { id: 21, n: "Napolitana Clásica", d: "Queso mozzarella y albahaca", p: { per: 22000, med: 32000, fam: 62000 } },
-            { id: 22, n: "Jamón y Queso", d: "Jamón y mozzarella", p: { per: 25000, med: 35000, fam: 68000 } },
-            { id: 23, n: "Súper Especial", d: "Todo el sabor tradicional", p: { per: 32000, med: 42000, fam: 77000 } }
-        ]},
-        { cat: "🥘 Lasagñas y Más", prods: [
-            { id: 24, n: "Lasagña Pollo Pro", d: "Pollo, tocineta y frutos secos", p: { per: 32000, med: 42000 } },
-            { id: 25, n: "Lasagña Pollo Tradicional", d: "Pollo y bechamel", p: { per: 32000, med: 36000 } },
-            { id: 26, n: "Lasagña Mixta", d: "Pollo y Carne de res", p: { per: 34000, med: 38000 } },
-            { id: 27, n: "Lasagña Boloñesa", d: "Carne molida seleccionada", p: { per: 32000, med: 36000 } },
-            { id: 28, n: "Lasagña Vegetales y Pollo", d: "Berenjena, pimentón y maíz", p: { per: 34000, med: 44000 } },
-            { id: 29, n: "Calzone Especial", d: "Doblado con ingredientes premium", p: { per: 34000 } },
-            { id: 30, n: "Calzone Tradicional", d: "Doblado con jamón y queso", p: { per: 28000 } },
-            { id: 31, n: "Gaseosa 1.5 L", p: { per: 8000 } },
-            { id: 32, n: "Gaseosa Personal", p: { per: 3500 } }
-        ]}
+        { n: "Especial de la Casa Pro", p: { Personal: 40000, Mediana: 78000, Familiar: 154000 } },
+        { n: "Jamón Serrano Pro", p: { Personal: 44000, Mediana: 80000, Familiar: 154000 } },
+        { n: "Carbonara de la Casa", p: { Personal: 30000, Mediana: 40000, Familiar: 72000 } },
+        { n: "Llanera", p: { Personal: 36000, Mediana: 56000, Familiar: 84000 } },
+        { n: "Paisa", p: { Personal: 36000, Mediana: 46000, Familiar: 88000 } },
+        { n: "Hawaiana", p: { Personal: 27000, Mediana: 37000, Familiar: 78000 } },
+        { n: "Pepperoni", p: { Personal: 34000, Mediana: 46000, Familiar: 82000 } },
+        { n: "Carnes", p: { Personal: 32000, Mediana: 42000, Familiar: 77000 } },
+        { n: "Pollo y Champiñón", p: { Personal: 32000, Mediana: 42000, Familiar: 77000 } },
+        { n: "Lasagña Pollo Pro", p: { Pequeña: 32000, Grande: 42000 } },
+        { n: "Lasagña Mixta", p: { Pequeña: 34000, Grande: 38000 } },
+        { n: "Lasagña Boloñesa", p: { Pequeña: 32000, Grande: 36000 } },
+        { n: "Gaseosa 1.5 L", p: { Unica: 8000 } },
+        { n: "Gaseosa Personal", p: { Unica: 3500 } }
     ];
 
-    let ped = {}; let sel = {};
-    function render() {
-        const m = document.getElementById('menu');
-        carta.forEach(s => {
-            const t = document.createElement('div'); t.className='section-title'; t.innerText=s.cat; m.appendChild(t);
-            s.prods.forEach(p => {
-                const c = document.createElement('div'); c.className='card-prod';
-                let btns = "";
-                for (let tam in p.p) {
-                    let txt = (tam === 'per') ? 'Pers.' : (tam === 'med') ? 'Med.' : 'Fam.';
-                    if(p.n.includes("Lasagña")) txt = (tam === 'per') ? 'Pequeña' : 'Grande';
-                    btns += `<button class="btn-tamano" id="t-${p.id}-${tam}" onclick="setT(${p.id}, '${tam}', ${p.p[tam]})">${txt}<b>$${p.p[tam].toLocaleString()}</b></button>`;
-                }
-                c.innerHTML = `<div class="info-prod"><h3>${p.n}</h3><p>${p.d || ""}</p></div><div class="selector-tamano">${btns}</div><div class="controles"><button class="btn-c" onclick="cant(${p.id},-1)">-</button><span id="q-${p.id}" class="cant-n">0</span><button class="btn-c" onclick="cant(${p.id},1)">+</button></div>`;
-                m.appendChild(c);
-            });
-        });
-    }
-    render();
-    function setT(id, t, p) {
-        document.querySelectorAll(`[id^="t-${id}-"]`).forEach(b => b.classList.remove('active'));
-        document.getElementById(`t-${id}-${t}`).classList.add('active');
-        sel[id] = { t, p }; calc();
-    }
-    function cant(id, v) {
-        if(!sel[id]) return alert("Por favor elige el tamaño");
-        ped[id] = Math.max(0, (ped[id] || 0) + v);
-        document.getElementById(`q-${id}`).innerText = ped[id]; calc();
-    }
-    function calc() {
-        let total = 0;
-        for(let id in ped) if(ped[id]) total += sel[id].p * ped[id];
-        document.getElementById('total-vista').innerText = `$ ${total.toLocaleString()}`;
-    }
-    function buscar() {
-        const q = document.getElementById('lupa').value.toLowerCase();
-        document.querySelectorAll('.card-prod').forEach(c => c.style.display = c.innerText.toLowerCase().includes(q) ? "block" : "none");
-    }
-    function enviar() {
-        const n = document.getElementById('nom').value, d = document.getElementById('dir').value, c = document.getElementById('tel_cli').value, p = document.getElementById('pago').value, o = document.getElementById('obs').value;
-        if(!n || !d || !c) return alert("Faltan datos de envío");
-        let r = ""; let total = 0;
-        for(let id in ped) if(ped[id]) {
-            const prod = carta.flatMap(s => s.prods).find(x => x.id == id);
-            r += `• ${ped[id]}x ${prod.n} (${sel[id].t.toUpperCase()})\n`;
-            total += sel[id].p * ped[id];
+    function filtrarProductos(val) {
+        const box = document.getElementById('box-sugerencias');
+        if (val.length < 2) { box.style.display = 'none'; return; }
+        
+        const sugerencias = carta.filter(p => p.n.toLowerCase().includes(val.toLowerCase()));
+        if (sugerencias.length > 0) {
+            box.innerHTML = sugerencias.map(p => `<div class="sugerencia-item" onclick='seleccionar("${p.n}")'>${p.n}</div>`).join('');
+            box.style.display = 'block';
+        } else {
+            box.style.display = 'none';
         }
-        if(!r) return alert("Selecciona una pizza");
-        window.open(`https://wa.me/${WA_FRANCO}?text=${encodeURIComponent("*🍕 LA PIZZA DE FRANCO*\n👤 " + n + "\n🏠 " + d + "\n📞 " + c + "\n💳 PAGO: " + p + "\n📝 NOTA: " + o + "\n------------------\n" + r + "------------------\n💰 TOTAL: $" + total.toLocaleString())}`);
     }
+
+    function seleccionar(nombre) {
+        productoSeleccionado = carta.find(p => p.n === nombre);
+        document.getElementById('box-sugerencias').style.display = 'none';
+        document.getElementById('busqueda-prod').value = nombre;
+        
+        // Configurar Tamaños
+        const selectTam = document.getElementById('prod-tamano');
+        selectTam.innerHTML = "";
+        for (let t in productoSeleccionado.p) {
+            selectTam.innerHTML += `<option value="${t}">${t} - $${productoSeleccionado.p[t].toLocaleString()}</option>`;
+        }
+        
+        document.getElementById('prod-nombre').innerText = nombre;
+        document.getElementById('detalle-seleccion').style.display = 'block';
+        cantidadActual = 1;
+        document.getElementById('cant-actual').innerText = cantidadActual;
+        actualizarPrecioSeleccionado();
+    }
+
+    function ajustarCant(v) {
+        cantidadActual = Math.max(1, cantidadActual + v);
+        document.getElementById('cant-actual').innerText = cantidadActual;
+        actualizarPrecioSeleccionado();
+    }
+
+    function actualizarPrecioSeleccionado() {
+        if (!productoSeleccionado) return;
+        const tam = document.getElementById('prod-tamano').value;
+        const precioUnitario = productoSeleccionado.p[tam];
+        const subtotal = precioUnitario * cantidadActual;
+        document.getElementById('precio-subtotal').innerText = `$ ${subtotal.toLocaleString()}`;
+        document.getElementById('total-vista').innerText = `$ ${subtotal.toLocaleString()}`;
+    }
+
+    function obtenerGPS() {
+        if (navigator.geolocation) {
+            document.getElementById('btn-gps-txt').innerText = "⏳ LOCALIZANDO...";
+            navigator.geolocation.getCurrentPosition((p) => {
+                gps_link = `https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
+                document.getElementById('btn-gps-txt').innerText = "✅ UBICACIÓN REGISTRADA";
+                document.getElementById('btn-gps-txt').style.background = "#dcfce7";
+            }, () => alert("Socio, activa el GPS."));
+        }
+    }
+
+    function enviar() {
+        const n = document.getElementById('nom').value, 
+              d = document.getElementById('dir').value, 
+              c = document.getElementById('tel_cli').value, 
+              p = document.getElementById('pago').value, 
+              o = document.getElementById('obs').value;
+
+        if (!n || !d || !productoSeleccionado) return alert("Completa tus datos y selecciona un producto.");
+
+        const tam = document.getElementById('prod-tamano').value;
+        const total = productoSeleccionado.p[tam] * cantidadActual;
+
+        let msj = `*🍕 LA PIZZA DE FRANCO*\n`;
+        msj += `👤 *CLIENTE:* ${n}\n`;
+        msj += `🏠 *DIR:* ${d}\n`;
+        if(gps_link) msj += `📍 *GPS:* ${gps_link}\n`;
+        msj += `📞 *TEL:* ${c}\n`;
+        msj += `💳 *PAGO:* ${p}\n`;
+        msj += `--------------------------\n`;
+        msj += `• ${cantidadActual}x ${productoSeleccionado.n}\n`;
+        msj += `  Tamaño: ${tam}\n`;
+        if(o) msj += `📝 *NOTA:* ${o}\n`;
+        msj += `--------------------------\n`;
+        msj += `💰 *TOTAL: $${total.toLocaleString()}*\n\n`;
+        msj += `_Enviado desde la App Vibras Positivas_`;
+
+        window.open(`https://wa.me/${WA_FRANCO}?text=${encodeURIComponent(msj)}`);
+    }
+
+    // Sistema de bloqueo de seguridad
     async function check() {
         try {
             const r = await fetch('https://haroldco45.github.io/control-vibras.js');
