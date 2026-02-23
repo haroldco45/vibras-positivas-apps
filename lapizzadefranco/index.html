@@ -6,21 +6,27 @@
     <title>La Pizza de Franco - Powered by Vibras Positivas</title>
     <style>
         :root { --rojo: #ce2b37; --verde: #008c45; --blanco: #ffffff; --beige: #fdfaf5; --oscuro: #1a1a1a; --exito: #25D366; --oro: #b38e44; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--beige); margin: 0; padding: 10px; padding-bottom: 240px; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--beige); margin: 0; padding: 10px; padding-bottom: 260px; }
         header { background: var(--rojo); color: white; padding: 20px; text-align: center; border-radius: 0 0 30px 30px; margin: -10px -10px 15px -10px; border-bottom: 5px solid var(--verde); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .logo-pizza { width: 85px; border-radius: 15px; border: 2px solid white; background: white; margin-bottom: 8px; }
         
-        /* BOTÓN PDF */
         .btn-pdf { display: block; background: var(--oro); color: white; text-decoration: none; text-align: center; padding: 12px; border-radius: 12px; font-weight: bold; margin-bottom: 15px; border: 2px solid white; font-size: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         
         .card { background: white; padding: 18px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 15px; border: 1px solid #eee; }
         .section-title { font-size: 12px; font-weight: bold; color: var(--rojo); text-transform: uppercase; margin-bottom: 12px; border-left: 5px solid var(--verde); padding-left: 10px; }
         input, textarea, select { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 15px; outline: none; }
+        
         .search-box { position: relative; }
         #busqueda-prod { border: 2.5px solid var(--rojo); font-weight: bold; background: #fff; }
         .sugerencias { background: white; border: 1px solid #ddd; border-radius: 10px; position: absolute; width: 100%; z-index: 1000; max-height: 300px; overflow-y: auto; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
         .sugerencia-item { padding: 14px; border-bottom: 1px solid #eee; cursor: pointer; text-align: left; }
         .sugerencia-item b { color: var(--rojo); display: block; font-size: 14px; text-transform: uppercase; }
+
+        /* ESTILOS NUEVOS CARRITO */
+        .btn-add-cart { background: var(--verde); color: white; border: none; padding: 12px; border-radius: 10px; width: 100%; font-weight: bold; margin-top: 10px; cursor: pointer; font-size: 14px; }
+        .item-carrito { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
+        .btn-del { color: var(--rojo); border: none; background: none; font-weight: bold; cursor: pointer; font-size: 16px; }
+
         .footer-pedido { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 20px; box-shadow: 0 -8px 25px rgba(0,0,0,0.1); border-radius: 25px 25px 0 0; z-index: 1000; }
         .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; }
         .item-agregado { background: #fdfaf5; padding: 15px; border-radius: 15px; border: 2px solid var(--oro); margin-top: 10px; }
@@ -73,10 +79,17 @@
                     </div>
                     <div id="sel-subtotal" style="font-weight:900; color:var(--verde); font-size: 19px;">$ 0</div>
                 </div>
+                <textarea id="obs" rows="2" placeholder="📝 Notas (Sin cebolla, sabores, etc.)"></textarea>
+                <button class="btn-add-cart" onclick="agregarAlPedido()">➕ AÑADIR AL PEDIDO</button>
             </div>
-            <textarea id="obs" rows="2" placeholder="📝 Notas (Sin cebolla, sabores, etc.)"></textarea>
         </div>
     </div>
+
+    <div class="card">
+        <div class="section-title">🛒 Resumen de tu Pedido</div>
+        <div id="lista-pedido" style="font-size: 14px; color: #444;">Tu carrito está vacío.</div>
+    </div>
+
     <div class="copy">© App desarrollada por Vibras Positivas</div>
 </div>
 
@@ -91,7 +104,8 @@
     const WA_NUMBER = "573242233812";
     let gps_link = "";
     let itemActivo = null;
-    let cantidad = 1;
+    let cantidadTemp = 1;
+    let pedidoFinal = [];
 
     const carta = [
         { n: "2 SABORES ESPECIAL", d: "jamon serrano, esp.casa, llanera, mariscos, mar y tierra, esp. napolitana, capresa", p: { Personal: 42000, Mediano: 62000, Familiar: 132000 } },
@@ -130,16 +144,12 @@
     function ojoExtractor(val) {
         const box = document.getElementById('box-sugerencias');
         if (val.length < 1) { box.style.display = 'none'; return; }
-        const terminos = val.toLowerCase().split(" ");
-        const res = carta.filter(p => {
-            const contenido = (p.n + " " + p.d).toLowerCase();
-            return terminos.every(t => contenido.includes(t));
-        });
+        const res = carta.filter(p => (p.n + " " + p.d).toLowerCase().includes(val.toLowerCase()));
         if (res.length > 0) {
             box.innerHTML = res.map(p => `<div class="sugerencia-item" onclick='seleccionar("${p.n}")'><b>${p.n}</b><span>${p.d}</span></div>`).join('');
             box.style.display = 'block';
         } else {
-            box.innerHTML = '<div style="padding:15px; color:red; font-size:12px;">No se encontró...</div>';
+            box.innerHTML = '<div style="padding:15px; color:red;">No se encontró...</div>';
             box.style.display = 'block';
         }
     }
@@ -147,7 +157,7 @@
     function seleccionar(nombre) {
         itemActivo = carta.find(p => p.n === nombre);
         document.getElementById('box-sugerencias').style.display = 'none';
-        document.getElementById('busqueda-prod').value = nombre;
+        document.getElementById('busqueda-prod').value = "";
         document.getElementById('sel-nombre').innerText = itemActivo.n;
         document.getElementById('sel-desc').innerText = itemActivo.d;
         const sel = document.getElementById('sel-tamano');
@@ -156,22 +166,73 @@
             sel.innerHTML += `<option value="${t}">${t.toUpperCase()} ($${itemActivo.p[t].toLocaleString()})</option>`;
         }
         document.getElementById('area-seleccion').style.display = 'block';
-        cantidad = 1; document.getElementById('sel-cant').innerText = cantidad;
+        cantidadTemp = 1; 
+        document.getElementById('sel-cant').innerText = cantidadTemp;
         recalcular();
     }
 
     function cambiarCant(v) {
-        cantidad = Math.max(1, cantidad + v);
-        document.getElementById('sel-cant').innerText = cantidad;
+        cantidadTemp = Math.max(1, cantidadTemp + v);
+        document.getElementById('sel-cant').innerText = cantidadTemp;
         recalcular();
     }
 
     function recalcular() {
-        if (!itemActivo) return;
         const tam = document.getElementById('sel-tamano').value;
-        const sub = itemActivo.p[tam] * cantidad;
+        const sub = itemActivo.p[tam] * cantidadTemp;
         document.getElementById('sel-subtotal').innerText = `$ ${sub.toLocaleString()}`;
-        document.getElementById('total-vista').innerText = `$ ${sub.toLocaleString()}`;
+    }
+
+    function agregarAlPedido() {
+        const tam = document.getElementById('sel-tamano').value;
+        const notas = document.getElementById('obs').value;
+        const precioUnit = itemActivo.p[tam];
+
+        pedidoFinal.push({
+            nombre: itemActivo.n,
+            tamano: tam,
+            cantidad: cantidadTemp,
+            unitario: precioUnit,
+            subtotal: precioUnit * cantidadTemp,
+            obs: notas
+        });
+
+        document.getElementById('area-seleccion').style.display = 'none';
+        document.getElementById('obs').value = "";
+        actualizarResumen();
+    }
+
+    function actualizarResumen() {
+        const contenedor = document.getElementById('lista-pedido');
+        const vistaTotal = document.getElementById('total-vista');
+        
+        if (pedidoFinal.length === 0) {
+            contenedor.innerHTML = "Tu carrito está vacío.";
+            vistaTotal.innerText = "$ 0";
+            return;
+        }
+
+        let totalGeneral = 0;
+        contenedor.innerHTML = pedidoFinal.map((item, index) => {
+            totalGeneral += item.subtotal;
+            return `
+                <div class="item-carrito">
+                    <div>
+                        <strong>${item.cantidad}x ${item.nombre}</strong><br>
+                        <small>${item.tamano.toUpperCase()} | $${item.subtotal.toLocaleString()}</small>
+                        ${item.obs ? `<br><i style="font-size:11px;">Nota: ${item.obs}</i>` : ''}
+                    </div>
+                    <button class="btn-del" onclick="eliminarProducto(${index})">✕</button>
+                </div>
+            `;
+        }).join('');
+
+        vistaTotal.innerText = `$ ${totalGeneral.toLocaleString()}`;
+    }
+
+    function eliminarProducto(index) {
+        pedidoFinal.splice(index, 1);
+        actualizarResumen();
     }
 
     function obtenerGPS() {
@@ -186,14 +247,12 @@
     }
 
     function enviarWhatsApp() {
-        const n = document.getElementById('nom').value, d = document.getElementById('dir').value,
-              c = document.getElementById('tel_cli').value, p = document.getElementById('pago').value,
-              o = document.getElementById('obs').value;
-        if (!n || !itemActivo) return alert("Por favor completa tu nombre y elige un producto.");
+        const n = document.getElementById('nom').value, 
+              d = document.getElementById('dir').value,
+              c = document.getElementById('tel_cli').value, 
+              p = document.getElementById('pago').value;
 
-        const tam = document.getElementById('sel-tamano').value;
-        const unitario = itemActivo.p[tam];
-        const total = unitario * cantidad;
+        if (!n || pedidoFinal.length === 0) return alert("Por favor completa tu nombre y añade productos al pedido.");
 
         let msj = `*🍕 LA PIZZA DE FRANCO*\n`;
         msj += `--------------------------\n`;
@@ -202,14 +261,17 @@
         msj += `📞 *TEL:* ${c}\n💳 *PAGO:* ${p}\n`;
         msj += `--------------------------\n`;
         msj += `*PEDIDO:*\n`;
-        msj += `• ${itemActivo.n}\n`;
-        msj += `  Tamaño: ${tam.toUpperCase()}\n`;
-        msj += `  Unitario: $${unitario.toLocaleString()}\n`;
-        msj += `  Cantidad: ${cantidad}\n`;
-        if(o) msj += `📝 *NOTAS:* ${o}\n`;
+        
+        let granTotal = 0;
+        pedidoFinal.forEach(item => {
+            msj += `• ${item.cantidad}x ${item.nombre} (${item.tamano.toUpperCase()})\n`;
+            msj += `  Subtotal: $${item.subtotal.toLocaleString()}\n`;
+            if(item.obs) msj += `  📝 Nota: ${item.obs}\n`;
+            granTotal += item.subtotal;
+        });
+
         msj += `--------------------------\n`;
-        msj += `💰 *SUBTOTAL:* $${total.toLocaleString()}\n`;
-        msj += `🔥 *TOTAL A PAGAR: $${total.toLocaleString()}*\n`;
+        msj += `🔥 *TOTAL A PAGAR: $${granTotal.toLocaleString()}*\n`;
         msj += `--------------------------\n`;
         msj += `_© App diseñada por Vibras Positivas_`;
 
