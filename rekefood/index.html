@@ -35,17 +35,26 @@
             position: fixed; bottom: 20px; left: 5%; width: 90%; z-index: 100;
             background-color: #25D366; box-shadow: 0 5px 20px rgba(0,0,0,0.4);
         }
+        /* Estilo para el botón del catálogo */
+        .btn-catalogo {
+            background: linear-gradient(45deg, #FF4500, #FF8C00);
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
+        }
     </style>
 </head>
 <body class="p-4 pb-40 max-w-xl mx-auto font-sans">
 
-    <header class="text-center mb-6">
-        <img src="rekefood.PNG" alt="Logo Reke Food" class="max-w-[180px] mx-auto mb-2">
+    <header class="text-center mb-4">
+        <img src="rekefood.PNG" alt="Logo Reke Food" class="max-w-[150px] mx-auto mb-2">
         <h1 class="text-3xl font-black text-gray-900 italic uppercase">REKE FOOD</h1>
-        <div id="bienvenida" class="text-orange-600 font-bold text-sm italic">#SIEMPREFULL</div>
+        <div id="bienvenida" class="text-orange-600 font-bold text-sm italic mb-4">#SIEMPREFULL</div>
+        
+        <a href="12.pdf" target="_blank" class="btn-catalogo inline-flex items-center gap-2 text-white px-6 py-3 rounded-full font-black text-xs uppercase tracking-widest hover:scale-105 transition-transform">
+            <i class="fas fa-file-pdf text-lg"></i> Ver Menú en PDF (12.pdf)
+        </a>
     </header>
 
-    <section class="bg-white p-4 rounded-2xl shadow-xl border-t-4 border-orange-500 mb-6">
+    <section class="bg-white p-4 rounded-2xl shadow-xl border-t-4 border-orange-500 mb-6 mt-4">
         <div id="vista-resumida" class="hidden">
             <div class="flex justify-between items-center bg-gray-50 p-3 rounded-xl border border-gray-200">
                 <div class="text-[11px]">
@@ -112,10 +121,8 @@
             "AREPAS & CHUZOS": [
                 { id: 3, n: "Arepa Especial", d: "Carne artesanal, queso, tocineta, ripio, ensalada dulce y salsas.", p: 16000 },
                 { id: 4, n: "Chuzo de Pollo", d: "Papas francesas, arepa con queso, ensalada dulce o vegetales.", p: 24000 },
-                { id: 4, n: "Plato suizo x2", d: "Papas francesas, salchicha ranchera, chorizo, buti, maicitos, queso, tocineta, ripio y salsas", p: 30000 },
-                { id: 4, n: "Plato suizo x3", d: "Papas francesas, salchicha ranchera, chorizo, buti, maicitos, queso, tocineta, ripio y salsas", p: 40000 }
-
-
+                { id: 5, n: "Plato suizo x2", d: "Papas francesas, salchicha ranchera, chorizo, buti, maicitos, queso, tocineta, ripio y salsas", p: 30000 },
+                { id: 24, n: "Plato suizo x3", d: "Papas francesas, salchicha ranchera, chorizo, buti, maicitos, queso, tocineta, ripio y salsas", p: 40000 }
             ],
             "SALCHIPAPAS (PROMO)": [
                 { id: 6, n: "Salchipapa Personal", d: "Ranchera, queso mozzarella, tocineta, ripio y salsas.", p: 18000 },
@@ -132,23 +139,22 @@
             ],
             "PERROS CALIENTES": [
                 { id: 14, n: "Perro Caliente Sencillo", d: "Salchicha ranchera, queso, tocineta, ripio y salsas.", p: 14000 },
-                { id: 14, n: "Perro Caliente Especial", d: "Pan grande, Salchicha ranchera, queso, tocineta, ripio y salsas.", p: 22000 },
-                { id: 14, n: "Patacon con todo", d: "Platano verde o amarillo, salchicha ranchera res, cerdo, buti, chorizo, queso mozzarella, tocineta, ripio de papa y salsas.", p: 26000 }
-
+                { id: 15, n: "Perro Caliente Especial", d: "Pan grande, Salchicha ranchera, queso, tocineta, ripio y salsas.", p: 22000 },
+                { id: 16, n: "Patacon con todo", d: "Platano verde o amarillo, salchicha ranchera res, cerdo, buti, chorizo, queso mozzarella, tocineta, ripio de papa y salsas.", p: 26000 }
             ],
             "BEBIDAS": [
-                { id: 15, n: "Gaseosa Personal", d: "Variedad de sabores.", p: 4000 },
-                { id: 16, n: "Gaseosa 1.5 L", d: "Ideal para compartir.", p: 8000 },
-                { id: 17, n: "Jugo Hit", d: "Botella refrescante.", p: 5000 },
-                { id: 17, n: "Mr Te", d: "Botella refrescante.", p: 5000 },
-                { id: 18, n: "Agua", d: "Botella personal.", p: 3000 }
+                { id: 17, n: "Gaseosa Personal", d: "Variedad de sabores.", p: 4000 },
+                { id: 18, n: "Gaseosa 1.5 L", d: "Ideal para compartir.", p: 8000 },
+                { id: 19, n: "Jugo Hit", d: "Botella refrescante.", p: 5000 },
+                { id: 20, n: "Mr Te", d: "Botella refrescante.", p: 5000 },
+                { id: 21, n: "Agua", d: "Botella personal.", p: 3000 }
             ],
             "ADICIONES": [
-                { id: 19, n: "Porción Papa", p: 6000 },
-                { id: 20, n: "Adición Queso", p: 4000 },
-                { id: 21, n: "Adición Tocineta", p: 5000 },
-                { id: 22, n: "Adición Ranchera", p: 7000 },
-                { id: 23, n: "Adición Butifarra", p: 3000 }
+                { id: 22, n: "Porción Papa", p: 6000 },
+                { id: 23, n: "Adición Queso", p: 4000 },
+                { id: 25, n: "Adición Tocineta", p: 5000 },
+                { id: 26, n: "Adición Ranchera", p: 7000 },
+                { id: 27, n: "Adición Butifarra", p: 3000 }
             ]
         };
 
