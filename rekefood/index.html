@@ -42,11 +42,10 @@
     <header class="text-center mb-6">
         <img src="rekefood.PNG" alt="Logo Reke Food" class="max-w-[180px] mx-auto mb-2">
         <h1 class="text-3xl font-black text-gray-900 italic uppercase">REKE FOOD</h1>
-        <div id="bienvenida" class="text-orange-600 font-bold text-sm italic"></div>
+        <div id="bienvenida" class="text-orange-600 font-bold text-sm italic">#SIEMPREFULL</div>
     </header>
 
     <section class="bg-white p-4 rounded-2xl shadow-xl border-t-4 border-orange-500 mb-6">
-        
         <div id="vista-resumida" class="hidden">
             <div class="flex justify-between items-center bg-gray-50 p-3 rounded-xl border border-gray-200">
                 <div class="text-[11px]">
@@ -66,7 +65,7 @@
             <input type="text" id="nombre" placeholder="Nombre completo" class="w-full p-3 border rounded-xl outline-none focus:border-orange-500 bg-gray-50 text-sm font-semibold">
             <input type="text" id="direccion" placeholder="Dirección y Barrio" class="w-full p-3 border rounded-xl outline-none focus:border-orange-500 bg-gray-50 text-sm font-semibold">
             <input type="tel" id="celular_cliente" placeholder="Número de Celular" class="w-full p-3 border rounded-xl outline-none focus:border-orange-500 bg-gray-50 text-sm font-semibold">
-            <button onclick="guardarYContinuar()" id="btn-listo" class="w-full bg-gray-800 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-widest shadow-md"> 
+            <button onclick="guardarYContinuar()" class="w-full bg-gray-800 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-widest shadow-md"> 
                 Confirmar mis Datos
             </button>
         </div>
@@ -88,7 +87,7 @@
             <option value="Nequi">Pagar por Nequi</option>
             <option value="Daviplata">Pagar por Daviplata</option>
         </select>
-        <textarea id="obs" placeholder="Observaciones: (Ej. Sin cebolla, traer cambio de 50k...)" class="w-full p-3 border rounded-xl h-20 bg-gray-50 text-sm"></textarea>
+        <textarea id="obs" placeholder="Observaciones: (Ej. Traer cambio de 50k, sin cebolla...)" class="w-full p-3 border rounded-xl h-20 bg-gray-50 text-sm"></textarea>
     </div>
 
     <div id="lista-menu" class="space-y-4"></div>
@@ -106,58 +105,111 @@
 
     <script>
         const menuData = {
-            "HAMBURGUESAS": [{ id: 1, n: "Sencilla", p: 16000 }, { id: 2, n: "Especial", p: 22000 }],
-            "PLATOS ESPECIALES": [
-                { id: 24, n: "Burger Arepa", p: 16000 },
-                { id: 3, n: "Chuzo de Pollo", p: 23000 },
-                { id: 4, n: "Arepa Especial", p: 18000 },
-                { id: 5, n: "Pechuga y Cerdo", p: 25000 },
-                { id: 6, n: "Patacón con Todo", p: 25000 }
+            "HAMBURGUESAS": [
+                { id: 1, n: "Burguer Sencilla", d: "Carne artesanal, queso, tocineta, ripio, vegetales y salsas.", p: 16000 },
+                { id: 2, n: "Burguer Especial", d: "Doble queso, doble tocineta, ripio, vegetales, salsas y papas francesas.", p: 23000 }
             ],
-            "SALCHIPAPAS": [
-                { id: 7, n: "Personal", p: 18000 },
-                { id: 8, n: "Personal x2", p: 25000 },
-                { id: 9, n: "Personal x3", p: 35000 }
+            "AREPAS & CHUZOS": [
+                { id: 3, n: "Arepa Especial", d: "Carne artesanal, queso, tocineta, ripio, ensalada dulce y salsas.", p: 16000 },
+                { id: 4, n: "Chuzo de Pollo", d: "Papas francesas, arepa con queso, ensalada dulce o vegetales.", p: 24000 },
+                { id: 4, n: "Plato suizo x2", d: "Papas francesas, salchicha ranchera, chorizo, buti, maicitos, queso, tocineta, ripio y salsas", p: 30000 },
+                { id: 4, n: "Plato suizo x3", d: "Papas francesas, salchicha ranchera, chorizo, buti, maicitos, queso, tocineta, ripio y salsas", p: 40000 }
+
+
             ],
-            "PICADAS": [{ id: 10, n: "Picada x 2", p: 26000 }, { id: 11, n: "Picada x 3", p: 36000 }],
-            "PERROS": [{ id: 12, n: "Sencillo", p: 14000 }, { id: 13, n: "Especial", p: 22000 }],
+            "SALCHIPAPAS (PROMO)": [
+                { id: 6, n: "Salchipapa Personal", d: "Ranchera, queso mozzarella, tocineta, ripio y salsas.", p: 18000 },
+                { id: 7, n: "Salchipapa X2 (PROMO)", d: "Combo para dos personas.", p: 26000 },
+                { id: 8, n: "Salchipapa X3 (PROMO)", d: "Combo para tres personas.", p: 36000 }
+            ],
+            "MAICITOS": [
+                { id: 10, n: "Maicito X2 (PROMO)", d: "Maíz tierno, pollo, queso y tocineta combo x2.", p: 28000 },
+                { id: 11, n: "Maicito X3 (PROMO)", d: "Maíz tierno, pollo, queso y tocineta combo x3.", p: 38000 }
+            ],
+            "PICADAS": [
+                { id: 12, n: "Picada X2", d: "Papa, ranchera, chorizo, butifarra, maicitos, queso, tocineta y ripio.", p: 28000 },
+                { id: 13, n: "Picada X3", d: "Papa, ranchera, chorizo, butifarra, maicitos, queso y tocineta.", p: 38000 }
+            ],
+            "PERROS CALIENTES": [
+                { id: 14, n: "Perro Caliente Sencillo", d: "Salchicha ranchera, queso, tocineta, ripio y salsas.", p: 14000 },
+                { id: 14, n: "Perro Caliente Especial", d: "Pan grande, Salchicha ranchera, queso, tocineta, ripio y salsas.", p: 22000 },
+                { id: 14, n: "Patacon con todo", d: "Platano verde o amarillo, salchicha ranchera res, cerdo, buti, chorizo, queso mozzarella, tocineta, ripio de papa y salsas.", p: 26000 }
+
+            ],
             "BEBIDAS": [
-                { id: 19, n: "Gaseosa Personal", p: 4000 }, { id: 20, n: "Gaseosa 1.5 L", p: 8000 },
-                { id: 21, n: "Jugo Hit", p: 5000 }, { id: 23, n: "Agua", p: 3000 }
+                { id: 15, n: "Gaseosa Personal", d: "Variedad de sabores.", p: 4000 },
+                { id: 16, n: "Gaseosa 1.5 L", d: "Ideal para compartir.", p: 8000 },
+                { id: 17, n: "Jugo Hit", d: "Botella refrescante.", p: 5000 },
+                { id: 17, n: "Mr Te", d: "Botella refrescante.", p: 5000 },
+                { id: 18, n: "Agua", d: "Botella personal.", p: 3000 }
             ],
             "ADICIONES": [
-                { id: 14, n: "Papa", p: 6000 }, { id: 15, n: "Queso", p: 4000 },
-                { id: 16, n: "Tocineta", p: 5000 }, { id: 18, n: "Butifarra", p: 3000 }
+                { id: 19, n: "Porción Papa", p: 6000 },
+                { id: 20, n: "Adición Queso", p: 4000 },
+                { id: 21, n: "Adición Tocineta", p: 5000 },
+                { id: 22, n: "Adición Ranchera", p: 7000 },
+                { id: 23, n: "Adición Butifarra", p: 3000 }
             ]
         };
 
         let carrito = {};
 
-        // --- LÓGICA DE MEMORIA AL INICIAR ---
         window.onload = function() {
-            const nombreGuardado = localStorage.getItem('reke_nombre');
-            if(nombreGuardado) {
-                document.getElementById('nombre').value = nombreGuardado;
+            const nom = localStorage.getItem('reke_nombre');
+            if(nom) {
+                document.getElementById('nombre').value = nom;
                 document.getElementById('direccion').value = localStorage.getItem('reke_dir');
                 document.getElementById('celular_cliente').value = localStorage.getItem('reke_tel');
-                document.getElementById('bienvenida').innerText = `¡Hola de nuevo, ${nombreGuardado.split(' ')[0]}!`;
                 mostrarResumen();
             }
             renderMenu();
         };
 
+        function renderMenu() {
+            let html = '';
+            for (let cat in menuData) {
+                html += `<h2 class="text-[11px] font-black bg-orange-500 text-white px-3 py-1 rounded-r-lg inline-block mt-6 mb-3 uppercase tracking-wider shadow-sm">${cat}</h2>`;
+                menuData[cat].forEach(i => {
+                    html += `
+                    <div class="bg-white p-3 rounded-xl shadow-sm border-b-2 border-orange-100 flex justify-between items-center mb-2">
+                        <div class="flex-1 pr-4">
+                            <h3 class="font-bold text-gray-800 uppercase text-[12px] leading-tight">${i.n}</h3>
+                            <p class="text-[10px] text-gray-500 italic mb-1">${i.d || ''}</p>
+                            <p class="text-orange-600 font-black text-lg">$${i.p.toLocaleString()}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="updateQty(${i.id}, -1)" class="w-8 h-8 border-2 border-gray-200 rounded-lg font-bold bg-white active:bg-gray-100">-</button>
+                            <span id="qty-${i.id}" class="font-black text-lg w-6 text-center">0</span>
+                            <button onclick="updateQty(${i.id}, 1)" class="w-8 h-8 bg-orange-500 text-white rounded-lg font-bold shadow-md active:scale-90 transition-transform">+</button>
+                        </div>
+                    </div>`;
+                });
+            }
+            document.getElementById('lista-menu').innerHTML = html;
+        }
+
+        function updateQty(id, val) {
+            carrito[id] = (carrito[id] || 0) + val;
+            if (carrito[id] < 0) carrito[id] = 0;
+            document.getElementById(`qty-${id}`).innerText = carrito[id];
+            
+            let total = 0;
+            for (let cat in menuData) {
+                menuData[cat].forEach(i => total += (carrito[i.id] || 0) * i.p);
+            }
+            document.getElementById('btn-total').innerText = `TOTAL: $${total.toLocaleString()}`;
+        }
+
         function toggleEditor() {
-            document.getElementById('editor-datos').classList.remove('hidden');
-            document.getElementById('vista-resumida').classList.add('hidden');
+            document.getElementById('editor-datos').classList.toggle('hidden');
+            document.getElementById('vista-resumida').classList.toggle('hidden');
         }
 
         function guardarYContinuar() {
             const nom = document.getElementById('nombre').value;
             const dir = document.getElementById('direccion').value;
             const tel = document.getElementById('celular_cliente').value;
-
-            if(!nom || !dir || !tel) return alert("Por favor completa tus datos antes de continuar.");
-            
+            if(!nom || !dir || !tel) return alert("Completa tus datos de entrega.");
             localStorage.setItem('reke_nombre', nom);
             localStorage.setItem('reke_dir', dir);
             localStorage.setItem('reke_tel', tel);
@@ -171,62 +223,26 @@
             document.getElementById('vista-resumida').classList.remove('hidden');
         }
 
-        function renderMenu() {
-            let html = '';
-            for (let cat in menuData) {
-                html += `<h2 class="text-xs font-black bg-gray-900 text-white px-3 py-1 rounded-r-full inline-block mt-4 mb-2 border-l-4 border-orange-500 uppercase tracking-tighter">${cat}</h2>`;
-                menuData[cat].forEach(i => {
-                    html += `
-                    <div class="bg-white p-3 rounded-xl shadow-sm border-b-2 border-orange-100 flex justify-between items-center mb-2">
-                        <div class="flex-1">
-                            <h3 class="font-bold text-gray-700 uppercase text-[10px] leading-tight">${i.n}</h3>
-                            <p class="text-orange-600 font-black text-md">$${i.p.toLocaleString()}</p>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <button onclick="updateQty(${i.id}, -1)" class="w-8 h-8 border rounded-lg font-bold bg-white active:bg-gray-100">-</button>
-                            <span id="qty-${i.id}" class="font-black text-lg w-5 text-center">0</span>
-                            <button onclick="updateQty(${i.id}, 1)" class="w-8 h-8 bg-orange-500 text-white rounded-lg font-bold shadow-sm">+</button>
-                        </div>
-                    </div>`;
-                });
-            }
-            document.getElementById('lista-menu').innerHTML = html;
-        }
-
-        function updateQty(id, val) {
-            carrito[id] = (carrito[id] || 0) + val;
-            if (carrito[id] < 0) carrito[id] = 0;
-            document.getElementById(`qty-${id}`).innerText = carrito[id];
-            let total = 0;
-            for (let cat in menuData) {
-                menuData[cat].forEach(i => total += (carrito[i.id] || 0) * i.p);
-            }
-            document.getElementById('btn-total').innerText = `TOTAL: $${total.toLocaleString()}`;
-        }
-
         function obtenerUbicacionReal() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(pos) {
                     const url = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
                     document.getElementById('gps_url').value = url;
                     document.getElementById('status_gps').classList.remove('hidden');
-                    alert("📍 Ubicación GPS capturada con éxito.");
-                }, function(err) { alert("Por favor activa el GPS de tu celular."); });
+                }, function() { alert("Por favor activa el GPS."); });
             }
         }
 
         function enviarAlWhatsApp() {
             const nom = document.getElementById('nombre').value;
             const dir = document.getElementById('direccion').value;
-            const tel = document.getElementById('celular_cliente').value;
             const gps = document.getElementById('gps_url').value;
-
-            if(!nom || !dir || !tel) return alert("Faltan tus datos de envío.");
+            if(!nom || !dir) return alert("Faltan datos de envío.");
 
             let msg = `*🍔 PEDIDO REKE FOOD* 🍔\n`;
+            msg += `----------------------------------\n`;
             msg += `👤 *Cliente:* ${nom}\n`;
             msg += `📍 *Dirección:* ${dir}\n`;
-            msg += `📱 *Celular:* ${tel}\n`;
             if(gps) msg += `🗺️ *GPS:* ${gps}\n`;
             msg += `💳 *Pago:* ${document.getElementById('pago').value}\n`;
             msg += `----------------------------------\n`;
@@ -235,21 +251,19 @@
             for (let cat in menuData) {
                 menuData[cat].forEach(i => {
                     if(carrito[i.id] > 0) {
-                        let sub = carrito[i.id] * i.p;
-                        msg += `✅ ${carrito[i.id]}x ${i.n} - $${sub.toLocaleString()}\n`;
-                        t += sub;
+                        msg += `✅ ${carrito[i.id]}x ${i.n} ($${(carrito[i.id]*i.p).toLocaleString()})\n`;
+                        t += (carrito[i.id]*i.p);
                     }
                 });
             }
 
-            if(t === 0) return alert("Elige algún producto del menú.");
-
+            if(t === 0) return alert("Elige algún producto.");
             msg += `----------------------------------\n`;
             msg += `💰 *TOTAL A PAGAR: $${t.toLocaleString()}*\n`;
             msg += `📝 *Obs:* ${document.getElementById('obs').value || 'Ninguna'}\n\n`;
             msg += `🚀 _App por Vibras Positivas_`;
 
-            window.open(`https://wa.me/573007293667?text=${encodeURIComponent(msg)}`, '_blank');
+            window.open(`https://wa.me/573007293667?text=${encodeURIComponent(msg)}`);
         }
     </script>
 </body>
