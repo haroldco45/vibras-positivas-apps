@@ -17,10 +17,6 @@
             background-color: rgba(243, 244, 246, 0.96);
             background-blend-mode: overlay;
         }
-        .btn-servicio {
-            background: linear-gradient(45deg, #1a1a1a, #333);
-            border-left: 5px solid var(--acentos);
-        }
         .btn-gps-blink {
             background-color: #1a1a1a;
             animation: pulse-red 2s infinite;
@@ -41,19 +37,23 @@
 
     <div id="bloqueo-sub">
         <div>
-            <h1 class="text-2xl font-black text-gray-800">Suscripción Vencida</h1>
-            <p class="text-gray-500 text-sm mt-2">Contacte al desarrollador de Vibras Positivas.</p>
+            <h1 class="text-2xl font-black text-gray-800 uppercase">Suscripción Vencida</h1>
+            <p class="text-gray-500 text-sm mt-2">Contacte al equipo de Vibras Positivas.</p>
             <a href="https://wa.me/573007293667" class="mt-6 inline-block bg-black text-white px-6 py-2 rounded-full font-bold">SOPORTE TÉCNICO</a>
         </div>
     </div>
 
     <header class="text-center mb-6">
-        <h1 class="text-4xl font-black text-gray-900 tracking-tighter uppercase">K&V SOLUCIONES</h1>
+        <div class="flex justify-center mb-2">
+            <img src="k&v.PNG" alt="K&V SOLUCIONES" class="h-32 w-auto drop-shadow-2xl">
+        </div>
+        
+        <h1 class="text-3xl font-black text-gray-900 tracking-tighter uppercase">K&V SOLUCIONES</h1>
         <p class="text-red-600 font-bold text-[10px] uppercase tracking-widest mt-1">Mecánica Automotriz y Maquinaria Pesada</p>
         
         <div class="mt-6">
-            <a href="catalogo.pdf" target="_blank" class="inline-flex items-center gap-3 bg-gray-900 text-white px-8 py-4 rounded-2xl font-black text-xs uppercase shadow-lg hover:scale-105 transition-all">
-                <i class="fas fa-book-open text-xl text-red-500"></i> Portafolio de Servicios
+            <a href="Catálogo.pdf" target="_blank" class="inline-flex items-center gap-3 bg-gray-900 text-white px-8 py-4 rounded-2xl font-black text-xs uppercase shadow-lg hover:scale-105 transition-all">
+                <i class="fas fa-file-pdf text-xl text-red-500"></i> Ver Portafolio de Servicios
             </a>
         </div>
     </header>
@@ -70,24 +70,24 @@
         </div>
 
         <div id="editor-datos" class="space-y-3">
-            <h2 class="font-black text-gray-800 text-[10px] uppercase mb-2 italic"><i class="fas fa-truck-monster"></i> Identificación de Equipo/Cliente</h2>
-            <input type="text" id="nombre" placeholder="Nombre del Propietario o Empresa" class="w-full p-3 border rounded-xl outline-none focus:border-red-500 bg-gray-50 text-sm font-semibold">
-            <input type="text" id="vehiculo" placeholder="Marca/Modelo (Ej: Foton, Hino, Isuzu...)" class="w-full p-3 border rounded-xl outline-none focus:border-red-500 bg-gray-50 text-sm font-semibold">
-            <input type="tel" id="celular" placeholder="Número de contacto" class="w-full p-3 border rounded-xl outline-none focus:border-red-500 bg-gray-50 text-sm font-semibold">
+            <h2 class="font-black text-gray-800 text-[10px] uppercase mb-2 italic"><i class="fas fa-wrench"></i> Registro de Equipo / Cliente</h2>
+            <input type="text" id="nombre" placeholder="Nombre Propietario / Empresa" class="w-full p-3 border rounded-xl outline-none focus:border-red-500 bg-gray-50 text-sm font-semibold">
+            <input type="text" id="vehiculo" placeholder="Marca/Modelo (Ej: Isuzu, Hino, Foton...)" class="w-full p-3 border rounded-xl outline-none focus:border-red-500 bg-gray-50 text-sm font-semibold">
+            <input type="tel" id="celular" placeholder="Celular de contacto" class="w-full p-3 border rounded-xl outline-none focus:border-red-500 bg-gray-50 text-sm font-semibold">
             <button onclick="guardarDatos()" class="w-full bg-gray-900 text-white font-black py-3 rounded-xl text-xs uppercase shadow-md">Confirmar Datos</button>
         </div>
 
         <button onclick="obtenerUbicacionReal()" class="w-full btn-gps-blink text-white font-black py-4 rounded-xl flex items-center justify-center gap-3 shadow-lg text-xs uppercase mt-4">
-            <i class="fas fa-map-marker-alt text-lg"></i> Enviar Ubicación para Taller Móvil
+            <i class="fas fa-location-arrow text-lg"></i> Vincular GPS para Taller Móvil
         </button>
         <div id="status_gps" class="hidden text-center text-green-600 font-bold text-[9px] uppercase italic mt-2">
-            <i class="fas fa-check-double"></i> GPS Vinculado correctamente
+            <i class="fas fa-check-circle"></i> Ubicación lista para asistencia
         </div>
         <input type="hidden" id="gps_url">
     </section>
 
     <section class="bg-white p-5 rounded-3xl shadow-md border-l-4 border-red-600 mb-6">
-        <h2 class="font-black text-gray-800 text-[10px] uppercase mb-3 italic">¿Qué servicio necesita?</h2>
+        <h2 class="font-black text-gray-800 text-[10px] uppercase mb-3 italic">Solicitud Técnica</h2>
         <select id="servicio_tipo" class="w-full p-3 border rounded-xl font-bold bg-gray-50 text-sm outline-none mb-4">
             <option value="Reparación de Motores">Reparación de Motores</option>
             <option value="Caja / Transmisión / Diferencial">Caja / Transmisión / Diferencial</option>
@@ -95,20 +95,21 @@
             <option value="Sistema Eléctrico / Scanner">Sistema Eléctrico / Servicio Scanner</option>
             <option value="Soldadura / Latonería / Pintura">Soldadura / Latonería / Pintura</option>
             <option value="Taller Móvil">Solicitar Taller Móvil 🛠️</option>
-            <option value="Cotización de Repuestos">Cotización de Repuestos</option>
+            <option value="Venta de Repuestos">Venta de Repuestos</option>
+            <option value="Maquinaria Pesada">Asistencia Maquinaria Pesada 🚜</option>
         </select>
 
-        <textarea id="pedido" placeholder="Describa la falla o el repuesto que necesita (Ej: Ruido en la transmisión, cambio de filtros Hino...)" class="w-full p-4 border rounded-2xl h-32 focus:border-red-500 outline-none text-sm bg-gray-50 mb-4 font-medium"></textarea>
+        <textarea id="pedido" placeholder="Describa la falla técnica o el repuesto que necesita..." class="w-full p-4 border rounded-2xl h-32 focus:border-red-500 outline-none text-sm bg-gray-50 mb-4 font-medium"></textarea>
 
         <button onclick="enviarPedido()" class="w-full bg-green-600 text-white py-5 rounded-2xl font-black text-xl flex items-center justify-center gap-3 active:scale-95 transition-all shadow-xl mt-4">
-            <i class="fab fa-whatsapp text-2xl"></i> SOLICITAR ASISTENCIA
+            <i class="fab fa-whatsapp text-2xl"></i> AGENDAR ASISTENCIA
         </button>
     </section>
 
     <footer class="text-center mt-6">
         <p class="text-[9px] font-bold text-gray-500 uppercase leading-tight">
-            Calle 30 22-62 Troncal La Y <br>
-            Expertos en: ISUZU - JAC - FOTON - HINO - KODIAK - INTERNATIONAL
+            Calle 30 22-62 Troncal La Y | Cel: 311 789 7269 <br>
+            Expertos: ISUZU - JAC - FOTON - HINO - KODIAK - INTERNATIONAL - MAQUINARIA PESADA
         </p>
         <p class="text-[10px] font-black uppercase text-gray-400 tracking-widest mt-10">app desarrollada por vibras positvas derechos de autor</p>
     </footer>
@@ -139,8 +140,8 @@
         }
 
         function mostrarResumen() {
-            document.getElementById('resumen-nombre').innerText = document.getElementById('nombre').value + " (" + document.getElementById('vehiculo').value + ")";
-            document.getElementById('resumen-tel').innerText = "Contacto: " + document.getElementById('celular').value;
+            document.getElementById('resumen-nombre').innerText = document.getElementById('nombre').value + " | " + document.getElementById('vehiculo').value;
+            document.getElementById('resumen-tel').innerText = "Tel: " + document.getElementById('celular').value;
             document.getElementById('editor-datos').classList.add('hidden');
             document.getElementById('vista-resumida').classList.remove('hidden');
         }
@@ -153,7 +154,7 @@
         function obtenerUbicacionReal() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(pos) {
-                    const url = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                    const url = `http://maps.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
                     document.getElementById('gps_url').value = url;
                     document.getElementById('status_gps').classList.remove('hidden');
                 });
@@ -167,16 +168,16 @@
             const detalle = document.getElementById('pedido').value;
             const gps = document.getElementById('gps_url').value;
             
-            if(!nom || !detalle) return alert("Falta el detalle del servicio.");
+            if(!nom || !detalle) return alert("Faltan detalles de la solicitud técnica.");
 
-            let msg = `*🛠️ SOLICITUD DE TALLER - K&V*\n`;
+            let msg = `*🛠️ ASISTENCIA TALLER K&V*\n`;
             msg += `--------------------------\n`;
             msg += `👤 *Cliente:* ${nom}\n`;
-            msg += `🚛 *Equipo:* ${veh}\n`;
+            msg += `🚛 *Vehículo:* ${veh}\n`;
             msg += `🔧 *Servicio:* ${serv}\n`;
-            if(gps) msg += `🗺️ *Ubicación:* ${gps}\n`;
+            if(gps) msg += `📍 *Ubicación:* ${gps}\n`;
             msg += `--------------------------\n`;
-            msg += `📝 *DETALLE:*\n${detalle}\n`;
+            msg += `📝 *REPORTE TÉCNICO:*\n${detalle}\n`;
             msg += `--------------------------\n`;
             msg += `🚀 _App por Vibras Positivas_`;
 
