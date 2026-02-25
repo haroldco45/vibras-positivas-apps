@@ -96,17 +96,16 @@
         fechaCorte: "2026-12-31" 
     };
 
-    // Control de suscripción
+    // Control invisible
     if (new Date() > new Date(CONFIG.fechaCorte)) {
         document.getElementById('bloqueo-sub').style.display = 'flex';
     }
 
-    // Generar horas cada 45 minutos (8:00 AM a 7:15 PM)
+    // Generar horas cada 45 minutos (8:00 AM a 11:00 PM)
     function cargarHoras() {
         const select = document.getElementById('hora_cita');
-        let horas = [];
-        let inicio = 8 * 60; // 8:00 AM en minutos
-        let fin = 19 * 60 + 30; // 7:30 PM en minutos
+        let inicio = 8 * 60; // 8:00 AM
+        let fin = 23 * 60; // 11:00 PM
 
         for (let min = inicio; min <= fin; min += 45) {
             let hh = Math.floor(min / 60);
@@ -115,8 +114,7 @@
             let hh12 = hh > 12 ? hh - 12 : hh;
             if (hh12 == 0) hh12 = 12;
             let horaTexto = `${hh12}:${mm.toString().padStart(2, '0')} ${ampm}`;
-            let option = new Option(horaTexto, horaTexto);
-            select.add(option);
+            select.add(new Option(horaTexto, horaTexto));
         }
     }
 
@@ -125,7 +123,7 @@
         if(d.n && d.c) { 
             localStorage.setItem('vp_labarberia_datos', JSON.stringify(d)); 
             verificarDatos();
-        } else { alert("Por favor completa tu nombre y celular."); }
+        } else { alert("Faltan datos."); }
     }
 
     function verificarDatos() {
@@ -154,21 +152,19 @@
         const hora = document.getElementById('hora_cita').value;
         const notas = document.getElementById('notas').value;
 
-        if(!c) return alert("Primero guarda tus datos personales.");
-        if(!servicio || !fecha) return alert("Por favor elige el servicio y la fecha.");
+        if(!c || !servicio || !fecha) return alert("Completa todos los campos.");
 
-        let msj = `*${CONFIG.nombreNegocio} - RESERVA DE TURNO*\n`;
+        let msj = `*${CONFIG.nombreNegocio} - TURNO*\n`;
         msj += `--------------------------\n`;
         msj += `👤 *CLIENTE:* ${c.n}\n`;
-        msj += `📞 *CEL:* ${c.c}\n`;
         msj += `✂️ *SERVICIO:* ${servicio}\n`;
         msj += `📅 *FECHA:* ${fecha}\n`;
         msj += `⏰ *HORA:* ${hora}\n`;
         if(notas) msj += `📝 *NOTAS:* ${notas}\n`;
         msj += `--------------------------\n`;
-        msj += `🚀 _Enviado desde App Vibras Positivas_`;
+        msj += `🚀 _App por Vibras Positivas_`;
 
-        window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msj)}`, '_blank');
+        window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msj)}`);
     }
 </script>
 </body>
