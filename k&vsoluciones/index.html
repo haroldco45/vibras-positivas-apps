@@ -45,7 +45,7 @@
 
     <header class="text-center mb-6">
         <div class="flex justify-center mb-2">
-            <img src="k&v.PNG" alt="K&V SOLUCIONES" class="h-32 w-auto drop-shadow-2xl">
+            <img src="kv.png" alt="K&V SOLUCIONES" class="h-32 w-auto drop-shadow-2xl">
         </div>
         
         <h1 class="text-3xl font-black text-gray-900 tracking-tighter uppercase">K&V SOLUCIONES</h1>
@@ -154,7 +154,7 @@
         function obtenerUbicacionReal() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(pos) {
-                    const url = `http://maps.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                    const url = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
                     document.getElementById('gps_url').value = url;
                     document.getElementById('status_gps').classList.remove('hidden');
                 });
