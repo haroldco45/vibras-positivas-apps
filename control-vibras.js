@@ -48,6 +48,7 @@ const controlVibras = {
     "paula-areiza": "activo",
     "nelson-servicios": "activo",
     "lavadoyaspiradosas": "activo",
+    "k&vsoluciones": "activo",
 
     // TRANSPORTE E INVERSIONES
     "inversiones-charlotte": "activo",
