@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOLUCIONES K&V- Taller & Repuestos</title>
+    <title>SOLUCIONES K&V - Taller & Repuestos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --primario: #1a1a1a; --acentos: #e63946; }
         body {
-            background-image: url('https://i.ibb.co/3ykX8kz/logo-vibras-positivas.png'); 
+            /* FONDO DE MOTORES REEMPLAZADO */
+            background-image: url('https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?q=80&w=2070&auto=format&fit=crop'); 
             background-attachment: fixed;
             background-position: center;
             background-repeat: no-repeat;
-            background-size: 60%;
-            background-color: rgba(243, 244, 246, 0.96);
-            background-blend-mode: overlay;
+            background-size: cover;
+            background-color: rgba(0, 0, 0, 0.85);
+            background-blend-mode: darken;
         }
         .btn-gps-blink {
             background-color: #1a1a1a;
@@ -33,11 +34,11 @@
         }
     </style>
 </head>
-<body class="p-4 pb-10 max-w-2xl mx-auto font-sans">
+<body class="p-4 pb-10 max-w-2xl mx-auto font-sans text-gray-100">
 
     <div id="bloqueo-sub">
-        <div>
-            <h1 class="text-2xl font-black text-gray-800 uppercase">Suscripción Vencida</h1>
+        <div class="text-gray-900">
+            <h1 class="text-2xl font-black uppercase">Suscripción Vencida</h1>
             <p class="text-gray-500 text-sm mt-2">Contacte al equipo de Vibras Positivas.</p>
             <a href="https://wa.me/573007293667" class="mt-6 inline-block bg-black text-white px-6 py-2 rounded-full font-bold">SOPORTE TÉCNICO</a>
         </div>
@@ -45,20 +46,20 @@
 
     <header class="text-center mb-6">
         <div class="flex justify-center mb-2">
-            <img src="kv.png" alt="SOLUCIONES K&V" class="h-32 w-auto drop-shadow-2xl">
+            <img src="kv.PNG" alt="SOLUCIONES K&V" class="h-32 w-auto drop-shadow-2xl">
         </div>
         
-        <h1 class="text-3xl font-black text-gray-900 tracking-tighter uppercase">SOLUCIONES K&V</h1>
-        <p class="text-red-600 font-bold text-[10px] uppercase tracking-widest mt-1">Mecánica Automotriz y Maquinaria Pesada</p>
+        <h1 class="text-3xl font-black tracking-tighter uppercase text-white">SOLUCIONES K&V</h1>
+        <p class="text-red-500 font-bold text-[10px] uppercase tracking-widest mt-1">Mecánica Automotriz y Maquinaria Pesada</p>
         
         <div class="mt-6">
-            <a href="Catálogo.pdf" target="_blank" class="inline-flex items-center gap-3 bg-gray-900 text-white px-8 py-4 rounded-2xl font-black text-xs uppercase shadow-lg hover:scale-105 transition-all">
-                <i class="fas fa-file-pdf text-xl text-red-500"></i> Ver Portafolio de Servicios
+            <a href="Catálogo.pdf" target="_blank" class="inline-flex items-center gap-3 bg-red-600 text-white px-8 py-4 rounded-2xl font-black text-xs uppercase shadow-lg hover:scale-105 transition-all">
+                <i class="fas fa-file-pdf text-xl"></i> Ver Portafolio de Servicios
             </a>
         </div>
     </header>
 
-    <section class="bg-white p-5 rounded-3xl shadow-xl border-t-4 border-gray-900 mb-6">
+    <section class="bg-white p-5 rounded-3xl shadow-xl border-t-4 border-gray-900 mb-6 text-gray-900">
         <div id="vista-resumida" class="hidden mb-4">
             <div class="flex justify-between items-center bg-gray-50 p-3 rounded-xl border border-gray-100">
                 <div class="text-[11px]">
@@ -86,7 +87,7 @@
         <input type="hidden" id="gps_url">
     </section>
 
-    <section class="bg-white p-5 rounded-3xl shadow-md border-l-4 border-red-600 mb-6">
+    <section class="bg-white p-5 rounded-3xl shadow-md border-l-4 border-red-600 mb-6 text-gray-900">
         <h2 class="font-black text-gray-800 text-[10px] uppercase mb-3 italic">Solicitud Técnica</h2>
         <select id="servicio_tipo" class="w-full p-3 border rounded-xl font-bold bg-gray-50 text-sm outline-none mb-4">
             <option value="Reparación de Motores">Reparación de Motores</option>
@@ -107,11 +108,11 @@
     </section>
 
     <footer class="text-center mt-6">
-        <p class="text-[9px] font-bold text-gray-500 uppercase leading-tight">
+        <p class="text-[9px] font-bold text-gray-400 uppercase leading-tight">
             Calle 30 22-62 Troncal La Y | Cel: 311 789 7269 <br>
             Expertos: ISUZU - JAC - FOTON - HINO - KODIAK - INTERNATIONAL - MAQUINARIA PESADA
         </p>
-        <p class="text-[10px] font-black uppercase text-gray-400 tracking-widest mt-10">app desarrollada por vibras positvas derechos de autor</p>
+        <p class="text-[10px] font-black uppercase text-gray-500 tracking-widest mt-10">app desarrollada por vibras positvas derechos de autor</p>
     </footer>
 
     <script>
