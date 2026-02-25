@@ -18,10 +18,21 @@
         .btn-whatsapp { background: #25D366; color: white; }
         .hidden { display: none !important; }
         footer { text-align: center; padding: 20px; font-size: 12px; color: #888; background: #fff; border-top: 1px solid #eee; }
-        .vp-brand { color: var(--secundario); font-weight: bold; text-decoration: none; border-bottom: 1px solid var(--primario); }
+        
+        /* Bloqueo de suscripción */
+        #bloqueo-sub { display: none; position: fixed; inset: 0; background: white; z-index: 9999; justify-content: center; align-items: center; text-align: center; padding: 20px; }
     </style>
 </head>
 <body>
+
+<div id="bloqueo-sub">
+    <div>
+        <h1 class="text-2xl font-black text-gray-800">Suscripción Vencida</h1>
+        <p class="text-gray-500 text-sm mt-2">Contacte a Vibras Positivas para reactivar.</p>
+        <a href="https://wa.me/573007293667" class="mt-6 inline-block bg-black text-white px-6 py-2 rounded-full font-bold">SOPORTE</a>
+    </div>
+</div>
+
 <div class="card">
     <header>
         <div class="logo-area">LA BARBERÍA</div>
@@ -43,7 +54,7 @@
         
         <hr style="opacity: 0.1; margin: 25px 0;">
         
-        <div class="section-title">Elige tu Estilo</div>
+        <div class="section-title">Agendar Cita</div>
         <select id="tipo_servicio">
             <option value="">Selecciona un servicio...</option>
             <option value="Corte de Cabello">Corte de Cabello</option>
@@ -53,8 +64,17 @@
             <option value="Corte Infantil">Corte Infantil</option>
         </select>
         
-        <label style="font-size: 13px; color: #666; margin-left: 5px;">¿Para qué día?</label>
-        <input type="date" id="fecha_cita">
+        <div style="display: flex; gap: 10px;">
+            <div style="flex: 1;">
+                <label style="font-size: 11px; color: #666; font-weight: bold; text-transform: uppercase;">Día</label>
+                <input type="date" id="fecha_cita">
+            </div>
+            <div style="flex: 1;">
+                <label style="font-size: 11px; color: #666; font-weight: bold; text-transform: uppercase;">Hora</label>
+                <select id="hora_cita">
+                    </select>
+            </div>
+        </div>
         
         <textarea id="notas" rows="2" placeholder="¿Algún barbero en especial o detalle del corte?"></textarea>
         
@@ -64,7 +84,7 @@
     </div>
     <footer>
         Estilo y Calidad en Caucasia <br>
-        Desarrollado por <a href="#" class="vp-brand">VIBRAS POSITIVAS</a> <br>
+        app desarrollada por vibras positvas derechos de autor <br>
         © 2026
     </footer>
 </div>
@@ -72,9 +92,33 @@
 <script>
     const CONFIG = {
         nombreNegocio: "LA BARBERÍA",
-        whatsapp: "573225872120", // Harold, recuerda poner el número del barbero aquí
-        idSuscriptor: "VP-CAU-017"
+        whatsapp: "573225872120", 
+        fechaCorte: "2026-12-31" 
     };
+
+    // Control de suscripción
+    if (new Date() > new Date(CONFIG.fechaCorte)) {
+        document.getElementById('bloqueo-sub').style.display = 'flex';
+    }
+
+    // Generar horas cada 45 minutos (8:00 AM a 7:15 PM)
+    function cargarHoras() {
+        const select = document.getElementById('hora_cita');
+        let horas = [];
+        let inicio = 8 * 60; // 8:00 AM en minutos
+        let fin = 19 * 60 + 30; // 7:30 PM en minutos
+
+        for (let min = inicio; min <= fin; min += 45) {
+            let hh = Math.floor(min / 60);
+            let mm = min % 60;
+            let ampm = hh >= 12 ? 'PM' : 'AM';
+            let hh12 = hh > 12 ? hh - 12 : hh;
+            if (hh12 == 0) hh12 = 12;
+            let horaTexto = `${hh12}:${mm.toString().padStart(2, '0')} ${ampm}`;
+            let option = new Option(horaTexto, horaTexto);
+            select.add(option);
+        }
+    }
 
     function guardarCliente() {
         const d = { n: document.getElementById('c_nombre').value, c: document.getElementById('c_celular').value };
@@ -92,7 +136,11 @@
             document.getElementById('texto-resumen').innerText = `Cliente: ${g.n}\nContacto: ${g.c}`;
         }
     }
-    window.onload = verificarDatos;
+
+    window.onload = () => {
+        verificarDatos();
+        cargarHoras();
+    };
 
     function mostrarEditor() {
         document.getElementById('cliente-editor').classList.remove('hidden');
@@ -103,18 +151,22 @@
         const c = JSON.parse(localStorage.getItem('vp_labarberia_datos'));
         const servicio = document.getElementById('tipo_servicio').value;
         const fecha = document.getElementById('fecha_cita').value;
+        const hora = document.getElementById('hora_cita').value;
         const notas = document.getElementById('notas').value;
 
         if(!c) return alert("Primero guarda tus datos personales.");
         if(!servicio || !fecha) return alert("Por favor elige el servicio y la fecha.");
 
         let msj = `*${CONFIG.nombreNegocio} - RESERVA DE TURNO*\n`;
-        msj += `*CLIENTE:* ${c.n}\n*CEL:* ${c.c}\n`;
         msj += `--------------------------\n`;
-        msj += `*SERVICIO:* ${servicio}\n*FECHA:* ${fecha}\n`;
-        if(notas) msj += `*NOTAS:* ${notas}\n`;
+        msj += `👤 *CLIENTE:* ${c.n}\n`;
+        msj += `📞 *CEL:* ${c.c}\n`;
+        msj += `✂️ *SERVICIO:* ${servicio}\n`;
+        msj += `📅 *FECHA:* ${fecha}\n`;
+        msj += `⏰ *HORA:* ${hora}\n`;
+        if(notas) msj += `📝 *NOTAS:* ${notas}\n`;
         msj += `--------------------------\n`;
-        msj += `_Solicitado desde App Vibras Positivas_`;
+        msj += `🚀 _Enviado desde App Vibras Positivas_`;
 
         window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msj)}`, '_blank');
     }
