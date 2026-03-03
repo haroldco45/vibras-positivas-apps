@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#000000">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
     <title>DISTRILECO - Toma de Pedidos</title>
     <style>
         :root { --primario: #FFD700; --secundario: #000000; --blanco: #ffffff; --gris-claro: #f4f4f4; --exito: #25D366; }
@@ -113,6 +121,13 @@
 </div>
 
 <script>
+    // Registro del Service Worker para funcionamiento como App (PWA)
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW error:', err));
+        });
+    }
+
     const CONFIG = {
         whatsapp: "573117700431"
     };
@@ -178,7 +193,7 @@
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 pos => {
-                    const gps = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                    const gps = `http://maps.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
                     finalizar(c, gps);
                 }, 
                 () => finalizar(c, "No proporcionada"),
