@@ -1,1 +1,22 @@
-
+{
+  "short_name": "ABocados",
+  "name": "A Bocados - Carta Completa",
+  "description": "Menú digital de A Bocados en Caucasia.",
+  "icons": [
+    {
+      "src": "aboados.PNG",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "aboados.PNG",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "index.html",
+  "background_color": "#1a1a1a",
+  "theme_color": "#d81b60",
+  "display": "standalone",
+  "orientation": "portrait"
+}
