@@ -1,1 +1,21 @@
-
+{
+  "name": "Alimentos Titán Caucasia",
+  "short_name": "Titán",
+  "description": "App de pedidos de Alimentos Titán",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#701c1c",
+  "theme_color": "#701c1c",
+  "icons": [
+    {
+      "src": "TITAN.PNG",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "TITAN.PNG",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
