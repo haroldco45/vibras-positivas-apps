@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Arepa Don Huevo - Menú Digital</title>
-
+    
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#5d4037">
+
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Don Huevo">
@@ -14,16 +15,7 @@
 
     <style>
         :root { --naranja: #e67e22; --amarillo: #f1c40f; --cafe: #5d4037; --blanco: #ffffff; --fondo: #fef9e7; --exito: #25D366; }
-        
-        body { 
-            font-family: 'Segoe UI', sans-serif; 
-            background-color: var(--fondo); 
-            margin: 0; 
-            padding: 10px; 
-            padding-bottom: 220px; /* Espacio extra para el footer fijo */
-            color: var(--cafe); 
-            overflow-x: hidden;
-        }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--fondo); margin: 0; padding: 10px; padding-bottom: 220px; color: var(--cafe); overflow-x: hidden; }
         
         #bloqueo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; text-align: center; padding-top: 100px; }
 
@@ -94,7 +86,7 @@
             <option value="Nequi">Nequi</option>
             <option value="Bancolombia">Bancolombia</option>
         </select>
-        <textarea id="obs" class="input-cajon" placeholder="📝 ¿Alguna nota (ej. sin cebolla)?" rows="2"></textarea>
+        <textarea id="obs" class="input-cajon" placeholder="📝 ¿Alguna nota especial?" rows="2"></textarea>
     </div>
 
     <div class="footer-total">
@@ -115,6 +107,7 @@
 <script>
     const WA_DONHUEVO = "573167232308";
     
+    // PRODUCTOS SINCRONIZADOS CON TUS ARCHIVOS DE GITHUB
     const productos = [
         { id: 1, n: "Arepa de Huevo", p: 4500, f: "arepadehuevo.JPG", cat: "arepa" },
         { id: 2, n: "Arepa Trifásica", p: 9000, f: "arepatrifasica.JPG", cat: "arepa" },
