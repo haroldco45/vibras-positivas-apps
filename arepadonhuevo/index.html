@@ -2,39 +2,58 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Arepa Don Huevo - Menú Digital</title>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#5d4037">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Don Huevo">
+    <link rel="apple-touch-icon" href="arepadonhuevo.png">
+
     <style>
         :root { --naranja: #e67e22; --amarillo: #f1c40f; --cafe: #5d4037; --blanco: #ffffff; --fondo: #fef9e7; --exito: #25D366; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--fondo); margin: 0; padding: 10px; padding-bottom: 200px; color: var(--cafe); }
+        
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background-color: var(--fondo); 
+            margin: 0; 
+            padding: 10px; 
+            padding-bottom: 220px; /* Espacio extra para el footer fijo */
+            color: var(--cafe); 
+            overflow-x: hidden;
+        }
         
         #bloqueo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; z-index: 9999; text-align: center; padding-top: 100px; }
 
-        header { background: var(--cafe); color: var(--amarillo); padding: 20px; text-align: center; border-radius: 0 0 30px 30px; border-bottom: 5px solid var(--naranja); margin: -10px -10px 20px -10px; }
-        .logo-img { width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--amarillo); background: white; margin-bottom: 10px; object-fit: contain; }
+        header { background: var(--cafe); color: var(--amarillo); padding: 20px; text-align: center; border-radius: 0 0 30px 30px; border-bottom: 5px solid var(--naranja); margin: -10px -10px 20px -10px; position: sticky; top: 0; z-index: 500; }
+        .logo-img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--amarillo); background: white; margin-bottom: 10px; object-fit: contain; }
 
         .card-datos { background: white; padding: 15px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid var(--naranja); }
-        .input-cajon { width: 100%; padding: 12px; margin: 6px 0; border: 1px solid #ddd; border-radius: 12px; font-size: 15px; box-sizing: border-box; outline: none; }
+        .input-cajon { width: 100%; padding: 12px; margin: 6px 0; border: 1px solid #ddd; border-radius: 12px; font-size: 16px; box-sizing: border-box; outline: none; }
         
         .section-title { font-size: 13px; font-weight: bold; color: var(--naranja); text-transform: uppercase; margin: 25px 0 10px; border-left: 5px solid var(--cafe); padding-left: 10px; }
 
         .card-prod { background: white; border-radius: 20px; display: flex; align-items: center; padding: 12px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #f9ebea; }
-        .img-prod { width: 90px; height: 90px; border-radius: 15px; object-fit: cover; margin-right: 15px; background: #eee; border: 1px solid #ddd; }
+        .img-prod { width: 85px; height: 85px; border-radius: 15px; object-fit: cover; margin-right: 15px; background: #eee; border: 1px solid #ddd; }
         .info-prod { flex-grow: 1; }
-        .info-prod h3 { margin: 0; font-size: 15px; color: var(--cafe); text-transform: uppercase; }
+        .info-prod h3 { margin: 0; font-size: 14px; color: var(--cafe); text-transform: uppercase; }
         .info-prod b { color: var(--naranja); font-size: 16px; display: block; margin: 4px 0; }
 
         .controles { display: flex; align-items: center; gap: 12px; }
-        .btn-c { background: var(--amarillo); color: var(--cafe); border: none; width: 35px; height: 35px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 20px; }
+        .btn-c { background: var(--amarillo); color: var(--cafe); border: none; width: 35px; height: 35px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 20px; transition: 0.2s; }
+        .btn-c:active { transform: scale(0.9); }
         .cant-n { font-weight: bold; color: var(--cafe); font-size: 20px; min-width: 25px; text-align: center; }
 
         .footer-total { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1); border-radius: 30px 30px 0 0; z-index: 1000; }
-        .cajon-cuenta { background: var(--cafe); color: var(--amarillo); padding: 12px; border-radius: 15px; text-align: center; margin-bottom: 10px; border: 1px solid var(--naranja); }
-        .cajon-cuenta span { font-size: 26px; font-weight: bold; }
-        .btn-enviar { background: var(--exito); color: white; border: none; padding: 18px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; }
+        .cajon-cuenta { background: var(--cafe); color: var(--amarillo); padding: 10px; border-radius: 15px; text-align: center; margin-bottom: 10px; border: 1px solid var(--naranja); }
+        .cajon-cuenta span { font-size: 24px; font-weight: bold; }
+        .btn-enviar { background: var(--exito); color: white; border: none; padding: 16px; border-radius: 15px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); }
+        .btn-enviar:active { transform: scale(0.98); }
 
         .hidden { display: none !important; }
-        footer { text-align: center; padding: 25px; font-size: 12px; color: #888; background: #fff; border-top: 1px solid #eee; line-height: 1.6; }
+        footer { text-align: center; padding: 25px; font-size: 12px; color: #888; background: #fff; border-top: 1px solid #eee; margin: 20px -10px -10px -10px; }
     </style>
 </head>
 <body>
@@ -44,7 +63,7 @@
 <div id="app-content">
     <header>
         <img src="arepadonhuevo.png" alt="Logo" class="logo-img">
-        <h1 style="margin:0; font-size: 22px;">AREPA DON HUEVO</h1>
+        <h1 style="margin:0; font-size: 20px;">AREPA DON HUEVO</h1>
         <small>📍 Calle 27, Caucasia Antioquia</small>
     </header>
 
@@ -52,9 +71,9 @@
         <div id="form-datos">
             <div class="section-title">Datos del Cliente</div>
             <input type="text" id="nom" class="input-cajon" placeholder="👤 Nombre Completo">
-            <input type="text" id="dir" class="input-cajon" placeholder="🏠 Dirección: Calle 27 #...">
+            <input type="text" id="dir" class="input-cajon" placeholder="🏠 Dirección Exacta">
             <input type="tel" id="tel" class="input-cajon" placeholder="📞 WhatsApp">
-            <button class="btn-enviar" style="background: var(--naranja); margin-top: 10px;" onclick="guardarDatos()">💾 GUARDAR MIS DATOS</button>
+            <button class="btn-enviar" style="background: var(--naranja); margin-top: 10px; font-size: 14px; padding: 12px;" onclick="guardarDatos()">💾 GUARDAR MIS DATOS</button>
         </div>
         <div id="datos-listos" class="hidden">
             <p id="resumen-datos" style="margin:0; font-size: 14px; color: #555; white-space: pre-line; font-weight: bold;"></p>
@@ -75,7 +94,7 @@
             <option value="Nequi">Nequi</option>
             <option value="Bancolombia">Bancolombia</option>
         </select>
-        <textarea id="obs" class="input-cajon" placeholder="📝 ¿Alguna nota para el pedido?" rows="2"></textarea>
+        <textarea id="obs" class="input-cajon" placeholder="📝 ¿Alguna nota (ej. sin cebolla)?" rows="2"></textarea>
     </div>
 
     <div class="footer-total">
@@ -96,7 +115,6 @@
 <script>
     const WA_DONHUEVO = "573167232308";
     
-    // PRODUCTOS CON NOMBRES EXACTOS DE GITHUB
     const productos = [
         { id: 1, n: "Arepa de Huevo", p: 4500, f: "arepadehuevo.JPG", cat: "arepa" },
         { id: 2, n: "Arepa Trifásica", p: 9000, f: "arepatrifasica.JPG", cat: "arepa" },
@@ -154,9 +172,6 @@
             document.getElementById('resumen-datos').innerText = `👤 ${g.n}\n🏠 ${g.d}\n📞 ${g.t}`;
         }
     }
-    window.onload = () => { mostrarDatos(); checkLock(); };
-
-    function editarDatos() { document.getElementById('form-datos').classList.remove('hidden'); document.getElementById('datos-listos').classList.add('hidden'); }
 
     async function checkLock() {
         try {
@@ -168,6 +183,8 @@
             }
         } catch(e){}
     }
+
+    function editarDatos() { document.getElementById('form-datos').classList.remove('hidden'); document.getElementById('datos-listos').classList.add('hidden'); }
 
     function enviarPedido() {
         const c = JSON.parse(localStorage.getItem('vp_donhuevo_datos'));
@@ -191,6 +208,8 @@
         let msg = `*🍳 AREPA DON HUEVO - PEDIDO*\n--------------------------\n👤 *CLIENTE:* ${c.n}\n🏠 *DIR:* ${c.d}\n📞 *CEL:* ${c.t}\n💳 *PAGO:* ${document.getElementById('pago').value}\n--------------------------\n🛒 *FACTURA DE PEDIDO:*\n${factura}--------------------------\n💰 *TOTAL A PAGAR: $${total.toLocaleString()}*\n📝 *OBS:* ${document.getElementById('obs').value || "N/A"}\n📍 *MAPS:* ${gps}\n\n_App desarrollada por Vibras Positivas_`;
         window.location.href = `https://wa.me/${WA_DONHUEVO}?text=${encodeURIComponent(msg)}`;
     }
+
+    window.onload = () => { mostrarDatos(); checkLock(); };
 </script>
 </body>
 </html>
